@@ -1,6 +1,6 @@
 <template>
   <div id="body-wrap">
-    <b-navbar toggleable="md" type="light" variant="white">
+    <b-navbar toggleable="md" type="light" variant="white" fixed="top">
       <div class="container">
         <b-navbar-brand href="#">
           <img src="./assets/images/logo.png" class="logo">
@@ -69,10 +69,13 @@ export default {
       ]
     };
   },
+  mounted() {
+    // console.info(123);
+  },
   methods: {
     selectLink(index) {
       this.selectedIndex = index;
-      this.$router.push(this.links[index].route);
+      this.$router.push({ name: this.links[index].route });
     }
   }
 };

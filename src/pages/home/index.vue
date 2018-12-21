@@ -39,7 +39,7 @@
           <span class="login-btn">登&emsp;录</span>
           <p class="reg-text">
             没有账号？
-            <span class="reg-link">立即注册</span>
+            <span class="reg-link" @click="register">立即注册</span>
           </p>
         </div>
       </div>
@@ -138,6 +138,9 @@ export default {
   methods: {
     toggle() {
       this.keepLogin = !this.keepLogin;
+    },
+    register() {
+      this.$router.push({ name: "register" });
     }
   }
 };

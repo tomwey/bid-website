@@ -5,6 +5,7 @@
         <h2 class="title">供方注册</h2>
         <div class="form-controls">
           <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input>
+          <b-form-input v-model="company" type="text" placeholder="登录名"></b-form-input>
           <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
           <b-row>
             <b-col cols="8">
@@ -39,14 +40,14 @@ export default {
 <style lang="scss" scoped>
 $theme-color: #e46623;
 .register-wrap {
-  margin-top: 60px;
+  margin-top: 58px;
   margin-bottom: 200px;
   width: 100%;
   background-image: url("../../assets/images/img-reg-bg.jpg");
   background-repeat: no-repeat;
   background-position: top left;
   background-size: 100% auto;
-  padding-top: 200px;
+  padding-top: 180px;
   .form-box {
     background: #fff;
     width: 360px;

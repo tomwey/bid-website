@@ -183,7 +183,7 @@ $theme-color: #e46623;
         font-size: 14px;
         color: #333;
         cursor: pointer;
-        padding: 2px 20px;
+        padding: 2px 25px;
       }
     }
 

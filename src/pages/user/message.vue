@@ -104,7 +104,7 @@ $theme-color: #e46623;
   border-bottom: 1px solid #f2f2f2;
   .custom-tab {
     display: inline-block;
-    padding: 10px 0;
+    padding: 15px 0;
     font-size: 14px;
     margin-right: 20px;
     cursor: pointer;

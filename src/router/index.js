@@ -1,10 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '../pages/home/index';
-import About from '../pages/about/index';
-import Contact from '../pages/contact/index';
-import Partner from '../pages/partner/index';
-import Register from '../pages/register/index';
 
 Vue.use(Router);
 
@@ -19,22 +15,32 @@ export default new Router({
         {
             path: '/about',
             name: 'about',
-            component: About
+            component: () => import("@/pages/about/index")
+        },
+        {
+            path: '/bid_plan',
+            name: 'plan',
+            component: () => import("@/pages/bid-plan/index")
+        },
+        {
+            path: '/bid_notice',
+            name: 'notice',
+            component: () => import("@/pages/bid-notice/index")
         },
         {
             path: '/contact',
             name: 'contact',
-            component: Contact
+            component: () => import("@/pages/contact/index")
         },
         {
             path: '/partner',
             name: 'partner',
-            component: Partner
+            component: () => import("@/pages/partner/index")
         },
         {
             path: '/sign_up',
             name: 'register',
-            component: Register
+            component: () => import("@/pages/register/index")
         },
         {
             path: '/user/:id',

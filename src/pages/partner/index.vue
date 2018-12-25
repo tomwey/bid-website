@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrap">合作伙伴</div>
+  <div class="home-main-wrap">合作伙伴</div>
 </template>
 <script>
 export default {

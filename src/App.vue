@@ -71,11 +71,27 @@ export default {
   },
   mounted() {
     // console.info(123);
+    const route = this.$router.currentRoute;
+    this._updateSelectedLink(route.name);
+  },
+  watch: {
+    $route: function(to, from, params) {
+      this._updateSelectedLink(to.name);
+    }
   },
   methods: {
     selectLink(index) {
-      this.selectedIndex = index;
+      // this.selectedIndex = index;
       this.$router.push({ name: this.links[index].route });
+    },
+    _updateSelectedLink(name) {
+      this.selectedIndex = -1;
+      for (let index = 0; index < this.links.length; index++) {
+        const link = this.links[index];
+        if (link.route === name) {
+          this.selectedIndex = index;
+        }
+      }
     }
   }
 };
@@ -86,6 +102,10 @@ $theme-color: #e46623;
 .bg-white {
   background-color: #fff !important;
   border-bottom: 1px solid #f1f1f1 !important;
+}
+
+.home-main-wrap {
+  padding-top: 60px;
 }
 
 #body-wrap {

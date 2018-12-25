@@ -5,19 +5,6 @@ import About from '../pages/about/index';
 import Contact from '../pages/contact/index';
 import Partner from '../pages/partner/index';
 import Register from '../pages/register/index';
-import User from '../pages/user/index';
-import UserHome from '../pages/user/home';
-import UserMessage from '../pages/user/message';
-import UserBidList from '../pages/user/bid-list';
-import UserBidResult from '../pages/user/bid-result';
-import UserCompany from '../pages/user/company';
-import UserMan from '../pages/user/man';
-import UserArea from '../pages/user/area';
-import UserServiceType from '../pages/user/service-type';
-import UserCompanyAchievement from '../pages/user/company-achievement';
-import UserAccount from '../pages/user/account';
-import UserPassword from '../pages/user/password';
-import UserLoginLog from '../pages/user/login-log';
 
 Vue.use(Router);
 
@@ -51,67 +38,67 @@ export default new Router({
         },
         {
             path: '/user/:id',
-            component: User,
+            component: () => import('@/pages/user/index'),
             children: [
                 {
                     path: '',
                     name: 'user_home',
-                    component: UserHome
+                    component: () => import('@/pages/user/home'),
                 },
                 {
                     path: 'messages',
                     name: 'user_messages',
-                    component: UserMessage
+                    component: () => import('@/pages/user/message'),
                 },
                 {
                     path: 'bids',
                     name: 'user_bid',
-                    component: UserBidList
+                    component: () => import('@/pages/user/bid-list'),
                 },
                 {
                     path: 'bid_result',
                     name: 'user_bid_result',
-                    component: UserBidResult
+                    component: () => import('@/pages/user/bid-result'),
                 },
                 {
                     path: 'company',
                     name: 'user_company',
-                    component: UserCompany
+                    component: () => import('@/pages/user/company'),
                 },
                 {
                     path: 'man',
                     name: 'user_man',
-                    component: UserMan
+                    component: () => import('@/pages/user/man'),
                 },
                 {
                     path: 'area',
                     name: 'user_area',
-                    component: UserArea
+                    component: () => import('@/pages/user/area'),
                 },
                 {
                     path: 'servicetype',
                     name: 'user_service_type',
-                    component: UserServiceType
+                    component: () => import('@/pages/user/service-type'),
                 },
                 {
                     path: 'company_achievement',
                     name: 'user_company_achievement',
-                    component: UserCompanyAchievement
+                    component: () => import('@/pages/user/company-achievement'),
                 },
                 {
                     path: 'accounts',
                     name: 'user_account',
-                    component: UserAccount
+                    component: () => import('@/pages/user/account'),
                 },
                 {
                     path: 'edit_pwd',
                     name: 'user_change_pwd',
-                    component: UserPassword
+                    component: () => import('@/pages/user/password'),
                 },
                 {
                     path: 'loginlog',
                     name: 'user_login_log',
-                    component: UserLoginLog
+                    component: () => import('@/pages/user/login-log'),
                 },
             ]
         }

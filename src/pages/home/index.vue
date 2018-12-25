@@ -29,12 +29,15 @@
         <h2 class="title">供方登录</h2>
         <div class="form-wrap">
           <b-form-input v-model="loginname" type="text" placeholder="输入手机号"></b-form-input>
+          <div class="login-state-wrap clearfix">
+            <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
+          </div>
           <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
           <div class="login-state-wrap clearfix">
             <span class="login-keep" @click="toggle">
               <v-icon :name="keepLogin ? 'check-square' : 'square'"/>7天内免登录
             </span>
-            <span class="forget-password float-right">忘记密码？</span>
+            <span class="forget-password float-right" @click="forgetPass">忘记密码？</span>
           </div>
           <span class="login-btn" @click="login">登&emsp;录</span>
           <p class="reg-text">
@@ -144,6 +147,12 @@ export default {
     },
     register() {
       this.$router.push({ name: "register" });
+    },
+    forgetLogin() {
+      this.$router.push({ name: "find_login" });
+    },
+    forgetPass() {
+      this.$router.push({ name: "forget_pwd" });
     }
   }
 };
@@ -161,7 +170,7 @@ $theme-color: #e46623;
     position: absolute;
     z-index: 100;
     width: 280px;
-    height: 320px;
+    height: 350px;
     background: rgba(255, 255, 255, 0.95);
     top: 80px;
     right: 10%;
@@ -185,7 +194,7 @@ $theme-color: #e46623;
       }
 
       .login-state-wrap {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
         margin-top: -10px;
         font-size: 14px;
         .login-keep {
@@ -217,7 +226,7 @@ $theme-color: #e46623;
         font-size: 16px;
         // font-weight: 500;
         text-align: center;
-        margin: 10px 0;
+        margin: 20px 0 10px;
         cursor: pointer;
       }
 

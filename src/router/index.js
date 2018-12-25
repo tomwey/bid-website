@@ -37,10 +37,31 @@ export default new Router({
             name: 'partner',
             component: () => import("@/pages/partner/index")
         },
+        // {
+        //     path: '/sign_up',
+        //     name: 'register',
+        //     component: () => import("@/pages/register/index")
+        // },
         {
-            path: '/sign_up',
-            name: 'register',
-            component: () => import("@/pages/register/index")
+            path: '/account',
+            component: () => import('@/pages/account/index'),
+            children: [
+                {
+                    path: 'sign_up',
+                    name: 'register',
+                    component: () => import("@/pages/account/register")
+                },
+                {
+                    path: 'forget_pwd',
+                    name: 'forget_pwd',
+                    component: () => import("@/pages/user/password")
+                },
+                {
+                    path: 'find_login',
+                    name: 'find_login',
+                    component: () => import("@/pages/account/find_login")
+                }
+            ]
         },
         {
             path: '/user/:id',

@@ -1,7 +1,7 @@
 <template>
-  <div class="password">
+  <div class="find-login">
     <div class="form-box">
-      <h2 class="title">找回密码</h2>
+      <h2 class="title">找回账号</h2>
       <div class="form-controls">
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
         <b-row>
@@ -21,21 +21,12 @@
 </template>
 <script>
 export default {
-  name: "password",
-  data() {
-    return {
-      // company: null,
-      mobile: null,
-      code: null,
-      password: null,
-      password_confirm: null
-    };
-  }
+  name: "find-login"
 };
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
-.password {
+.find-login {
   .form-box {
     background: #fff;
     width: 360px;

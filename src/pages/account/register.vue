@@ -1,8 +1,10 @@
 <template>
-  <div class="password">
+  <div class="register">
     <div class="form-box">
-      <h2 class="title">找回密码</h2>
+      <h2 class="title">供方注册</h2>
       <div class="form-controls">
+        <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input>
+        <b-form-input v-model="loginname" type="text" placeholder="登录名"></b-form-input>
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
         <b-row>
           <b-col cols="8">
@@ -12,19 +14,20 @@
             <span class="get-code">获取验证码</span>
           </b-col>
         </b-row>
-        <b-form-input v-model="password" type="password" placeholder="输入新密码"></b-form-input>
-        <b-form-input v-model="password_confirm" type="password" placeholder="确认新密码"></b-form-input>
-        <span class="reg-btn">保&emsp;存</span>
+        <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
+        <b-form-input v-model="password_confirm" type="password" placeholder="输入确认密码"></b-form-input>
+        <span class="reg-btn">注&emsp;册</span>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "password",
+  name: "register",
   data() {
     return {
-      // company: null,
+      loginname: null,
+      company: null,
       mobile: null,
       code: null,
       password: null,
@@ -35,7 +38,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
-.password {
+.register {
   .form-box {
     background: #fff;
     width: 360px;
@@ -80,4 +83,5 @@ $theme-color: #e46623;
   }
 }
 </style>
+
 

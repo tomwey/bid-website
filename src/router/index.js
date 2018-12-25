@@ -127,6 +127,16 @@ export default new Router({
                     name: 'user_login_log',
                     component: () => import('@/pages/user/login-log'),
                 },
+                {
+                    path: 'other_info',
+                    name: 'user_other_info',
+                    component: () => import('@/pages/user/other-info'),
+                },
+                {
+                    path: 'other_attachments',
+                    name: 'user_other_attachments',
+                    component: () => import('@/pages/user/other-attachments'),
+                },
             ]
         }
     ]

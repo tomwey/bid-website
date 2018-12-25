@@ -57,15 +57,15 @@ export default {
           ]
         },
         {
-          name: "用户资料",
+          name: "供应商资料",
           icon: "list-alt",
           menu_items: [
             {
-              name: "公司信息",
+              name: "基本信息",
               route: "user_company"
             },
             {
-              name: "人员信息",
+              name: "联系方式",
               route: "user_man"
             },
             {
@@ -73,12 +73,20 @@ export default {
               route: "user_area"
             },
             {
-              name: "服务类型",
+              name: "服务类别",
               route: "user_service_type"
             },
             {
               name: "公司业绩",
               route: "user_company_achievement"
+            },
+            {
+              name: "其他信息",
+              route: "user_other_info"
+            },
+            {
+              name: "其他附件",
+              route: "user_other_attachments"
             }
           ]
         },

@@ -26,7 +26,7 @@
       </b-carousel>
 
       <div class="login-box">
-        <h2 class="title">供应商登录</h2>
+        <h2 class="title">供方登录</h2>
         <div class="form-wrap">
           <b-form-input v-model="loginname" type="text" placeholder="输入手机号"></b-form-input>
           <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
@@ -36,7 +36,7 @@
             </span>
             <span class="forget-password float-right">忘记密码？</span>
           </div>
-          <span class="login-btn">登&emsp;录</span>
+          <span class="login-btn" @click="login">登&emsp;录</span>
           <p class="reg-text">
             没有账号？
             <span class="reg-link" @click="register">立即注册</span>
@@ -136,6 +136,9 @@ export default {
     };
   },
   methods: {
+    login() {
+      this.$router.push({ name: "user_home", params: { id: 91029384 } });
+    },
     toggle() {
       this.keepLogin = !this.keepLogin;
     },

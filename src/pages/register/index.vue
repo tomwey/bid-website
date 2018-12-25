@@ -2,7 +2,7 @@
   <div class="register">
     <div class="register-wrap">
       <div class="form-box">
-        <h2 class="title">供应商注册</h2>
+        <h2 class="title">供方注册</h2>
         <div class="form-controls">
           <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input>
           <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>

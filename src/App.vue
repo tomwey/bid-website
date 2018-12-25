@@ -75,7 +75,7 @@ export default {
     this._updateSelectedLink(route.name);
   },
   watch: {
-    $route: function(to, from, params) {
+    $route: function(to) {
       this._updateSelectedLink(to.name);
     }
   },

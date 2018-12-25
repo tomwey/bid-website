@@ -34,3 +34,24 @@ html {
     padding-right: 15px;
     padding-left: 15px;
   }
+
+.box {
+  background: #fff;
+  font-size: 14px;
+  // padding: 15px;
+  margin-bottom: 20px;
+  h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    // text-align: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.empty-error-box {
+  padding: 60px;
+  text-align: center;
+  color: #999;
+}

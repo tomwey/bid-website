@@ -29,6 +29,8 @@
             :options="item.options"
           ></b-form-checkbox-group>
           <b-form-file
+            :ref="`${item.id.replace(/-/g, '')}`"
+            :id="item.id"
             v-if="item.type === 4"
             v-model="item.value"
             :multiple="item.multiple"
@@ -40,8 +42,10 @@
       <tr v-if="!readonly">
         <td class="label"></td>
         <td class="input-control">
+          <span class="custom-btn" @click="prev" v-if="hasPrevStep">上一步</span>
           <span class="custom-btn outline" @click="reset">重置</span>
-          <span class="custom-btn" @click="next">下一步</span>
+          <span class="custom-btn" @click="next" v-if="hasNextStep">下一步</span>
+          <span class="custom-btn" @click="save" v-if="!hasNextStep">保存</span>
         </td>
       </tr>
     </table>
@@ -52,14 +56,30 @@ export default {
   name: "base-fields",
   props: {
     readonly: Boolean,
+    hasPrevStep: Boolean,
+    hasNextStep: Boolean,
     formData: Array
   },
   methods: {
     reset() {
+      this.formData.forEach(item => {
+        if (item.type === 4) {
+          const ref = item.id.replace(/-/g, "");
+          const fileInput = this.$refs[ref][0];
+          fileInput && fileInput.reset();
+        }
+      });
+
       this.$emit("reset");
     },
     next() {
       this.$emit("savenext");
+    },
+    prev() {
+      this.$emit("backprev");
+    },
+    save() {
+      this.$emit("save");
     }
   }
 };
@@ -110,7 +130,7 @@ $theme-color: #e46623;
 
   .custom-btn {
     display: inline-block;
-    width: 160px;
+    width: 120px;
     height: 40px;
     line-height: 40px;
     font-size: 14px;

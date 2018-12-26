@@ -19,8 +19,29 @@
           v-if="currentStep === 1"
           v-on:reset="resetBaseForm"
           v-on:savenext="saveBaseForm"
-          :readonly="false"
+          :has-prev-step="false"
+          :has-next-step="true"
           :form-data="baseFormData"
+        />
+        <base-fields
+          v-if="currentStep === 6"
+          v-on:reset="resetOtherInfoForm"
+          v-on:savenext="saveOtherInfoForm"
+          v-on:backprev="backPrev"
+          :readonly="false"
+          :has-prev-step="true"
+          :has-next-step="true"
+          :form-data="otherInfoFormData"
+        />
+        <base-fields
+          v-if="currentStep === 7"
+          v-on:reset="resetOtherFilesForm"
+          v-on:save="commit"
+          v-on:backprev="backPrev"
+          :readonly="false"
+          :has-prev-step="true"
+          :has-next-step="false"
+          :form-data="otherFilesFormData"
         />
       </div>
     </div>
@@ -37,6 +58,47 @@ export default {
   data() {
     return {
       currentStep: 1,
+      otherInfoFormData: [
+        {
+          id: "child-company-name",
+          type: 1,
+          subtype: "text",
+          label: "分公司信息",
+          placeholder: ""
+          //   required: true
+        },
+        {
+          id: "relate-company-name",
+          type: 1,
+          subtype: "text",
+          label: "关联公司信息",
+          placeholder: ""
+          //   required: true
+        }
+      ],
+      otherFilesFormData: [
+        {
+          id: "finance-approve-file",
+          type: 4,
+          //   subtype: "file",
+          label: "近三年财务审计报告(附件)",
+          placeholder: ""
+        },
+        {
+          id: "auth-license-file",
+          type: 4,
+          //   subtype: "file",
+          label: "认证或荣誉证书(附件)",
+          placeholder: ""
+        },
+        {
+          id: "beian-file",
+          type: 4,
+          //   subtype: "file",
+          label: "外地备案证(附件)",
+          placeholder: ""
+        }
+      ],
       baseFormData: [
         {
           id: "company-name",
@@ -254,11 +316,38 @@ export default {
     resetBaseForm() {
       this.baseFormData.forEach(item => {
         item.value = null;
+        if (item.type === 4) {
+          const fileInput = this.$refs[item.id.replace("-", "")];
+          fileInput && fileInput.reset();
+        }
       });
     },
     saveBaseForm() {
-      console.log(this.baseFormData);
+      //   console.log(this.baseFormData);
       this.currentStep++;
+    },
+    resetOtherInfoForm() {
+      this.otherInfoFormData.forEach(item => {
+        item.value = null;
+      });
+    },
+    saveOtherInfoForm() {
+      //   console.log(this.baseFormData);
+      this.currentStep++;
+    },
+    resetOtherFilesForm() {
+      this.otherFilesFormData.forEach(item => {
+        item.value = null;
+      });
+    },
+    backPrev() {
+      this.currentStep--;
+    },
+    commit() {
+      console.info(this.baseFormData);
+      console.info(this.otherInfoFormData);
+      console.info(this.otherFilesFormData);
+      //   console.log("save");
     }
   }
 };

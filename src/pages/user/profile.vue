@@ -31,8 +31,18 @@
             :form-data="otherFilesFormData"
             :ref="`step${currentStep.step}`"
           />
+          <comm-fields
+            v-if="currentStep.step === 3"
+            :form-data="areaFormData"
+            :ref="`step${currentStep.step}`"
+          />
         </div>
         <man-list v-if="currentStep.step === 2" :items="manData" :fields="manFields"/>
+        <service-type
+          v-if="currentStep.step === 4"
+          :items="serviceTypeData"
+          :fields="serviceTypeFields"
+        />
       </div>
       <div class="buttons">
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
@@ -52,11 +62,52 @@ export default {
     },
     manList: function(resolve) {
       require(["@/components/profile/man-list"], resolve);
+    },
+    serviceType: function(resolve) {
+      require(["@/components/profile/service-type"], resolve);
     }
   },
   data() {
     return {
       currentStep: null,
+      serviceTypeData: [
+        {
+          typename: "类别1",
+          ismaintype: "是",
+          name: "测试名字",
+          zz_level: "其他",
+          zz_approve_date: "2018-12-21",
+          memo: ""
+        },
+        {
+          typename: "类别1",
+          ismaintype: "是",
+          name: "测试名字",
+          zz_level: "其他",
+          zz_approve_date: "2018-12-21",
+          memo: ""
+        }
+      ],
+      serviceTypeFields: {
+        typename: {
+          label: "对口服务类别"
+        },
+        ismaintype: {
+          label: "是否主要类别"
+        },
+        name: {
+          label: "资质名称"
+        },
+        zz_level: {
+          label: "资质级别"
+        },
+        zz_approve_date: {
+          label: "资质审核到期日期"
+        },
+        memo: {
+          label: "其他说明"
+        }
+      },
       manData: [
         {
           typename: "普通联系人",
@@ -110,6 +161,44 @@ export default {
           label: "授权委托（附件）"
         }
       },
+      areaFormData: [
+        {
+          id: "service-area",
+          type: 3,
+          label: "服务区域",
+          placeholder: "",
+          options: [
+            {
+              value: "成都",
+              text: "成都"
+            },
+            {
+              value: "西安",
+              text: "西安"
+            },
+            {
+              value: "长沙",
+              text: "长沙"
+            },
+            {
+              value: "宁波",
+              text: "宁波"
+            },
+            {
+              value: "深圳",
+              text: "深圳"
+            }
+          ],
+          changeFunc: this.areaChange
+          //   required: true
+        },
+        {
+          id: "main-service-area",
+          type: 3,
+          label: "主要服务区域",
+          options: []
+        }
+      ],
       otherInfoFormData: [
         {
           id: "child-company-name",
@@ -374,6 +463,12 @@ export default {
   methods: {
     selectStep(step) {
       this.currentStep = step;
+    },
+    areaChange(vals) {
+      console.log(vals);
+      //   console.log(index);
+      const area = this.areaFormData[1];
+      area.options = vals;
     },
     prevClick() {
       //   this.currentStep--;

@@ -3,7 +3,7 @@
     <table class="table" :class="{readonly:readonly===true}">
       <tr v-for="(item,index) in formData" :key="index">
         <td class="label">
-          <label :for="item.id">
+          <label :for="item.id" v-if="item.type !== 5">
             <span class="required" v-if="!readonly && item.required">*</span>
             {{item.label}}
           </label>
@@ -39,6 +39,7 @@
             accept="image/jpeg, image/png, image/gif"
             :placeholder="item.placeholder || `选择文件`"
           ></b-form-file>
+          <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">{{item.label}}</b-form-checkbox>
         </td>
       </tr>
     </table>

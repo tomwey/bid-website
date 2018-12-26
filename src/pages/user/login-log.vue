@@ -1,5 +1,5 @@
 <template>
-  <div class="login-logs">登录日志</div>
+  <div class="login-logs">即将上线...</div>
 </template>
 <script>
 export default {

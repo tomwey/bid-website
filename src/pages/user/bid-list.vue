@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-list">招标文件</div>
+  <div class="bid-list">即将上线...</div>
 </template>
 <script>
 export default {

@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-result">中标结果</div>
+  <div class="bid-result">即将上线...</div>
 </template>
 <script>
 export default {

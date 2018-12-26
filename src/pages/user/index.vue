@@ -145,6 +145,7 @@ $theme-color: #e46623;
   .sidebar {
     flex: 0 0 150px;
     width: 150px;
+    height: 668px;
     background: #fff;
     margin-right: 20px;
     // padding: 20px;

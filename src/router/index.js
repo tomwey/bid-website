@@ -137,6 +137,11 @@ export default new Router({
                     name: 'user_other_attachments',
                     component: () => import('@/pages/user/other-attachments'),
                 },
+                {
+                    path: 'profile',
+                    name: 'profile',
+                    component: () => import('@/pages/user/profile')
+                }
             ]
         }
     ]

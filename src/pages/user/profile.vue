@@ -5,7 +5,7 @@
       <div class="steps">
         <div
           class="step"
-          :class="{active:currentStep === step.step}"
+          :class="{active:currentStep.step === step.step}"
           @click="selectStep(step)"
           v-for="(step,index) in steps"
           :key="index"
@@ -15,34 +15,30 @@
         </div>
       </div>
       <div class="form-wrap">
-        <base-fields
-          v-if="currentStep === 1"
-          v-on:reset="resetBaseForm"
-          v-on:savenext="saveBaseForm"
-          :has-prev-step="false"
-          :has-next-step="true"
-          :form-data="baseFormData"
-        />
-        <base-fields
-          v-if="currentStep === 6"
-          v-on:reset="resetOtherInfoForm"
-          v-on:savenext="saveOtherInfoForm"
-          v-on:backprev="backPrev"
-          :readonly="false"
-          :has-prev-step="true"
-          :has-next-step="true"
-          :form-data="otherInfoFormData"
-        />
-        <base-fields
-          v-if="currentStep === 7"
-          v-on:reset="resetOtherFilesForm"
-          v-on:save="commit"
-          v-on:backprev="backPrev"
-          :readonly="false"
-          :has-prev-step="true"
-          :has-next-step="false"
-          :form-data="otherFilesFormData"
-        />
+        <div class="form-fields">
+          <comm-fields
+            v-if="currentStep.step === 1"
+            :form-data="baseFormData"
+            :ref="`step${currentStep.step}`"
+          />
+          <comm-fields
+            v-if="currentStep.step === 6"
+            :form-data="otherInfoFormData"
+            :ref="`step${currentStep.step}`"
+          />
+          <comm-fields
+            v-if="currentStep.step === 7"
+            :form-data="otherFilesFormData"
+            :ref="`step${currentStep.step}`"
+          />
+        </div>
+        <man-list v-if="currentStep.step === 2" :items="manData" :fields="manFields"/>
+      </div>
+      <div class="buttons">
+        <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
+        <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span>
+        <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span>
+        <span class="custom-btn" @click="commit" v-if="currentStep.step === steps.length">保存</span>
       </div>
     </div>
   </div>
@@ -51,13 +47,69 @@
 export default {
   name: "profile",
   components: {
-    baseFields: function(resolve) {
-      require(["@/components/profile/base-fields"], resolve);
+    commFields: function(resolve) {
+      require(["@/components/profile/comm-fields"], resolve);
+    },
+    manList: function(resolve) {
+      require(["@/components/profile/man-list"], resolve);
     }
   },
   data() {
     return {
-      currentStep: 1,
+      currentStep: null,
+      manData: [
+        {
+          typename: "普通联系人",
+          job: "公司总经理",
+          name: "张三",
+          phone: "028-81234567",
+          mobile: "13012345678",
+          email: "",
+          idcard: "",
+          shebao: "",
+          entrust: ""
+        },
+        {
+          typename: "第一联系人",
+          job: "公司总经理",
+          name: "张三",
+          phone: "028-81234567",
+          mobile: "13012345678",
+          email: "",
+          idcard: "",
+          shebao: "",
+          entrust: ""
+        }
+      ],
+      manFields: {
+        typename: {
+          label: "联系人类型"
+        },
+        job: {
+          label: "联系人职位"
+        },
+        name: {
+          label: "联系人姓名"
+        },
+        phone: {
+          label: "联系人电话"
+        },
+        mobile: {
+          label: "联系人手机"
+        },
+        email: {
+          label: "电子邮件"
+        },
+        idcard: {
+          label: "身份证号码"
+        },
+        shebao: {
+          label: "联系人社保证明"
+        },
+        entrust: {
+          label: "授权委托（附件）"
+        }
+      },
       otherInfoFormData: [
         {
           id: "child-company-name",
@@ -280,73 +332,71 @@ export default {
       steps: [
         {
           name: "基本信息",
-          step: 1
+          step: 1,
+          needReset: true
         },
         {
           name: "联系方式",
-          step: 2
+          step: 2,
+          needReset: false
         },
         {
           name: "服务区域",
-          step: 3
+          step: 3,
+          needReset: false
         },
         {
           name: "服务类别",
-          step: 4
+          step: 4,
+          needReset: false
         },
         {
           name: "公司业绩",
-          step: 5
+          step: 5,
+          needReset: false
         },
         {
           name: "其他信息",
-          step: 6
+          step: 6,
+          needReset: true
         },
         {
           name: "其他附件",
-          step: 7
+          step: 7,
+          needReset: true
         }
       ]
     };
   },
+  created() {
+    this.currentStep = this.steps[0];
+  },
   methods: {
     selectStep(step) {
-      this.currentStep = step.step;
+      this.currentStep = step;
     },
-    resetBaseForm() {
-      this.baseFormData.forEach(item => {
-        item.value = null;
-        if (item.type === 4) {
-          const fileInput = this.$refs[item.id.replace("-", "")];
-          fileInput && fileInput.reset();
-        }
-      });
+    prevClick() {
+      //   this.currentStep--;
+      const step = this.currentStep.step - 1;
+      if (step > 0) {
+        this.currentStep = this.steps[step - 1];
+      }
     },
-    saveBaseForm() {
-      //   console.log(this.baseFormData);
-      this.currentStep++;
+    nextClick() {
+      //   this.currentStep--;
+      const stepIndex = this.currentStep.step - 1;
+      if (stepIndex < this.steps.length - 1) {
+        this.currentStep = this.steps[stepIndex + 1];
+      }
     },
-    resetOtherInfoForm() {
-      this.otherInfoFormData.forEach(item => {
-        item.value = null;
-      });
-    },
-    saveOtherInfoForm() {
-      //   console.log(this.baseFormData);
-      this.currentStep++;
-    },
-    resetOtherFilesForm() {
-      this.otherFilesFormData.forEach(item => {
-        item.value = null;
-      });
-    },
-    backPrev() {
-      this.currentStep--;
+    resetClick() {
+      const form = this.$refs[`step${this.currentStep.step}`];
+      form && form.reset();
     },
     commit() {
-      console.info(this.baseFormData);
-      console.info(this.otherInfoFormData);
-      console.info(this.otherFilesFormData);
+      //   console.info(this.baseFormData);
+      //   console.info(this.otherInfoFormData);
+      //   console.info(this.otherFilesFormData);
       //   console.log("save");
     }
   }
@@ -400,6 +450,32 @@ $theme-color: #e46623;
         color: #fff;
 
         background: #cbcbcb;
+      }
+    }
+  }
+
+  .form-fields {
+    padding: 20px 60px;
+  }
+
+  .buttons {
+    padding: 30px;
+    text-align: center;
+    .custom-btn {
+      display: inline-block;
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      background: $theme-color;
+      color: #fff;
+      margin: 0 10px;
+      cursor: pointer;
+      box-sizing: content-box;
+      user-select: none;
+      &.outline {
+        border: 1px solid $theme-color;
+        color: $theme-color;
+        background: #fff;
       }
     }
   }

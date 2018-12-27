@@ -2,7 +2,7 @@
   <div id="body-wrap">
     <b-navbar toggleable="md" type="light" variant="white" fixed="top">
       <div class="container">
-        <b-navbar-brand href="#">
+        <b-navbar-brand @click="gotoHome">
           <img src="./assets/images/logo.png" class="logo">
         </b-navbar-brand>
         <b-navbar-nav class="ml-auto">
@@ -80,6 +80,9 @@ export default {
     }
   },
   methods: {
+    gotoHome() {
+      this.$router.push({ name: "home" });
+    },
     selectLink(index) {
       // this.selectedIndex = index;
       this.$router.push({ name: this.links[index].route });
@@ -109,6 +112,10 @@ $theme-color: #e46623;
 }
 
 #body-wrap {
+  .navbar-brand {
+    cursor: pointer;
+    user-select: none;
+  }
   .nav-item {
     margin-right: 15px;
     position: relative;

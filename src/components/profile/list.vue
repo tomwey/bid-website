@@ -51,7 +51,7 @@ export default {
     width: calc(100% - 180px);
     color: #333;
     img {
-      max-width: 100%;
+      max-width: 200px;
       height: auto;
       margin: 0;
     }

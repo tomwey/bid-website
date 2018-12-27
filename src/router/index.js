@@ -54,7 +54,7 @@ export default new Router({
                 {
                     path: 'forget_pwd',
                     name: 'forget_pwd',
-                    component: () => import("@/pages/user/password")
+                    component: () => import("@/pages/account/forget-password")
                 },
                 {
                     path: 'find_login',

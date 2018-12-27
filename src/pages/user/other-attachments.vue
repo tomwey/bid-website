@@ -42,6 +42,12 @@ export default {
         type: 4
       }
     ];
+  },
+  methods: {
+    edit() {
+      // console.log("ddddddd");
+      this.$router.push({ name: "profile", query: { s: 7 } });
+    }
   }
 };
 </script>

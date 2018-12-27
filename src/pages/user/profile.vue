@@ -59,6 +59,8 @@
   </div>
 </template>
 <script>
+import merge from "webpack-merge";
+
 export default {
   name: "profile",
   components: {
@@ -490,7 +492,7 @@ export default {
         {
           name: "服务区域",
           step: 3,
-          needReset: false
+          needReset: true
         },
         {
           name: "服务类别",
@@ -516,7 +518,35 @@ export default {
     };
   },
   created() {
-    this.currentStep = this.steps[0];
+    console.log(1221);
+    const route = this.$router.currentRoute;
+    console.log(route);
+
+    let stepIndex = 1;
+    if (route && route.query.s) {
+      stepIndex = parseInt(route.query.s);
+      if (isNaN(stepIndex)) {
+        stepIndex = 1;
+      } else {
+        if (stepIndex < 1 || stepIndex > 7) {
+          stepIndex = 1;
+        }
+      }
+    }
+
+    this.currentStep = this.steps[stepIndex - 1];
+  },
+  watch: {
+    currentStep: function(newVal) {
+      // console.info(oldVal, newVal);
+      // console.log(this.$route);
+      let query = this.$route.query;
+      if (query && query.s) {
+        this.$router.push({
+          query: merge(this.$route.query, { s: newVal.step })
+        });
+      }
+    }
   },
   methods: {
     selectStep(step) {
@@ -545,6 +575,9 @@ export default {
     resetClick() {
       const form = this.$refs[`step${this.currentStep.step}`];
       form && form.reset();
+      // if (this.currentStep.step === 3) {
+      //   this.areaFormData[1].options = [];
+      // }
     },
     commit() {
       //   console.info(this.baseFormData);

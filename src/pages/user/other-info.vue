@@ -38,6 +38,12 @@ export default {
         type: 1
       }
     ];
+  },
+  methods: {
+    edit() {
+      // console.log("ddddddd");
+      this.$router.push({ name: "profile", query: { s: 6 } });
+    }
   }
 };
 </script>

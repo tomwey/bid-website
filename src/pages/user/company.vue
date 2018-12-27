@@ -121,7 +121,8 @@ export default {
   },
   methods: {
     edit() {
-      console.log("ddddddd");
+      // console.log("ddddddd");
+      this.$router.push({ name: "profile", query: { s: 1 } });
     }
   }
 };

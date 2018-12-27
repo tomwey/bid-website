@@ -131,6 +131,11 @@ export default {
         }
       });
     });
+    const route = this.$router.currentRoute;
+    if (route.name === "user_home") {
+      this.currentMenu = this.menus[0];
+    }
+    // console.log(this.$router.currentRoute);
   },
   methods: {
     selectTopMenu(menu) {

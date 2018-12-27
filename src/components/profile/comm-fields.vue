@@ -30,6 +30,13 @@
             :options="item.options"
             @change="item.changeFunc"
           ></b-form-checkbox-group>
+
+          <b-form-radio-group
+            v-if="item.type === 6"
+            :id="item.id"
+            v-model="item.value"
+            :options="item.options"
+          ></b-form-radio-group>
           <b-form-file
             :ref="`${item.id.replace(/-/g, '')}`"
             :id="item.id"

@@ -29,9 +29,9 @@
         <h2 class="title">供方登录</h2>
         <div class="form-wrap">
           <b-form-input v-model="loginname" type="text" placeholder="输入手机号"></b-form-input>
-          <div class="login-state-wrap clearfix">
+          <!-- <div class="login-state-wrap clearfix">
             <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
-          </div>
+          </div>-->
           <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
           <div class="login-state-wrap clearfix">
             <span class="login-keep" @click="toggle">
@@ -40,10 +40,18 @@
             <span class="forget-password float-right" @click="forgetPass">忘记密码？</span>
           </div>
           <span class="login-btn" @click="login">登&emsp;录</span>
-          <p class="reg-text">
+          <!-- <p class="reg-text">
             没有账号？
             <span class="reg-link" @click="register">立即注册</span>
-          </p>
+          </p>-->
+          <b-row>
+            <b-col cols="6">
+              <span class="find-login-link" @click="forgetLogin">找回账号？</span>
+            </b-col>
+            <b-col cols="6" style="text-align:right;">
+              <span class="reg-link" @click="register">立即注册</span>
+            </b-col>
+          </b-row>
         </div>
       </div>
     </div>
@@ -170,7 +178,7 @@ $theme-color: #e46623;
     position: absolute;
     z-index: 100;
     width: 280px;
-    height: 350px;
+    height: 340px;
     background: rgba(255, 255, 255, 0.95);
     top: 80px;
     right: 10%;
@@ -201,6 +209,7 @@ $theme-color: #e46623;
           line-height: 20px;
           vertical-align: middle;
           cursor: pointer;
+          user-select: none;
           .fa-icon {
             vertical-align: -3px;
             // color: #fff;
@@ -214,6 +223,7 @@ $theme-color: #e46623;
           cursor: pointer;
           vertical-align: middle;
           line-height: 20px;
+          user-select: none;
         }
       }
 
@@ -228,17 +238,27 @@ $theme-color: #e46623;
         text-align: center;
         margin: 20px 0 10px;
         cursor: pointer;
+        user-select: none;
       }
 
-      .reg-text {
+      // .reg-text {
+      //   font-size: 16px;
+      //   text-align: center;
+      // margin-top: 10px;
+      .find-login-link {
         font-size: 16px;
-        text-align: center;
-        // margin-top: 10px;
-        .reg-link {
-          color: $theme-color;
-          cursor: pointer;
-        }
+        color: #333;
+        text-decoration: underline;
+        cursor: pointer;
+        user-select: none;
       }
+      .reg-link {
+        font-size: 16px;
+        color: $theme-color;
+        cursor: pointer;
+        user-select: none;
+      }
+      // }
     }
   }
 }

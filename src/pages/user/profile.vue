@@ -194,7 +194,7 @@ export default {
         },
         {
           id: "main-service-area",
-          type: 3,
+          type: 6,
           label: "主要服务区域",
           options: []
         }
@@ -518,6 +518,7 @@ $theme-color: #e46623;
       font-weight: 500;
       color: #999;
       cursor: pointer;
+      user-select: none;
       &.active {
         color: #333;
         position: relative;

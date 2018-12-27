@@ -518,9 +518,9 @@ export default {
     };
   },
   created() {
-    console.log(1221);
+    // console.log(1221);
     const route = this.$router.currentRoute;
-    console.log(route);
+    // console.log(route);
 
     let stepIndex = 1;
     if (route && route.query.s) {
@@ -553,7 +553,7 @@ export default {
       this.currentStep = step;
     },
     areaChange(vals) {
-      console.log(vals);
+      // console.log(vals);
       //   console.log(index);
       const area = this.areaFormData[1];
       area.options = vals;

@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-  name: "area",
+  name: "service-area",
   components: {
     list: function(resolve) {
       require(["@/components/profile/list"], resolve);

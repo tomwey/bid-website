@@ -9,7 +9,7 @@
         <b-button v-b-modal.contactModal>新增联系方式</b-button>
       </b-col>
     </b-row>
-    <b-table striped hover responsive :items="items" :fields="fields"></b-table>
+    <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table>
 
     <div class="empty-error-box" v-if="items.length === 0">暂无联系方式</div>
     <!-- <div class="new-btn-wrap">

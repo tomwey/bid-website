@@ -43,6 +43,11 @@
           :items="serviceTypeData"
           :fields="serviceTypeFields"
         />
+        <company-achieve
+          v-if="currentStep.step === 5"
+          :items="achieveData"
+          :fields="achieveFields"
+        />
       </div>
       <div class="buttons">
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
@@ -65,11 +70,64 @@ export default {
     },
     serviceType: function(resolve) {
       require(["@/components/profile/service-type"], resolve);
+    },
+    companyAchieve: function(resolve) {
+      require(["@/components/profile/company-achieve"], resolve);
     }
   },
   data() {
     return {
       currentStep: null,
+      achieveData: [
+        {
+          city: "成都",
+          projname: "枫丹铂麓一期",
+          partnercompany: "成都建工集团",
+          isgoodcompany: "是",
+          projmanager: "张三",
+          contractmoney: 300000,
+          contractscale: "",
+          startdate: "2018-10-10",
+          enddate: "2018-12-30",
+          memo: "测试",
+          contractfile: null
+        }
+      ],
+      achieveFields: {
+        city: {
+          label: "城市"
+        },
+        projname: {
+          label: "项目名称"
+        },
+        partnercompany: {
+          label: "合作单位名称"
+        },
+        isgoodcompany: {
+          label: "是否标杆企业"
+        },
+        projmanager: {
+          label: "项目经理"
+        },
+        contractmoney: {
+          label: "合同金额"
+        },
+        contractscale: {
+          label: "合同规模"
+        },
+        startdate: {
+          label: "开始日期"
+        },
+        enddate: {
+          label: "结束日期"
+        },
+        memo: {
+          label: "其他说明"
+        },
+        contractfile: {
+          label: "合同附件"
+        }
+      },
       serviceTypeData: [
         {
           typename: "类别1",

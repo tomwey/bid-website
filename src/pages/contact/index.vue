@@ -1,5 +1,5 @@
 <template>
-  <div class="home-main-wrap">联系我们</div>
+  <div class="home-main-wrap container">即将上线...</div>
 </template>
 <script>
 export default {

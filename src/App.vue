@@ -156,6 +156,7 @@ $theme-color: #e46623;
 <style lang="scss" scoped>
 .logo {
   max-height: 32px;
+  // width: 51px;
 }
 </style>
 

@@ -3,7 +3,10 @@
     <div class="dashboard">
       <div class="sidebar">
         <dl class="menu" v-for="(menu,index) in menus" :key="index">
-          <dt>
+          <dt
+            :class="{tappable:(!menu.menu_items ||menu.menu_items.length === 0), active:currentMenu == menu}"
+            @click="selectTopMenu(menu)"
+          >
             <v-icon :name="menu.icon"/>
             {{menu.name}}
           </dt>
@@ -31,7 +34,14 @@ export default {
   data() {
     return {
       currentMenuItem: null,
+      currentMenu: null,
       menus: [
+        {
+          name: "控制面板",
+          icon: "home",
+          route: "user_home",
+          menu_items: []
+        },
         {
           name: "消息中心",
           icon: "envelope",
@@ -123,8 +133,22 @@ export default {
     });
   },
   methods: {
+    selectTopMenu(menu) {
+      if (!menu) return;
+      if (menu.menu_items && menu.menu_items.length > 0) return;
+      // console.log(menu);
+      this.currentMenuItem = null;
+      this.currentMenu = menu;
+
+      if (menu.route === "user_home") {
+        this.$router.push({ name: menu.route, params: { id: 91039283 } });
+      } else {
+        this.$router.push({ name: menu.route });
+      }
+    },
     selectMenu(item) {
       this.currentMenuItem = item;
+      this.currentMenu = null;
 
       this.$router.push({
         name: item.route
@@ -145,7 +169,8 @@ $theme-color: #e46623;
   .sidebar {
     flex: 0 0 150px;
     width: 150px;
-    height: 668px;
+    // height: 688px;
+    max-height: 780px;
     background: #fff;
     margin-right: 20px;
     // padding: 20px;
@@ -166,6 +191,9 @@ $theme-color: #e46623;
         &.active {
           color: $theme-color;
           position: relative;
+          .fa-icon {
+            color: $theme-color;
+          }
           &::before {
             content: "";
             display: block;
@@ -187,12 +215,18 @@ $theme-color: #e46623;
           vertical-align: -2px;
           margin-right: 5px;
         }
+
+        &.tappable {
+          cursor: pointer;
+          user-select: none;
+        }
       }
       dd {
         font-size: 14px;
         color: #333;
         cursor: pointer;
         padding: 2px 25px;
+        user-select: none;
       }
     }
 
@@ -209,6 +243,7 @@ $theme-color: #e46623;
         height: 40px;
         line-height: 40px;
         cursor: pointer;
+        user-select: none;
       }
     }
   }

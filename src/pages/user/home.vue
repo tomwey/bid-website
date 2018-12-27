@@ -14,6 +14,9 @@
             </p>
             <b-badge>待审核</b-badge>
           </div>
+          <div class="edit-wrap">
+            <b-button @click="editProfile">供方资料修改</b-button>
+          </div>
         </div>
       </div>
       <div class="stat-info">
@@ -82,6 +85,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    editProfile() {
+      this.$router.push({ name: "profile" });
+    }
   }
 };
 </script>
@@ -100,6 +108,12 @@ export default {
       img {
         max-width: 80px;
       }
+    }
+    .edit-wrap {
+      flex: 0 0 120px;
+      width: 120px;
+      text-align: right;
+      padding-top: 20px;
     }
     .content-wrap {
       flex: 1;

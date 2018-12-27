@@ -222,6 +222,8 @@ $theme-color: #e46623;
         font-size: 14px;
         text-align: center;
         color: #fff;
+        cursor: pointer;
+        user-select: none;
       }
 
       // .form-control {

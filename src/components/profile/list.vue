@@ -2,11 +2,12 @@
   <div class="list-wrap">
     <table class="table">
       <tr v-for="(item,index) in items" :key="index">
-        <td class="label">{{item.label}}</td>
-        <td class="value">
+        <td class="td-label">{{item.label}}</td>
+        <td class="td-value">
           <span v-if="item.type === 1">{{item.value}}</span>
           <img v-if="item.type === 2" :src="item.value">
           <div v-if="item.type === 3" v-html="item.value"></div>
+          <a :href="item.value" v-if="item.type === 4" class="file-link">附件</a>
         </td>
       </tr>
     </table>
@@ -23,6 +24,39 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  td {
+    border-top: 0;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    padding: 10px 10px 0 0;
+    font-size: 14px;
+    // border-top: 1px dashed #eee;
+  }
+
+  .file-link {
+    text-decoration: underline;
+    color: #e46623;
+  }
+
+  .td-label {
+    width: 180px !important;
+    color: #999;
+  }
+  .td-value {
+    width: calc(100% - 180px);
+    color: #333;
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 0;
+    }
+  }
+}
 </style>
 
 

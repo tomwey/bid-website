@@ -2,7 +2,7 @@
   <div class="man-list">
     <!-- <man-list :items="manData" :fields="manFields"/> -->
     <div class="box">
-      <h2>联系方式</h2>
+      <card-head title="联系方式" @edit="edit"/>
       <div class="man-wrap">
         <b-table striped hover responsive :items="manData" :fields="manFields"></b-table>
       </div>
@@ -13,8 +13,11 @@
 export default {
   name: "man-list",
   components: {
-    manList: function(resolve) {
-      require(["@/components/profile/man-list"], resolve);
+    // manList: function(resolve) {
+    //   require(["@/components/profile/man-list"], resolve);
+    // },
+    cardHead: function(resolve) {
+      require(["@/components/profile/card-head"], resolve);
     }
   },
   data() {
@@ -79,7 +82,7 @@ export default {
 <style lang="scss" scoped>
 .man-list {
   .man-wrap {
-    padding: 15px 20px;
+    // padding: 15px 0;
   }
 }
 </style>

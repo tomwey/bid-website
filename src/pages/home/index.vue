@@ -28,7 +28,7 @@
       <div class="login-box">
         <h2 class="title">供方登录</h2>
         <div class="form-wrap">
-          <b-form-input v-model="loginname" type="text" placeholder="输入手机号"></b-form-input>
+          <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
           <!-- <div class="login-state-wrap clearfix">
             <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
           </div>-->

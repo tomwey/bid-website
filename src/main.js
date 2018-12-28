@@ -7,6 +7,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@/assets/styles/main.scss';
 import 'vue-awesome/icons';
 
+import '@babel/polyfill';
+
 import Icon from 'vue-awesome/components/Icon';
 Vue.component('v-icon', Icon);
 

@@ -62,14 +62,15 @@ const router = new Router({
             ]
         },
         {
-            path: '/user/:id',
+            path: '/admin',
             component: () => import('@/pages/user/index'),
             children: [
                 {
                     path: '',
                     name: 'user_home',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/home'),
                 },
@@ -77,7 +78,8 @@ const router = new Router({
                     path: 'messages',
                     name: 'user_messages',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/message'),
                 },
@@ -85,7 +87,8 @@ const router = new Router({
                     path: 'bids',
                     name: 'user_bid',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/bid-list'),
                 },
@@ -93,7 +96,8 @@ const router = new Router({
                     path: 'bid_result',
                     name: 'user_bid_result',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/bid-result'),
                 },
@@ -101,7 +105,8 @@ const router = new Router({
                     path: 'company',
                     name: 'user_company',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/company'),
                 },
@@ -109,7 +114,8 @@ const router = new Router({
                     path: 'man',
                     name: 'user_man',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/man'),
                 },
@@ -117,7 +123,8 @@ const router = new Router({
                     path: 'area',
                     name: 'user_area',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/area'),
                 },
@@ -125,7 +132,8 @@ const router = new Router({
                     path: 'servicetype',
                     name: 'user_service_type',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/service-type'),
                 },
@@ -133,7 +141,8 @@ const router = new Router({
                     path: 'company_achievement',
                     name: 'user_company_achievement',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/company-achievement'),
                 },
@@ -141,7 +150,8 @@ const router = new Router({
                     path: 'accounts',
                     name: 'user_account',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/account'),
                 },
@@ -165,7 +175,8 @@ const router = new Router({
                     path: 'other_info',
                     name: 'user_other_info',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true,
                     },
                     component: () => import('@/pages/user/other-info'),
                 },
@@ -173,7 +184,8 @@ const router = new Router({
                     path: 'other_attachments',
                     name: 'user_other_attachments',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/other-attachments'),
                 },
@@ -194,7 +206,14 @@ router.beforeEach((to, from, next) => {
     // console.log(from);
     if (to.matched.some(r => r.meta.requireAuth)) {
         if (getToken()) {
-            next();
+            let userInfo = localStorage.getItem('userinfo');
+            if (to.meta.requireApprove && (!userInfo || !userInfo.supid)) {
+                next({
+                    path: '/admin/profile'
+                });
+            } else {
+                next();
+            }
         } else {
             next({
                 path: '/',
@@ -247,18 +266,18 @@ function _date1SmallerDate2(d1, d2) {
     return false;
 }
 
-function getCookie(name) {
-    let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    let arr = document.cookie.match(reg);
-    if (!arr) {
-        return null;
-    } else {
-        if (arr.length > 2) {
-            return arr[2];
-        } else {
-            return null;
-        }
-    }
-}
+// function getCookie(name) {
+//     let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+//     let arr = document.cookie.match(reg);
+//     if (!arr) {
+//         return null;
+//     } else {
+//         if (arr.length > 2) {
+//             return arr[2];
+//         } else {
+//             return null;
+//         }
+//     }
+// }
 
 export default router;

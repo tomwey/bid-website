@@ -75,9 +75,19 @@ export default {
           p5: "2"
         },
         res => {
-          // console.log(res);
           if (res.code == 0) {
-            console.log(res);
+            if (res.count == 1) {
+              let arr = res.data;
+              let item = arr[0];
+              this.$saveToken(item.token);
+              localStorage.setItem("userinfo", JSON.stringify(item));
+
+              this.$router.push({
+                name: "user_home"
+              });
+            } else {
+              alert("不正确的注册结果");
+            }
           } else {
             alert(res.codemsg);
           }

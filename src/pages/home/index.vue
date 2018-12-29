@@ -26,8 +26,9 @@
       </b-carousel>
 
       <div class="login-box">
-        <h2 class="title">供方登录</h2>
-        <div class="form-wrap">
+        <h2 class="title" v-if="!logined">供方登录</h2>
+
+        <div class="form-wrap" v-if="!logined">
           <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
           <!-- <div class="login-state-wrap clearfix">
             <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
@@ -52,6 +53,11 @@
               <span class="reg-link" @click="register">立即注册</span>
             </b-col>
           </b-row>
+        </div>
+
+        <div class="logined-box" v-if="logined">
+          <p>欢迎使用合能招投标系统</p>
+          <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
         </div>
       </div>
     </div>
@@ -126,6 +132,7 @@ export default {
       loginname: null,
       password: null,
       keepLogin: false,
+      logined: false,
       partners: [
         {
           name: "成都建工集团",
@@ -146,7 +153,9 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    this.logined = !!this.$getToken();
+  },
   methods: {
     login() {
       this.$post(
@@ -163,10 +172,10 @@ export default {
               let arr = res.data;
               let item = arr[0];
               this.$saveToken(item.token, this.keepLogin ? 7 : 1);
+              localStorage.setItem("userinfo", JSON.stringify(item));
 
               this.$router.push({
-                name: "user_home",
-                params: { id: 91029384 }
+                name: "user_home"
               });
             } else {
               alert("不正确的登录结果");
@@ -190,12 +199,33 @@ export default {
     },
     forgetPass() {
       this.$router.push({ name: "forget_pwd" });
+    },
+    gotoDashboard() {
+      this.$router.push({ name: "user_home" });
     }
   }
 };
 </script>
+<style lang="scss">
+.hn-btn {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  background: #e46623;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+</style>
 <style lang="scss" scoped>
 $theme-color: #e46623;
+
+.logined-box {
+  padding: 30px;
+}
 
 .hero-area {
   width: 100%;

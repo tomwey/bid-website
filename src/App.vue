@@ -73,6 +73,29 @@ export default {
     // console.info(123);
     const route = this.$router.currentRoute;
     this._updateSelectedLink(route.name);
+
+    // let payload = JSON.stringify({
+    //   action: "P_SUP_Login",
+    //   p1: "sup2",
+    //   p2: "123456",
+    //   p3: "''",
+    //   p4: "''"
+    // });
+
+    // let i = "123456";
+    // let ak = md5(payload + i + "HNSUP.2018._.123");
+    // this.$axios
+    //   .post("http://10.19.0.52:8181/api/gwc", {
+    //     payload: payload,
+    //     ak: ak,
+    //     i: i
+    //   })
+    //   .then(function(res) {
+    //     console.log(res);
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
   },
   watch: {
     $route: function(to) {

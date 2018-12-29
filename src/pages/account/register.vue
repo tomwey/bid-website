@@ -3,20 +3,20 @@
     <div class="form-box">
       <h2 class="title">供方注册</h2>
       <div class="form-controls">
-        <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input>
+        <!-- <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input> -->
         <b-form-input v-model="loginname" type="text" placeholder="登录名"></b-form-input>
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
-        <b-row>
-          <b-col cols="8">
+        <div class="code-control-wrap">
+          <div class="code-control">
             <b-form-input v-model="code" type="tel" placeholder="验证码"></b-form-input>
-          </b-col>
-          <b-col cols="4">
-            <span class="get-code">获取验证码</span>
-          </b-col>
-        </b-row>
+          </div>
+          <div class="get-code-btn">
+            <get-code :mobile="mobile" type="2"/>
+          </div>
+        </div>
         <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
         <b-form-input v-model="password_confirm" type="password" placeholder="输入确认密码"></b-form-input>
-        <span class="reg-btn">注&emsp;册</span>
+        <span class="reg-btn" @click="commit">注&emsp;册</span>
       </div>
     </div>
   </div>
@@ -24,15 +24,66 @@
 <script>
 export default {
   name: "register",
+  components: {
+    getCode: function(resolve) {
+      require(["@/components/get-code"], resolve);
+    }
+  },
   data() {
     return {
       loginname: null,
-      company: null,
+      // company: null,
       mobile: null,
       code: null,
       password: null,
       password_confirm: null
     };
+  },
+  methods: {
+    commit() {
+      if (!this.loginname) {
+        alert("登录名不能为空");
+        return;
+      }
+      if (!this.mobile) {
+        alert("手机号不能为空");
+        return;
+      }
+
+      if (!this.isPhone(this.mobile)) {
+        alert("不正确的手机号");
+        return;
+      }
+
+      if (!this.password || this.password.length < 6) {
+        alert("密码太短，至少为6位");
+        return;
+      }
+
+      if (this.password !== this.password_confirm) {
+        alert("两次密码输入不一致");
+        return;
+      }
+
+      this.$post(
+        {
+          action: "P_SUP_Register",
+          p1: this.loginname,
+          p2: this.mobile,
+          p3: this.GetPassword(this.password),
+          p4: this.code,
+          p5: "2"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            console.log(res);
+          } else {
+            alert(res.codemsg);
+          }
+        }
+      );
+    }
   }
 };
 </script>
@@ -51,6 +102,19 @@ $theme-color: #e46623;
       font-size: 20px;
       color: #333;
     }
+
+    .code-control-wrap {
+      display: flex;
+      .code-control {
+        flex: 1;
+      }
+
+      .get-code-btn {
+        flex: 0 0 98px;
+        width: 98px;
+        margin-left: 10px;
+      }
+    }
     .form-controls {
       padding: 20px;
 
@@ -58,6 +122,7 @@ $theme-color: #e46623;
         margin-bottom: 15px;
         border-radius: 0;
         border-color: #f2f2f2;
+        font-size: 14px;
       }
 
       .reg-btn {
@@ -68,16 +133,8 @@ $theme-color: #e46623;
         color: #fff;
         background: $theme-color;
         margin: 40px 0 20px;
-      }
-
-      .get-code {
-        background: $theme-color;
-        height: 36px;
-        line-height: 36px;
-        display: block;
-        font-size: 14px;
-        text-align: center;
-        color: #fff;
+        cursor: pointer;
+        user-select: none;
       }
     }
   }

@@ -148,7 +148,19 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push({ name: "user_home", params: { id: 91029384 } });
+      this.$post(
+        {
+          action: "P_SUP_Login",
+          p1: this.loginname,
+          p2: this.GetPassword(this.password),
+          p3: "0"
+        },
+        res => {
+          console.log(res);
+        }
+      );
+
+      // this.$router.push({ name: "user_home", params: { id: 91029384 } });
     },
     toggle() {
       this.keepLogin = !this.keepLogin;

@@ -5,7 +5,7 @@ import md5 from "js-md5";
 // Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
 
-Vue.prototype.$post = function (param, callback) {
+Vue.prototype.$post = (param, callback) => {
     let payload = JSON.stringify(param);
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
@@ -16,13 +16,21 @@ Vue.prototype.$post = function (param, callback) {
         payload: payload
     })
         .then(function (res) {
-            if (callback) {
-                callback(res, null);
+            if (res.status == 200 || res.status == 201) {
+                if (callback) {
+                    callback(res.data);
+                }
+            } else {
+                if (callback) {
+                    callback({ code: 500, codemsg: '服务器出错' });
+                }
             }
+
         })
         .catch(function (err) {
+            // console.log(err);
             if (callback) {
-                callback(null, err);
+                callback({ code: 500, codemsg: '服务器出错', error: err });
             }
         });
 }

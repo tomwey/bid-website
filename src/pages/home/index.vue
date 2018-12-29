@@ -146,6 +146,7 @@ export default {
       ]
     };
   },
+  mounted() {},
   methods: {
     login() {
       this.$post(
@@ -157,10 +158,26 @@ export default {
         },
         res => {
           console.log(res);
+          if (res.code == 0) {
+            if (res.count == 1) {
+              let arr = res.data;
+              let item = arr[0];
+              this.$saveToken(item.token, this.keepLogin ? 7 : 1);
+
+              this.$router.push({
+                name: "user_home",
+                params: { id: 91029384 }
+              });
+            } else {
+              alert("不正确的登录结果");
+            }
+          } else {
+            alert(res.codemsg);
+          }
         }
       );
 
-      // this.$router.push({ name: "user_home", params: { id: 91029384 } });
+      //
     },
     toggle() {
       this.keepLogin = !this.keepLogin;

@@ -171,12 +171,16 @@ export default {
       // this.reset();
       let obj = {};
       this.yjFormData.forEach(control => {
-        obj[control.field] = control.value;
+        if (control.type === 5) {
+          obj[control.field] = control.value === true ? "是" : "否";
+        } else {
+          obj[control.field] = control.value;
+        }
       });
 
       this.items.push(obj);
 
-      // this.reset();
+      this.reset();
     },
     reset() {
       this.$refs.form.reset();

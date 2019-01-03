@@ -107,6 +107,11 @@ export default {
       currentItem: null
     };
   },
+  // watch: {
+  //   formData: val => {
+  //     console.log(val);
+  //   }
+  // },
   methods: {
     toggle(item) {
       if (item.options.length === 0) return;
@@ -164,7 +169,9 @@ export default {
           })
           .then(res => {
             this.$set(item, "progress", 100);
-            item.value = res.IDS;
+            if (res.data && res.data.code === "0") {
+              item.value = res.data.IDS;
+            }
           })
           .catch(error => {
             console.log(error);

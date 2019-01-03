@@ -17,7 +17,7 @@
       </tr>
     </table>
 
-    <b-row v-if="items.length > 0">
+    <b-row>
       <b-col cols="8">
         共
         <span class="digit">{{items.length}}</span>条公司业绩
@@ -72,7 +72,7 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
-          field: "city",
+          field: "cityname",
           label: "城市"
         },
         {
@@ -164,6 +164,14 @@ export default {
   methods: {
     commit() {
       //   console.log(this.manFormData);
+      // this.reset();
+      let obj = {};
+      this.yjFormData.forEach(control => {
+        obj[control.field] = control.value;
+      });
+
+      this.items.push(obj);
+
       this.reset();
     },
     reset() {

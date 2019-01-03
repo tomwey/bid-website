@@ -1,9 +1,9 @@
 <template>
   <div class="man-list">
-    <b-row v-if="items.length > 0">
+    <b-row>
       <b-col cols="8">
         共
-        <span class="digit">2</span>条联系方式
+        <span class="digit">{{items.length}}</span>条联系方式
       </b-col>
       <b-col cols="4">
         <b-button v-b-modal.contactModal>新增联系方式</b-button>
@@ -78,6 +78,7 @@ export default {
           field: "contactname",
           type: 1,
           subtype: "text"
+          // value: null
         },
         {
           id: "phone",
@@ -86,6 +87,7 @@ export default {
           field: "contacttel",
           type: 1,
           subtype: "tel"
+          // value: null
         },
         {
           id: "mobile",
@@ -94,6 +96,7 @@ export default {
           type: 1,
           field: "contactphone",
           subtype: "tel"
+          // value: null
         },
         {
           id: "email",
@@ -102,6 +105,7 @@ export default {
           type: 1,
           field: "email",
           subtype: "email"
+          // value: null
         },
         {
           id: "idcard",
@@ -110,6 +114,7 @@ export default {
           field: "contactidno",
           type: 1,
           subtype: "text"
+          // value: null
         }
       ]
     };
@@ -176,15 +181,23 @@ export default {
     // resetForm() {},
     commit() {
       //   console.log(this.manFormData);
-      this.reset();
 
       console.log(this.manFormData);
+
+      // let temp = [];
+      let obj = {};
+      this.manFormData.forEach(control => {
+        obj[control.field] = control.value;
+      });
+
+      this.items.push(obj);
+
+      this.reset();
 
       // this.items = this.items.push()
     },
     reset() {
       this.$refs.form.reset();
-
       if (this.manFormData.length === 9) {
         this.manFormData.splice(this.manFormData.length - 1, 1);
         this.manFormData.splice(this.manFormData.length - 1, 1);
@@ -201,6 +214,7 @@ export default {
               required: true,
               field: "sscertificateannex",
               type: 4,
+              subtype: 1,
               domanid: (
                 JSON.parse(localStorage.getItem("userinfo")).accountid || ""
               ).toString(),
@@ -213,6 +227,7 @@ export default {
               required: true,
               field: "authdelegationannex",
               type: 4,
+              subtype: 2, // 普通文件
               domanid: (
                 JSON.parse(localStorage.getItem("userinfo")).accountid || ""
               ).toString(),

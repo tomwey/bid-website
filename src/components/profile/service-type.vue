@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="8">
         共
-        <span class="digit">2</span>条联系方式
+        <span class="digit">{{items.length}}</span>条联系方式
       </b-col>
       <b-col cols="4">
         <b-button v-b-modal.contactModal>新增服务类别</b-button>
@@ -135,6 +135,17 @@ export default {
     // resetForm() {},
     commit() {
       //   console.log(this.manFormData);
+      let obj = {};
+      this.typeFormData.forEach(control => {
+        obj[control.field] = control.value;
+      });
+
+      // console.log(obj);
+
+      this.items.push(obj);
+
+      // this.reset();
+
       this.reset();
     },
     reset() {

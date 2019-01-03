@@ -47,6 +47,8 @@
           v-if="currentStep.step === 5"
           :items="achieveData"
           :fields="achieveFields"
+          :year-output="yearOutput"
+          :year-sale="yearSale"
         />
       </div>
       <div class="buttons">
@@ -80,144 +82,92 @@ export default {
   data() {
     return {
       currentStep: null,
-      achieveData: [
-        {
-          city: "成都",
-          projname: "枫丹铂麓一期",
-          partnercompany: "成都建工集团",
-          isgoodcompany: "是",
-          projmanager: "张三",
-          contractmoney: 300000,
-          contractscale: "",
-          startdate: "2018-10-10",
-          enddate: "2018-12-30",
-          memo: "测试",
-          contractfile: null
-        }
-      ],
+      yearOutput: null,
+      yearSale: null,
+      achieveData: [],
       achieveFields: {
-        city: {
+        cityname: {
           label: "城市"
         },
-        projname: {
+        projectname: {
           label: "项目名称"
         },
-        partnercompany: {
+        partnername: {
           label: "合作单位名称"
         },
-        isgoodcompany: {
+        ismodel: {
           label: "是否标杆企业"
         },
-        projmanager: {
+        manager: {
           label: "项目经理"
         },
         contractmoney: {
           label: "合同金额"
         },
-        contractscale: {
+        contractsize: {
           label: "合同规模"
         },
-        startdate: {
+        begindate: {
           label: "开始日期"
         },
         enddate: {
           label: "结束日期"
         },
-        memo: {
+        othermemo: {
           label: "其他说明"
         },
-        contractfile: {
+        contractannex: {
           label: "合同附件"
         }
       },
-      serviceTypeData: [
-        {
-          typename: "类别1",
-          ismaintype: "是",
-          name: "测试名字",
-          zz_level: "其他",
-          zz_approve_date: "2018-12-21",
-          memo: ""
-        },
-        {
-          typename: "类别1",
-          ismaintype: "是",
-          name: "测试名字",
-          zz_level: "其他",
-          zz_approve_date: "2018-12-21",
-          memo: ""
-        }
-      ],
+      serviceTypeData: [],
       serviceTypeFields: {
-        typename: {
+        servertypename: {
           label: "对口服务类别"
         },
-        ismaintype: {
+        ismain: {
           label: "是否主要类别"
         },
-        name: {
+        quaname: {
           label: "资质名称"
         },
-        zz_level: {
+        qualevel: {
           label: "资质级别"
         },
-        zz_approve_date: {
+        quaexaminedate: {
           label: "资质审核到期日期"
         },
-        memo: {
+        othermemo: {
           label: "其他说明"
         }
       },
-      manData: [
-        {
-          typename: "普通联系人",
-          job: "公司总经理",
-          name: "张三",
-          phone: "028-81234567",
-          mobile: "13012345678",
-          email: "",
-          idcard: "",
-          shebao: "",
-          entrust: ""
-        },
-        {
-          typename: "第一联系人",
-          job: "公司总经理",
-          name: "张三",
-          phone: "028-81234567",
-          mobile: "13012345678",
-          email: "",
-          idcard: "",
-          shebao: "",
-          entrust: ""
-        }
-      ],
+      manData: [],
       manFields: {
-        typename: {
+        contacttype: {
           label: "联系人类型"
         },
-        job: {
+        contactposition: {
           label: "联系人职位"
         },
-        name: {
+        contactname: {
           label: "联系人姓名"
         },
-        phone: {
+        contacttel: {
           label: "联系人电话"
         },
-        mobile: {
+        contactphone: {
           label: "联系人手机"
         },
         email: {
           label: "电子邮件"
         },
-        idcard: {
+        contactidno: {
           label: "身份证号码"
         },
-        shebao: {
+        sscertificateannex: {
           label: "联系人社保证明"
         },
-        entrust: {
+        authdelegationannex: {
           label: "授权委托（附件）"
         }
       },
@@ -714,78 +664,82 @@ export default {
       // }
     },
     commit() {
-      //   console.info(this.baseFormData);
-      //   console.info(this.otherInfoFormData);
-      //   console.info(this.otherFilesFormData);
+      console.info(this.baseFormData);
+      console.info(this.otherInfoFormData);
+      console.info(this.otherFilesFormData);
+      console.info(this.areaFormData);
+      console.info(this.achieveData);
+      console.info(this.manData);
+      console.info(this.serviceTypeData);
       //   console.log("save");
-      let params = {
-        action: "updatesupinfo",
-        comname: "测试企业名称",
-        comtype: "1",
-        comuscc: "915101109338383",
-        comusccinvaliddate: "2066-10-10",
-        combi: "34",
-        taxpayerstate: "1",
-        addtaxapplytable: "32",
-        comregdate: "2013-10-10",
-        comregaddr: "地址一次",
-        regmoney: "100",
-        corporateman: "张三",
-        corporatemanidno: "23484949493",
-        safeproductionl: "43",
-        safeproductionldate: "2012-01-01",
-        sysauth: "1",
-        quaauthannex: "11",
-        manageauthannex: "11",
-        banklevelandcredit: "11",
-        hqaddr: "总部地址一",
-        outputvalueyear: "100",
-        turnoveryear: "101",
-        branchinfo: "分公司",
-        relateinfo: "其它关联公司",
-        serverareaids: "1,3,5",
-        mainareaid: "3",
-        supid: "30",
-        man: [
-          {
-            contacttype: "1",
-            contactposition: "职位一",
-            contactname: "李四",
-            contacttel: "028-80220908",
-            contactphone: "13012345678",
-            email: "test@qq.com",
-            contactidno: "3939384848844",
-            sscertificateannex: "123",
-            authdelegationannex: "234"
-          },
-          {
-            contacttype: "2",
-            contactposition: "dddd职位一",
-            contactname: "dddddd李四",
-            contacttel: "028-80220908",
-            contactphone: "13012345678",
-            email: "test@qq.com",
-            contactidno: "3939384848844",
-            sscertificateannex: "",
-            authdelegationannex: ""
-          },
-          {
-            contacttype: "1",
-            contactposition: "lllllllll职位一",
-            contactname: "王五",
-            contacttel: "028-80220908",
-            contactphone: "13012345678",
-            email: "test@qq.com",
-            contactidno: "3939384848844",
-            sscertificateannex: "12",
-            authdelegationannex: "23"
-          }
-        ]
-      };
+      // let params = {
+      //   action: "updatesupinfo",
+      //   comname: "测试企业名称",
+      //   comtype: "1",
+      //   comuscc: "915101109338383",
+      //   comusccinvaliddate: "2066-10-10",
+      //   combi: "34",
+      //   taxpayerstate: "1",
+      //   addtaxapplytable: "32",
+      //   comregdate: "2013-10-10",
+      //   comregaddr: "地址一次",
+      //   regmoney: "100",
+      //   corporateman: "张三",
+      //   corporatemanidno: "23484949493",
+      //   safeproductionl: "43",
+      //   safeproductionldate: "2012-01-01",
+      //   sysauth: "1",
+      //   quaauthannex: "11",
+      //   manageauthannex: "11",
+      //   banklevelandcredit: "11",
+      //   hqaddr: "总部地址一",
+      //   outputvalueyear: "100",
+      //   turnoveryear: "101",
+      //   branchinfo: "分公司",
+      //   relateinfo: "其它关联公司",
+      //   serverareaids: "1,3,5",
+      //   mainareaid: "3",
+      //   supid: "30",
+      //   man: [
+      //     {
+      //       contacttype: "1",
+      //       contactposition: "职位一",
+      //       contactname: "李四",
+      //       contacttel: "028-80220908",
+      //       contactphone: "13012345678",
+      //       email: "test@qq.com",
+      //       contactidno: "3939384848844",
+      //       sscertificateannex: "123",
+      //       authdelegationannex: "234"
+      //     },
+      //     {
+      //       contacttype: "2",
+      //       contactposition: "dddd职位一",
+      //       contactname: "dddddd李四",
+      //       contacttel: "028-80220908",
+      //       contactphone: "13012345678",
+      //       email: "test@qq.com",
+      //       contactidno: "3939384848844",
+      //       sscertificateannex: "",
+      //       authdelegationannex: ""
+      //     },
+      //     {
+      //       contacttype: "1",
+      //       contactposition: "lllllllll职位一",
+      //       contactname: "王五",
+      //       contacttel: "028-80220908",
+      //       contactphone: "13012345678",
+      //       email: "test@qq.com",
+      //       contactidno: "3939384848844",
+      //       sscertificateannex: "12",
+      //       authdelegationannex: "23"
+      //     }
+      //   ]
+      // };
 
-      this.$post(params, res => {
-        console.log(res);
-      });
+      // this.$post(params, res => {
+      //   console.log(res);
+      // });
     }
   }
 };

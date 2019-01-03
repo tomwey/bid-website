@@ -37,15 +37,38 @@
             v-model="item.value"
             :options="item.options"
           ></b-form-radio-group>
-          <b-form-file
+          <!-- <b-form-file
             :ref="`${item.id.replace(/-/g, '')}`"
             :id="item.id"
             v-if="item.type === 4"
             v-model="item.value"
             :multiple="item.multiple"
-            accept="image/jpeg, image/png, image/gif"
+            :accept="`${item.accept || 'image/jpeg, image/png, image/gif'}`"
             :placeholder="item.placeholder || `选择文件`"
-          ></b-form-file>
+            @change="uploadFiles($event);"
+          ></b-form-file>-->
+          <div class="input-file-box" v-if="item.type === 4">
+            <input
+              type="file"
+              :accept="`${item.accept || 'image/jpeg, image/png, image/gif'}`"
+              :ref="`${item.id.replace(/-/g, '')}`"
+              :id="item.id"
+              :multiple="item.multiple"
+              :placeholder="item.placeholder || `选择文件`"
+              @change="uploadFiles($event, item);"
+            >
+            <div class="progress-box" v-show="item.progress && item.progress > 0">
+              <b-row>
+                <b-col cols="10">
+                  <b-progress height="4px" :value="item.progress || 0"></b-progress>
+                </b-col>
+                <b-col cols="2">
+                  <span class="percent">{{item.progress || 0}}%</span>
+                </b-col>
+              </b-row>
+            </div>
+          </div>
+
           <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">{{item.label}}</b-form-checkbox>
         </td>
       </tr>
@@ -58,6 +81,11 @@ export default {
   props: {
     readonly: Boolean,
     formData: Array
+  },
+  data() {
+    return {
+      progress: 0
+    };
   },
   methods: {
     reset() {
@@ -72,6 +100,33 @@ export default {
       });
 
       // this.$emit("reset");
+    },
+    uploadFiles(ev, item) {
+      // console.log(ev);
+      let files = ev.target.files;
+      if (files && files.length > 0) {
+        let formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append("file", files[i]);
+        }
+        formData.append("mid", "0");
+        formData.append("domanid", (item.uid || 0).toString());
+        formData.append("tablename", item.tablename || "H_Sup_Annex");
+        formData.append("fieldname", item.fieldname || "AnnexID");
+
+        this.$axios
+          .post("http://erp20-app.heneng.cn:16681/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            },
+            onUploadProgress: progressEvent => {
+              // Do whatever you want with the native progress event
+              console.log(progressEvent);
+            }
+          })
+          .then(res => {})
+          .catch(error => {});
+      }
     }
   }
 };
@@ -106,7 +161,7 @@ $theme-color: #e46623;
       padding: 0.75rem 0.75rem 0.75rem 0;
     }
     .label {
-      width: 120px;
+      width: 240px;
       label {
         vertical-align: middle;
         line-height: 14px;
@@ -136,6 +191,21 @@ $theme-color: #e46623;
       background: #fff;
       color: $theme-color;
       border: 1px solid $theme-color;
+    }
+  }
+
+  .progress-box {
+    .progress {
+      margin-top: 15px;
+    }
+    .percent {
+      font-size: 14px;
+      color: #333;
+      display: block;
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      text-align: right;
     }
   }
 }

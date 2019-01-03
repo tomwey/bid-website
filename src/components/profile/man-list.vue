@@ -53,6 +53,7 @@ export default {
           type: 2,
           required: true,
           value: null,
+          field: "contacttype",
           options: [
             {
               value: null,
@@ -75,6 +76,7 @@ export default {
           type: 2,
           value: null,
           required: true,
+          field: "contactposition",
           options: [
             {
               value: null,
@@ -102,6 +104,7 @@ export default {
           id: "name",
           label: "联系人姓名",
           required: true,
+          field: "contactname",
           type: 1,
           subtype: "text"
         },
@@ -109,6 +112,7 @@ export default {
           id: "phone",
           label: "联系人电话",
           required: true,
+          field: "contacttel",
           type: 1,
           subtype: "tel"
         },
@@ -117,6 +121,7 @@ export default {
           label: "联系人手机",
           required: true,
           type: 1,
+          field: "contactphone",
           subtype: "tel"
         },
         {
@@ -124,12 +129,14 @@ export default {
           label: "电子邮件",
           required: false,
           type: 1,
+          field: "email",
           subtype: "email"
         },
         {
           id: "idcard",
           label: "身份证号码",
           required: false,
+          field: "contactidno",
           type: 1,
           subtype: "text"
         }
@@ -141,6 +148,10 @@ export default {
     commit() {
       //   console.log(this.manFormData);
       this.reset();
+
+      console.log(this.manFormData);
+
+      // this.items = this.items.push()
     },
     reset() {
       this.$refs.form.reset();
@@ -159,6 +170,7 @@ export default {
               id: "shebao",
               label: "联系人社保证明",
               required: true,
+              field: "sscertificateannex",
               type: 4
               //   subtype: "text"
             },
@@ -166,6 +178,7 @@ export default {
               id: "entrust",
               label: "授权委托（附件）",
               required: true,
+              field: "authdelegationannex",
               type: 4
               //   subtype: "text"
             }

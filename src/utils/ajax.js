@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import md5 from "js-md5";
 
-// Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
 
 Vue.prototype.$post = (param, callback) => {
@@ -10,7 +10,7 @@ Vue.prototype.$post = (param, callback) => {
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
 
-    axios.post("http://10.19.0.52:8181/api/gwc", {
+    axios.post("http://10.19.0.186:8181/api/gwc", {
         ak: ak,
         i: i,
         payload: payload

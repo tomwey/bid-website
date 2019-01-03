@@ -52,6 +52,7 @@ export default {
           type: 2,
           label: "对口服务类别",
           value: null,
+          required: true,
           options: [
             {
               value: null,
@@ -70,53 +71,35 @@ export default {
         {
           id: "is-main-type",
           label: "是否主要类别",
+          required: true,
           type: 5
         },
         {
           id: "zz-name",
           type: 1,
           subtype: "text",
+          required: true,
           label: "资质名称"
         },
         {
           id: "zz-level",
-          type: 2,
-          label: "资质级别",
-          value: null,
-          options: [
-            {
-              value: null,
-              text: "选择资质级别"
-            },
-            {
-              value: "壹级",
-              text: "壹级"
-            },
-            {
-              value: "贰级",
-              text: "贰级"
-            },
-            {
-              value: "叁级",
-              text: "叁级"
-            },
-            {
-              value: "其他",
-              text: "其他"
-            }
-          ]
+          type: 1,
+          subtype: "text",
+          label: "资质级别"
         },
         {
           id: "zz-approve-date",
           type: 1,
           subtype: "date",
-          label: "资质审核到期日期"
+          label: "资质审核到期日期",
+          required: true
         },
         {
           id: "memo",
           type: 1,
           subtype: "text",
-          label: "其他说明"
+          label: "其他说明",
+          required: true
         }
       ]
     };

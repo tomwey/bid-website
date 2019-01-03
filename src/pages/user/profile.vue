@@ -227,6 +227,7 @@ export default {
           type: 3,
           label: "服务区域",
           placeholder: "",
+          required: true,
           options: [
             {
               value: "成都",
@@ -256,7 +257,8 @@ export default {
           id: "main-service-area",
           type: 6,
           label: "主要服务区域",
-          options: []
+          options: [],
+          required: true
         }
       ],
       otherInfoFormData: [
@@ -265,6 +267,7 @@ export default {
           type: 1,
           subtype: "text",
           label: "分公司信息",
+          field: "branchinfo",
           placeholder: ""
           //   required: true
         },
@@ -273,6 +276,7 @@ export default {
           type: 1,
           subtype: "text",
           label: "关联公司信息",
+          field: "relateinfo",
           placeholder: ""
           //   required: true
         }
@@ -307,13 +311,15 @@ export default {
           subtype: "text",
           label: "企业名称",
           placeholder: "",
-          required: true
+          required: true,
+          field: "comname"
         },
         {
           id: "company-nature",
           type: 2,
           label: "企业性质",
           required: true,
+          field: "comtype",
           options: [
             {
               value: "null",
@@ -348,19 +354,33 @@ export default {
           type: 1,
           subtype: "text",
           label: "统一社会信用代码",
-          placeholder: ""
+          placeholder: "",
+          field: "comuscc",
+          required: true
+        },
+        {
+          id: "company-id-exp",
+          type: 1,
+          subtype: "date",
+          label: "统一社会信用代码有效期",
+          placeholder: "",
+          field: "comusccinvaliddate",
+          required: true
         },
         {
           id: "license-file",
           type: 4,
           //   subtype: "file",
           label: "营业执照附件",
-          placeholder: ""
+          placeholder: "",
+          field: "combi",
+          required: true
         },
         {
           id: "tax-type",
           type: 2,
           label: "纳税人状态",
+          field: "taxpayerstate",
           options: [
             {
               value: "null",
@@ -382,55 +402,70 @@ export default {
           id: "apply-cert-file",
           type: 4,
           label: "增值税一般纳税人申请认定表",
-          placeholder: ""
+          placeholder: "",
+          field: "addtaxapplytable",
+          required: true
         },
         {
           id: "found-date",
           type: 1,
           subtype: "date",
           label: "企业注册日期",
-          placeholder: ""
+          placeholder: "",
+          field: "comregdate",
+          required: true
         },
         {
           id: "found-address",
           type: 1,
           subtype: "text",
           label: "企业注册地址",
-          placeholder: ""
+          field: "comregaddr",
+          placeholder: "",
+          required: true
         },
         {
           id: "found-money",
           type: 1,
-          subtype: "text",
+          subtype: "number",
           label: "注册资本",
-          placeholder: ""
+          placeholder: "",
+          field: "regmoney",
+          required: true
         },
         {
           id: "law-man-name",
           type: 1,
           subtype: "text",
           label: "法定代表人",
-          placeholder: ""
+          field: "corporateman",
+          placeholder: "",
+          required: true
         },
         {
           id: "law-man-idcard",
           type: 1,
           subtype: "text",
           label: "法定代表人身份证",
+          field: "corporatemanidno",
           placeholder: ""
         },
         {
           id: "safe-product-license-file",
           type: 4,
           label: "安全生产许可证",
-          placeholder: ""
+          field: "safeproductionl",
+          placeholder: "",
+          required: true
         },
         {
           id: "safe-license-expire-date",
           type: 1,
           subtype: "date",
           label: "安全许可证到期日",
-          placeholder: ""
+          placeholder: "",
+          field: "safeproductionldate",
+          required: true
         },
         {
           id: "iso-supports",
@@ -454,6 +489,15 @@ export default {
             }
           ],
           label: "体系认证",
+          field: "sysauth",
+          placeholder: ""
+        },
+        {
+          id: "zliang-license-file",
+          type: 4,
+          // multiple: true,
+          label: "质量保证体系认证文件（附件）",
+          field: "quaauthannex",
           placeholder: ""
         },
         {
@@ -461,6 +505,7 @@ export default {
           type: 4,
           multiple: true,
           label: "管理体系认证（ISO9001/14001/HSE等附件）",
+          field: "manageauthannex",
           placeholder: ""
         },
         {
@@ -468,14 +513,17 @@ export default {
           type: 4,
           multiple: true,
           label: "银行信用等级和授信额度（附件）",
-          placeholder: ""
+          placeholder: "",
+          field: "banklevelandcredit"
         },
         {
           id: "address",
           type: 1,
           subtype: "text",
           label: "(总部)办公地址",
-          placeholder: ""
+          placeholder: "",
+          required: true,
+          field: "hqaddr"
         }
       ],
       steps: [
@@ -584,6 +632,74 @@ export default {
       //   console.info(this.otherInfoFormData);
       //   console.info(this.otherFilesFormData);
       //   console.log("save");
+      let params = {
+        action: "updatesupinfo",
+        comname: "测试企业名称",
+        comtype: "1",
+        comuscc: "915101109338383",
+        comusccinvaliddate: "2066-10-10",
+        combi: "34",
+        taxpayerstate: "1",
+        addtaxapplytable: "32",
+        comregdate: "2013-10-10",
+        comregaddr: "地址一次",
+        regmoney: "100",
+        corporateman: "张三",
+        corporatemanidno: "23484949493",
+        safeproductionl: "43",
+        safeproductionldate: "2012-01-01",
+        sysauth: "1",
+        quaauthannex: "11",
+        manageauthannex: "11",
+        banklevelandcredit: "11",
+        hqaddr: "总部地址一",
+        outputvalueyear: "100",
+        turnoveryear: "101",
+        branchinfo: "分公司",
+        relateinfo: "其它关联公司",
+        serverareaids: "1,3,5",
+        mainareaid: "3",
+        supid: "30",
+        man: [
+          {
+            contacttype: "1",
+            contactposition: "职位一",
+            contactname: "李四",
+            contacttel: "028-80220908",
+            contactphone: "13012345678",
+            email: "test@qq.com",
+            contactidno: "3939384848844",
+            sscertificateannex: "123",
+            authdelegationannex: "234"
+          },
+          {
+            contacttype: "2",
+            contactposition: "dddd职位一",
+            contactname: "dddddd李四",
+            contacttel: "028-80220908",
+            contactphone: "13012345678",
+            email: "test@qq.com",
+            contactidno: "3939384848844",
+            sscertificateannex: "",
+            authdelegationannex: ""
+          },
+          {
+            contacttype: "1",
+            contactposition: "lllllllll职位一",
+            contactname: "王五",
+            contacttel: "028-80220908",
+            contactphone: "13012345678",
+            email: "test@qq.com",
+            contactidno: "3939384848844",
+            sscertificateannex: "12",
+            authdelegationannex: "23"
+          }
+        ]
+      };
+
+      this.$post(params, res => {
+        console.log(res);
+      });
     }
   }
 };

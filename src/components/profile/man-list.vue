@@ -58,14 +58,6 @@ export default {
             {
               value: null,
               text: "选择联系人类型"
-            },
-            {
-              value: "第一联系人",
-              text: "第一联系人"
-            },
-            {
-              value: "普通联系人",
-              text: "普通联系人"
             }
           ],
           changeFunc: this.changeContactType
@@ -77,28 +69,7 @@ export default {
           value: null,
           required: true,
           field: "contactposition",
-          options: [
-            {
-              value: null,
-              text: "选择联系人职位"
-            },
-            {
-              value: "公司总经理",
-              text: "公司总经理"
-            },
-            {
-              value: "分管经营负责人",
-              text: "分管经营负责人"
-            },
-            {
-              value: "业务对接人",
-              text: "业务对接人"
-            },
-            {
-              value: "其他",
-              text: "其他"
-            }
-          ]
+          options: []
         },
         {
           id: "name",
@@ -143,7 +114,65 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.loadConfigs();
+  },
   methods: {
+    loadConfigs() {
+      // 联系人类型
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "3",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择联系人类型"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.sy_value,
+                text: ele.sy_name
+              });
+            });
+            this.manFormData[0].options = temp;
+          }
+        }
+      );
+
+      // 联系人职位
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "4",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择联系人职位"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.sy_value,
+                text: ele.sy_name
+              });
+            });
+            this.manFormData[1].options = temp;
+          }
+        }
+      );
+    },
     // resetForm() {},
     commit() {
       //   console.log(this.manFormData);
@@ -162,8 +191,8 @@ export default {
       }
     },
     changeContactType(val) {
-      //   console.log(val);
-      if (val === "第一联系人") {
+      // console.log(val);
+      if (val === "1") {
         if (this.manFormData.length === 7) {
           const fields = [
             {
@@ -171,15 +200,24 @@ export default {
               label: "联系人社保证明",
               required: true,
               field: "sscertificateannex",
-              type: 4
-              //   subtype: "text"
+              type: 4,
+              domanid: (
+                JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+              ).toString(),
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "sscertificateannex"
             },
             {
               id: "entrust",
               label: "授权委托（附件）",
               required: true,
               field: "authdelegationannex",
-              type: 4
+              type: 4,
+              domanid: (
+                JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+              ).toString(),
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "authdelegationannex"
               //   subtype: "text"
             }
           ];

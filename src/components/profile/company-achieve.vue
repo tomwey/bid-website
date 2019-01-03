@@ -72,6 +72,7 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
+          field: "city",
           label: "城市"
         },
         {
@@ -79,6 +80,7 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
+          field: "projectname",
           label: "项目名称"
         },
         {
@@ -86,11 +88,13 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
+          field: "partnername",
           label: "合作单位名称"
         },
         {
           id: "is-good-company",
           type: 5,
+          field: "ismodel",
           required: true,
           label: "是否标杆企业"
         },
@@ -99,6 +103,7 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
+          field: "manager",
           label: "项目经理"
         },
         {
@@ -106,12 +111,14 @@ export default {
           type: 1,
           subtype: "number",
           required: true,
+          field: "contractmoney",
           label: "合同金额"
         },
         {
           id: "contract-scale",
           type: 1,
-          subtype: "text",
+          subtype: "number",
+          field: "contractsize",
           required: true,
           label: "合同规模"
         },
@@ -120,6 +127,7 @@ export default {
           type: 1,
           subtype: "date",
           required: true,
+          field: "begindate",
           label: "开始日期"
         },
         {
@@ -127,19 +135,27 @@ export default {
           type: 1,
           subtype: "date",
           required: true,
+          field: "enddate",
           label: "结束日期"
         },
         {
           id: "contract-file",
           type: 4,
           required: true,
-          label: "合同附件"
+          label: "合同附件",
+          field: "contractannex",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_Achievement_Info",
+          fieldname: "contractannex"
         },
         {
           id: "summary",
           type: 1,
           subtype: "text",
           required: false,
+          field: "othermemo",
           label: "其他说明"
         }
       ]

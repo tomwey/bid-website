@@ -55,3 +55,14 @@ html {
   text-align: center;
   color: #999;
 }
+
+ul,ol{
+  list-style: none !important;
+  margin: 0!important;
+  padding: 2px;
+}
+
+li {
+  margin: 0;
+  padding: 0 10px;
+}

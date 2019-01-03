@@ -46,31 +46,22 @@ export default {
   data() {
     return {
       modalTitle: null,
+      serviceTypes: {},
+      serviceTypeItems: [],
       typeFormData: [
         {
           id: "service-type",
-          type: 2,
+          type: 7,
           label: "对口服务类别",
           value: null,
+          field: "servertype",
           required: true,
-          options: [
-            {
-              value: null,
-              text: "选择对口服务类别"
-            },
-            {
-              value: "类别1",
-              text: "类别1"
-            },
-            {
-              value: "类别2",
-              text: "类别2"
-            }
-          ]
+          options: []
         },
         {
           id: "is-main-type",
           label: "是否主要类别",
+          field: "ismain",
           required: true,
           type: 5
         },
@@ -79,12 +70,14 @@ export default {
           type: 1,
           subtype: "text",
           required: true,
+          field: "quaname",
           label: "资质名称"
         },
         {
           id: "zz-level",
           type: 1,
           subtype: "text",
+          field: "qualevel",
           label: "资质级别"
         },
         {
@@ -92,6 +85,7 @@ export default {
           type: 1,
           subtype: "date",
           label: "资质审核到期日期",
+          field: "quaexaminedate",
           required: true
         },
         {
@@ -99,12 +93,45 @@ export default {
           type: 1,
           subtype: "text",
           label: "其他说明",
+          field: "othermemo",
           required: true
         }
       ]
     };
   },
+  mounted() {
+    this.loadConfigs();
+  },
   methods: {
+    loadConfigs() {
+      this.$post(
+        {
+          action: "P_SY_GetAreaOrType",
+          p1: "2",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [];
+
+            // console.log(arr);
+
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.suptypeid,
+                text: ele.suptypename,
+                childcount: ele.subcount
+              });
+            });
+
+            // console.log(arr);
+
+            this.typeFormData[0].options = temp;
+          }
+        }
+      );
+    },
     // resetForm() {},
     commit() {
       //   console.log(this.manFormData);

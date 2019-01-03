@@ -228,28 +228,7 @@ export default {
           label: "服务区域",
           placeholder: "",
           required: true,
-          options: [
-            {
-              value: "成都",
-              text: "成都"
-            },
-            {
-              value: "西安",
-              text: "西安"
-            },
-            {
-              value: "长沙",
-              text: "长沙"
-            },
-            {
-              value: "宁波",
-              text: "宁波"
-            },
-            {
-              value: "深圳",
-              text: "深圳"
-            }
-          ],
+          options: [],
           changeFunc: this.areaChange
           //   required: true
         },
@@ -287,21 +266,39 @@ export default {
           type: 4,
           //   subtype: "file",
           label: "近三年财务审计报告(附件)",
-          placeholder: ""
+          placeholder: "",
+          field: "threeyfinancialreports",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_OtherAnnex_Info",
+          fieldname: "threeyfinancialreports"
         },
         {
           id: "auth-license-file",
           type: 4,
           //   subtype: "file",
           label: "认证或荣誉证书(附件)",
-          placeholder: ""
+          placeholder: "",
+          field: "honorcertificate",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_OtherAnnex_Info",
+          fieldname: "honorcertificate"
         },
         {
           id: "beian-file",
           type: 4,
           //   subtype: "file",
           label: "外地备案证(附件)",
-          placeholder: ""
+          placeholder: "",
+          field: "fieldcertificate",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_OtherAnnex_Info",
+          fieldname: "fieldcertificate"
         }
       ],
       baseFormData: [
@@ -515,7 +512,7 @@ export default {
         {
           name: "服务区域",
           step: 3,
-          needReset: true
+          needReset: false
         },
         {
           name: "服务类别",
@@ -652,15 +649,48 @@ export default {
           }
         }
       );
+      // 获取服务区域
+
+      this.$post(
+        {
+          action: "P_SY_GetAreaOrType",
+          p1: "1",
+          p2: "0"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.area_id,
+                text: ele.area_name
+              });
+            });
+            this.areaFormData[0].options = temp;
+          }
+        }
+      );
     },
     selectStep(step) {
       this.currentStep = step;
     },
     areaChange(vals) {
-      // console.log(vals);
-      //   console.log(index);
+      const areas = this.areaFormData[0].options;
+      let arr = [];
+      vals.forEach(id => {
+        for (let index = 0; index < areas.length; index++) {
+          const element = areas[index];
+          if (element.value === id) {
+            arr.push(element);
+            break;
+          }
+        }
+      });
+
       const area = this.areaFormData[1];
-      area.options = vals;
+      area.options = arr;
     },
     prevClick() {
       //   this.currentStep--;

@@ -9,6 +9,7 @@
           </label>
         </td>
         <td class="input-control">
+          <!-- 单行输入控件 -->
           <b-form-input
             :id="item.id"
             :type="item.subtype"
@@ -16,6 +17,7 @@
             v-model="item.value"
             :placeholder="item.placeholder || `输入${item.label}` "
           ></b-form-input>
+          <!-- 下拉选控件 -->
           <b-form-select
             v-if="item.type === 2"
             v-model="item.value"
@@ -23,6 +25,7 @@
             :placeholder="item.placeholder"
             @change="item.changeFunc"
           />
+          <!-- 复选框控件 -->
           <b-form-checkbox-group
             v-if="item.type === 3"
             :id="item.id"
@@ -30,13 +33,7 @@
             :options="item.options"
             @change="item.changeFunc"
           ></b-form-checkbox-group>
-
-          <b-form-radio-group
-            v-if="item.type === 6"
-            :id="item.id"
-            v-model="item.value"
-            :options="item.options"
-          ></b-form-radio-group>
+          <!-- 文件上传控件 -->
           <div class="input-file-box" v-if="item.type === 4">
             <input
               type="file"
@@ -62,8 +59,30 @@
               </b-row>
             </div>
           </div>
-
+          <!-- 单值checkbox控件 -->
           <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">{{item.label}}</b-form-checkbox>
+
+          <!-- 单选框控件 -->
+          <b-form-radio-group
+            v-if="item.type === 6"
+            :id="item.id"
+            v-model="item.value"
+            :options="item.options"
+          ></b-form-radio-group>
+
+          <!-- 自定义树形控件 -->
+          <div class="tree-data-wrap" @click="toggle(item);" v-if="item.type === 7">
+            {{item.value ? item.value.text : "请选择" + item.label}}
+            <span class="caret"></span>
+            <tree-data
+              @selected="selectedItem"
+              v-show="openTreeData"
+              v-if="item.type === 7"
+              :data="item.options"
+              :id="item.id"
+              :target="item"
+            ></tree-data>
+          </div>
         </td>
       </tr>
     </table>
@@ -76,12 +95,33 @@ export default {
     readonly: Boolean,
     formData: Array
   },
+  components: {
+    treeData: function(resolve) {
+      require(["@/components/tree-data/index"], resolve);
+    }
+  },
   data() {
     return {
-      progress: 0
+      progress: 0,
+      openTreeData: false,
+      currentItem: null
     };
   },
   methods: {
+    toggle(item) {
+      if (item.options.length === 0) return;
+
+      this.openTreeData = !this.openTreeData;
+      this.currentItem = item;
+    },
+    selectedItem(val) {
+      // console.log(val);
+      if (this.currentItem) {
+        this.$set(this.currentItem, "value", val);
+        this.openTreeData = false;
+        this.currentItem = null;
+      }
+    },
     reset() {
       this.formData.forEach(item => {
         if (item.type === 4) {
@@ -95,6 +135,7 @@ export default {
 
       // this.$emit("reset");
     },
+    commit() {},
     uploadFiles(ev, item) {
       // console.log(ev);
       let files = ev.target.files;
@@ -136,8 +177,37 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
-.bg-custom-progress-color {
-  background-color: $theme-color !important;
+.tree-data-wrap {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  .caret {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    margin-top: -2px;
+
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #333;
+  }
+
+  .tree-data {
+    position: absolute;
+    max-height: 300px;
+    width: 100%;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #eee;
+    left: 0;
+    top: 30px;
+    overflow: auto;
+  }
 }
 .fields-wrap {
   // padding: 30px 60px;

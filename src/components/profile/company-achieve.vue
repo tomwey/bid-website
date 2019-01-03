@@ -6,13 +6,18 @@
           <label for="year-output">年产值额</label>
         </td>
         <td class="input-control">
-          <b-form-input id="year-output" v-model="yearOutput" placeholder="输入年产值额" type="number"></b-form-input>
+          <b-form-input
+            id="year-output"
+            v-model="yearData.output"
+            placeholder="输入年产值额"
+            type="number"
+          ></b-form-input>
         </td>
         <td class="label">
           <label for="year-sale">年营业额</label>
         </td>
         <td class="input-control">
-          <b-form-input id="year-sale" v-model="yearSale" placeholder="输入年营业额" type="number"></b-form-input>
+          <b-form-input id="year-sale" v-model="yearData.sale" placeholder="输入年营业额" type="number"></b-form-input>
         </td>
       </tr>
     </table>
@@ -55,8 +60,7 @@ export default {
   props: {
     items: Array,
     fields: Object,
-    yearOutput: String,
-    yearSale: String
+    yearData: Object
   },
   components: {
     commFields: function(resolve) {
@@ -172,7 +176,7 @@ export default {
 
       this.items.push(obj);
 
-      this.reset();
+      // this.reset();
     },
     reset() {
       this.$refs.form.reset();

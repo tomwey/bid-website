@@ -26,21 +26,7 @@ export default {
   },
   data() {
     return {
-      achieveData: [
-        {
-          city: "成都",
-          projname: "枫丹铂麓一期",
-          partnercompany: "成都建工集团",
-          isgoodcompany: "是",
-          projmanager: "张三",
-          contractmoney: 300000,
-          contractscale: "",
-          startdate: "2018-10-10",
-          enddate: "2018-12-30",
-          memo: "测试",
-          contractfile: null
-        }
-      ],
+      achieveData: [],
       achieveFields: {
         city: {
           label: "城市"

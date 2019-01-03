@@ -142,7 +142,7 @@ export default {
             ];
             arr.forEach(ele => {
               temp.push({
-                value: ele.sy_value,
+                value: `${ele.sy_name}-${ele.sy_value}`,
                 text: ele.sy_name
               });
             });
@@ -169,7 +169,7 @@ export default {
             ];
             arr.forEach(ele => {
               temp.push({
-                value: ele.sy_value,
+                value: `${ele.sy_name}-${ele.sy_value}`,
                 text: ele.sy_name
               });
             });
@@ -187,7 +187,11 @@ export default {
       // let temp = [];
       let obj = {};
       this.manFormData.forEach(control => {
-        obj[control.field] = control.value;
+        if (control.type === 2) {
+          obj[control.field] = control.value.split("-")[0];
+        } else {
+          obj[control.field] = control.value;
+        }
       });
 
       this.items.push(obj);
@@ -205,6 +209,12 @@ export default {
     },
     changeContactType(val) {
       // console.log(val);
+      if (!val) return;
+
+      val = val.split("-");
+      if (val.length !== 2) return;
+      val = val[1];
+
       if (val === "1") {
         if (this.manFormData.length === 7) {
           const fields = [

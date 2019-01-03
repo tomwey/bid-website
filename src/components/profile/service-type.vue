@@ -136,8 +136,18 @@ export default {
     commit() {
       //   console.log(this.manFormData);
       let obj = {};
+      // console.log(this.typeFormData);
+
       this.typeFormData.forEach(control => {
-        obj[control.field] = control.value;
+        if (control.type === 7) {
+          // console.log(control);
+          obj[control.field + "name"] = control.value.text;
+          obj[control.field + "id"] = control.value.value;
+        } else if (control.type === 5) {
+          obj[control.field] = control.value === true ? "1" : "0";
+        } else {
+          obj[control.field] = control.value;
+        }
       });
 
       // console.log(obj);

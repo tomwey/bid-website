@@ -20,24 +20,7 @@ export default {
   },
   data() {
     return {
-      serviceTypeData: [
-        {
-          typename: "类别1",
-          ismaintype: "是",
-          name: "测试名字",
-          zz_level: "其他",
-          zz_approve_date: "2018-12-21",
-          memo: ""
-        },
-        {
-          typename: "类别1",
-          ismaintype: "是",
-          name: "测试名字",
-          zz_level: "其他",
-          zz_approve_date: "2018-12-21",
-          memo: ""
-        }
-      ],
+      serviceTypeData: [],
       serviceTypeFields: {
         typename: {
           label: "对口服务类别"

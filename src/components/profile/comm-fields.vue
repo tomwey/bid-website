@@ -113,6 +113,9 @@ export default {
   //   }
   // },
   methods: {
+    valueChanged(ev, item) {
+      console.log(ev), console.log(item);
+    },
     toggle(item) {
       if (item.options.length === 0) return;
 
@@ -120,11 +123,12 @@ export default {
       this.currentItem = item;
     },
     selectedItem(val) {
-      // console.log(val);
+      console.log(val);
       if (this.currentItem) {
         this.$set(this.currentItem, "value", val);
         this.openTreeData = false;
-        this.currentItem = null;
+        console.log(this.currentItem);
+        // this.currentItem = null;
       }
     },
     reset() {

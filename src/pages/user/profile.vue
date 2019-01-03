@@ -47,8 +47,7 @@
           v-if="currentStep.step === 5"
           :items="achieveData"
           :fields="achieveFields"
-          :year-output="yearOutput"
-          :year-sale="yearSale"
+          :year-data="achieveYearData"
         />
       </div>
       <div class="buttons">
@@ -82,9 +81,11 @@ export default {
   data() {
     return {
       currentStep: null,
-      yearOutput: null,
-      yearSale: null,
       achieveData: [],
+      achieveYearData: {
+        output: null,
+        sale: null
+      },
       achieveFields: {
         cityname: {
           label: "城市"
@@ -178,6 +179,7 @@ export default {
           label: "服务区域",
           placeholder: "",
           required: true,
+          field: "serverareaids",
           options: [],
           changeFunc: this.areaChange
           //   required: true
@@ -186,6 +188,7 @@ export default {
           id: "main-service-area",
           type: 6,
           label: "主要服务区域",
+          field: "mainareaid",
           options: [],
           required: true
         }
@@ -508,6 +511,7 @@ export default {
   },
   mounted() {
     this.loadBaseConfigData();
+    console.info(this.yearOutput, this.yearSale);
   },
   watch: {
     currentStep: function(newVal) {
@@ -663,83 +667,69 @@ export default {
       //   this.areaFormData[1].options = [];
       // }
     },
-    commit() {
-      console.info(this.baseFormData);
-      console.info(this.otherInfoFormData);
-      console.info(this.otherFilesFormData);
-      console.info(this.areaFormData);
-      console.info(this.achieveData);
-      console.info(this.manData);
-      console.info(this.serviceTypeData);
-      //   console.log("save");
-      // let params = {
-      //   action: "updatesupinfo",
-      //   comname: "测试企业名称",
-      //   comtype: "1",
-      //   comuscc: "915101109338383",
-      //   comusccinvaliddate: "2066-10-10",
-      //   combi: "34",
-      //   taxpayerstate: "1",
-      //   addtaxapplytable: "32",
-      //   comregdate: "2013-10-10",
-      //   comregaddr: "地址一次",
-      //   regmoney: "100",
-      //   corporateman: "张三",
-      //   corporatemanidno: "23484949493",
-      //   safeproductionl: "43",
-      //   safeproductionldate: "2012-01-01",
-      //   sysauth: "1",
-      //   quaauthannex: "11",
-      //   manageauthannex: "11",
-      //   banklevelandcredit: "11",
-      //   hqaddr: "总部地址一",
-      //   outputvalueyear: "100",
-      //   turnoveryear: "101",
-      //   branchinfo: "分公司",
-      //   relateinfo: "其它关联公司",
-      //   serverareaids: "1,3,5",
-      //   mainareaid: "3",
-      //   supid: "30",
-      //   man: [
-      //     {
-      //       contacttype: "1",
-      //       contactposition: "职位一",
-      //       contactname: "李四",
-      //       contacttel: "028-80220908",
-      //       contactphone: "13012345678",
-      //       email: "test@qq.com",
-      //       contactidno: "3939384848844",
-      //       sscertificateannex: "123",
-      //       authdelegationannex: "234"
-      //     },
-      //     {
-      //       contacttype: "2",
-      //       contactposition: "dddd职位一",
-      //       contactname: "dddddd李四",
-      //       contacttel: "028-80220908",
-      //       contactphone: "13012345678",
-      //       email: "test@qq.com",
-      //       contactidno: "3939384848844",
-      //       sscertificateannex: "",
-      //       authdelegationannex: ""
-      //     },
-      //     {
-      //       contacttype: "1",
-      //       contactposition: "lllllllll职位一",
-      //       contactname: "王五",
-      //       contacttel: "028-80220908",
-      //       contactphone: "13012345678",
-      //       email: "test@qq.com",
-      //       contactidno: "3939384848844",
-      //       sscertificateannex: "12",
-      //       authdelegationannex: "23"
-      //     }
-      //   ]
-      // };
+    _fillData(formData, params) {
+      // console.log(formData);
 
-      // this.$post(params, res => {
-      //   console.log(res);
-      // });
+      formData.forEach(control => {
+        let val = control.value;
+        if (control.type === 5) {
+          val = val === true ? "1" : "0";
+        } else if (control.type === 3) {
+          val = val || [];
+          val = val.join(",");
+        } else {
+          val = val || "";
+        }
+        // console.log(control.field);
+        params[control.field] = val;
+      });
+    },
+    commit() {
+      let params = { action: "updatesupinfo" };
+
+      // 填充基础数据
+      this._fillData(this.baseFormData, params);
+
+      // console.log(this.achieveYearData);
+
+      params["outputvalueyear"] = this.achieveYearData.output || "0";
+      params["turnoveryear"] = this.achieveYearData.sale || "0";
+
+      // 填充其它信息
+      this._fillData(this.otherInfoFormData, params);
+
+      // 填充区域信息
+      this._fillData(this.areaFormData, params);
+
+      // 填充联系人信息
+      params["man"] = this.manData;
+
+      // 填充服务类别
+      params["types"] = this.serviceTypeData;
+
+      // 填充公司业绩
+      params["achievements"] = this.achieveData;
+
+      // 填充其它附件信息
+      let fileObj = {};
+      this.otherFilesFormData.forEach(control => {
+        if (control.value) {
+          fileObj[control.field] = control.value;
+        }
+      });
+
+      params["otherfiles"] = [fileObj];
+
+      console.log(params);
+
+      this.$post(params, res => {
+        // console.log(res);
+        if (res.code === "0") {
+          alert("保存成功");
+        } else {
+          alert(res.codemsg);
+        }
+      });
     }
   }
 };

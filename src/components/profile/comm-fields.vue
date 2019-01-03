@@ -37,16 +37,6 @@
             v-model="item.value"
             :options="item.options"
           ></b-form-radio-group>
-          <!-- <b-form-file
-            :ref="`${item.id.replace(/-/g, '')}`"
-            :id="item.id"
-            v-if="item.type === 4"
-            v-model="item.value"
-            :multiple="item.multiple"
-            :accept="`${item.accept || 'image/jpeg, image/png, image/gif'}`"
-            :placeholder="item.placeholder || `选择文件`"
-            @change="uploadFiles($event);"
-          ></b-form-file>-->
           <div class="input-file-box" v-if="item.type === 4">
             <input
               type="file"
@@ -60,7 +50,11 @@
             <div class="progress-box" v-show="item.progress && item.progress > 0">
               <b-row>
                 <b-col cols="10">
-                  <b-progress height="4px" :value="item.progress || 0"></b-progress>
+                  <b-progress
+                    height="4px"
+                    variant="custom-progress-color"
+                    :value="item.progress || 0"
+                  ></b-progress>
                 </b-col>
                 <b-col cols="2">
                   <span class="percent">{{item.progress || 0}}%</span>
@@ -120,12 +114,21 @@ export default {
               "Content-Type": "multipart/form-data"
             },
             onUploadProgress: progressEvent => {
-              // Do whatever you want with the native progress event
-              console.log(progressEvent);
+              let loaded = progressEvent.loaded;
+              let total = progressEvent.total;
+              let percent = (parseFloat(loaded) / parseFloat(total)).toFixed(2);
+              percent = parseInt(percent * 100);
+              this.$set(item, "progress", percent);
             }
           })
-          .then(res => {})
-          .catch(error => {});
+          .then(res => {
+            this.$set(item, "progress", 100);
+            item.value = res.IDS;
+          })
+          .catch(error => {
+            console.log(error);
+            alert("上传失败!");
+          });
       }
     }
   }
@@ -133,6 +136,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
+.bg-custom-progress-color {
+  background-color: $theme-color !important;
+}
 .fields-wrap {
   // padding: 30px 60px;
   .table {

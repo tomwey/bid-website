@@ -3,7 +3,7 @@ import axios from 'axios';
 import md5 from "js-md5";
 
 Vue.prototype.$axios = axios;
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 Vue.prototype.$post = (param, callback) => {
     let payload = JSON.stringify(param);

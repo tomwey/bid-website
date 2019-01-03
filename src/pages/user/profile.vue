@@ -324,26 +324,6 @@ export default {
             {
               value: "null",
               text: "请选择企业性质"
-            },
-            {
-              value: "国有企业",
-              text: "国有企业"
-            },
-            {
-              value: "中外合资企业",
-              text: "中外合资企业"
-            },
-            {
-              value: "外商独资企业",
-              text: "外商独资企业"
-            },
-            {
-              value: "私营企业",
-              text: "私营企业"
-            },
-            {
-              value: "其他",
-              text: "其他"
             }
           ],
           placeholder: "请选择企业性质",
@@ -374,7 +354,12 @@ export default {
           label: "营业执照附件",
           placeholder: "",
           field: "combi",
-          required: true
+          required: true,
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "ComBI"
         },
         {
           id: "tax-type",
@@ -385,14 +370,6 @@ export default {
             {
               value: "null",
               text: "请选择纳税人状态"
-            },
-            {
-              value: "一般纳税人",
-              text: "一般纳税人"
-            },
-            {
-              value: "小规模纳税人",
-              text: "小规模纳税人"
             }
           ],
           placeholder: "请选择纳税人状态",
@@ -456,7 +433,12 @@ export default {
           label: "安全生产许可证",
           field: "safeproductionl",
           placeholder: "",
-          required: true
+          required: true,
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "safeproductionl"
         },
         {
           id: "safe-license-expire-date",
@@ -470,24 +452,7 @@ export default {
         {
           id: "iso-supports",
           type: 3,
-          options: [
-            {
-              value: "9000系:质量管理体系认证",
-              text: "9000系:质量管理体系认证"
-            },
-            {
-              value: "14000系:环境管理体系认证",
-              text: "14000系:环境管理体系认证"
-            },
-            {
-              value: "18000系:职业健康安全管理体系认证",
-              text: "18000系:职业健康安全管理体系认证"
-            },
-            {
-              value: "其他",
-              text: "其他"
-            }
-          ],
+          options: [],
           label: "体系认证",
           field: "sysauth",
           placeholder: ""
@@ -498,7 +463,12 @@ export default {
           // multiple: true,
           label: "质量保证体系认证文件（附件）",
           field: "quaauthannex",
-          placeholder: ""
+          placeholder: "",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "quaauthannex"
         },
         {
           id: "mgr-license-file",
@@ -514,7 +484,12 @@ export default {
           multiple: true,
           label: "银行信用等级和授信额度（附件）",
           placeholder: "",
-          field: "banklevelandcredit"
+          field: "banklevelandcredit",
+          domanid: (
+            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
+          ).toString(),
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "banklevelandcredit"
         },
         {
           id: "address",
@@ -584,6 +559,9 @@ export default {
 
     this.currentStep = this.steps[stepIndex - 1];
   },
+  mounted() {
+    this.loadBaseConfigData();
+  },
   watch: {
     currentStep: function(newVal) {
       // console.info(oldVal, newVal);
@@ -597,6 +575,84 @@ export default {
     }
   },
   methods: {
+    loadBaseConfigData() {
+      // 获取企业性质
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "2",
+          p2: "0"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择企业性质"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.sy_value,
+                text: ele.sy_name
+              });
+            });
+            this.baseFormData[1].options = temp;
+          }
+        }
+      );
+      // 获取纳税人状态
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "5",
+          p2: "0"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择纳税人状态"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.sy_value,
+                text: ele.sy_name
+              });
+            });
+            this.baseFormData[5].options = temp;
+          }
+        }
+      );
+      // 获取体系认证
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "6",
+          p2: "0"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.sy_value,
+                text: ele.sy_name
+              });
+            });
+            this.baseFormData[14].options = temp;
+          }
+        }
+      );
+    },
     selectStep(step) {
       this.currentStep = step;
     },

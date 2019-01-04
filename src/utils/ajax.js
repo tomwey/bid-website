@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import axios from 'axios';
 import md5 from "js-md5";
+import store from '../store';
+import router from '../router';
 
 Vue.prototype.$axios = axios;
 // axios.defaults.withCredentials = true;
 
-Vue.prototype.$post = (param, callback) => {
+function post(param, callback) {
     let payload = JSON.stringify(param);
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
@@ -34,3 +36,34 @@ Vue.prototype.$post = (param, callback) => {
             }
         });
 }
+
+Vue.prototype.$post = post;
+
+axios.interceptors.response.use(resp => {
+    // console.log(resp);
+    if (resp.data && resp.data.code === "401") {
+        store.commit("logout");
+        router.replace({
+            path: '/',
+            query: { redirect: router.currentRoute.fullPath }
+        })
+        return Promise.reject("账号登录已过期，请重新登录");
+    } else {
+        return resp;
+    }
+}, error => {
+    // console.log(error);
+    if (error.response) {
+        switch (error.response.status) {
+            case 401:
+                store.commit("logout");
+                router.replace({
+                    path: '/',
+                    query: { redirect: router.currentRoute.fullPath }
+                })
+        }
+    }
+    return Promise.reject(error.response.data)
+});
+
+export default post;

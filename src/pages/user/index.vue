@@ -160,7 +160,8 @@ export default {
       });
     },
     logout() {
-      this.$saveToken(null, -1);
+      // this.$saveToken(null, -1);
+      this.$store.commit("logout");
       this.currentMenuItem = null;
       this.$router.push({ name: "home" });
     }

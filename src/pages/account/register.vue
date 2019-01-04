@@ -79,8 +79,11 @@ export default {
             if (res.count == 1) {
               let arr = res.data;
               let item = arr[0];
-              this.$saveToken(item.token);
-              localStorage.setItem("userinfo", JSON.stringify(item));
+
+              this.$store.commit("login", {
+                token: item.token,
+                days: 1
+              });
 
               this.$router.push({
                 name: "user_home"

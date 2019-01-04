@@ -71,15 +71,5 @@ export default {
             return false;
         }
 
-        Vue.prototype.$saveToken = function (value, expiredays = 1) {
-            if (!value || expiredays < 0) {
-                localStorage.removeItem('token');
-            } else {
-                var date = new Date();
-                date.setDate(date.getDate() + expiredays);
-                localStorage.setItem('token', `${value}#${date.toString()}`);
-            }
-        }
-
     }
 }

@@ -166,13 +166,16 @@ export default {
           p3: "0"
         },
         res => {
-          console.log(res);
+          // console.log(res);
           if (res.code == 0) {
             if (res.count == 1) {
               let arr = res.data;
               let item = arr[0];
-              this.$saveToken(item.token, this.keepLogin ? 7 : 1);
-              localStorage.setItem("userinfo", JSON.stringify(item));
+
+              this.$store.commit("login", {
+                token: item.token,
+                days: this.keepLogin ? 7 : 1
+              });
 
               this.$router.push({
                 name: "user_home"

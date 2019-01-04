@@ -8,6 +8,7 @@ import '@/assets/styles/main.scss';
 import 'vue-awesome/icons';
 import "@/utils/ajax";
 import "@/utils/funcs";
+import store from "@/store/index";
 
 // import '@babel/polyfill';
 
@@ -24,5 +25,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router: router
+  router: router,
+  store: store,
 }).$mount('#app')

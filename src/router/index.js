@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/pages/home/index';
 import funcs from '@/utils/funcs';
+import store from '../store';
+
+import post from '@/utils/ajax';
 
 Vue.use(funcs);
 
@@ -205,19 +208,39 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     // console.log(from);
     if (to.matched.some(r => r.meta.requireAuth)) {
-        if (getToken()) {
-            if (to.meta.requireApprove) {
-                let userInfo = JSON.parse(localStorage.getItem('userinfo'));
-                if (!userInfo || !userInfo.supid) {
+        store.commit("getToken");
+        let token = store.state.token;
+        if (token) {
+            if (!store.state.supinfo.loginname) {
+                post({
+                    action: "P_SUP_GetAccountSupInfo",
+                    p1: token
+                }, res => {
+                    if (res.code === "0") {
+                        // store.state.supinfo = 
+                        let arr = res.data;
+                        if (arr.length > 0) {
+                            store.commit("updatesupinfo", arr[0]);
+                        }
+                    }
+
+                    if (!store.state.supinfo.supid) {
+                        next({
+                            path: '/admin/profile'
+                        })
+                    } else {
+                        next();
+                    }
+
+                });
+            } else {
+                if (!store.state.supinfo.supid) {
                     next({
                         path: '/admin/profile'
-                    });
+                    })
                 } else {
                     next();
                 }
-
-            } else {
-                next();
             }
         } else {
             next({
@@ -229,60 +252,5 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
-function getToken() {
-    let tokenString = localStorage.getItem('token');
-    // console.log(tokenString);
-
-    if (!tokenString) {
-        return null;
-    }
-
-    let arr = tokenString.split('#');
-    let token = arr[0];
-    let time = arr[1];
-
-    // console.log(token);
-
-    time = new Date(time);
-    if (_date1SmallerDate2(time, new Date())) {
-        localStorage.removeItem('token');
-        return null;
-    }
-    return token;
-}
-
-function _date1SmallerDate2(d1, d2) {
-    const y1 = d1.getFullYear();
-    const m1 = d1.getMonth();
-    const date1 = d1.getDate();
-
-    const y2 = d2.getFullYear();
-    const m2 = d2.getMonth();
-    const date2 = d2.getDate();
-
-    if (y1 < y2) return true;
-    if (y1 > y2) return false;
-
-    if (m1 < m2) return true;
-    if (m1 > m2) return false;
-
-    if (date1 < date2) return true;
-    return false;
-}
-
-// function getCookie(name) {
-//     let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-//     let arr = document.cookie.match(reg);
-//     if (!arr) {
-//         return null;
-//     } else {
-//         if (arr.length > 2) {
-//             return arr[2];
-//         } else {
-//             return null;
-//         }
-//     }
-// }
 
 export default router;

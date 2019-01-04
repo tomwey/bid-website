@@ -206,11 +206,16 @@ router.beforeEach((to, from, next) => {
     // console.log(from);
     if (to.matched.some(r => r.meta.requireAuth)) {
         if (getToken()) {
-            let userInfo = localStorage.getItem('userinfo');
-            if (to.meta.requireApprove && (!userInfo || !userInfo.supid)) {
-                next({
-                    path: '/admin/profile'
-                });
+            if (to.meta.requireApprove) {
+                let userInfo = JSON.parse(localStorage.getItem('userinfo'));
+                if (!userInfo || !userInfo.supid) {
+                    next({
+                        path: '/admin/profile'
+                    });
+                } else {
+                    next();
+                }
+
             } else {
                 next();
             }

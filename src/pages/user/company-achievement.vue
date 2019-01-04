@@ -5,14 +5,15 @@
       <table class="table">
         <tr>
           <td class="td-label">年产值额</td>
-          <td class="td-value">30,000,000</td>
+          <td class="td-value">{{yearOutput}}</td>
           <td class="td-label">年营业额</td>
-          <td class="td-value">10,000,000</td>
+          <td class="td-value">{{yearSale}}</td>
         </tr>
       </table>
-      <div class="man-wrap">
+      <!-- <div class="man-wrap">
         <b-table striped hover responsive :items="achieveData" :fields="achieveFields"></b-table>
-      </div>
+      </div>-->
+      <horizontal-table :items="items" :fields="fields"/>
     </div>
   </div>
 </template>
@@ -22,49 +23,108 @@ export default {
   components: {
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
+    },
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
     }
   },
   data() {
     return {
       achieveData: [],
-      achieveFields: {
-        city: {
-          label: "城市"
+      yearOutput: null,
+      yearSale: null,
+
+      items: [],
+      fields: [
+        {
+          label: "城市",
+          value: "cityname"
         },
-        projname: {
-          label: "项目名称"
+        {
+          label: "项目名称",
+          value: "projectname"
         },
-        partnercompany: {
-          label: "合作单位名称"
+        {
+          label: "合作单位名称",
+          value: "partnername"
         },
-        isgoodcompany: {
-          label: "是否标杆企业"
+        {
+          label: "是否标杆企业",
+          value: "ismodel"
         },
-        projmanager: {
-          label: "项目经理"
+        {
+          label: "项目经理",
+          value: "manager"
         },
-        contractmoney: {
-          label: "合同金额"
+        {
+          label: "合同金额(万)",
+          value: "contractmoney"
         },
-        contractscale: {
-          label: "合同规模"
+        {
+          label: "合同规模(万)",
+          value: "contractsize"
         },
-        startdate: {
-          label: "开始日期"
+        {
+          label: "开始日期",
+          value: "begindate"
         },
-        enddate: {
-          label: "结束日期"
+        {
+          label: "结束日期",
+          value: "enddate"
         },
-        memo: {
-          label: "其他说明"
+        {
+          label: "合同附件",
+          value: "contractannex"
         },
-        contractfile: {
-          label: "合同附件"
+        {
+          label: "其他说明",
+          value: "othermemo"
         }
-      }
+      ]
     };
   },
+  mounted() {
+    this.loadData();
+    this.loadData2();
+  },
   methods: {
+    loadData2() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "1"
+        },
+        res => {
+          console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            // this.items = arr;
+            if (arr.length > 0) {
+              let obj = arr[0];
+              this.yearOutput = obj["outputvalueyear"] + "万";
+              this.yearSale = obj["turnoveryear"] + "万";
+            }
+          }
+        }
+      );
+    },
+    loadData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "5"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            this.items = arr;
+          }
+        }
+      );
+    },
     edit() {
       // console.log("ddddddd");
       this.$router.push({ name: "profile", query: { s: 5 } });

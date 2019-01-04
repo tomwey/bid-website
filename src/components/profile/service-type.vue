@@ -9,8 +9,8 @@
         <b-button v-b-modal.contactModal>新增服务类别</b-button>
       </b-col>
     </b-row>
-    <b-table striped hover responsive :items="items" :fields="fields"></b-table>
-
+    <!-- <b-table striped hover responsive :items="items" :fields="fields"></b-table> -->
+    <horizontal-table :items="items" :fields="fields" :actions="actions"/>
     <div class="empty-error-box" v-if="items.length === 0">暂无服务类别</div>
     <!-- <div class="new-btn-wrap">
       <b-button v-b-modal.contactModal>新增联系方式</b-button>
@@ -34,19 +34,54 @@
 <script>
 export default {
   name: "service-type",
-  props: {
-    items: Array,
-    fields: Object
-  },
+  // props: {
+  //   items: Array,
+  //   fields: Object
+  // },
   components: {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
+    },
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
     }
   },
   data() {
     return {
       modalTitle: null,
       serviceTypes: {},
+      items: [],
+      actions: [
+        {
+          name: "编辑"
+        }
+      ],
+      fields: [
+        {
+          label: "对口服务类别",
+          value: "servertype"
+        },
+        {
+          label: "是否主要类别",
+          value: "ismain"
+        },
+        {
+          label: "资质名称",
+          value: "quaname"
+        },
+        {
+          label: "资质级别",
+          value: "qualevel"
+        },
+        {
+          label: "资质审核到期日期",
+          value: "quaexaminedate"
+        },
+        {
+          label: "其他说明",
+          value: "othermemo"
+        }
+      ],
       serviceTypeItems: [],
       typeFormData: [
         {

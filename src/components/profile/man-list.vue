@@ -9,8 +9,8 @@
         <b-button v-b-modal.contactModal>新增联系方式</b-button>
       </b-col>
     </b-row>
-    <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table>
-
+    <horizontal-table :items="items" :fields="fields" :actions="actions"/>
+    <!-- <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table> -->
     <div class="empty-error-box" v-if="items.length === 0">暂无联系方式</div>
     <!-- <div class="new-btn-wrap">
       <b-button v-b-modal.contactModal>新增联系方式</b-button>
@@ -34,17 +34,28 @@
 <script>
 export default {
   name: "man-list",
-  props: {
-    items: Array,
-    fields: Object
-  },
+  // props: {
+  //   items: Array,
+  //   fields: Object
+  // },
   components: {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
+    },
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
     }
   },
   data() {
     return {
+      actions: [
+        // {
+        //   name: "删除"
+        // },
+        {
+          name: "编辑"
+        }
+      ],
       modalTitle: null,
       manFormData: [
         {
@@ -115,6 +126,49 @@ export default {
           type: 1,
           subtype: "text"
           // value: null
+        }
+      ],
+      items: [],
+      fields: [
+        {
+          label: "联系人类型",
+          value: "contacttype"
+        },
+        {
+          label: "联系人职位",
+          value: "contactposition"
+        },
+        {
+          label: "联系人姓名",
+          value: "contactname"
+        },
+        {
+          label: "联系人电话",
+          value: "contacttel"
+        },
+        {
+          label: "联系人手机",
+          value: "contactphone"
+        },
+        {
+          label: "电子邮件",
+          value: "email"
+        },
+        {
+          label: "身份证号码",
+          value: "contactidno"
+        },
+        {
+          label: "联系人社保证明",
+          value: "sscertificateannex"
+        },
+        {
+          label: "附件委托",
+          value: "authdelegationannex"
+        },
+        {
+          label: "操作",
+          value: "actions"
         }
       ]
     };
@@ -198,10 +252,6 @@ export default {
     },
     // resetForm() {},
     commit() {
-      //   console.log(this.manFormData);
-
-      console.log(this.manFormData);
-
       // let temp = [];
       let obj = {};
       this.manFormData.forEach(control => {

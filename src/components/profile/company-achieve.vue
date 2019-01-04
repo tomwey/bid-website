@@ -36,7 +36,8 @@
       </b-col>
     </b-row>
 
-    <b-table striped hover responsive :items="items" :fields="fields"></b-table>
+    <!-- <b-table striped hover responsive :items="items" :fields="fields"></b-table> -->
+    <horizontal-table :items="items" :fields="fields"/>
 
     <div class="empty-error-box" v-if="items.length === 0">暂无公司业绩</div>
 
@@ -62,17 +63,67 @@
 export default {
   name: "company-achieve",
   props: {
-    items: Array,
-    fields: Object,
+    // items: Array,
+    // fields: Object,
     yearData: Object
   },
   components: {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
+    },
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
     }
   },
   data() {
     return {
+      items: [],
+      fields: [
+        {
+          label: "城市",
+          value: "cityname"
+        },
+        {
+          label: "项目名称",
+          value: "projectname"
+        },
+        {
+          label: "合作单位名称",
+          value: "partnername"
+        },
+        {
+          label: "是否标杆企业",
+          value: "ismodel"
+        },
+        {
+          label: "项目经理",
+          value: "manager"
+        },
+        {
+          label: "合同金额(万)",
+          value: "contractmoney"
+        },
+        {
+          label: "合同规模(万)",
+          value: "contractsize"
+        },
+        {
+          label: "开始日期",
+          value: "begindate"
+        },
+        {
+          label: "结束日期",
+          value: "enddate"
+        },
+        {
+          label: "合同附件",
+          value: "contractannex"
+        },
+        {
+          label: "其他说明",
+          value: "othermemo"
+        }
+      ],
       modalTitle: null,
       yjFormData: [
         {

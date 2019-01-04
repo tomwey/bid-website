@@ -3,9 +3,7 @@
     <!-- <man-list :items="manData" :fields="manFields"/> -->
     <div class="box">
       <card-head title="联系方式" @edit="edit"/>
-      <div class="man-wrap">
-        <b-table striped hover responsive :items="manData" :fields="manFields"></b-table>
-      </div>
+      <horizontal-table :items="items" :fields="fields"/>
     </div>
   </div>
 </template>
@@ -13,71 +11,76 @@
 export default {
   name: "man-list",
   components: {
-    // manList: function(resolve) {
-    //   require(["@/components/profile/man-list"], resolve);
-    // },
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
+    },
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
     }
   },
   data() {
     return {
-      manData: [
+      items: [],
+      fields: [
         {
-          typename: "普通联系人",
-          job: "公司总经理",
-          name: "张三",
-          phone: "028-81234567",
-          mobile: "13012345678",
-          email: "",
-          idcard: "",
-          shebao: "",
-          entrust: ""
+          label: "联系人类型",
+          value: "contacttype"
         },
         {
-          typename: "第一联系人",
-          job: "公司总经理",
-          name: "张三",
-          phone: "028-81234567",
-          mobile: "13012345678",
-          email: "",
-          idcard: "",
-          shebao: "",
-          entrust: ""
+          label: "联系人职位",
+          value: "contactposition"
+        },
+        {
+          label: "联系人姓名",
+          value: "contactname"
+        },
+        {
+          label: "联系人电话",
+          value: "contacttel"
+        },
+        {
+          label: "联系人手机",
+          value: "contactphone"
+        },
+        {
+          label: "电子邮件",
+          value: "email"
+        },
+        {
+          label: "身份证号码",
+          value: "contactidno"
+        },
+        {
+          label: "联系人社保证明",
+          value: "sscertificateannex"
+        },
+        {
+          label: "附件委托",
+          value: "authdelegationannex"
         }
-      ],
-      manFields: {
-        typename: {
-          label: "联系人类型"
-        },
-        job: {
-          label: "联系人职位"
-        },
-        name: {
-          label: "联系人姓名"
-        },
-        phone: {
-          label: "联系人电话"
-        },
-        mobile: {
-          label: "联系人手机"
-        },
-        email: {
-          label: "电子邮件"
-        },
-        idcard: {
-          label: "身份证号码"
-        },
-        shebao: {
-          label: "联系人社保证明"
-        },
-        entrust: {
-          label: "授权委托（附件）"
-        }
-      }
+      ]
     };
   },
+  mounted() {
+    this.loadData();
+  },
   methods: {
+    loadData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "2"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            this.items = arr;
+          }
+        }
+      );
+    },
     edit() {
       // console.log("ddddddd");
       this.$router.push({ name: "profile", query: { s: 2 } });

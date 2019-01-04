@@ -5,9 +5,15 @@
         <td class="td-label">{{item.label}}</td>
         <td class="td-value">
           <span v-if="item.type === 1">{{item.value}}</span>
-          <img v-if="item.type === 2" :src="item.value">
-          <div v-if="item.type === 3" v-html="item.value"></div>
-          <a :href="item.value" v-if="item.type === 4" class="file-link">附件</a>
+          
+          <img v-if="item.filetype === 'image'" :src="item.fileurl">
+          <!-- <div v-if="item.filetype === 3" v-html="item.value"></div> -->
+          <a
+            :href="item.fileurl"
+            v-if="item.filetype === 'file'"
+            class="file-link"
+            target="_blank"
+          >{{item.filename}}</a>
         </td>
       </tr>
     </table>

@@ -160,6 +160,33 @@ export default {
                 item.value =
                   obj[item.field] &&
                   obj[item.field].replace("00:00:00 +0000 UTC", "");
+
+                let annexUrlKey = item.field + "url";
+                console.log(annexUrlKey);
+                console.log(obj[annexUrlKey]);
+                if (obj[annexUrlKey]) {
+                  const filename = obj[item.field + "name"];
+
+                  item["filename"] = filename;
+                  item["fileurl"] = obj[annexUrlKey];
+
+                  if (filename) {
+                    if (
+                      filename.indexOf(".png") !== -1 ||
+                      filename.indexOf(".gif") !== -1 ||
+                      filename.indexOf(".jpg") !== -1 ||
+                      filename.indexOf(".jpeg") !== -1 ||
+                      filename.indexOf(".webp") !== -1
+                    ) {
+                      item["filetype"] = "image";
+                    } else {
+                      item["filetype"] = "file";
+                    }
+                  }
+
+                  console.log(item);
+                }
+                // end if
               });
             }
           }

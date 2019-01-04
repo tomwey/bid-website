@@ -13,10 +13,21 @@
           <b-form-input
             :id="item.id"
             :type="item.subtype"
-            v-if="item.type === 1"
+            v-if="item.type === 1 && !item.append"
             v-model="item.value"
             :placeholder="item.placeholder || `输入${item.label}` "
           ></b-form-input>
+
+          <b-input-group :append="item.append" v-if="item.type === 1 && item.append">
+            <b-form-input
+              :id="item.id"
+              :type="item.subtype"
+              v-if="item.type === 1"
+              v-model="item.value"
+              :placeholder="item.placeholder || `输入${item.label}` "
+            ></b-form-input>
+          </b-input-group>
+
           <!-- 下拉选控件 -->
           <b-form-select
             v-if="item.type === 2"

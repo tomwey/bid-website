@@ -350,7 +350,8 @@ export default {
           label: "注册资本",
           placeholder: "",
           field: "regmoney",
-          required: true
+          required: true,
+          append: "万"
         },
         {
           id: "law-man-name",
@@ -497,12 +498,11 @@ export default {
   },
   mounted() {
     this.loadBaseConfigData();
-    console.info(this.yearOutput, this.yearSale);
+    // console.info(this.yearOutput, this.yearSale);
+    this.loadProfileData();
   },
   watch: {
     currentStep: function(newVal) {
-      // console.info(oldVal, newVal);
-      // console.log(this.$route);
       let query = this.$route.query;
       if (query && query.s) {
         this.$router.push({
@@ -512,6 +512,68 @@ export default {
     }
   },
   methods: {
+    loadProfileData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "1"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            if (arr.length > 0) {
+              let object = arr[0];
+              // console.log(object);
+              this.baseFormData.forEach(control => {
+                if (control.type === 3) {
+                  control.value =
+                    object[control.field] && object[control.field].split(",");
+                } else if (control.type === 1 && control.subtype === "date") {
+                  control.value =
+                    object[control.field] &&
+                    object[control.field].split(" ")[0];
+                } else {
+                  control.value =
+                    object[control.field + "str"] || object[control.field];
+                }
+              });
+
+              this.otherInfoFormData.forEach(control => {
+                control.value = object[control.field];
+              });
+
+              this.areaFormData.forEach(control => {
+                if (control.type === 3) {
+                  control.value =
+                    object[control.field] && object[control.field].split(",");
+                  const options = control.value || [];
+                  const cities = this.areaFormData[0].options || [];
+
+                  let temp = [];
+                  options.forEach(v => {
+                    for (let i = 0; i < cities.length; i++) {
+                      if (v === cities[i].value) {
+                        temp.push(cities[i]);
+                        break;
+                      }
+                    }
+                  });
+
+                  this.areaFormData[1].options = temp;
+                } else {
+                  control.value = object[control.field];
+                }
+              });
+
+              this.achieveYearData.output = object["outputvalueyear"];
+              this.achieveYearData.sale = object["turnoveryear"];
+            }
+          }
+        }
+      );
+    },
     loadBaseConfigData() {
       // 获取企业性质
       this.$post(

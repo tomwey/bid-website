@@ -101,8 +101,25 @@ export default {
   },
   mounted() {
     this.loadConfigs();
+    this.loadServiceTypeData();
   },
   methods: {
+    loadServiceTypeData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "4"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            this.items = res.data;
+          } else {
+          }
+        }
+      );
+    },
     loadConfigs() {
       this.$post(
         {

@@ -121,8 +121,26 @@ export default {
   },
   mounted() {
     this.loadConfigs();
+    this.loadManData();
   },
   methods: {
+    loadManData() {
+      // console.log(123);
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "2"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            this.items = res.data;
+          } else {
+          }
+        }
+      );
+    },
     loadConfigs() {
       // 联系人类型
       this.$post(

@@ -6,18 +6,22 @@
           <label for="year-output">年产值额</label>
         </td>
         <td class="input-control">
-          <b-form-input
-            id="year-output"
-            v-model="yearData.output"
-            placeholder="输入年产值额"
-            type="number"
-          ></b-form-input>
+          <b-input-group append="万">
+            <b-form-input
+              id="year-output"
+              v-model="yearData.output"
+              placeholder="输入年产值额"
+              type="number"
+            ></b-form-input>
+          </b-input-group>
         </td>
         <td class="label">
           <label for="year-sale">年营业额</label>
         </td>
         <td class="input-control">
-          <b-form-input id="year-sale" v-model="yearData.sale" placeholder="输入年营业额" type="number"></b-form-input>
+          <b-input-group append="万">
+            <b-form-input id="year-sale" v-model="yearData.sale" placeholder="输入年营业额" type="number"></b-form-input>
+          </b-input-group>
         </td>
       </tr>
     </table>
@@ -163,7 +167,26 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.loadAchieveData();
+  },
   methods: {
+    loadAchieveData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "5"
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            this.items = res.data;
+          } else {
+          }
+        }
+      );
+    },
     commit() {
       //   console.log(this.manFormData);
       // this.reset();

@@ -44,11 +44,11 @@ export default {
   }
 
   .td-label {
-    width: 180px !important;
+    width: 30%;
     color: #999;
   }
   .td-value {
-    width: calc(100% - 180px);
+    width: 70%;
     color: #333;
     img {
       max-width: 200px;

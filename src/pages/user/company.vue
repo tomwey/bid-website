@@ -25,101 +25,147 @@ export default {
     };
   },
   mounted() {
+    this.loadData();
     this.items = [
       {
         label: "企业名称",
-        value: "成都建工集团",
-        type: 1
+        value: "",
+        type: 1,
+        field: "comname"
       },
       {
         label: "企业性质",
-        value: "私营企业",
-        type: 1
+        value: "",
+        type: 1,
+        field: "comtype"
       },
       {
         label: "统一社会信用代码",
-        value: "91510100331069645M",
+        value: "",
+        field: "comuscc",
+        type: 1
+      },
+      {
+        label: "统一社会信用代码有效期",
+        value: "",
+        field: "comusccinvaliddate",
         type: 1
       },
       {
         label: "营业执照",
-        value:
-          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545890758605&di=ac9b5b54fc75d88a7017d36ba4407550&imgtype=0&src=http%3A%2F%2Fimg1.a.maoyia.com%2F201803%2F03%2F15%2F15-24-23-55-1405149.jpg",
+        value: "",
+        field: "combi",
         type: 2
       },
       {
         label: "纳税人状态",
-        value: "小规模纳税人",
+        value: "",
+        field: "taxpayerstate",
         type: 1
       },
       {
         label: "增值税一般纳税人申请认定表",
-        value: "http://",
+        value: "",
+        field: "addtaxapplytable",
         type: 4
       },
       {
         label: "企业注册日期",
-        value: "2015年4月23日",
+        value: "",
+        field: "comregdate",
         type: 1
       },
       {
         label: "企业注册地址",
-        value: "成都市高新区府城大道234号",
+        value: "",
+        field: "comregaddr",
         type: 1
       },
       {
         label: "注册资本",
-        value: "500万",
+        value: "",
+        field: "regmoney",
         type: 1
       },
       {
         label: "法定代表人",
-        value: "张三",
+        value: "",
+        field: "corporateman",
         type: 1
       },
       {
         label: "法定代表人身份证号",
-        value: "51010619760101263X",
+        value: "",
+        field: "corporatemanidno",
         type: 1
       },
       {
         label: "安全生产许可证",
-        value: "http",
+        value: "",
+        field: "safeproductionl",
         type: 4
       },
       {
         label: "安全许可证到期日",
-        value: "2015年4月23日",
+        value: "",
+        field: "safeproductionldate",
         type: 1
       },
       {
         label: "体系认证",
-        value: "9000:质量管理体系认证；18000系:职业健康安全管理体系认证",
+        value: "",
+        field: "sysauth",
         type: 1
       },
       {
         label: "质量保证体系认证文件",
-        value: "http://",
+        value: "",
+        field: "quaauthannex",
         type: 4
       },
       {
         label: "管理体系认证（ISO9001/14001/HSE等附件）",
-        value: "http://",
+        value: "",
+        field: "manageauthannex",
         type: 4
       },
       {
         label: "银行信用等级和授信额度（附件）",
-        value: "http://",
+        value: "",
+        field: "banklevelandcredit",
         type: 4
       },
       {
         label: "（总部）办公地址",
-        value: "成都市青羊区西大街25号",
+        value: "",
+        field: "hqaddr",
         type: 1
       }
     ];
   },
   methods: {
+    loadData() {
+      this.$post(
+        {
+          action: "P_SUP_GetSupInfo",
+          p1: this.$store.state.token,
+          p2: "1"
+        },
+        res => {
+          if (res.code === "0") {
+            const arr = res.data;
+            if (arr.length > 0) {
+              const obj = arr[0];
+              this.items.forEach(item => {
+                item.value =
+                  obj[item.field] &&
+                  obj[item.field].replace("00:00:00 +0000 UTC", "");
+              });
+            }
+          }
+        }
+      );
+    },
     edit() {
       // console.log("ddddddd");
       this.$router.push({ name: "profile", query: { s: 1 } });

@@ -55,8 +55,8 @@ export default {
           formData.append("file", files[i]);
         }
         formData.append("mid", "0");
-        let item = JSON.parse(localStorage.getItem("userinfo"));
-        let uid = item && item.accountid;
+
+        let uid = this.$store.state.supinfo.accountid || "0";
 
         formData.append("domanid", (uid || 0).toString());
         formData.append("tablename", this.tablename || "H_Sup_Annex");

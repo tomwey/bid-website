@@ -4,13 +4,17 @@
       <div class="base-info">
         <div class="info-wrap">
           <div class="icon-wrap">
-            <img src="../../assets/images/icon_cdjg.png">
+            <v-icon name="user-circle" scale="4.5" style="color: #999"/>
           </div>
           <div class="content-wrap">
-            <p class="title">成都建工集团有限公司</p>
+            <p class="title">{{$store.state.supinfo.supname}}</p>
+            <p class="account">
+              登录手机：
+              <span class="name">{{$store.state.supinfo.telephone}}</span>
+            </p>
             <p class="account">
               登录账号：
-              <span class="name">133****5678</span>
+              <span class="name">{{$store.state.supinfo.loginname}}</span>
             </p>
             <b-badge>待审核</b-badge>
           </div>
@@ -23,19 +27,19 @@
         <b-row>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">5</p>
+              <p class="value">0</p>
               <p class="label">已投标</p>
             </div>
           </b-col>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">2</p>
+              <p class="value">0</p>
               <p class="label">已中标</p>
             </div>
           </b-col>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">10</p>
+              <p class="value">0</p>
               <p class="label">未读消息</p>
             </div>
           </b-col>
@@ -67,22 +71,22 @@ export default {
   data() {
     return {
       messages: [
-        {
-          title: "未读消息一",
-          time: "2018-12-21 13:23:30"
-        },
-        {
-          title: "未读消息二",
-          time: "2018-12-21 13:23:30"
-        },
-        {
-          title: "招标文件资料不完整，请速度补充",
-          time: "2018-12-21 13:23:30"
-        },
-        {
-          title: "招标文件资料不完整，请速度补充",
-          time: "2018-12-21 13:23:30"
-        }
+        // {
+        //   title: "未读消息一",
+        //   time: "2018-12-21 13:23:30"
+        // },
+        // {
+        //   title: "未读消息二",
+        //   time: "2018-12-21 13:23:30"
+        // },
+        // {
+        //   title: "招标文件资料不完整，请速度补充",
+        //   time: "2018-12-21 13:23:30"
+        // },
+        // {
+        //   title: "招标文件资料不完整，请速度补充",
+        //   time: "2018-12-21 13:23:30"
+        // }
       ]
     };
   },

@@ -221,9 +221,7 @@ export default {
           label: "近三年财务审计报告(附件)",
           placeholder: "",
           field: "threeyfinancialreports",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
           fieldname: "threeyfinancialreports"
         },
@@ -234,9 +232,7 @@ export default {
           label: "认证或荣誉证书(附件)",
           placeholder: "",
           field: "honorcertificate",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
           fieldname: "honorcertificate"
         },
@@ -247,9 +243,7 @@ export default {
           label: "外地备案证(附件)",
           placeholder: "",
           field: "fieldcertificate",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
           fieldname: "fieldcertificate"
         }
@@ -305,9 +299,7 @@ export default {
           placeholder: "",
           field: "combi",
           required: true,
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "ComBI"
         },
@@ -384,9 +376,7 @@ export default {
           field: "safeproductionl",
           placeholder: "",
           required: true,
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "safeproductionl"
         },
@@ -414,9 +404,7 @@ export default {
           label: "质量保证体系认证文件（附件）",
           field: "quaauthannex",
           placeholder: "",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "quaauthannex"
         },
@@ -435,9 +423,7 @@ export default {
           label: "银行信用等级和授信额度（附件）",
           placeholder: "",
           field: "banklevelandcredit",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "banklevelandcredit"
         },
@@ -700,6 +686,8 @@ export default {
 
       // 填充区域信息
       this._fillData(this.areaFormData, params);
+
+      params["token"] = this.$store.state.token;
 
       // 填充联系人信息
       params["man"] = this.manData;

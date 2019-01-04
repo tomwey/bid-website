@@ -148,9 +148,7 @@ export default {
           required: true,
           label: "合同附件",
           field: "contractannex",
-          domanid: (
-            JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-          ).toString(),
+          domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
           fieldname: "contractannex"
         },

@@ -225,9 +225,7 @@ export default {
               field: "sscertificateannex",
               type: 4,
               subtype: 1,
-              domanid: (
-                JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-              ).toString(),
+              domanid: this.$store.state.supinfo.accountid || "0",
               tablename: "H_Sup_Contact_Info",
               fieldname: "sscertificateannex"
             },
@@ -238,9 +236,7 @@ export default {
               field: "authdelegationannex",
               type: 4,
               subtype: 2, // 普通文件
-              domanid: (
-                JSON.parse(localStorage.getItem("userinfo")).accountid || ""
-              ).toString(),
+              domanid: this.$store.state.supinfo.accountid || "0",
               tablename: "H_Sup_Contact_Info",
               fieldname: "authdelegationannex"
               //   subtype: "text"

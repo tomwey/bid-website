@@ -2,9 +2,7 @@
   <div class="company">
     <div class="box">
       <card-head title="基本信息" @edit="edit"/>
-      <div class="list-box">
-        <list :items="items"/>
-      </div>
+      <vertical-table :items="items" step="1"/>
     </div>
   </div>
 </template>
@@ -12,11 +10,11 @@
 export default {
   name: "company",
   components: {
-    list: function(resolve) {
-      require(["@/components/profile/list"], resolve);
-    },
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
+    },
+    verticalTable: function(resolve) {
+      require(["@/components/profile/vertical-table"], resolve);
     }
   },
   data() {
@@ -25,7 +23,6 @@ export default {
     };
   },
   mounted() {
-    this.loadData();
     this.items = [
       {
         label: "企业名称",
@@ -144,55 +141,6 @@ export default {
     ];
   },
   methods: {
-    loadData() {
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.token,
-          p2: "1"
-        },
-        res => {
-          if (res.code === "0") {
-            const arr = res.data;
-            if (arr.length > 0) {
-              const obj = arr[0];
-              this.items.forEach(item => {
-                item.value =
-                  obj[item.field] &&
-                  obj[item.field].replace("00:00:00 +0000 UTC", "");
-
-                let annexUrlKey = item.field + "url";
-                console.log(annexUrlKey);
-                console.log(obj[annexUrlKey]);
-                if (obj[annexUrlKey]) {
-                  const filename = obj[item.field + "name"];
-
-                  item["filename"] = filename;
-                  item["fileurl"] = obj[annexUrlKey];
-
-                  if (filename) {
-                    if (
-                      filename.indexOf(".png") !== -1 ||
-                      filename.indexOf(".gif") !== -1 ||
-                      filename.indexOf(".jpg") !== -1 ||
-                      filename.indexOf(".jpeg") !== -1 ||
-                      filename.indexOf(".webp") !== -1
-                    ) {
-                      item["filetype"] = "image";
-                    } else {
-                      item["filetype"] = "file";
-                    }
-                  }
-
-                  console.log(item);
-                }
-                // end if
-              });
-            }
-          }
-        }
-      );
-    },
     edit() {
       // console.log("ddddddd");
       this.$router.push({ name: "profile", query: { s: 1 } });
@@ -200,12 +148,6 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.list-box {
-  padding: 15px 30px 60px;
-}
-</style>
-
 <style lang="scss" scoped>
 </style>
 

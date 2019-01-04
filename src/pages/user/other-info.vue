@@ -2,9 +2,7 @@
   <div class="other-info-list">
     <div class="box">
       <card-head title="其他信息" @edit="edit"/>
-      <div class="list-box">
-        <list :items="items"/>
-      </div>
+      <vertical-table :items="items" step="1"/>
     </div>
   </div>
 </template>
@@ -12,8 +10,8 @@
 export default {
   name: "other-info",
   components: {
-    list: function(resolve) {
-      require(["@/components/profile/list"], resolve);
+    verticalTable: function(resolve) {
+      require(["@/components/profile/vertical-table"], resolve);
     },
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
@@ -28,17 +26,19 @@ export default {
     this.items = [
       {
         label: "分公司信息",
-        value: "成都第八建筑有限公司",
-        type: 1
+        value: "",
+        type: 1,
+        field: "branchinfo"
       },
       {
         label: "关联公司信息",
-        value:
-          "成都三合科技有限公司；成都由乙方科技有限公司;成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司成都三合科技有限公司；成都由乙方科技有限公司",
-        type: 1
+        value: "",
+        type: 1,
+        field: "relateinfo"
       }
     ];
   },
+
   methods: {
     edit() {
       // console.log("ddddddd");

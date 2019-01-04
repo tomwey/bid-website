@@ -2,9 +2,7 @@
   <div class="area">
     <div class="box">
       <card-head title="服务区域" @edit="edit"/>
-      <div class="list-box">
-        <list :items="items"/>
-      </div>
+      <vertical-table :items="items" step="1"/>
     </div>
   </div>
 </template>
@@ -12,8 +10,8 @@
 export default {
   name: "service-area",
   components: {
-    list: function(resolve) {
-      require(["@/components/profile/list"], resolve);
+    verticalTable: function(resolve) {
+      require(["@/components/profile/vertical-table"], resolve);
     },
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
@@ -28,13 +26,15 @@ export default {
     this.items = [
       {
         label: "服务区域",
-        value: "成都；西安；长沙",
-        type: 1
+        value: "",
+        type: 1,
+        field: "serverareaids"
       },
       {
         label: "主要服务区域",
-        value: "成都",
-        type: 1
+        value: "",
+        type: 1,
+        field: "mainareaid"
       }
     ];
   },

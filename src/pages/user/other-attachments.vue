@@ -2,9 +2,7 @@
   <div class="other-attachments">
     <div class="box">
       <card-head title="其他附件" @edit="edit"/>
-      <div class="list-box">
-        <list :items="items"/>
-      </div>
+      <vertical-table :items="items" step="7"/>
     </div>
   </div>
 </template>
@@ -12,8 +10,8 @@
 export default {
   name: "other-attachments",
   components: {
-    list: function(resolve) {
-      require(["@/components/profile/list"], resolve);
+    verticalTable: function(resolve) {
+      require(["@/components/profile/vertical-table"], resolve);
     },
     cardHead: function(resolve) {
       require(["@/components/profile/card-head"], resolve);
@@ -28,18 +26,21 @@ export default {
     this.items = [
       {
         label: "近三年财务审计报告（附件）",
-        value: "http://",
-        type: 4
+        value: "",
+        type: 4,
+        field: "threeyfinancialreports"
       },
       {
         label: "认证或荣誉证书（附件）",
-        value: "http://",
-        type: 4
+        value: "",
+        type: 4,
+        field: "honorcertificate"
       },
       {
         label: "外地备案证（附件）",
-        value: "http://",
-        type: 4
+        value: "",
+        type: 4,
+        field: "fieldcertificate"
       }
     ];
   },

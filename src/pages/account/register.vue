@@ -11,7 +11,7 @@
             <b-form-input v-model="code" type="tel" placeholder="验证码"></b-form-input>
           </div>
           <div class="get-code-btn">
-            <get-code :mobile="mobile" type="2"/>
+            <get-code :mobile="mobile" :type="codetype"/>
           </div>
         </div>
         <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
@@ -35,6 +35,7 @@ export default {
       // company: null,
       mobile: null,
       code: null,
+      codetype: "2",
       password: null,
       password_confirm: null
     };
@@ -72,7 +73,7 @@ export default {
           p2: this.mobile,
           p3: this.GetPassword(this.password),
           p4: this.code,
-          p5: "2"
+          p5: this.codetype
         },
         res => {
           if (res.code == 0) {

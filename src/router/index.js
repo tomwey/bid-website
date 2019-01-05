@@ -154,7 +154,7 @@ const router = new Router({
                     name: 'user_account',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        // requireApprove: true
                     },
                     component: () => import('@/pages/user/account'),
                 },
@@ -207,37 +207,46 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     // console.log(from);
+    store.commit("getToken");
     if (to.matched.some(r => r.meta.requireAuth)) {
-        store.commit("getToken");
+
         let token = store.state.token;
         if (token) {
             if (!store.state.supinfo.loginname) {
                 post({
                     action: "P_SUP_GetAccountSupInfo",
-                    p1: token
+                    p1: store.state.supinfo.accountid,
+                    p2: token
                 }, res => {
+                    console.log(res);
                     if (res.code === "0") {
                         // store.state.supinfo = 
                         let arr = res.data;
                         if (arr.length > 0) {
                             store.commit("updatesupinfo", arr[0]);
                         }
+                    } else {
+                        store.commit("logout");
+                        next({
+                            path: '/',
+                            query: { redirect: to.fullPath }
+                        });
                     }
 
-                    if (!store.state.supinfo.supid) {
+                    if (to.meta.requireApprove && !store.state.supinfo.supid) {
                         next({
                             path: '/admin/profile'
-                        })
+                        });
                     } else {
                         next();
                     }
-
                 });
             } else {
-                if (!store.state.supinfo.supid) {
+                // console.log(store.state.supinfo);
+                if (to.meta.requireApprove && !store.state.supinfo.supid) {
                     next({
                         path: '/admin/profile'
-                    })
+                    });
                 } else {
                     next();
                 }

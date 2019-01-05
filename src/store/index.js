@@ -13,6 +13,7 @@ const store = new Vuex.Store({
         getToken: (state) => {
             const token = _getToken();
             state.token = token;
+            state.supinfo.accountid = localStorage.getItem("uid");
         },
         login: (state, data) => {
             // localStorage.token = data;
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
         logout: (state) => {
             // console.log(123);
             localStorage.removeItem('token');
+            localStorage.removeItem('uid');
             state.token = null;
             state.supinfo = {};
         },
@@ -44,6 +46,7 @@ function _saveToken(data) {
     var date = new Date();
     date.setDate(date.getDate() + data.days);
     localStorage.setItem('token', `${data.token}#${date.toString()}`);
+    localStorage.setItem('uid', data.uid);
 }
 
 function _getToken() {

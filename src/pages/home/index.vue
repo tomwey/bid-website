@@ -177,7 +177,8 @@ export default {
 
               this.$store.commit("login", {
                 token: item.token,
-                days: this.keepLogin ? 7 : 1
+                days: this.keepLogin ? 7 : 1,
+                uid: item.accountid
               });
 
               this.$router.push({

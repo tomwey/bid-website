@@ -62,6 +62,7 @@
       @hide="reset"
     >
       <div class="fields-wrap">
+        <div class="error-box" v-if="!!error">{{error}}</div>
         <table class="table">
           <tr>
             <td class="label">
@@ -117,6 +118,7 @@
       ref="loginModal"
     >
       <div class="fields-wrap">
+        <div class="error-box" v-if="!!error">{{error}}</div>
         <table class="table">
           <tr>
             <td class="label">
@@ -147,6 +149,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       loginname: null,
       mobile: null,
       code: null,
@@ -155,12 +158,14 @@ export default {
   },
   methods: {
     reset() {
-      this.loginname = null;
-      this.mobile = null;
-      this.code = null;
+      // console.log(123);
+      // this.loginname = null;
+      // this.mobile = null;
+      // this.code = null;
     },
     commit(ev) {
       // console.log(ev);
+      this.error = null;
       ev.preventDefault();
 
       const id = ev.target.id;
@@ -168,12 +173,55 @@ export default {
       if (id === "loginNameModal") {
         // 修改登录名
         if (!this.loginname) {
-          alert("登录名不能为空");
+          this.error = "登录名不能为空";
           return;
         }
 
         if (this.loginname === this.$store.state.supinfo.loginname) {
-          alert("新登录名不能与原登录名一致");
+          this.error = "新登录名不能与原登录名一致";
+          return;
+        }
+
+        const loginname = this.loginname;
+
+        this.$post(
+          {
+            action: "updateaccountinfo",
+            p1: this.$store.state.supinfo.accountid,
+            p2: this.$store.state.token,
+            p3: "1",
+            p4: loginname,
+            p5: ""
+          },
+          res => {
+            if (res.code === "0") {
+              this.$store.commit("updateloginname", loginname);
+              this.$refs.loginModal.hide();
+
+              this.loginname = null;
+              this.mobile = null;
+              this.code = null;
+            } else {
+              this.error = res.codemsg;
+            }
+          }
+        );
+      } else if (id === "mobileModal") {
+        const mobile = this.mobile;
+
+        if (!this.mobile) {
+          this.error = "手机号不能为空";
+          return;
+        }
+
+        if (this.mobile === this.$store.state.supinfo.telephone) {
+          this.error = "新手机号不能与原手机号一致";
+          return;
+        }
+
+        // 验证码
+        if (!this.code) {
+          this.error = "验证码不能为空";
           return;
         }
 
@@ -182,70 +230,22 @@ export default {
             action: "updateaccountinfo",
             p1: this.$store.state.supinfo.accountid,
             p2: this.$store.state.token,
-            p3: "1",
-            p4: this.loginname,
-            p5: ""
+            p3: "2",
+            p4: this.mobile,
+            p5: "",
+            p6: this.code,
+            p7: this.codetype
           },
           res => {
-            if (res.code === 0) {
-              this.$store.commit("updateloginname", this.loginname);
-              this.$refs.loginModal.hide();
-            } else {
-              alert(res.codemsg);
-            }
-          }
-        );
-      } else if (id === "mobileModal") {
-        // 修改登录名
-        if (!this.mobile) {
-          alert("手机号不能为空");
-          return;
-        }
-
-        if (this.mobile === this.$store.state.supinfo.telephone) {
-          alert("新手机号不能与原手机号一致");
-          return;
-        }
-
-        // 验证码
-        if (!this.code) {
-          alert("验证码不能为空");
-          return;
-        }
-
-        // 校验验证码
-        this.$post(
-          {
-            action: "verifysms",
-            p1: this.mobile,
-            p2: this.code,
-            p3: this.codetype
-          },
-          res => {
-            // console.log(res);
             if (res.code === "0") {
-              // this.commit();
-              // 修改手机号
-              this.$post(
-                {
-                  action: "updateaccountinfo",
-                  p1: this.$store.state.supinfo.accountid,
-                  p2: this.$store.state.token,
-                  p3: "2",
-                  p4: this.mobile,
-                  p5: ""
-                },
-                res => {
-                  if (res.code === 0) {
-                    this.$store.commit("updatemobile", this.mobile);
-                    this.$refs.mobileModal.hide();
-                  } else {
-                    alert(res.codemsg);
-                  }
-                }
-              );
+              this.$store.commit("updatemobile", mobile);
+              this.$refs.mobileModal.hide();
+
+              this.loginname = null;
+              this.mobile = null;
+              this.code = null;
             } else {
-              alert(res.codemsg);
+              this.error = res.codemsg;
             }
           }
         );

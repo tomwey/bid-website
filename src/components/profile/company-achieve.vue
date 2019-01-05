@@ -63,7 +63,7 @@
 export default {
   name: "company-achieve",
   props: {
-    // items: Array,
+    items: Array,
     // fields: Object,
     yearData: Object
   },
@@ -77,7 +77,7 @@ export default {
   },
   data() {
     return {
-      items: [],
+      // items: [],
       fields: [
         {
           label: "城市",

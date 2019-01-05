@@ -41,13 +41,14 @@ Vue.prototype.$post = post;
 
 axios.interceptors.response.use(resp => {
     // console.log(resp);
-    if (resp.data && resp.data.code === "401") {
+    if (resp.data && (resp.data.code === "401" || resp.data.code === "404")) {
         store.commit("logout");
         router.replace({
             path: '/',
             query: { redirect: router.currentRoute.fullPath }
         })
-        return Promise.reject("账号登录已过期，请重新登录");
+        let msg = resp.data.code === "401" ? "账号登录已过期，请重新登录" : "非法操作";
+        return Promise.reject(msg);
     } else {
         return resp;
     }

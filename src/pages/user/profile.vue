@@ -37,16 +37,11 @@
             :ref="`step${currentStep.step}`"
           />
         </div>
-        <man-list v-if="currentStep.step === 2" :items="manData" :fields="manFields"/>
-        <service-type
-          v-if="currentStep.step === 4"
-          :items="serviceTypeData"
-          :fields="serviceTypeFields"
-        />
+        <man-list v-if="currentStep.step === 2" :items="manData"/>
+        <service-type v-if="currentStep.step === 4" :items="serviceTypeData"/>
         <company-achieve
           v-if="currentStep.step === 5"
           :items="achieveData"
-          :fields="achieveFields"
           :year-data="achieveYearData"
         />
       </div>
@@ -86,92 +81,92 @@ export default {
         output: null,
         sale: null
       },
-      achieveFields: {
-        cityname: {
-          label: "城市"
-        },
-        projectname: {
-          label: "项目名称"
-        },
-        partnername: {
-          label: "合作单位名称"
-        },
-        ismodel: {
-          label: "是否标杆企业"
-        },
-        manager: {
-          label: "项目经理"
-        },
-        contractmoney: {
-          label: "合同金额"
-        },
-        contractsize: {
-          label: "合同规模"
-        },
-        begindate: {
-          label: "开始日期"
-        },
-        enddate: {
-          label: "结束日期"
-        },
-        othermemo: {
-          label: "其他说明"
-        },
-        contractannex: {
-          label: "合同附件"
-        }
-      },
+      // achieveFields: {
+      //   cityname: {
+      //     label: "城市"
+      //   },
+      //   projectname: {
+      //     label: "项目名称"
+      //   },
+      //   partnername: {
+      //     label: "合作单位名称"
+      //   },
+      //   ismodel: {
+      //     label: "是否标杆企业"
+      //   },
+      //   manager: {
+      //     label: "项目经理"
+      //   },
+      //   contractmoney: {
+      //     label: "合同金额"
+      //   },
+      //   contractsize: {
+      //     label: "合同规模"
+      //   },
+      //   begindate: {
+      //     label: "开始日期"
+      //   },
+      //   enddate: {
+      //     label: "结束日期"
+      //   },
+      //   othermemo: {
+      //     label: "其他说明"
+      //   },
+      //   contractannex: {
+      //     label: "合同附件"
+      //   }
+      // },
       serviceTypeData: [],
-      serviceTypeFields: {
-        servertypename: {
-          label: "对口服务类别"
-        },
-        ismain: {
-          label: "是否主要类别"
-        },
-        quaname: {
-          label: "资质名称"
-        },
-        qualevel: {
-          label: "资质级别"
-        },
-        quaexaminedate: {
-          label: "资质审核到期日期"
-        },
-        othermemo: {
-          label: "其他说明"
-        }
-      },
+      // serviceTypeFields: {
+      //   servertypename: {
+      //     label: "对口服务类别"
+      //   },
+      //   ismain: {
+      //     label: "是否主要类别"
+      //   },
+      //   quaname: {
+      //     label: "资质名称"
+      //   },
+      //   qualevel: {
+      //     label: "资质级别"
+      //   },
+      //   quaexaminedate: {
+      //     label: "资质审核到期日期"
+      //   },
+      //   othermemo: {
+      //     label: "其他说明"
+      //   }
+      // },
       manData: [],
-      manFields: {
-        contacttype: {
-          label: "联系人类型"
-        },
-        contactposition: {
-          label: "联系人职位"
-        },
-        contactname: {
-          label: "联系人姓名"
-        },
-        contacttel: {
-          label: "联系人电话"
-        },
-        contactphone: {
-          label: "联系人手机"
-        },
-        email: {
-          label: "电子邮件"
-        },
-        contactidno: {
-          label: "身份证号码"
-        },
-        sscertificateannex: {
-          label: "联系人社保证明"
-        },
-        authdelegationannex: {
-          label: "授权委托（附件）"
-        }
-      },
+      // manFields: {
+      //   contacttype: {
+      //     label: "联系人类型"
+      //   },
+      //   contactposition: {
+      //     label: "联系人职位"
+      //   },
+      //   contactname: {
+      //     label: "联系人姓名"
+      //   },
+      //   contacttel: {
+      //     label: "联系人电话"
+      //   },
+      //   contactphone: {
+      //     label: "联系人手机"
+      //   },
+      //   email: {
+      //     label: "电子邮件"
+      //   },
+      //   contactidno: {
+      //     label: "身份证号码"
+      //   },
+      //   sscertificateannex: {
+      //     label: "联系人社保证明"
+      //   },
+      //   authdelegationannex: {
+      //     label: "授权委托（附件）"
+      //   }
+      // },
       areaFormData: [
         {
           id: "service-area",
@@ -748,6 +743,8 @@ export default {
 
       // 填充区域信息
       this._fillData(this.areaFormData, params);
+
+      params["_loginuid"] = this.$store.state.supinfo.accountid;
 
       params["token"] = this.$store.state.token;
 

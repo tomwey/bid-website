@@ -34,10 +34,10 @@
 <script>
 export default {
   name: "service-type",
-  // props: {
-  //   items: Array,
-  //   fields: Object
-  // },
+  props: {
+    items: Array
+    //   fields: Object
+  },
   components: {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
@@ -50,7 +50,7 @@ export default {
     return {
       modalTitle: null,
       serviceTypes: {},
-      items: [],
+      // items: [],
       actions: [
         {
           name: "编辑"

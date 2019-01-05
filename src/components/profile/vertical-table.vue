@@ -7,7 +7,7 @@
 export default {
   name: "vertical-table",
   props: {
-    step: Number,
+    step: String,
     items: Array
   },
   components: {
@@ -23,8 +23,9 @@ export default {
       this.$post(
         {
           action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.token,
-          p2: (this.step || 1).toString()
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token,
+          p3: (this.step || 1).toString()
         },
         res => {
           if (res.code === "0") {

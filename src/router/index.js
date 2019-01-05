@@ -218,7 +218,7 @@ router.beforeEach((to, from, next) => {
                     p1: store.state.supinfo.accountid,
                     p2: token
                 }, res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.code === "0") {
                         // store.state.supinfo = 
                         let arr = res.data;

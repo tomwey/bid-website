@@ -34,10 +34,10 @@
 <script>
 export default {
   name: "man-list",
-  // props: {
-  //   items: Array,
-  //   fields: Object
-  // },
+  props: {
+    items: Array
+    //   fields: Object
+  },
   components: {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
@@ -128,7 +128,7 @@ export default {
           // value: null
         }
       ],
-      items: [],
+      // items: [],
       fields: [
         {
           label: "联系人类型",

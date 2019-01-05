@@ -2,17 +2,17 @@
   <div class="password-form">
     <div class="form-controls">
       <b-form-input v-model="mobile" :readonly="!!mobile" type="tel" placeholder="手机号"></b-form-input>
-      <b-row>
-        <b-col cols="8">
+      <div class="code-control-wrap">
+        <div class="code-control">
           <b-form-input v-model="code" type="tel" placeholder="验证码"></b-form-input>
-        </b-col>
-        <b-col cols="4">
-          <span class="get-code">获取验证码</span>
-        </b-col>
-      </b-row>
+        </div>
+        <div class="get-code-btn">
+          <get-code :mobile="mobile" :type="codeType"/>
+        </div>
+      </div>
       <b-form-input v-model="password" type="password" placeholder="输入新密码"></b-form-input>
       <b-form-input v-model="password_confirm" type="password" placeholder="确认新密码"></b-form-input>
-      <span class="reg-btn">保&emsp;存</span>
+      <span class="reg-btn" @click="save">保&emsp;存</span>
     </div>
   </div>
 </template>
@@ -20,7 +20,13 @@
 export default {
   name: "password-form",
   props: {
-    mobile: Number
+    mobile: Number,
+    codeType: Number
+  },
+  components: {
+    getCode: function(resolve) {
+      require(["@/components/get-code"], resolve);
+    }
   },
   data() {
     return {
@@ -30,6 +36,9 @@ export default {
       password: null,
       password_confirm: null
     };
+  },
+  methods: {
+    save() {}
   }
 };
 </script>
@@ -52,16 +61,21 @@ $theme-color: #e46623;
     color: #fff;
     background: $theme-color;
     margin: 40px 0 20px;
+    cursor: pointer;
+    user-select: none;
   }
 
-  .get-code {
-    background: $theme-color;
-    height: 36px;
-    line-height: 36px;
-    display: block;
-    font-size: 14px;
-    text-align: center;
-    color: #fff;
+  .code-control-wrap {
+    display: flex;
+    .code-control {
+      flex: 1;
+    }
+
+    .get-code-btn {
+      flex: 0 0 98px;
+      width: 98px;
+      margin-left: 10px;
+    }
   }
 }
 </style>

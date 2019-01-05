@@ -3,7 +3,8 @@
     <div class="box">
       <h2>登录日志</h2>
       <div class="list-wrap">
-        <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table>
+        <horizontal-table :items="items" :fields="fields"/>
+        <!-- <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table> -->
         <div class="empty-error-box" v-if="items.length === 0">暂无日志</div>
       </div>
     </div>
@@ -12,27 +13,44 @@
 <script>
 export default {
   name: "login-log",
+  components: {
+    horizontalTable: function(resolve) {
+      require(["@/components/profile/horizontal-table"], resolve);
+    }
+  },
   data() {
     return {
-      items: [
+      items: [],
+      fields: [
         {
-          time: "2018-12-12 13:00:32",
-          ip: "230.12.34.65"
+          label: "登录时间",
+          value: "logindate"
         },
         {
-          time: "2018-12-12 11:20:12",
-          ip: "30.112.4.59"
+          label: "登录IP",
+          value: "ip"
         }
-      ],
-      fields: {
-        time: {
-          label: "登录时间"
-        },
-        ip: {
-          label: "登录IP"
-        }
-      }
+      ]
     };
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      this.$post(
+        {
+          action: "P_SY_GetLoginLog",
+          p1: this.$store.state.token
+        },
+        res => {
+          console.log(res);
+          if (res.code === "0") {
+            this.items = res.data;
+          }
+        }
+      );
+    }
   }
 };
 </script>

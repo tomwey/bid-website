@@ -3,7 +3,7 @@
     <div class="box">
       <h2>修改密码</h2>
       <div class="form-wrap">
-        <password-form :mobile="mobile"/>
+        <password-form :mobile="mobile" :code-type="4"/>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       // company: null,
-      mobile: "133****4567"
+      mobile: this.$store.state.supinfo.telephone
     };
   }
 };

@@ -2,7 +2,7 @@
   <div class="password">
     <div class="form-box">
       <h2 class="title">找回密码</h2>
-      <password-form :mobile="mobile"/>
+      <password-form :mobile="mobile" :code-type="5"/>
       <!-- <div class="form-controls">
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
         <b-row>

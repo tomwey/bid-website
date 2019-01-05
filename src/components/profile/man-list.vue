@@ -183,8 +183,9 @@ export default {
       this.$post(
         {
           action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.token,
-          p2: "2"
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token,
+          p3: "2"
         },
         res => {
           // console.log(res);

@@ -30,6 +30,12 @@ const store = new Vuex.Store({
         },
         updatesupinfo: (state, data) => {
             state.supinfo = data;
+        },
+        updateloginname: (state, data) => {
+            state.supinfo.loginname = data;
+        },
+        updatemobile: (state, data) => {
+            state.supinfo.telephone = data;
         }
     }
 })

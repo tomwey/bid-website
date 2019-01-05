@@ -14,7 +14,8 @@
               </span>
               <p class="result-text">
                 <span class="label">您的登录账号为:</span>
-                <br>test1
+                <br>
+                {{$store.state.supinfo.loginname}}
               </p>
             </div>
             <div class="button-wrap">
@@ -36,7 +37,8 @@
               </span>
               <p class="result-text">
                 <span class="label">您绑定的手机号为:</span>
-                <br>130****4567
+                <br>
+                {{$store.state.supinfo.telephone}}
               </p>
             </div>
             <div class="button-wrap">
@@ -55,6 +57,7 @@
       ok-variant="danger"
       cancel-title="取消"
       @ok="commit"
+      ref="mobileModal"
       @cancel="reset"
       @hide="reset"
     >
@@ -64,7 +67,7 @@
             <td class="label">
               <label>原手机号</label>
             </td>
-            <td class="input-control">133****3456</td>
+            <td class="input-control">{{$store.state.supinfo.telephone}}</td>
           </tr>
           <tr>
             <td class="label">
@@ -79,14 +82,22 @@
               <label for="code">验证码</label>
             </td>
             <td class="input-control">
-              <b-row>
-                <b-col cols="8">
+              <!-- <b-row>
+                <b-col cols="7">
                   <b-form-input v-model="code" id="code" type="tel" placeholder="输入验证码"></b-form-input>
                 </b-col>
-                <b-col cols="4">
-                  <span class="get-code">获取验证码</span>
+                <b-col cols="5">
+                  <get-code :mobile="mobile" :type="codetype"/>
                 </b-col>
-              </b-row>
+              </b-row>-->
+              <div class="code-control-wrap">
+                <div class="code-control">
+                  <b-form-input v-model="code" type="tel" placeholder="输入验证码"></b-form-input>
+                </div>
+                <div class="get-code-btn">
+                  <get-code :mobile="mobile" :type="codetype"/>
+                </div>
+              </div>
             </td>
           </tr>
         </table>
@@ -103,6 +114,7 @@
       @ok="commit"
       @cancel="reset"
       @hide="reset"
+      ref="loginModal"
     >
       <div class="fields-wrap">
         <table class="table">
@@ -110,7 +122,7 @@
             <td class="label">
               <label>原登录号</label>
             </td>
-            <td class="input-control">test1</td>
+            <td class="input-control">{{$store.state.supinfo.loginname}}</td>
           </tr>
           <tr>
             <td class="label">
@@ -128,18 +140,136 @@
 <script>
 export default {
   name: "account",
+  components: {
+    getCode: function(resolve) {
+      require(["@/components/get-code"], resolve);
+    }
+  },
   data() {
     return {
       loginname: null,
       mobile: null,
-      code: null
+      code: null,
+      codetype: "7"
     };
+  },
+  methods: {
+    reset() {
+      this.loginname = null;
+      this.mobile = null;
+      this.code = null;
+    },
+    commit(ev) {
+      // console.log(ev);
+      ev.preventDefault();
+
+      const id = ev.target.id;
+      // console.log(id);
+      if (id === "loginNameModal") {
+        // 修改登录名
+        if (!this.loginname) {
+          alert("登录名不能为空");
+          return;
+        }
+
+        if (this.loginname === this.$store.state.supinfo.loginname) {
+          alert("新登录名不能与原登录名一致");
+          return;
+        }
+
+        this.$post(
+          {
+            action: "updateaccountinfo",
+            p1: this.$store.state.supinfo.accountid,
+            p2: this.$store.state.token,
+            p3: "1",
+            p4: this.loginname,
+            p5: ""
+          },
+          res => {
+            if (res.code === 0) {
+              this.$store.commit("updateloginname", this.loginname);
+              this.$refs.loginModal.hide();
+            } else {
+              alert(res.codemsg);
+            }
+          }
+        );
+      } else if (id === "mobileModal") {
+        // 修改登录名
+        if (!this.mobile) {
+          alert("手机号不能为空");
+          return;
+        }
+
+        if (this.mobile === this.$store.state.supinfo.telephone) {
+          alert("新手机号不能与原手机号一致");
+          return;
+        }
+
+        // 验证码
+        if (!this.code) {
+          alert("验证码不能为空");
+          return;
+        }
+
+        // 校验验证码
+        this.$post(
+          {
+            action: "verifysms",
+            p1: this.mobile,
+            p2: this.code,
+            p3: this.codetype
+          },
+          res => {
+            // console.log(res);
+            if (res.code === "0") {
+              // this.commit();
+              // 修改手机号
+              this.$post(
+                {
+                  action: "updateaccountinfo",
+                  p1: this.$store.state.supinfo.accountid,
+                  p2: this.$store.state.token,
+                  p3: "2",
+                  p4: this.mobile,
+                  p5: ""
+                },
+                res => {
+                  if (res.code === 0) {
+                    this.$store.commit("updatemobile", this.mobile);
+                    this.$refs.mobileModal.hide();
+                  } else {
+                    alert(res.codemsg);
+                  }
+                }
+              );
+            } else {
+              alert(res.codemsg);
+            }
+          }
+        );
+      }
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
 .account {
+  .code-control-wrap {
+    display: flex;
+    .code-control {
+      flex: 1;
+    }
+
+    .get-code-btn {
+      flex: 0 0 98px;
+      width: 98px;
+      margin-left: 10px;
+    }
+  }
+
   .info-wrap {
     display: flex;
     padding: 15px;

@@ -30,7 +30,7 @@ export default {
         Vue.prototype.GetPassword = function (val) {
             if (!val) return null;
 
-            return md5(val + ":hn.bid._2018..32");
+            return md5(val + "@H^N");//md5(val + ":hn.bid._2018..32");
         };
 
         Vue.prototype.$getToken = function () {

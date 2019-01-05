@@ -27,8 +27,8 @@
 
       <div class="login-box">
         <h2 class="title" v-if="!logined">供方登录</h2>
-
-        <div class="form-wrap" v-if="!logined">
+        <div class="error-box" v-if="!!error">{{error}}</div>
+        <div class="form-wrap" v-if="!$store.state.token">
           <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
           <!-- <div class="login-state-wrap clearfix">
             <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
@@ -55,7 +55,7 @@
           </b-row>
         </div>
 
-        <div class="logined-box" v-if="logined">
+        <div class="logined-box" v-if="!!$store.state.token">
           <p>欢迎使用合能招投标系统</p>
           <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
         </div>
@@ -128,6 +128,7 @@ export default {
   name: "home",
   data() {
     return {
+      error: null,
       slide: 0,
       loginname: null,
       password: null,
@@ -158,6 +159,8 @@ export default {
   },
   methods: {
     login() {
+      this.error = null;
+
       this.$post(
         {
           action: "P_SUP_Login",
@@ -181,10 +184,12 @@ export default {
                 name: "user_home"
               });
             } else {
-              alert("不正确的登录结果");
+              // alert("不正确的登录结果");
+              this.error = "非法错误！";
             }
           } else {
-            alert(res.codemsg);
+            this.error = res.codemsg;
+            // alert(res.codemsg);
           }
         }
       );
@@ -240,13 +245,13 @@ $theme-color: #e46623;
     position: absolute;
     z-index: 100;
     width: 280px;
-    height: 340px;
+    max-height: 360px;
     background: rgba(255, 255, 255, 0.95);
     top: 80px;
     right: 10%;
     border-radius: 8px;
     box-shadow: 0 1px 5px #ccc;
-
+    padding-bottom: 30px;
     .title {
       font-size: 20px;
       color: #333;

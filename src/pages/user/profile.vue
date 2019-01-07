@@ -49,7 +49,7 @@
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
         <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span>
         <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span>
-        <span class="custom-btn" @click="commit" v-if="currentStep.step === steps.length">保存</span>
+        <span class="custom-btn" @click="commit" v-if="currentStep.step === steps.length">提交审核</span>
       </div>
     </div>
   </div>
@@ -318,7 +318,10 @@ export default {
           label: "增值税一般纳税人申请认定表",
           placeholder: "",
           field: "addtaxapplytable",
-          required: true
+          required: true,
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "addtaxapplytable"
         },
         {
           id: "found-date",
@@ -410,7 +413,10 @@ export default {
           multiple: true,
           label: "管理体系认证（ISO9001/14001/HSE等附件）",
           field: "manageauthannex",
-          placeholder: ""
+          placeholder: "",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "manageauthannex"
         },
         {
           id: "bank-auth-file",
@@ -535,6 +541,8 @@ export default {
                     object[control.field + "str"] || object[control.field];
                 }
               });
+
+              // console.log(this.baseFormData);
 
               this.otherInfoFormData.forEach(control => {
                 control.value = object[control.field];
@@ -774,6 +782,7 @@ export default {
         // console.log(res);
         if (res.code === "0") {
           alert("保存成功");
+          this.$router.push({ path: "/admin/company" });
         } else {
           alert(res.codemsg);
         }

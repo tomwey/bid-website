@@ -10,6 +10,7 @@
         v-model="slide"
       >
         <b-carousel-slide :img-src="require('../../assets/images/banner1.jpg')"></b-carousel-slide>
+        <b-carousel-slide :img-src="require('../../assets/images/banner2.jpg')"></b-carousel-slide>
       </b-carousel>
       <div class="login-box-wrap">
         <div class="login-box">
@@ -54,7 +55,9 @@
       <div class="sec-box bid-flow">
         <h1>官方一站式招投标平台</h1>
         <h4>以公平、公正、公开的态度来对待每一位合作伙伴</h4>
-        <img src="../../assets/images/img-bid-flow.jpg" class="img-fluid">
+        <div class="container">
+          <img src="../../assets/images/img-bid-flow.png" class="img-fluid">
+        </div>
       </div>
       <div class="sec-box company">
         <h1>合能集团</h1>
@@ -65,7 +68,7 @@
       <div class="sec-box pattern">
         <h1>优质合作伙伴</h1>
         <h4>合作共赢，有容乃大</h4>
-        <img src="../../assets/images/img-pattern.jpg" class="img-fluid">
+        <img src="../../assets/images/img-pattern.png" class="img-fluid">
       </div>
     </div>
 
@@ -213,7 +216,7 @@ $theme-color: #e46623;
 .main-wrap {
   width: 100%;
 }
-.images-container {
+.sex-box {
   width: 100%;
   text-align: center;
   img {
@@ -356,7 +359,7 @@ $theme-color: #e46623;
 }
 
 .bid-flow {
-  // background: #fff;
+  background: #fff;
 }
 
 .company {

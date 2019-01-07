@@ -233,7 +233,10 @@ export default {
         res => {
           // console.log(res);
           if (res.code === "0") {
-            this.items = res.data;
+            // this.items = res.data;
+            if (res.count != 0) {
+              this.items = res.data;
+            }
           } else {
           }
         }

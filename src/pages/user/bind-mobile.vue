@@ -45,7 +45,7 @@
                   <b-form-input v-model="code2" type="tel" placeholder="验证码"></b-form-input>
                 </div>
                 <div class="get-code-btn">
-                  <get-code :mobile="new_mobile" :type="codetype"/>
+                  <get-code :mobile="new_mobile" :type="codetype2"/>
                 </div>
               </div>
             </b-col>
@@ -103,7 +103,7 @@
                   <b-form-input v-model="code1" type="tel" placeholder="验证码"></b-form-input>
                 </div>
                 <div class="get-code-btn">
-                  <get-code :mobile="old_mobile" :type="codetype"/>
+                  <get-code :mobile="old_mobile" :type="codetype1"/>
                 </div>
               </div>
             </b-col>
@@ -130,7 +130,7 @@
                   <b-form-input v-model="code2" type="tel" placeholder="验证码"></b-form-input>
                 </div>
                 <div class="get-code-btn">
-                  <get-code :mobile="new_mobile" :type="codetype"/>
+                  <get-code :mobile="new_mobile" :type="codetype2"/>
                 </div>
               </div>
             </b-col>
@@ -177,7 +177,8 @@ export default {
       new_mobile: null,
       code1: null,
       code2: null,
-      codetype: "9",
+      codetype1: "8",
+      codetype2: "9",
       combi: null,
       authfile: null,
       tplfile: {
@@ -208,7 +209,8 @@ export default {
           uid: this.$store.state.supinfo.accountid,
           token: this.$store.state.token,
           type: this.type,
-          codetype: this.codetype,
+          codetype1: this.codetype1,
+          codetype2: this.codetype2,
           old_mobile: this.old_mobile || "",
           new_mobile: this.new_mobile || "",
           code1: this.code1 || "",

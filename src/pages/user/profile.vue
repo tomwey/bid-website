@@ -500,7 +500,8 @@ export default {
   mounted() {
     this.loadBaseConfigData();
     // console.info(this.yearOutput, this.yearSale);
-    this.loadProfileData();
+    // this.loadProfileData();
+    console.log("123456");
   },
   watch: {
     currentStep: function(newVal) {

@@ -7,68 +7,90 @@
         indicators
         background="#f7f7f7"
         :interval="3000"
+        img-width="1024"
+        img-height="373"
         v-model="slide"
       >
-        <b-carousel-slide :img-src="require('../../assets/images/banner1.jpg')"></b-carousel-slide>
+        <b-carousel-slide img-src="http://www.heneng.cn/plmnhytf12f3/%E5%AE%98%E7%BD%91banner.jpg"></b-carousel-slide>
+        <b-carousel-slide
+          img-src="http://www.heneng.cn/plmnhytf12f3/%E9%A6%96%E9%A1%B5banner/%E9%93%82%E6%82%A6%E5%8D%8E%E5%BA%AD%E5%AE%98%E7%BD%91banner.jpg"
+        ></b-carousel-slide>
+        <!-- Slides with image only -->
+        <b-carousel-slide
+          img-src="http://www.heneng.cn/plmnhytf12f3/%E9%A6%96%E9%A1%B5banner/%E6%B1%9F%E5%B1%BF%E5%AE%98%E7%BD%91banner.jpg"
+        ></b-carousel-slide>
+
+        <b-carousel-slide
+          img-src="http://www.heneng.cn/plmnhytf12f3/%E9%A6%96%E9%A1%B5banner/%E5%AE%81%E7%8E%A5%E5%BA%9Cbanner.jpg"
+        ></b-carousel-slide>
       </b-carousel>
-      <div class="login-box-wrap">
-        <div class="login-box">
-          <h2 class="title" v-if="!logined">供方登录</h2>
-          <div class="error-box" v-if="!!error">{{error}}</div>
-          <div class="form-wrap" v-if="!$store.state.token">
-            <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
-            <!-- <div class="login-state-wrap clearfix">
+
+      <div class="login-box">
+        <h2 class="title" v-if="!logined">供方登录</h2>
+        <div class="error-box" v-if="!!error">{{error}}</div>
+        <div class="form-wrap" v-if="!$store.state.token">
+          <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
+          <!-- <div class="login-state-wrap clearfix">
             <span class="forget-password float-right" @click="forgetLogin">忘记账号？</span>
-            </div>-->
-            <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
-            <div class="login-state-wrap clearfix">
-              <span class="login-keep" @click="toggle">
-                <v-icon :name="keepLogin ? 'check-square' : 'square'"/>7天内免登录
-              </span>
-              <span class="forget-password float-right" @click="forgetPass">忘记密码？</span>
-            </div>
-            <span class="login-btn" @click="login">登&emsp;录</span>
-            <!-- <p class="reg-text">
+          </div>-->
+          <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
+          <div class="login-state-wrap clearfix">
+            <span class="login-keep" @click="toggle">
+              <v-icon :name="keepLogin ? 'check-square' : 'square'"/>7天内免登录
+            </span>
+            <span class="forget-password float-right" @click="forgetPass">忘记密码？</span>
+          </div>
+          <span class="login-btn" @click="login">登&emsp;录</span>
+          <!-- <p class="reg-text">
             没有账号？
             <span class="reg-link" @click="register">立即注册</span>
-            </p>-->
-            <b-row>
-              <b-col cols="6">
-                <span class="find-login-link" @click="forgetLogin">找回账号？</span>
-              </b-col>
-              <b-col cols="6" style="text-align:right;">
-                <span class="reg-link" @click="register">立即注册</span>
-              </b-col>
-            </b-row>
-          </div>
+          </p>-->
+          <b-row>
+            <b-col cols="6">
+              <span class="find-login-link" @click="forgetLogin">找回账号？</span>
+            </b-col>
+            <b-col cols="6" style="text-align:right;">
+              <span class="reg-link" @click="register">立即注册</span>
+            </b-col>
+          </b-row>
+        </div>
 
-          <div class="logined-box" v-if="!!$store.state.token">
-            <p>欢迎使用合能招投标系统</p>
-            <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
+        <div class="logined-box" v-if="!!$store.state.token">
+          <p>欢迎使用合能招投标系统</p>
+          <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
+        </div>
+      </div>
+    </div>
+    <div class="sec-box bid-flow">
+      <div class="container">
+        <h1>官方一站式招投标平台</h1>
+        <h4>招投标流程</h4>
+        <div class="steps">
+          <img src="../../assets/images/img-bid-flow.png" class="img-fluid">
+        </div>
+      </div>
+    </div>
+    <div class="sec-box company">
+      <!-- <div class="container"> -->
+      <h1>合能集团</h1>
+      <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
+      <div class="image-container">
+        <img src="../../assets/images/img-comp-intro.jpg" class="img-fluid">
+      </div>
+
+      <!-- </div> -->
+    </div>
+    <div class="sec-box">
+      <h1>合作伙伴</h1>
+      <h4>合作共赢，有容乃大</h4>
+      <div class="container">
+        <div class="partners">
+          <div class="partner" v-for="(item,index) in partners" :key="index">
+            <img :src="item.icon">
           </div>
         </div>
       </div>
     </div>
-
-    <div class="images-container">
-      <div class="sec-box bid-flow">
-        <h1>官方一站式招投标平台</h1>
-        <h4>以公平、公正、公开的态度来对待每一位合作伙伴</h4>
-        <img src="../../assets/images/img-bid-flow.jpg" class="img-fluid">
-      </div>
-      <div class="sec-box company">
-        <h1>合能集团</h1>
-        <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
-        <img src="../../assets/images/img-comp-intro.jpg" class="img-fluid">
-      </div>
-
-      <div class="sec-box pattern">
-        <h1>优质合作伙伴</h1>
-        <h4>合作共赢，有容乃大</h4>
-        <img src="../../assets/images/img-pattern.jpg" class="img-fluid">
-      </div>
-    </div>
-
     <div class="sec-box contact">
       <div class="container">
         <b-row>
@@ -210,17 +232,6 @@ export default {
 <style lang="scss" scoped>
 $theme-color: #e46623;
 
-.main-wrap {
-  width: 100%;
-}
-.images-container {
-  width: 100%;
-  text-align: center;
-  img {
-    width: 100% !important;
-  }
-}
-
 .logined-box {
   padding: 30px;
 }
@@ -230,26 +241,15 @@ $theme-color: #e46623;
   position: relative;
   font-family: "PingFang SC", Arial, Helvetica, sans-serif;
   // font-size: 16px;
-  margin-top: 60px;
   color: #333;
-
-  .login-box-wrap {
-    width: 400px;
-    height: 100%;
+  .login-box {
     position: absolute;
     z-index: 100;
-    top: 0;
-    right: 0;
-    padding: 10px 120px 10px 0;
-    // background: red;
-  }
-  .login-box {
-    // width: 280px;
+    width: 280px;
     max-height: 360px;
-    width: 100%;
-    // height: 100%;
-
     background: rgba(255, 255, 255, 0.95);
+    top: 80px;
+    right: 10%;
     border-radius: 8px;
     box-shadow: 0 1px 5px #ccc;
     padding-bottom: 30px;
@@ -339,7 +339,6 @@ $theme-color: #e46623;
     padding: 0;
     text-align: center;
     color: #333;
-    margin-bottom: 30px;
   }
 
   h1 {
@@ -356,7 +355,7 @@ $theme-color: #e46623;
 }
 
 .bid-flow {
-  // background: #fff;
+  background: #fff;
 }
 
 .company {
@@ -384,7 +383,7 @@ $theme-color: #e46623;
 }
 
 .contact {
-  // background: #fff;
+  background: #fff;
 
   .info-box {
     font-size: 14px;

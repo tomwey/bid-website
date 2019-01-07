@@ -20,6 +20,12 @@ const store = new Vuex.Store({
             _saveToken(data);
             state.token = data.token;
         },
+        register: (state, data) => {
+            _saveToken(data);
+            state.token = data.token;
+            state.supinfo.accountid = data.uid;
+            state.supinfo.loginname = data.loginname;
+        },
         logout: (state) => {
             // console.log(123);
             localStorage.removeItem('token');

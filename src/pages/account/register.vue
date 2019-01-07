@@ -81,9 +81,15 @@ export default {
               let arr = res.data;
               let item = arr[0];
 
-              this.$store.commit("login", {
+              // this.$store.commit("login", {
+              //   token: item.token,
+              //   days: 1
+              // });
+              this.$store.commit("register", {
                 token: item.token,
-                days: 1
+                uid: item.accountid,
+                days: 1,
+                loginname: item.loginname
               });
 
               this.$router.push({

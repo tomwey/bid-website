@@ -56,7 +56,7 @@
       </div>
       <div class="result-wrap form-controls" v-if="step === 4">
         <div class="result">
-          <v-icon name="check"></v-icon>&nbsp;您的账号找回申请提交成功，等待审核中，请注意查收手机短信通知结果
+          <v-icon name="check"></v-icon>&nbsp;您的账号找回申请提交成功，等待审核中，请注意查收手机短信结果通知
         </div>
         <span class="reg-btn" @click="goHome">回首页</span>
       </div>
@@ -361,15 +361,15 @@ $theme-color: #e46623;
         }
       }
 
-      .get-code {
-        background: $theme-color;
-        height: 36px;
-        line-height: 36px;
-        display: block;
-        font-size: 14px;
-        text-align: center;
-        color: #fff;
-      }
+      // .get-code {
+      //   background: $theme-color;
+      //   height: 36px;
+      //   line-height: 36px;
+      //   display: block;
+      //   font-size: 14px;
+      //   text-align: center;
+      //   color: #fff;
+      // }
     }
   }
 

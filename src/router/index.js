@@ -155,6 +155,7 @@ const router = new Router({
                     meta: {
                         requireAuth: true,
                         // requireApprove: true
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/account'),
                 },
@@ -162,9 +163,19 @@ const router = new Router({
                     path: 'edit_pwd',
                     name: 'user_change_pwd',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/password'),
+                },
+                {
+                    path: 'bindmobile',
+                    name: 'bind_mobile',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bind-mobile'),
                 },
                 {
                     path: 'loginlog',

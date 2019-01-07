@@ -42,14 +42,14 @@
               </p>
             </div>
             <div class="button-wrap">
-              <b-button size="sm" v-b-modal.mobileModal>修改</b-button>
+              <b-button size="sm" @click="bindMobile">修改</b-button>
             </div>
           </div>
         </div>
       </b-col>
     </b-row>
 
-    <b-modal
+    <!-- <b-modal
       id="mobileModal"
       centered
       title="更换手机号"
@@ -83,14 +83,6 @@
               <label for="code">验证码</label>
             </td>
             <td class="input-control">
-              <!-- <b-row>
-                <b-col cols="7">
-                  <b-form-input v-model="code" id="code" type="tel" placeholder="输入验证码"></b-form-input>
-                </b-col>
-                <b-col cols="5">
-                  <get-code :mobile="mobile" :type="codetype"/>
-                </b-col>
-              </b-row>-->
               <div class="code-control-wrap">
                 <div class="code-control">
                   <b-form-input v-model="code" type="tel" placeholder="输入验证码"></b-form-input>
@@ -103,8 +95,7 @@
           </tr>
         </table>
       </div>
-    </b-modal>
-
+    </b-modal>-->
     <b-modal
       id="loginNameModal"
       centered
@@ -157,6 +148,9 @@ export default {
     };
   },
   methods: {
+    bindMobile() {
+      this.$router.push({ name: "bind_mobile" });
+    },
     reset() {
       // console.log(123);
       // this.loginname = null;

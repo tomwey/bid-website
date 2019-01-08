@@ -19,31 +19,21 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [
+        {
+          label: "分公司信息",
+          value: "",
+          type: 1,
+          field: "branchinfo"
+        },
+        {
+          label: "关联公司信息",
+          value: "",
+          type: 1,
+          field: "relateinfo"
+        }
+      ]
     };
-  },
-  mounted() {
-    this.items = [
-      {
-        label: "分公司信息",
-        value: "",
-        type: 1,
-        field: "branchinfo"
-      },
-      {
-        label: "关联公司信息",
-        value: "",
-        type: 1,
-        field: "relateinfo"
-      }
-    ];
-  },
-
-  methods: {
-    edit() {
-      // console.log("ddddddd");
-      this.$router.push({ name: "profile", query: { s: 6 } });
-    }
   }
 };
 </script>

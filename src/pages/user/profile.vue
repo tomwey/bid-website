@@ -507,12 +507,23 @@ export default {
     // this.loadProfileData();
     // console.log("123456");
     if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
-      this.loadProfileData(1);
-      this.loadProfileData(2);
-      this.loadProfileData(4);
-      this.loadProfileData(5);
-      this.loadProfileData(7);
+      // this.loadProfileData(1);
+      // this.loadProfileData(2);
+      // this.loadProfileData(4);
+      // this.loadProfileData(5);
+      // this.loadProfileData(7);
     }
+
+    this.$post(
+      {
+        action: "getsupinfo",
+        uid: this.$store.state.supinfo.accountid,
+        token: this.$store.state.token
+      },
+      res => {
+        console.log(res);
+      }
+    );
   },
   watch: {
     currentStep: function(newVal) {

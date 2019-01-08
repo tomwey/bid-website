@@ -19,30 +19,21 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [
+        {
+          label: "服务区域",
+          value: "",
+          type: 1,
+          field: "serverareaids"
+        },
+        {
+          label: "主要服务区域",
+          value: "",
+          type: 1,
+          field: "mainareaid"
+        }
+      ]
     };
-  },
-  mounted() {
-    this.items = [
-      {
-        label: "服务区域",
-        value: "",
-        type: 1,
-        field: "serverareaids"
-      },
-      {
-        label: "主要服务区域",
-        value: "",
-        type: 1,
-        field: "mainareaid"
-      }
-    ];
-  },
-  methods: {
-    edit() {
-      // console.log("ddddddd");
-      this.$router.push({ name: "profile", query: { s: 3 } });
-    }
   }
 };
 </script>

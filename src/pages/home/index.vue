@@ -216,7 +216,7 @@ $theme-color: #e46623;
 .main-wrap {
   width: 100%;
 }
-.sex-box {
+.sec-box {
   width: 100%;
   text-align: center;
   img {

@@ -53,7 +53,8 @@ export default {
     };
   },
   mounted() {
-    this.loadData();
+    // this.loadData();
+    this.items = this.$store.state.supprofile.types;
   },
   methods: {
     loadData() {

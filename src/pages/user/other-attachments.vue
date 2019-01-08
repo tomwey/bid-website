@@ -19,36 +19,27 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [
+        {
+          label: "近三年财务审计报告（附件）",
+          value: "",
+          type: 4,
+          field: "threeyfinancialreports"
+        },
+        {
+          label: "认证或荣誉证书（附件）",
+          value: "",
+          type: 4,
+          field: "honorcertificate"
+        },
+        {
+          label: "外地备案证（附件）",
+          value: "",
+          type: 4,
+          field: "fieldcertificate"
+        }
+      ]
     };
-  },
-  mounted() {
-    this.items = [
-      {
-        label: "近三年财务审计报告（附件）",
-        value: "",
-        type: 4,
-        field: "threeyfinancialreports"
-      },
-      {
-        label: "认证或荣誉证书（附件）",
-        value: "",
-        type: 4,
-        field: "honorcertificate"
-      },
-      {
-        label: "外地备案证（附件）",
-        value: "",
-        type: 4,
-        field: "fieldcertificate"
-      }
-    ];
-  },
-  methods: {
-    edit() {
-      // console.log("ddddddd");
-      this.$router.push({ name: "profile", query: { s: 7 } });
-    }
   }
 };
 </script>

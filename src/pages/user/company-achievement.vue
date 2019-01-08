@@ -84,8 +84,14 @@ export default {
     };
   },
   mounted() {
-    this.loadData();
-    this.loadData2();
+    // this.loadData();
+    // this.loadData2();
+    this.yearOutput =
+      (this.$store.state.supprofile["outputvalueyear"] || "--") + "万";
+    this.yearSale =
+      (this.$store.state.supprofile["turnoveryear"] || "--") + "万";
+
+    this.items = this.$store.state.supprofile.yj_data || [];
   },
   methods: {
     loadData2() {

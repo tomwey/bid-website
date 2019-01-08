@@ -109,7 +109,8 @@ const router = new Router({
                     name: 'user_company',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/company'),
                 },
@@ -118,7 +119,8 @@ const router = new Router({
                     name: 'user_man',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/man'),
                 },
@@ -127,7 +129,8 @@ const router = new Router({
                     name: 'user_area',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/area'),
                 },
@@ -136,7 +139,8 @@ const router = new Router({
                     name: 'user_service_type',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/service-type'),
                 },
@@ -145,7 +149,8 @@ const router = new Router({
                     name: 'user_company_achievement',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/company-achievement'),
                 },
@@ -191,6 +196,7 @@ const router = new Router({
                     meta: {
                         requireAuth: true,
                         requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/other-info'),
                 },
@@ -199,7 +205,8 @@ const router = new Router({
                     name: 'user_other_attachments',
                     meta: {
                         requireAuth: true,
-                        requireApprove: true
+                        requireApprove: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/other-attachments'),
                 },
@@ -207,7 +214,8 @@ const router = new Router({
                     path: 'profile',
                     name: 'profile',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        needLoadProfile: true,
                     },
                     component: () => import('@/pages/user/profile')
                 }
@@ -222,46 +230,58 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(r => r.meta.requireAuth)) {
 
         let token = store.state.token;
-        console.log(token);
         if (token) {
-            if (!store.state.supinfo.supid) {
-                post({
-                    action: "P_SUP_GetAccountSupInfo",
-                    p1: store.state.supinfo.accountid,
-                    p2: token
-                }, res => {
-                    // console.log(res);
-                    if (res.code === "0") {
-                        // store.state.supinfo = 
-                        let arr = res.data;
-                        if (arr.length > 0) {
-                            store.commit("updatesupinfo", arr[0]);
+            if (to.meta.requireApprove) {
+                // 需要供方填资料的路由，进入之前先去加载供方基本资料
+                if (!store.state.supinfo.supid) {
+                    // 还未录入资料
+                    post({
+                        action: "P_SUP_GetAccountSupInfo",
+                        p1: store.state.supinfo.accountid,
+                        p2: token
+                    }, res => {
+                        // console.log(res);
+                        if (res.code === "0") {
+                            // store.state.supinfo = 
+                            let arr = res.data;
+                            if (arr.length > 0) {
+                                store.commit("updatesupinfo", arr[0]);
+                            }
+                        } else {
+                            store.commit("logout");
+                            next({
+                                path: '/',
+                                query: { redirect: to.fullPath }
+                            });
                         }
-                    } else {
-                        store.commit("logout");
-                        next({
-                            path: '/',
-                            query: { redirect: to.fullPath }
-                        });
-                    }
 
-                    if (to.meta.requireApprove && !store.state.supinfo.supid) {
-                        next({
-                            path: '/admin/profile'
-                        });
-                    } else {
-                        next();
-                    }
-                });
-            } else {
-                // console.log(store.state.supinfo);
-                if (to.meta.requireApprove && !store.state.supinfo.supid) {
-                    next({
-                        path: '/admin/profile'
+                        if (!store.state.supinfo.supid) {
+                            next({
+                                path: '/admin/profile'
+                            });
+                        } else {
+                            // 
+                            if (to.meta.needLoadProfile) {
+                                // 提前加载供应商资料数据
+                                loadProfile(store);
+                            }
+
+                            next();
+
+                        }
                     });
                 } else {
+                    // 已经录入过资料，直接放行
+                    if (to.meta.needLoadProfile) {
+                        // 提前加载供应商资料数据
+                        loadProfile(store);
+                    }
+
                     next();
                 }
+            } else {
+                // 不需要供应商录入资料就可以进入的路由
+                next();
             }
         } else {
             next({
@@ -273,5 +293,18 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
+function loadProfile(_store) {
+    post({
+        action: "getsupinfo",
+        uid: _store.state.supinfo.accountid,
+        token: _store.state.token
+    }, res => {
+        console.log("##### profile: ", res);
+        if (res.code === "0") {
+            _store.commit("updatesupprofile", res.data);
+        }
+    })
+}
 
 export default router;

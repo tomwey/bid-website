@@ -294,7 +294,7 @@ export default {
           label: "安全生产许可证",
           field: "safeproductionl",
           placeholder: "",
-          required: true,
+          required: false,
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "safeproductionl"
@@ -306,7 +306,7 @@ export default {
           label: "安全许可证到期日",
           placeholder: "",
           field: "safeproductionldate",
-          required: true
+          required: false
         },
         {
           id: "iso-supports",

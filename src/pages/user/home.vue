@@ -16,7 +16,7 @@
               登录账号：
               <span class="name">{{$store.state.supinfo.loginname}}</span>
             </p>
-            <b-badge>待审核</b-badge>
+            <b-badge :variant="variant">{{changestatename}}</b-badge>
           </div>
           <div class="edit-wrap">
             <b-button @click="editProfile">供方资料修改</b-button>
@@ -90,6 +90,30 @@ export default {
       ]
     };
   },
+  computed: {
+    variant() {
+      if (this.$store.state.supinfo.changestate == 10) {
+        return "warning";
+      } else if (this.$store.state.supinfo.changestate == 40) {
+        return "success";
+      } else if (this.$store.state.supinfo.changestate == 80) {
+        return "danger";
+      }
+
+      return "";
+    },
+    changestatename() {
+      if (this.$store.state.supinfo.changestate == 10) {
+        return "待审核";
+      } else if (this.$store.state.supinfo.changestate == 40) {
+        return "审核通过";
+      } else if (this.$store.state.supinfo.changestate == 80) {
+        return "审核被拒";
+      }
+
+      return "";
+    }
+  },
   methods: {
     editProfile() {
       this.$router.push({ name: "profile" });
@@ -138,10 +162,11 @@ export default {
       }
 
       .badge {
-        padding: 10px;
-        border-radius: 0;
-        font-size: 12px;
+        padding: 4px 6px;
+        // border-radius: 0;
+        // font-size: 14px;
         font-weight: normal;
+        color: #fff;
         // vertical-align: middle;
         // line-break: 12px;
       }

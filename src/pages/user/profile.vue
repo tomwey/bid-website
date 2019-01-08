@@ -85,92 +85,8 @@ export default {
         output: null,
         sale: null
       },
-      // achieveFields: {
-      //   cityname: {
-      //     label: "城市"
-      //   },
-      //   projectname: {
-      //     label: "项目名称"
-      //   },
-      //   partnername: {
-      //     label: "合作单位名称"
-      //   },
-      //   ismodel: {
-      //     label: "是否标杆企业"
-      //   },
-      //   manager: {
-      //     label: "项目经理"
-      //   },
-      //   contractmoney: {
-      //     label: "合同金额"
-      //   },
-      //   contractsize: {
-      //     label: "合同规模"
-      //   },
-      //   begindate: {
-      //     label: "开始日期"
-      //   },
-      //   enddate: {
-      //     label: "结束日期"
-      //   },
-      //   othermemo: {
-      //     label: "其他说明"
-      //   },
-      //   contractannex: {
-      //     label: "合同附件"
-      //   }
-      // },
       serviceTypeData: [],
-      // serviceTypeFields: {
-      //   servertypename: {
-      //     label: "对口服务类别"
-      //   },
-      //   ismain: {
-      //     label: "是否主要类别"
-      //   },
-      //   quaname: {
-      //     label: "资质名称"
-      //   },
-      //   qualevel: {
-      //     label: "资质级别"
-      //   },
-      //   quaexaminedate: {
-      //     label: "资质审核到期日期"
-      //   },
-      //   othermemo: {
-      //     label: "其他说明"
-      //   }
-      // },
       manData: [],
-      // manFields: {
-      //   contacttype: {
-      //     label: "联系人类型"
-      //   },
-      //   contactposition: {
-      //     label: "联系人职位"
-      //   },
-      //   contactname: {
-      //     label: "联系人姓名"
-      //   },
-      //   contacttel: {
-      //     label: "联系人电话"
-      //   },
-      //   contactphone: {
-      //     label: "联系人手机"
-      //   },
-      //   email: {
-      //     label: "电子邮件"
-      //   },
-      //   contactidno: {
-      //     label: "身份证号码"
-      //   },
-      //   sscertificateannex: {
-      //     label: "联系人社保证明"
-      //   },
-      //   authdelegationannex: {
-      //     label: "授权委托（附件）"
-      //   }
-      // },
       areaFormData: [
         {
           id: "service-area",
@@ -503,9 +419,7 @@ export default {
   },
   mounted() {
     this.loadBaseConfigData();
-    // console.info(this.yearOutput, this.yearSale);
-    // this.loadProfileData();
-    // console.log("123456");
+
     if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
       // this.loadProfileData(1);
       // this.loadProfileData(2);
@@ -513,17 +427,6 @@ export default {
       // this.loadProfileData(5);
       // this.loadProfileData(7);
     }
-
-    this.$post(
-      {
-        action: "getsupinfo",
-        uid: this.$store.state.supinfo.accountid,
-        token: this.$store.state.token
-      },
-      res => {
-        console.log(res);
-      }
-    );
   },
   watch: {
     currentStep: function(newVal) {
@@ -533,8 +436,6 @@ export default {
           query: merge(this.$route.query, { s: newVal.step })
         });
       }
-
-      // this.loadProfileData(newVal.step);
     },
     $route: function(to) {
       console.log(to);

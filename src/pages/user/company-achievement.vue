@@ -84,59 +84,12 @@ export default {
     };
   },
   mounted() {
-    // this.loadData();
-    // this.loadData2();
     this.yearOutput =
       (this.$store.state.supprofile["outputvalueyear"] || "--") + "万";
     this.yearSale =
       (this.$store.state.supprofile["turnoveryear"] || "--") + "万";
 
     this.items = this.$store.state.supprofile.yj_data || [];
-  },
-  methods: {
-    loadData2() {
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token,
-          p3: "1"
-        },
-        res => {
-          console.log(res);
-          if (res.code === "0") {
-            let arr = res.data;
-            // this.items = arr;
-            if (arr.length > 0) {
-              let obj = arr[0];
-              this.yearOutput = obj["outputvalueyear"] + "万";
-              this.yearSale = obj["turnoveryear"] + "万";
-            }
-          }
-        }
-      );
-    },
-    loadData() {
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token,
-          p3: "5"
-        },
-        res => {
-          // console.log(res);
-          if (res.code === "0") {
-            let arr = res.data;
-            this.items = arr;
-          }
-        }
-      );
-    },
-    edit() {
-      // console.log("ddddddd");
-      this.$router.push({ name: "profile", query: { s: 5 } });
-    }
   }
 };
 </script>

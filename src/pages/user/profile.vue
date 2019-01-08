@@ -20,25 +20,26 @@
             v-if="currentStep.step === 1"
             :form-data="baseFormData"
             :ref="`step${currentStep.step}`"
-            :step="1"
+            step="1"
           />
           <comm-fields
             v-if="currentStep.step === 6"
             :form-data="otherInfoFormData"
             :ref="`step${currentStep.step}`"
-            :step="1"
+            step="1"
           />
           <comm-fields
             v-if="currentStep.step === 7"
             :form-data="otherFilesFormData"
             :ref="`step${currentStep.step}`"
-            :step="7"
+            step="7"
           />
           <comm-fields
             v-if="currentStep.step === 3"
             :form-data="areaFormData"
             :ref="`step${currentStep.step}`"
-            :step="1"
+            @change="areaChange"
+            step="1"
           />
         </div>
         <man-list v-if="currentStep.step === 2" :items="manData"/>
@@ -95,8 +96,7 @@ export default {
           placeholder: "",
           required: true,
           field: "serverareaids",
-          options: [],
-          changeFunc: this.areaChange
+          options: []
           //   required: true
         },
         {
@@ -420,13 +420,14 @@ export default {
   mounted() {
     this.loadBaseConfigData();
 
-    if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
-      // this.loadProfileData(1);
-      // this.loadProfileData(2);
-      // this.loadProfileData(4);
-      // this.loadProfileData(5);
-      // this.loadProfileData(7);
-    }
+    // if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
+    // this.loadProfileData(1);
+    // this.loadProfileData(2);
+    // this.loadProfileData(4);
+    // this.loadProfileData(5);
+    // this.loadProfileData(7);
+    // }
+    // this.populateData();
   },
   watch: {
     currentStep: function(newVal) {
@@ -442,6 +443,51 @@ export default {
     }
   },
   methods: {
+    populateData() {
+      // 填充主数据表单
+      let object = this.$store.state.supprofile;
+
+      this.baseFormData.forEach(control => {
+        if (control.type === 3) {
+          control.value =
+            object[control.field] && object[control.field].split(",");
+        } else if (control.type === 1 && control.subtype === "date") {
+          control.value =
+            object[control.field] && object[control.field].split(" ")[0];
+        } else if (control.type === 4) {
+          // 文件附件
+          control.value = object[control.field] || "";
+
+          const nameKey = control.field + "name";
+          const urlKey = control.field + "url";
+          if (object[urlKey] && object[nameKey]) {
+            let fileUrl = object[urlKey];
+            let fileName = object[nameKey];
+            control._fileurl = fileUrl;
+            control._filename = fileName;
+            control._isimage =
+              fileName.indexOf(".png") !== -1 ||
+              fileName.indexOf(".gif") !== -1 ||
+              fileName.indexOf(".jpg") !== -1 ||
+              fileName.indexOf(".jpeg") !== -1 ||
+              fileName.indexOf(".webp") !== -1;
+          }
+        } else {
+          control.value =
+            object[control.field + "str"] || object[control.field];
+        }
+      });
+      // 填充其它信息
+      this.otherInfoFormData.forEach(control => {
+        control.value = object[control.field];
+      });
+
+      // console.log(this.areaFormData);
+
+      // 填充业绩数据
+      this.achieveYearData.output = object["outputvalueyear"];
+      this.achieveYearData.sale = object["turnoveryear"];
+    },
     loadProfileData(step) {
       this.$post(
         {
@@ -559,6 +605,36 @@ export default {
         }
       );
     },
+    populateAreaData() {
+      let object = this.$store.state.supprofile;
+
+      this.areaFormData.forEach(control => {
+        if (control.type === 3) {
+          // console.log(object);
+          let options = [];
+          if (object[control.field]) {
+            options = object[control.field].split(",");
+          }
+
+          control.value = options;
+
+          const cities = this.areaFormData[0].options || [];
+          let temp = [];
+          options.forEach(v => {
+            for (let i = 0; i < cities.length; i++) {
+              if (v == cities[i].value) {
+                temp.push(cities[i]);
+                break;
+              }
+            }
+          });
+
+          this.areaFormData[1].options = temp;
+        } else {
+          control.value = object[control.field];
+        }
+      });
+    },
     loadBaseConfigData() {
       // 获取企业性质
       this.$post(
@@ -656,6 +732,8 @@ export default {
               });
             });
             this.areaFormData[0].options = temp;
+
+            this.populateAreaData();
           }
         }
       );
@@ -663,14 +741,20 @@ export default {
     selectStep(step) {
       this.currentStep = step;
     },
-    areaChange(vals) {
+    areaChange(ev) {
+      // console.log(ev);
+      const control = ev.control;
+      const data = ev.data;
+
       const areas = this.areaFormData[0].options;
+      control.value = data;
+
       let arr = [];
-      vals.forEach(id => {
+      data.forEach(id => {
         for (let index = 0; index < areas.length; index++) {
           const element = areas[index];
           if (element.value === id) {
-            arr.push(element);
+            arr.push(JSON.parse(JSON.stringify(element)));
             break;
           }
         }
@@ -678,6 +762,11 @@ export default {
 
       const area = this.areaFormData[1];
       area.options = arr;
+
+      let index = data.indexOf(area.value);
+      if (index === -1) {
+        area.value = null;
+      }
     },
     prevClick() {
       //   this.currentStep--;

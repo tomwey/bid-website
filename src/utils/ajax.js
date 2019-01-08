@@ -12,6 +12,7 @@ function post(param, callback) {
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
 
+    // 
     axios.post("http://10.19.0.191:16791/api/gwc", {
         ak: ak,
         i: i,

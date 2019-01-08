@@ -34,7 +34,7 @@
             v-model="item.value"
             :options="item.options"
             :placeholder="item.placeholder"
-            @change="item.changeFunc"
+            @change="itemChange(item, $event);"
           />
           <!-- 复选框控件 -->
           <b-form-checkbox-group
@@ -42,7 +42,7 @@
             :id="item.id"
             v-model="item.value"
             :options="item.options"
-            @change="item.changeFunc"
+            @change="itemChange(item, $event);"
           ></b-form-checkbox-group>
           <!-- 文件上传控件 -->
           <div class="input-file-box" v-if="item.type === 4">
@@ -132,8 +132,8 @@ export default {
     console.log("@@@@@@@@");
   },
   methods: {
-    valueChanged(ev, item) {
-      console.log(ev), console.log(item);
+    itemChange(item, ev) {
+      this.$emit("change", { control: item, data: ev });
     },
     toggle(item) {
       if (item.options.length === 0) return;

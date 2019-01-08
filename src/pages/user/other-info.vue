@@ -1,7 +1,7 @@
 <template>
   <div class="other-info-list">
     <div class="box">
-      <card-head title="其他信息" @edit="edit"/>
+      <card-head title="其他信息" step="6"/>
       <vertical-table :items="items" step="1"/>
     </div>
   </div>

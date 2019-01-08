@@ -511,16 +511,18 @@ export default {
           query: merge(this.$route.query, { s: newVal.step })
         });
       }
+
+      // this.loadProfileData(newVal.step);
     }
   },
   methods: {
-    loadProfileData() {
+    loadProfileData(step) {
       this.$post(
         {
           action: "P_SUP_GetSupInfo",
           p1: this.$store.state.supinfo.accountid,
           p2: this.$store.state.token,
-          p3: "1"
+          p3: step
         },
         res => {
           // console.log(res);
@@ -777,12 +779,12 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      console.log(params);
+      // console.log(params);
 
       this.$post(params, res => {
         // console.log(res);
         if (res.code === "0") {
-          alert("保存成功");
+          alert("提交成功");
           this.$router.push({ path: "/admin/company" });
         } else {
           alert(res.codemsg);

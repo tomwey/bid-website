@@ -12,12 +12,28 @@
 export default {
   name: "card-head",
   props: {
-    title: String
+    title: String,
+    step: String
     // step: Number
   },
   methods: {
     gotoStep() {
-      this.$emit("edit");
+      // this.$emit("edit");
+      this.$post(
+        {
+          action: "P_SUP_CanModifySubInfo",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token
+        },
+        res => {
+          console.log(res);
+          if (res.code === "0") {
+            this.$router.push({ name: "profile", query: { s: this.step } });
+          } else {
+            alert(res.codemsg);
+          }
+        }
+      );
     }
   }
 };

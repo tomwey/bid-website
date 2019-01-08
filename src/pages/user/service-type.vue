@@ -1,7 +1,7 @@
 <template>
   <div class="service-types">
     <div class="box">
-      <card-head title="服务类别" @edit="edit"/>
+      <card-head title="服务类别" step="4"/>
       <div class="list-wrap">
         <!-- <b-table striped hover responsive :items="serviceTypeData" :fields="serviceTypeFields"></b-table> -->
         <horizontal-table :items="items" :fields="fields"/>

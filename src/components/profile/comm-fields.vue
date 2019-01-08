@@ -123,6 +123,9 @@ export default {
   //     console.log(val);
   //   }
   // },
+  mounted() {
+    console.log("@@@@@@@@");
+  },
   methods: {
     valueChanged(ev, item) {
       console.log(ev), console.log(item);

@@ -1,7 +1,7 @@
 <template>
   <div class="company-achievement">
     <div class="box">
-      <card-head title="公司业绩" @edit="edit"/>
+      <card-head title="公司业绩" step="5"/>
       <table class="table">
         <tr>
           <td class="td-label">年产值额</td>

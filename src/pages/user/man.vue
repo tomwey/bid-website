@@ -2,7 +2,7 @@
   <div class="man-list">
     <!-- <man-list :items="manData" :fields="manFields"/> -->
     <div class="box">
-      <card-head title="联系方式" @edit="edit"/>
+      <card-head title="联系方式" step="2"/>
       <horizontal-table :items="items" :fields="fields"/>
     </div>
   </div>

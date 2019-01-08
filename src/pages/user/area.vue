@@ -1,7 +1,7 @@
 <template>
   <div class="area">
     <div class="box">
-      <card-head title="服务区域" @edit="edit"/>
+      <card-head title="服务区域" step="3"/>
       <vertical-table :items="items" step="1"/>
     </div>
   </div>

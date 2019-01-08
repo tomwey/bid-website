@@ -1,7 +1,7 @@
 <template>
   <div class="other-attachments">
     <div class="box">
-      <card-head title="其他附件" @edit="edit"/>
+      <card-head title="其他附件" step="7"/>
       <vertical-table :items="items" step="7"/>
     </div>
   </div>

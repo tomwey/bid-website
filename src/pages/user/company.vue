@@ -1,7 +1,7 @@
 <template>
   <div class="company">
     <div class="box">
-      <card-head title="基本信息" @edit="edit"/>
+      <card-head title="基本信息" step="1"/>
       <vertical-table :items="items" step="1"/>
     </div>
   </div>

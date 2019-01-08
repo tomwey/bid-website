@@ -501,7 +501,14 @@ export default {
     this.loadBaseConfigData();
     // console.info(this.yearOutput, this.yearSale);
     // this.loadProfileData();
-    console.log("123456");
+    // console.log("123456");
+    if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
+      this.loadProfileData(1);
+      this.loadProfileData(2);
+      this.loadProfileData(4);
+      this.loadProfileData(5);
+      this.loadProfileData(7);
+    }
   },
   watch: {
     currentStep: function(newVal) {

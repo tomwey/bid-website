@@ -79,7 +79,7 @@ export default {
         type: 1
       },
       {
-        label: "注册资本",
+        label: "注册资本(万)",
         value: "",
         field: "regmoney",
         type: 1

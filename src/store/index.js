@@ -6,6 +6,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         supinfo: {},
+        supprofile: {},
         token: null,
         title: ''
     },
@@ -39,11 +40,17 @@ const store = new Vuex.Store({
         updatesupinfo: (state, data) => {
             state.supinfo = data;
         },
+        updatesupprofile: (state, data) => {
+            state.supprofile = data;
+        },
         updateloginname: (state, data) => {
             state.supinfo.loginname = data;
         },
         updatemobile: (state, data) => {
             state.supinfo.telephone = data;
+        },
+        changeeditstate: (state, data) => {
+            state.supinfo.canedit = data;
         }
     }
 })

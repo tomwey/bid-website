@@ -32,6 +32,8 @@ export default {
           } else {
             alert(res.codemsg);
           }
+
+          this.$store.commit("changeeditstate", res.code === "0");
         }
       );
     }

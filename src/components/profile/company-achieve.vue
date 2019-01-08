@@ -171,12 +171,13 @@ export default {
           subtype: "number",
           required: true,
           field: "contractmoney",
-          label: "合同金额"
+          label: "合同金额",
+          append: "万"
         },
         {
           id: "contract-scale",
           type: 1,
-          subtype: "number",
+          subtype: "text",
           field: "contractsize",
           required: true,
           label: "合同规模"

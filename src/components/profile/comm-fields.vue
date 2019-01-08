@@ -69,6 +69,10 @@
                 </b-col>
               </b-row>
             </div>
+            <div class="file-preview" v-if="item._fileurl">
+              <img :src="item._fileurl" v-if="item._isimage">
+              <a :href="item._fileurl" target="_blank" v-if="!item._isimage">{{item._filename}}</a>
+            </div>
           </div>
           <!-- 单值checkbox控件 -->
           <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">{{item.label}}</b-form-checkbox>
@@ -236,6 +240,18 @@ $theme-color: #e46623;
   }
 }
 .fields-wrap {
+  .file-preview {
+    margin-top: 10px;
+    img {
+      max-height: 60px;
+    }
+
+    a {
+      font-size: 14px;
+      color: $theme-color;
+      text-decoration: underline;
+    }
+  }
   // padding: 30px 60px;
   .table {
     margin: 0;

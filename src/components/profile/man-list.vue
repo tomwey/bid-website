@@ -299,7 +299,8 @@ export default {
           return;
         }
         if (control.type === 2) {
-          obj[control.field] = control.value.split("-")[0];
+          obj[control.field] = control.value.split("-")[1];
+          obj[control.field + "name"] = control.value.split("-")[0];
         } else {
           obj[control.field] = control.value;
         }
@@ -307,7 +308,7 @@ export default {
 
       this.items.push(obj);
 
-      this.reset();
+      // this.reset();
 
       this.$refs.contactModal.hide();
 

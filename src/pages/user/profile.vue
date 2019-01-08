@@ -545,51 +545,103 @@ export default {
             if (arr.length > 0) {
               let object = arr[0];
               // console.log(object);
-              this.baseFormData.forEach(control => {
-                if (control.type === 3) {
-                  control.value =
-                    object[control.field] && object[control.field].split(",");
-                } else if (control.type === 1 && control.subtype === "date") {
-                  control.value =
-                    object[control.field] &&
-                    object[control.field].split(" ")[0];
-                } else {
-                  control.value =
-                    object[control.field + "str"] || object[control.field];
-                }
-              });
+              if (step == 1) {
+                this.baseFormData.forEach(control => {
+                  if (control.type === 3) {
+                    control.value =
+                      object[control.field] && object[control.field].split(",");
+                  } else if (control.type === 1 && control.subtype === "date") {
+                    control.value =
+                      object[control.field] &&
+                      object[control.field].split(" ")[0];
+                  } else if (control.type === 4) {
+                    // 文件附件
+                    control.value = object[control.field] || "";
 
-              // console.log(this.baseFormData);
+                    const nameKey = control.field + "name";
+                    const urlKey = control.field + "url";
+                    if (object[urlKey] && object[nameKey]) {
+                      let fileUrl = object[urlKey];
+                      let fileName = object[nameKey];
+                      control._fileurl = fileUrl;
+                      control._filename = fileName;
+                      control._isimage =
+                        fileName.indexOf(".png") !== -1 ||
+                        fileName.indexOf(".gif") !== -1 ||
+                        fileName.indexOf(".jpg") !== -1 ||
+                        fileName.indexOf(".jpeg") !== -1 ||
+                        fileName.indexOf(".webp") !== -1;
+                    }
+                  } else {
+                    control.value =
+                      object[control.field + "str"] || object[control.field];
+                  }
+                });
 
-              this.otherInfoFormData.forEach(control => {
-                control.value = object[control.field];
-              });
+                // console.log(object);
+                // console.log(this.baseFormData);
 
-              this.areaFormData.forEach(control => {
-                if (control.type === 3) {
-                  control.value =
-                    object[control.field] && object[control.field].split(",");
-                  const options = control.value || [];
-                  const cities = this.areaFormData[0].options || [];
+                this.otherInfoFormData.forEach(control => {
+                  control.value = object[control.field];
+                });
 
-                  let temp = [];
-                  options.forEach(v => {
-                    for (let i = 0; i < cities.length; i++) {
-                      if (v === cities[i].value) {
-                        temp.push(cities[i]);
-                        break;
+                this.areaFormData.forEach(control => {
+                  if (control.type === 3) {
+                    control.value =
+                      object[control.field] && object[control.field].split(",");
+                    const options = control.value || [];
+                    const cities = this.areaFormData[0].options || [];
+
+                    let temp = [];
+                    options.forEach(v => {
+                      for (let i = 0; i < cities.length; i++) {
+                        if (v === cities[i].value) {
+                          temp.push(cities[i]);
+                          break;
+                        }
+                      }
+                    });
+
+                    this.areaFormData[1].options = temp;
+                  } else {
+                    control.value = object[control.field];
+                  }
+                });
+
+                this.achieveYearData.output = object["outputvalueyear"];
+                this.achieveYearData.sale = object["turnoveryear"];
+              } else {
+                // console.info(step, res);
+                if (step == 2) {
+                  this.manData = res.data;
+                } else if (step == 4) {
+                  this.serviceTypeData = res.data;
+                } else if (step == 5) {
+                  this.achieveData = res.data;
+                } else if (step == 7) {
+                  this.otherFilesFormData.forEach(control => {
+                    control.value = obj[control.field];
+
+                    if (control.type === 4) {
+                      // 文件附件
+                      const nameKey = control.field + "name";
+                      const urlKey = control.field + "url";
+                      if (object[urlKey] && object[nameKey]) {
+                        let fileUrl = object[urlKey];
+                        let fileName = object[nameKey];
+                        control._fileurl = fileUrl;
+                        control._filename = fileName;
+                        control._isimage =
+                          fileName.indexOf(".png") !== -1 ||
+                          fileName.indexOf(".gif") !== -1 ||
+                          fileName.indexOf(".jpg") !== -1 ||
+                          fileName.indexOf(".jpeg") !== -1 ||
+                          fileName.indexOf(".webp") !== -1;
                       }
                     }
                   });
-
-                  this.areaFormData[1].options = temp;
-                } else {
-                  control.value = object[control.field];
                 }
-              });
-
-              this.achieveYearData.output = object["outputvalueyear"];
-              this.achieveYearData.sale = object["turnoveryear"];
+              }
             }
           }
         }
@@ -755,7 +807,7 @@ export default {
     },
     commit() {
       let params = { action: "updatesupinfo" };
-
+      console.log(this.baseFormData);
       // 填充基础数据
       this._fillData(this.baseFormData, params);
 
@@ -793,7 +845,7 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      // console.log(params);
+      console.log(params);
 
       this.$post(params, res => {
         // console.log(res);

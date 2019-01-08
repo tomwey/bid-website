@@ -155,7 +155,7 @@ export default {
           type: 5,
           field: "ismodel",
           required: true,
-          label: "是否标杆企业"
+          label: "是否标杆企业（地产前100强为标杆企业）"
         },
         {
           id: "proj-manager",

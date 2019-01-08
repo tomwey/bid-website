@@ -104,7 +104,8 @@ export default {
   name: "comm-fields",
   props: {
     readonly: Boolean,
-    formData: Array
+    formData: Array,
+    step: String
   },
   components: {
     treeData: function(resolve) {

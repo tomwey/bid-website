@@ -20,21 +20,25 @@
             v-if="currentStep.step === 1"
             :form-data="baseFormData"
             :ref="`step${currentStep.step}`"
+            :step="1"
           />
           <comm-fields
             v-if="currentStep.step === 6"
             :form-data="otherInfoFormData"
             :ref="`step${currentStep.step}`"
+            :step="1"
           />
           <comm-fields
             v-if="currentStep.step === 7"
             :form-data="otherFilesFormData"
             :ref="`step${currentStep.step}`"
+            :step="7"
           />
           <comm-fields
             v-if="currentStep.step === 3"
             :form-data="areaFormData"
             :ref="`step${currentStep.step}`"
+            :step="1"
           />
         </div>
         <man-list v-if="currentStep.step === 2" :items="manData"/>
@@ -520,6 +524,9 @@ export default {
       }
 
       // this.loadProfileData(newVal.step);
+    },
+    $route: function(to) {
+      console.log(to);
     }
   },
   methods: {
@@ -792,7 +799,7 @@ export default {
         // console.log(res);
         if (res.code === "0") {
           alert("提交成功");
-          this.$router.push({ path: "/admin/company" });
+          this.$router.replace({ path: "/admin/company" });
         } else {
           alert(res.codemsg);
         }

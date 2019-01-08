@@ -9,7 +9,12 @@
         <b-button v-b-modal.contactModal>新增联系方式</b-button>
       </b-col>
     </b-row>
-    <horizontal-table :items="items" :fields="fields" :actions="actions"/>
+    <horizontal-table
+      :items="items"
+      @actionclick="actionClick"
+      :fields="fields"
+      :actions="actions"
+    />
     <!-- <b-table striped hover responsive="lg" :items="items" :fields="fields"></b-table> -->
     <div class="empty-error-box" v-if="items.length === 0">暂无联系方式</div>
     <!-- <div class="new-btn-wrap">
@@ -17,11 +22,14 @@
     </div>-->
     <b-modal
       id="contactModal"
+      no-close-on-backdrop="true"
+      no-close-on-esc="true"
       centered
       :title="modalTitle || '新增联系方式'"
       ok-title="保存"
       ok-variant="danger"
       size="lg"
+      ref="contactModal"
       cancel-title="取消"
       @ok="commit"
       @cancel="reset"
@@ -53,7 +61,14 @@ export default {
         //   name: "删除"
         // },
         {
-          name: "编辑"
+          name: "编辑",
+          code: "edit",
+          variant: "secondary"
+        },
+        {
+          name: "删除",
+          code: "delete",
+          variant: "danger"
         }
       ],
       modalTitle: null,
@@ -178,6 +193,26 @@ export default {
     this.loadManData();
   },
   methods: {
+    actionClick(ev) {
+      // console.log(ev);
+      const action = ev.action;
+      const data = ev.data;
+      if (action.code === "edit") {
+        this.manFormData.forEach(control => {
+          control.value = data[control.field];
+        });
+
+        this.$refs.contactModal.show();
+      } else if (action.code === "delete") {
+        var a = confirm("您确定要删除吗？");
+        if (a) {
+          const index = this.items.indexOf(data);
+          if (index !== -1) {
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
     loadManData() {
       // console.log(123);
       this.$post(
@@ -254,10 +289,15 @@ export default {
       );
     },
     // resetForm() {},
-    commit() {
+    commit(evt) {
+      evt.preventDefault();
       // let temp = [];
       let obj = {};
       this.manFormData.forEach(control => {
+        if (control.required && !control.value) {
+          alert(control.label + "不能为空");
+          return;
+        }
         if (control.type === 2) {
           obj[control.field] = control.value.split("-")[0];
         } else {
@@ -268,6 +308,8 @@ export default {
       this.items.push(obj);
 
       this.reset();
+
+      this.$refs.contactModal.hide();
 
       // this.items = this.items.push()
     },

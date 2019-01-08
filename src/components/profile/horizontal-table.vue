@@ -21,7 +21,12 @@
             <!-- {{item[field.value]}} -->
             <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
             <div class="actions" v-if="field.value === 'actions'">
-              <b-button v-for="(btn,index4) in btnActions(item)" :key="index4">{{btn.name}}</b-button>
+              <b-button
+                :variant="btn.variant"
+                v-for="(btn,index4) in btnActions(item)"
+                :key="index4"
+                @click="click(btn, item);"
+              >{{btn.name}}</b-button>
             </div>
           </td>
         </tr>
@@ -45,6 +50,9 @@ export default {
   methods: {
     btnActions(item) {
       return item["actions"] || this.actions;
+    },
+    click(btn, item) {
+      this.$emit("actionclick", { action: btn, data: item });
     }
   }
 };
@@ -54,6 +62,12 @@ export default {
   padding-bottom: 20px;
   .table {
     width: 100%;
+  }
+
+  .actions {
+    .btn {
+      margin-bottom: 10px;
+    }
   }
 }
 </style>

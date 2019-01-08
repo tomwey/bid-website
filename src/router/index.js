@@ -222,8 +222,9 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(r => r.meta.requireAuth)) {
 
         let token = store.state.token;
+        console.log(token);
         if (token) {
-            if (!store.state.supinfo.loginname) {
+            if (!store.state.supinfo.supid) {
                 post({
                     action: "P_SUP_GetAccountSupInfo",
                     p1: store.state.supinfo.accountid,

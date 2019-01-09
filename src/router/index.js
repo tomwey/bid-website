@@ -34,9 +34,9 @@ const router = new Router({
             component: () => import("@/pages/bid-notice/index")
         },
         {
-            path: '/contact',
-            name: 'contact',
-            component: () => import("@/pages/contact/index")
+            path: '/help',
+            name: 'help',
+            component: () => import("@/pages/help/index")
         },
         {
             path: '/partner',
@@ -225,10 +225,8 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    // console.log(from);
     store.commit("getToken");
     if (to.matched.some(r => r.meta.requireAuth)) {
-
         let token = store.state.token;
         if (token) {
             if (to.meta.requireApprove) {
@@ -287,7 +285,15 @@ router.beforeEach((to, from, next) => {
                 }
             } else {
                 // 不需要供应商录入资料就可以进入的路由
-                next();
+                // 已经录入过资料，直接放行
+                if (to.meta.needLoadProfile) {
+                    // 提前加载供应商资料数据
+                    loadProfile(store, () => {
+                        next();
+                    });
+                } else {
+                    next();
+                }
             }
         } else {
             next({

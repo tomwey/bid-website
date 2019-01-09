@@ -29,8 +29,10 @@
             <div class="info-text">
               <p class="info">服务热线: 4006-490-900</p>
               <p class="info">集团总机: 028-86248000</p>
-              <p class="info">举报电话: 028-86248000</p>
-              <p class="info">举报邮箱: hr@heneng.cn</p>
+              <p class="info">举报电话: 15882407055</p>
+              <p class="info">举报邮箱:
+                <a href="mailto:HNJCJB@heneng.cn">HNJCJB@heneng.cn</a>
+              </p>
               <p class="info">总部地址: 成都市青羊区西大街1号</p>
             </div>
             <p class="copyright">
@@ -84,8 +86,8 @@ export default {
         },
         {
           id: 6,
-          name: "联系我们",
-          route: "contact"
+          name: "操作手册",
+          route: "help"
         }
       ]
     };

@@ -145,6 +145,7 @@ export default {
         } else if (control.type === 7 && control.value) {
           obj[control.field] = control.value.value;
           obj[control.field + "name"] = control.value.text;
+          obj[control.field + "id"] = control.value.value;
         } else if (control.type === 5) {
           obj[control.field] = control.value ? "是" : "否";
         } else {

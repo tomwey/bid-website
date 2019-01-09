@@ -114,25 +114,7 @@ export default {
       loginname: null,
       password: null,
       keepLogin: false,
-      logined: false,
-      partners: [
-        {
-          name: "成都建工集团",
-          icon: require("../../assets/images/icon_cdbj.jpg")
-        },
-        {
-          name: "大汉科技",
-          icon: require("../../assets/images/icon_dhkj.png")
-        },
-        {
-          name: "科道新源集团",
-          icon: require("../../assets/images/icon_kdxg.png")
-        },
-        {
-          name: "四川泰力电气有限公司",
-          icon: require("../../assets/images/icon_sctl.png")
-        }
-      ]
+      logined: false
     };
   },
   mounted() {

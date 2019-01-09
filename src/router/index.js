@@ -263,10 +263,14 @@ router.beforeEach((to, from, next) => {
                             // 
                             if (to.meta.needLoadProfile) {
                                 // 提前加载供应商资料数据
-                                loadProfile(store);
+                                loadProfile(store, () => {
+                                    next();
+                                });
+                            } else {
+                                next();
                             }
 
-                            next();
+                            // next();
 
                         }
                     });
@@ -274,10 +278,12 @@ router.beforeEach((to, from, next) => {
                     // 已经录入过资料，直接放行
                     if (to.meta.needLoadProfile) {
                         // 提前加载供应商资料数据
-                        loadProfile(store);
+                        loadProfile(store, () => {
+                            next();
+                        });
+                    } else {
+                        next();
                     }
-
-                    next();
                 }
             } else {
                 // 不需要供应商录入资料就可以进入的路由
@@ -294,7 +300,7 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-function loadProfile(_store) {
+function loadProfile(_store, callback) {
     post({
         action: "getsupinfo",
         uid: _store.state.supinfo.accountid,
@@ -303,6 +309,10 @@ function loadProfile(_store) {
         console.log("##### profile: ", res);
         if (res.code === "0") {
             _store.commit("updatesupprofile", res.data);
+        }
+
+        if (callback) {
+            callback(res);
         }
     })
 }

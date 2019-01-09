@@ -6,7 +6,7 @@
         <span class="digit">{{items.length}}</span>条联系方式
       </b-col>
       <b-col cols="4">
-        <b-button v-b-modal.contactModal>新增联系方式</b-button>
+        <b-button @click="newItem">新增联系方式</b-button>
       </b-col>
     </b-row>
     <horizontal-table
@@ -22,8 +22,8 @@
     </div>-->
     <b-modal
       id="contactModal"
-      no-close-on-backdrop="true"
-      no-close-on-esc="true"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
       centered
       :title="modalTitle || '新增联系方式'"
       ok-title="保存"
@@ -56,6 +56,7 @@ export default {
   },
   data() {
     return {
+      currentEditItem: null,
       actions: [
         // {
         //   name: "删除"
@@ -85,8 +86,8 @@ export default {
               value: null,
               text: "选择联系人类型"
             }
-          ],
-          changeFunc: this.changeContactType
+          ]
+          // changeFunc: this.changeContactType
         },
         {
           id: "contact-job",
@@ -189,17 +190,36 @@ export default {
     };
   },
   mounted() {
+    // this.items = this.$store.state.supprofile.man || [];
+    console.log(this.items);
+
     this.loadConfigs();
-    this.loadManData();
   },
   methods: {
+    newItem() {
+      this.currentEditItem = null;
+
+      this.$refs.contactModal.show();
+    },
     actionClick(ev) {
       // console.log(ev);
       const action = ev.action;
       const data = ev.data;
       if (action.code === "edit") {
+        this.currentEditItem = data;
+        // data.edit = true;
         this.manFormData.forEach(control => {
-          control.value = data[control.field];
+          if (control.type === 2) {
+            if (data[control.field]) {
+              control.value = `${data[control.field + "name"]}-${
+                data[control.field]
+              }`;
+            } else {
+              control.value = null;
+            }
+          } else {
+            control.value = data[control.field];
+          }
         });
 
         this.$refs.contactModal.show();
@@ -212,26 +232,6 @@ export default {
           }
         }
       }
-    },
-    loadManData() {
-      // console.log(123);
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token,
-          p3: "2"
-        },
-        res => {
-          // console.log(res);
-          if (res.code === "0") {
-            if (res.count != 0) {
-              this.items = res.data;
-            }
-          } else {
-          }
-        }
-      );
     },
     loadConfigs() {
       // 联系人类型
@@ -306,7 +306,12 @@ export default {
         }
       });
 
-      this.items.push(obj);
+      // this.items.push(obj);
+      obj["contactid"] = obj["contactid"] || this.GetMD5(JSON.stringify(obj));
+      this.$emit("changeitem", {
+        item: obj,
+        currentItem: this.currentEditItem
+      });
 
       // this.reset();
 

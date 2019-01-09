@@ -42,13 +42,72 @@
             step="1"
           />
         </div>
-        <man-list v-if="currentStep.step === 2" :items="manData"/>
-        <service-type v-if="currentStep.step === 4" :items="serviceTypeData"/>
-        <company-achieve
+
+        <comm-form-list
+          v-if="currentStep.step === 2"
+          model="联系方式"
+          :items="manData"
+          :fields="manFields"
+          :form-data="manFormData"
+        />
+
+        <comm-form-list
+          v-if="currentStep.step === 4"
+          model="服务类别"
+          :items="serviceTypeData"
+          :fields="serviceTypeFields"
+          :form-data="serviceTypeFormData"
+        />
+
+        <div class="achieve-wrap" v-if="currentStep.step === 5">
+          <div class="input-table">
+            <table class="table">
+              <tr>
+                <td class="label">
+                  <label for="year-output">年产值额</label>
+                </td>
+                <td class="input-control">
+                  <b-input-group append="万">
+                    <b-form-input
+                      id="year-output"
+                      v-model="achieveYearData.output"
+                      placeholder="输入年产值额"
+                      type="number"
+                    ></b-form-input>
+                  </b-input-group>
+                </td>
+                <td class="label">
+                  <label for="year-sale">年营业额</label>
+                </td>
+                <td class="input-control">
+                  <b-input-group append="万">
+                    <b-form-input
+                      id="year-sale"
+                      v-model="achieveYearData.sale"
+                      placeholder="输入年营业额"
+                      type="number"
+                    ></b-form-input>
+                  </b-input-group>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <comm-form-list
+            model="公司业绩"
+            :items="achieveData"
+            :fields="achieveFields"
+            :form-data="achieveFormData"
+          />
+        </div>
+
+        <!-- <man-list v-if="currentStep.step === 2" @changeitem="changeItem" :items="manData"/> -->
+        <!-- <service-type v-if="currentStep.step === 4" :items="serviceTypeData"/> -->
+        <!-- <company-achieve
           v-if="currentStep.step === 5"
           :items="achieveData"
           :year-data="achieveYearData"
-        />
+        />-->
       </div>
       <div class="buttons">
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
@@ -68,26 +127,363 @@ export default {
     commFields: function(resolve) {
       require(["@/components/profile/comm-fields"], resolve);
     },
-    manList: function(resolve) {
-      require(["@/components/profile/man-list"], resolve);
-    },
-    serviceType: function(resolve) {
-      require(["@/components/profile/service-type"], resolve);
-    },
-    companyAchieve: function(resolve) {
-      require(["@/components/profile/company-achieve"], resolve);
+    commFormList: function(resolve) {
+      require(["@/components/profile/comm-form-list"], resolve);
     }
+    // manList: function(resolve) {
+    //   require(["@/components/profile/man-list"], resolve);
+    // },
+    // serviceType: function(resolve) {
+    //   require(["@/components/profile/service-type"], resolve);
+    // },
+    // companyAchieve: function(resolve) {
+    //   require(["@/components/profile/company-achieve"], resolve);
+    // }
   },
   data() {
     return {
       currentStep: null,
       achieveData: [],
+      achieveFields: [
+        {
+          label: "城市",
+          value: "cityname"
+        },
+        {
+          label: "项目名称",
+          value: "projectname"
+        },
+        {
+          label: "合作单位名称",
+          value: "partnername"
+        },
+        {
+          label: "是否标杆企业",
+          value: "ismodel"
+        },
+        {
+          label: "项目经理",
+          value: "manager"
+        },
+        {
+          label: "合同金额(万)",
+          value: "contractmoney"
+        },
+        {
+          label: "合同规模(万)",
+          value: "contractsize"
+        },
+        {
+          label: "开始日期",
+          value: "begindate"
+        },
+        {
+          label: "结束日期",
+          value: "enddate"
+        },
+        {
+          label: "合同附件",
+          value: "contractannex"
+        },
+        {
+          label: "其他说明",
+          value: "othermemo"
+        },
+        {
+          label: "操作",
+          value: "actions"
+        }
+      ],
+      achieveFormData: [
+        {
+          id: "city",
+          type: 1,
+          subtype: "text",
+          required: true,
+          field: "cityname",
+          label: "城市"
+        },
+        {
+          id: "proj-name",
+          type: 1,
+          subtype: "text",
+          required: true,
+          field: "projectname",
+          label: "项目名称"
+        },
+        {
+          id: "partner-company",
+          type: 1,
+          subtype: "text",
+          required: true,
+          field: "partnername",
+          label: "合作单位名称"
+        },
+        {
+          id: "is-good-company",
+          type: 5,
+          field: "ismodel",
+          required: true,
+          label: "是否标杆企业（地产前100强为标杆企业）"
+        },
+        {
+          id: "proj-manager",
+          type: 1,
+          subtype: "text",
+          required: true,
+          field: "manager",
+          label: "项目经理"
+        },
+        {
+          id: "contract-money",
+          type: 1,
+          subtype: "number",
+          required: true,
+          field: "contractmoney",
+          label: "合同金额",
+          append: "万"
+        },
+        {
+          id: "contract-scale",
+          type: 1,
+          subtype: "text",
+          field: "contractsize",
+          required: true,
+          label: "合同规模"
+        },
+        {
+          id: "start-date",
+          type: 1,
+          subtype: "date",
+          required: true,
+          field: "begindate",
+          label: "开始日期"
+        },
+        {
+          id: "end-date",
+          type: 1,
+          subtype: "date",
+          required: true,
+          field: "enddate",
+          label: "结束日期"
+        },
+        {
+          id: "contract-file",
+          type: 4,
+          required: true,
+          label: "合同附件",
+          field: "contractannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Achievement_Info",
+          fieldname: "contractannex"
+        },
+        {
+          id: "summary",
+          type: 1,
+          subtype: "text",
+          required: false,
+          field: "othermemo",
+          label: "其他说明"
+        }
+      ],
       achieveYearData: {
         output: null,
         sale: null
       },
       serviceTypeData: [],
+      serviceTypeFields: [
+        {
+          label: "对口服务类别",
+          value: "servertype"
+        },
+        {
+          label: "是否主要类别",
+          value: "ismain"
+        },
+        {
+          label: "资质名称",
+          value: "quaname"
+        },
+        {
+          label: "资质级别",
+          value: "qualevel"
+        },
+        {
+          label: "资质审核到期日期",
+          value: "quaexaminedate"
+        },
+        {
+          label: "其他说明",
+          value: "othermemo"
+        },
+        {
+          label: "操作",
+          value: "actions"
+        }
+      ],
+      serviceTypeFormData: [
+        {
+          id: "service-type",
+          type: 7,
+          label: "对口服务类别",
+          value: null,
+          field: "servertype",
+          required: true,
+          options: []
+        },
+        {
+          id: "is-main-type",
+          label: "是否主要类别",
+          field: "ismain",
+          required: true,
+          type: 5
+        },
+        {
+          id: "zz-name",
+          type: 1,
+          subtype: "text",
+          required: true,
+          field: "quaname",
+          label: "资质名称"
+        },
+        {
+          id: "zz-level",
+          type: 1,
+          subtype: "text",
+          field: "qualevel",
+          label: "资质级别"
+        },
+        {
+          id: "zz-approve-date",
+          type: 1,
+          subtype: "date",
+          label: "资质审核到期日期",
+          field: "quaexaminedate",
+          required: true
+        },
+        {
+          id: "memo",
+          type: 1,
+          subtype: "text",
+          label: "其他说明",
+          field: "othermemo",
+          required: true
+        }
+      ],
       manData: [],
+      manFormData: [
+        {
+          id: "contact-type",
+          label: "联系人类型",
+          type: 2,
+          required: true,
+          value: null,
+          field: "contacttype",
+          options: [
+            {
+              value: null,
+              text: "选择联系人类型"
+            }
+          ]
+          // changeFunc: this.changeContactType
+        },
+        {
+          id: "contact-job",
+          label: "联系人职位",
+          type: 2,
+          value: null,
+          required: true,
+          field: "contactposition",
+          options: []
+        },
+        {
+          id: "name",
+          label: "联系人姓名",
+          required: true,
+          field: "contactname",
+          type: 1,
+          subtype: "text"
+          // value: null
+        },
+        {
+          id: "phone",
+          label: "联系人电话",
+          required: true,
+          field: "contacttel",
+          type: 1,
+          subtype: "tel"
+          // value: null
+        },
+        {
+          id: "mobile",
+          label: "联系人手机",
+          required: true,
+          type: 1,
+          field: "contactphone",
+          subtype: "tel"
+          // value: null
+        },
+        {
+          id: "email",
+          label: "电子邮件",
+          required: false,
+          type: 1,
+          field: "email",
+          subtype: "email"
+          // value: null
+        },
+        {
+          id: "idcard",
+          label: "身份证号码",
+          required: false,
+          field: "contactidno",
+          type: 1,
+          subtype: "text"
+          // value: null
+        }
+      ],
+      manFields: [
+        {
+          label: "联系人类型",
+          value: "contacttype"
+        },
+        {
+          label: "联系人职位",
+          value: "contactposition"
+        },
+        {
+          label: "联系人姓名",
+          value: "contactname"
+        },
+        {
+          label: "联系人电话",
+          value: "contacttel"
+        },
+        {
+          label: "联系人手机",
+          value: "contactphone"
+        },
+        {
+          label: "电子邮件",
+          value: "email"
+        },
+        {
+          label: "身份证号码",
+          value: "contactidno"
+        },
+        {
+          label: "联系人社保证明",
+          value: "sscertificateannex"
+        },
+        {
+          label: "附件委托",
+          value: "authdelegationannex"
+        },
+        {
+          label: "操作",
+          value: "actions"
+        }
+      ],
       areaFormData: [
         {
           id: "service-area",
@@ -426,8 +822,8 @@ export default {
     // this.loadProfileData(4);
     // this.loadProfileData(5);
     // this.loadProfileData(7);
+    this.populateData();
     // }
-    // this.populateData();
   },
   watch: {
     currentStep: function(newVal) {
@@ -437,10 +833,10 @@ export default {
           query: merge(this.$route.query, { s: newVal.step })
         });
       }
-    },
-    $route: function(to) {
-      console.log(to);
     }
+    // $route: function(to) {
+    //   console.log(to);
+    // }
   },
   methods: {
     populateData() {
@@ -487,6 +883,37 @@ export default {
       // 填充业绩数据
       this.achieveYearData.output = object["outputvalueyear"];
       this.achieveYearData.sale = object["turnoveryear"];
+
+      // 填充其它附件
+      let files = this.$store.state.supprofile.otherfiles || [];
+      if (files.length > 0) {
+        let object = files[0];
+        // console.log(object);
+        this.otherFilesFormData.forEach(control => {
+          control.value = object[control.field];
+
+          if (control.type === 4) {
+            // 文件附件
+            const nameKey = control.field + "name";
+            const urlKey = control.field + "url";
+            // console.log(nameKey);
+            if (object[urlKey] && object[nameKey]) {
+              let fileUrl = object[urlKey];
+              let fileName = object[nameKey];
+              control._fileurl = fileUrl;
+              control._filename = fileName;
+              control._isimage =
+                fileName.indexOf(".png") !== -1 ||
+                fileName.indexOf(".gif") !== -1 ||
+                fileName.indexOf(".jpg") !== -1 ||
+                fileName.indexOf(".jpeg") !== -1 ||
+                fileName.indexOf(".webp") !== -1;
+            }
+          }
+        });
+      }
+
+      // console.log(this.otherFilesFormData);
     },
     loadProfileData(step) {
       this.$post(
@@ -828,13 +1255,22 @@ export default {
       params["token"] = this.$store.state.token;
 
       // 填充联系人信息
-      params["man"] = this.manData;
+      params["man"] =
+        (this.manData.length === 0
+          ? this.$store.state.supprofile.man
+          : this.manData) || [];
 
       // 填充服务类别
-      params["types"] = this.serviceTypeData;
+      params["types"] =
+        this.serviceTypeData.length === 0
+          ? this.$store.state.supprofile.types
+          : this.serviceTypeData;
 
       // 填充公司业绩
-      params["achievements"] = this.achieveData;
+      params["achievements"] =
+        this.achieveData.length === 0
+          ? this.$store.state.supprofile.yj_data
+          : this.achieveData;
 
       // 填充其它附件信息
       let fileObj = {};
@@ -854,6 +1290,8 @@ export default {
           alert("提交成功");
           this.$router.replace({ path: "/admin/company" });
         } else {
+          console.log(res.codemsg);
+
           alert(res.codemsg);
         }
       });
@@ -936,6 +1374,48 @@ $theme-color: #e46623;
         border: 1px solid $theme-color;
         color: $theme-color;
         background: #fff;
+      }
+    }
+  }
+}
+
+.achieve-wrap {
+  .input-table {
+    padding: 0 15px;
+  }
+  .table {
+    margin: 0;
+    padding: 0;
+
+    td {
+      border-top: 0;
+      vertical-align: middle;
+    }
+
+    .label {
+      width: 80px;
+      &:first-child {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      label {
+        vertical-align: middle;
+        line-height: 14px;
+        /* padding: 0; */
+        margin: 0;
+      }
+      // .required {
+      //   color: $theme-color;
+      //   font-size: 12px;
+      // }
+    }
+
+    .input-control {
+      width: calc(100% - 160px) / 2;
+      padding-left: 0;
+      &:last-child {
+        padding-right: 0;
       }
     }
   }

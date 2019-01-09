@@ -220,29 +220,9 @@ export default {
     };
   },
   mounted() {
-    this.loadAchieveData();
+    this.items = this.$store.state.supprofile.yj_data || [];
   },
   methods: {
-    loadAchieveData() {
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token,
-          p3: "5"
-        },
-        res => {
-          // console.log(res);
-          if (res.code === "0") {
-            // this.items = res.data;
-            if (res.count != 0) {
-              this.items = res.data;
-            }
-          } else {
-          }
-        }
-      );
-    },
     commit() {
       //   console.log(this.manFormData);
       // this.reset();

@@ -290,6 +290,10 @@ $theme-color: #e46623;
     // width: 280px;
     max-height: 360px;
     width: 100%;
+
+    .error-box {
+      padding: 5px 10px;
+    }
     // height: 100%;
 
     background: rgba(255, 255, 255, 0.95);

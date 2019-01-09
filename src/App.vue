@@ -34,7 +34,7 @@
               <p class="info">总部地址: 成都市青羊区西大街1号</p>
             </div>
             <p class="copyright">
-              版权所有 © {{new Date().getYear()}}
+              版权所有 © {{new Date().getFullYear()}}
               <a href="http://www.heneng.cn" target="_blank">合能集团</a> 保留所有权利.蜀ICP备14031323号
             </p>
           </div>

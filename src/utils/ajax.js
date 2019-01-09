@@ -19,13 +19,14 @@ function post(param, callback) {
         payload: payload
     })
         .then(function (res) {
+            // console.log(res);
             if (res.status == 200 || res.status == 201) {
                 if (callback) {
                     callback(res.data);
                 }
             } else {
                 if (callback) {
-                    callback({ code: 500, codemsg: '服务器出错' });
+                    callback({ code: 500, codemsg: res.codemsg });
                 }
             }
 
@@ -33,7 +34,7 @@ function post(param, callback) {
         .catch(function (err) {
             // console.log(err);
             if (callback) {
-                callback({ code: 500, codemsg: '服务器出错', error: err });
+                callback({ code: 500, codemsg: err, error: err });
             }
         });
 }
@@ -48,7 +49,7 @@ axios.interceptors.response.use(resp => {
             path: '/',
             query: { redirect: router.currentRoute.fullPath }
         })
-        let msg = resp.data.code === "401" ? "账号登录已过期，请重新登录" : "非法操作";
+        let msg = resp.data.code === "401" ? "账号登录已过期，请重新登录" : "用户不存在";
         return Promise.reject(msg);
     } else {
         return resp;

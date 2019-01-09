@@ -26,7 +26,11 @@
         <div class="file-wrap">
           <span class="name">授权文件附件</span>
           <div class="upload-control-wrap">
-            <upload-control :tpl-file="tplfile" @fileuploaded="fileUpload2"></upload-control>
+            <upload-control
+              upload_desc="下载下方模板文件，填完盖章，并上传该word附件"
+              :tpl-file="tplfile"
+              @fileuploaded="fileUpload2"
+            ></upload-control>
           </div>
         </div>
         <b-row>
@@ -112,7 +116,8 @@ export default {
       authfile: null,
       tplfile: {
         name: "授权模板文件下载",
-        url: "http://www.baidu.com"
+        url:
+          "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
       }
     };
   },

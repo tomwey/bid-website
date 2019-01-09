@@ -14,7 +14,7 @@
       </b-carousel>
       <div class="login-box-wrap">
         <div class="login-box">
-          <h2 class="title" v-if="!logined">供方登录</h2>
+          <h2 class="title" v-if="!$store.state.token">供方登录</h2>
           <div class="error-box" v-if="!!error">{{error}}</div>
           <div class="form-wrap" v-if="!$store.state.token">
             <b-form-input v-model="loginname" type="text" placeholder="输入手机号/登录名"></b-form-input>
@@ -43,9 +43,11 @@
             </b-row>
           </div>
 
-          <div class="logined-box" v-if="!!$store.state.token">
+          <div class="logined-wrap" v-if="!!$store.state.token">
+            <h4>{{$store.state.supinfo.loginname}}，您好</h4>
             <p>欢迎使用合能招投标系统</p>
             <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
+            <span class="hn-btn light" @click="logout">退出登录</span>
           </div>
         </div>
       </div>
@@ -121,6 +123,11 @@ export default {
     this.logined = !!this.$getToken();
   },
   methods: {
+    logout() {
+      this.$store.commit("logout");
+      // this.currentMenuItem = null;
+      this.$router.replace({ name: "home" });
+    },
     login() {
       this.error = null;
 
@@ -141,7 +148,8 @@ export default {
               this.$store.commit("login", {
                 token: item.token,
                 days: this.keepLogin ? 7 : 1,
-                uid: item.accountid
+                uid: item.accountid,
+                loginname: item.loginname
               });
 
               this.$router.push({
@@ -190,6 +198,10 @@ export default {
   width: 100%;
   cursor: pointer;
   user-select: none;
+  &.light {
+    background: #999;
+    margin-top: 10px;
+  }
 }
 </style>
 <style lang="scss" scoped>
@@ -206,8 +218,20 @@ $theme-color: #e46623;
   }
 }
 
-.logined-box {
-  padding: 30px;
+.logined-wrap {
+  padding: 20px;
+  h4 {
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+  }
+
+  p {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+  }
 }
 
 .hero-area {

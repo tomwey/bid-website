@@ -46,15 +46,16 @@
           ></b-form-checkbox-group>
           <!-- 文件上传控件 -->
           <div class="input-file-box" v-if="item.type === 4">
-            <input
-              type="file"
-              :accept="`${item.accept || 'image/jpeg, image/png, image/gif'}`"
+            <b-form-file
+              :accept="`${item.accept || 'image/*'}`"
               :ref="`${item.id.replace(/-/g, '')}`"
               :id="item.id"
               :multiple="item.multiple"
               :placeholder="item.placeholder || `选择文件`"
               @change="uploadFiles($event, item);"
-            >
+              plain
+            ></b-form-file>
+            <p class="upload-help-text">{{item.upload_desc || "上传附件为图片，格式为：jpg,jpeg,png,gif"}}</p>
             <div class="progress-box" v-show="item.progress && item.progress > 0">
               <b-row>
                 <b-col cols="10">
@@ -145,6 +146,7 @@ export default {
       console.log(val);
       if (this.currentItem) {
         this.$set(this.currentItem, "value", val);
+        // this.$set(this.currentItem, this.currentItem.field + "name", val.text);
         this.openTreeData = false;
         console.log(this.currentItem);
         // this.currentItem = null;
@@ -240,6 +242,16 @@ $theme-color: #e46623;
   }
 }
 .fields-wrap {
+  .upload-help-text {
+    font-size: 14px;
+    color: #999;
+    font-style: italic;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    line-height: 14px;
+  }
+
   .file-preview {
     margin-top: 10px;
     img {

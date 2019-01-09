@@ -1,13 +1,14 @@
 <template>
   <div class="upload-control">
     <div class="control-wrap">
-      <input
-        type="file"
-        :accept="`${accept || 'image/jpeg, image/png, image/gif'}`"
+      <b-form-file
+        :accept="`${accept || 'image/*'}`"
         placeholder="选择文件"
         :multiple="multiple"
         @change="uploadFiles($event);"
-      >
+        plain
+      ></b-form-file>
+      <p class="upload-help-text">{{upload_desc || "图片格式为：jpg,jpeg,png,gif"}}</p>
       <div class="progress-box" v-show="progress > 0">
         <b-row>
           <b-col cols="10">
@@ -33,7 +34,8 @@ export default {
     multiple: Boolean,
     accept: String,
     tablename: String,
-    fieldname: String
+    fieldname: String,
+    upload_desc: String
   },
   data() {
     return {
@@ -100,6 +102,16 @@ export default {
   width: 100%;
 
   padding: 10px;
+
+  .upload-help-text {
+    font-size: 14px;
+    color: #999;
+    font-style: italic;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    line-height: 14px;
+  }
 
   .control-wrap {
     // padding: 0 10px;

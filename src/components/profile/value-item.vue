@@ -16,8 +16,9 @@ export default {
     textValue() {
       let key = this.field + "name";
       let value = this.item[key] || this.item[this.field] || "";
-      value = value.replace("00:00:00 +0000 UTC", "");
-      value = value.replace("+0000 UTC", "");
+      // value = value.replace("00:00:00 +0000 UTC", "");
+      // value = value.replace("+0000 UTC", "");
+
       if (value === "true") {
         return "是";
       }

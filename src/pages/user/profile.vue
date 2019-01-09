@@ -157,7 +157,7 @@ export default {
           value: "contractmoney"
         },
         {
-          label: "合同规模(万)",
+          label: "合同规模",
           value: "contractsize"
         },
         {
@@ -260,6 +260,7 @@ export default {
           required: true,
           label: "合同附件",
           field: "contractannex",
+          accept: ".zip,.rar",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
           fieldname: "contractannex"
@@ -713,7 +714,7 @@ export default {
         {
           id: "mgr-license-file",
           type: 4,
-          multiple: true,
+          // multiple: false,
           label: "管理体系认证（ISO9001/14001/HSE等附件）",
           field: "manageauthannex",
           placeholder: "",
@@ -724,7 +725,7 @@ export default {
         {
           id: "bank-auth-file",
           type: 4,
-          multiple: true,
+          // multiple: true,
           label: "银行信用等级和授信额度（附件）",
           placeholder: "",
           field: "banklevelandcredit",
@@ -805,6 +806,8 @@ export default {
 
     this.loadManConfigs();
 
+    this.loadServiceTypeConfigs();
+
     // if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
     // this.loadProfileData(1);
     // this.loadProfileData(2);
@@ -828,6 +831,35 @@ export default {
     // }
   },
   methods: {
+    loadServiceTypeConfigs() {
+      this.$post(
+        {
+          action: "P_SY_GetAreaOrType",
+          p1: "2",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [];
+
+            // console.log(arr);
+
+            arr.forEach(ele => {
+              temp.push({
+                value: ele.suptypeid,
+                text: ele.suptypename,
+                childcount: ele.subcount
+              });
+            });
+
+            // console.log(arr);
+
+            this.serviceTypeFormData[0].options = temp;
+          }
+        }
+      );
+    },
     controlValueChanged(val) {
       console.log(val);
       let control = val.control;

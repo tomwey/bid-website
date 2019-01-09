@@ -15,6 +15,7 @@ const store = new Vuex.Store({
             const token = _getToken();
             state.token = token;
             state.supinfo.accountid = localStorage.getItem("uid");
+            state.supinfo.loginname = localStorage.getItem("uname");
         },
         login: (state, data) => {
             // localStorage.token = data;
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
             // console.log(123);
             localStorage.removeItem('token');
             localStorage.removeItem('uid');
+            localStorage.removeItem('uname');
             state.token = null;
             state.supinfo = {};
         },
@@ -39,12 +41,14 @@ const store = new Vuex.Store({
         },
         updatesupinfo: (state, data) => {
             state.supinfo = data;
+            localStorage.setItem('uname', data.loginname);
         },
         updatesupprofile: (state, data) => {
             state.supprofile = data;
         },
         updateloginname: (state, data) => {
             state.supinfo.loginname = data;
+            localStorage.setItem('uname', data);
         },
         updatemobile: (state, data) => {
             state.supinfo.telephone = data;
@@ -60,6 +64,7 @@ function _saveToken(data) {
     date.setDate(date.getDate() + data.days);
     localStorage.setItem('token', `${data.token}#${date.toString()}`);
     localStorage.setItem('uid', data.uid);
+    localStorage.setItem('uname', data.loginname);
 }
 
 function _getToken() {

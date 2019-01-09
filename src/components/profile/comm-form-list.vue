@@ -95,6 +95,13 @@ export default {
             } else {
               control.value = null;
             }
+          } else if (control.type === 7) {
+            // 树形控件
+            control.value = {
+              value: data[control.field],
+              text: data[control.field + "name"],
+              childcount: 0
+            };
           } else {
             control.value = data[control.field];
           }
@@ -114,7 +121,10 @@ export default {
     newItem() {
       this.currentEditItem = null;
 
-      this.$refs.form.reset();
+      // this.$refs.form.reset();
+      this.formData.forEach(control => {
+        control.value = null;
+      });
 
       this.$refs.formModal.show();
     },
@@ -124,7 +134,7 @@ export default {
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
-        if (control.required && !control.value) {
+        if (control.required && control.type !== 5 && !control.value) {
           alert(control.label + "不能为空");
           return;
         }
@@ -132,6 +142,11 @@ export default {
         if (control.type === 2 && control.value) {
           obj[control.field] = control.value.split("-")[1];
           obj[control.field + "name"] = control.value.split("-")[0];
+        } else if (control.type === 7 && control.value) {
+          obj[control.field] = control.value.value;
+          obj[control.field + "name"] = control.value.text;
+        } else if (control.type === 5) {
+          obj[control.field] = control.value ? "是" : "否";
         } else {
           obj[control.field] = control.value;
         }

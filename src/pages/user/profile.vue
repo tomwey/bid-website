@@ -104,14 +104,6 @@
             :form-data="achieveFormData"
           />
         </div>
-
-        <!-- <man-list v-if="currentStep.step === 2" @changeitem="changeItem" :items="manData"/> -->
-        <!-- <service-type v-if="currentStep.step === 4" :items="serviceTypeData"/> -->
-        <!-- <company-achieve
-          v-if="currentStep.step === 5"
-          :items="achieveData"
-          :year-data="achieveYearData"
-        />-->
       </div>
       <div class="buttons">
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
@@ -134,15 +126,6 @@ export default {
     commFormList: function(resolve) {
       require(["@/components/profile/comm-form-list"], resolve);
     }
-    // manList: function(resolve) {
-    //   require(["@/components/profile/man-list"], resolve);
-    // },
-    // serviceType: function(resolve) {
-    //   require(["@/components/profile/service-type"], resolve);
-    // },
-    // companyAchieve: function(resolve) {
-    //   require(["@/components/profile/company-achieve"], resolve);
-    // }
   },
   data() {
     return {

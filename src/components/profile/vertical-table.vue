@@ -30,7 +30,7 @@ export default {
     items: Array
   },
   data() {
-    console.log(1111);
+    // console.log(1111);
     return { tableData: [] };
   },
   // components: {
@@ -39,7 +39,7 @@ export default {
   //   }
   // },
   mounted() {
-    console.log("########: ", this.step);
+    // console.log("########: ", this.step);
     this.handleData();
   },
   methods: {
@@ -56,9 +56,9 @@ export default {
         }
       }
 
-      console.log(obj);
+      // console.log(obj);
       // console.log("####123");
-      console.log(this.items);
+      // console.log(this.items);
       // console.log("####123");
 
       let arr = [];
@@ -101,7 +101,7 @@ export default {
 
       this.tableData = arr;
 
-      console.log(this.tableData);
+      // console.log(this.tableData);
     }
   }
 };

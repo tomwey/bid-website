@@ -1,6 +1,6 @@
 <template>
-  <div class="main-wrap">
-    <div class="hero-area">
+  <div class="main-wrap" id="home-main-wrap">
+    <div class="hero-area" id="hero-area">
       <b-carousel
         id="carousel1"
         style="text-shadow: 1px 1px 2px #333;"
@@ -56,31 +56,30 @@
       </div>
     </div>
 
-    <div class="images-container">
-      <div class="sec-box bid-flow">
-        <h1>官方一站式招投标平台</h1>
-        <h4>以公平、公正、公开的态度来对待每一位合作伙伴</h4>
-        <div class="container">
-          <img src="../../assets/images/img-bid-flow.png" class="img-fluid">
-        </div>
+    <!-- <div class="images-container"> -->
+    <div class="sec-box bid-flow">
+      <h1>官方一站式招投标平台</h1>
+      <h4>以公平、公正、公开的态度来对待每一位合作伙伴</h4>
+      <div class="container">
+        <img src="../../assets/images/img-bid-flow.png" class="img-fluid">
       </div>
-      <div class="sec-box company">
-        <h1>合能集团</h1>
-        <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
-        <div class="container">
-          <img src="../../assets/images/img-comp-intro.png" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="sec-box pattern">
-        <div class="container">
-          <!-- <h1>优质合作伙伴</h1>
-          <h4>合作共赢，有容乃大</h4>-->
-          <img src="../../assets/images/img-pattern.png" class="img-fluid">
-        </div>
+    </div>
+    <div class="sec-box company" id="about">
+      <h1>合能集团</h1>
+      <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
+      <div class="container">
+        <img src="../../assets/images/img-comp-intro.png" class="img-fluid">
       </div>
     </div>
 
+    <div class="sec-box pattern" id="partner">
+      <div class="container">
+        <!-- <h1>优质合作伙伴</h1>
+        <h4>合作共赢，有容乃大</h4>-->
+        <img src="../../assets/images/img-pattern.png" class="img-fluid">
+      </div>
+    </div>
+    <!-- </div> -->
     <!-- <div class="sec-box contact">
       <div class="container">
         <b-row>

@@ -11,6 +11,7 @@
             :class="{active:selectedIndex === index}"
             v-for="(item,index) in links"
             :key="index"
+            :href="item.href"
           >{{item.name}}</b-nav-item>
         </b-navbar-nav>
       </div>
@@ -30,7 +31,8 @@
               <p class="info">服务热线: 4006-490-900</p>
               <p class="info">集团总机: 028-86248000</p>
               <p class="info">举报电话: 15882407055</p>
-              <p class="info">举报邮箱:
+              <p class="info">
+                举报邮箱:
                 <a href="mailto:HNJCJB@heneng.cn">HNJCJB@heneng.cn</a>
               </p>
               <p class="info">总部地址: 成都市青羊区西大街1号</p>
@@ -63,11 +65,13 @@ export default {
           id: 1,
           name: "首页",
           route: "home"
+          // href: "#hero-area"
         },
         {
           id: 2,
           name: "合能集团",
-          route: "about"
+          route: "about",
+          href: "/#about"
         },
         {
           id: 3,
@@ -82,7 +86,8 @@ export default {
         {
           id: 5,
           name: "合作伙伴",
-          route: "partner"
+          route: "partner",
+          href: "/#partner"
         },
         {
           id: 6,
@@ -95,7 +100,7 @@ export default {
   mounted() {
     // console.info(123);
     const route = this.$router.currentRoute;
-    this._updateSelectedLink(route.name);
+    this._updateSelectedLink(route);
 
     // let payload = JSON.stringify({
     //   action: "P_SUP_Login",
@@ -122,7 +127,18 @@ export default {
   },
   watch: {
     $route: function(to) {
-      this._updateSelectedLink(to.name);
+      // console.log(to.hash);
+      // console.log(to.path);
+      // if (to.hash) {
+      //   if (to.hash === "#about") {
+      //     this.selectedIndex = 1;
+      //   } else if (to.hash === "#partner") {
+      //     this.selectedIndex = this.links.length - 2;
+      //   }
+      // } else {
+      //   this._updateSelectedLink(to.name);
+      // }
+      this._updateSelectedLink(to);
     }
   },
   methods: {
@@ -131,14 +147,27 @@ export default {
     },
     selectLink(index) {
       // this.selectedIndex = index;
+      if (
+        this.links[index].route === "about" ||
+        this.links[index].route === "partner"
+      ) {
+        return;
+      }
       this.$router.push({ name: this.links[index].route });
     },
-    _updateSelectedLink(name) {
+    _updateSelectedLink(route) {
       this.selectedIndex = -1;
-      for (let index = 0; index < this.links.length; index++) {
-        const link = this.links[index];
-        if (link.route === name) {
-          this.selectedIndex = index;
+
+      if (route.hash === "#about") {
+        this.selectedIndex = 1;
+      } else if (route.hash === "#partner") {
+        this.selectedIndex = this.links.length - 2;
+      } else {
+        for (let index = 0; index < this.links.length; index++) {
+          const link = this.links[index];
+          if (link.route === route.name) {
+            this.selectedIndex = index;
+          }
         }
       }
     }

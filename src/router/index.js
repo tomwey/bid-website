@@ -10,8 +10,35 @@ Vue.use(funcs);
 
 Vue.use(Router);
 
+const scrollBehavior = (to, from, savedPosition) => {
+    if (savedPosition) {
+        // savedPosition is only available for popstate navigations.
+        return savedPosition
+    } else {
+        const position = {}
+        // new navigation.
+        // scroll to anchor by returning the selector
+        // console.log(to.hash);
+        if (to.hash) {
+            position.selector = to.hash
+        }
+        // check if any matched route config has meta that requires scrolling to top
+        if (/*to.matched.some(m => m.meta.scrollToTop)*/
+            !to.hash) {
+            // cords will be used if no selector is provided,
+            // or if the selector didn't match any element.
+            position.x = 0
+            position.y = 0
+        }
+        // if the returned position is falsy or an empty object,
+        // will retain current scroll position.
+        return position
+    }
+}
+
 const router = new Router({
     mode: "history",
+    scrollBehavior,
     routes: [
         {
             path: '/',
@@ -19,7 +46,7 @@ const router = new Router({
             component: Home
         },
         {
-            path: '/about',
+            path: '/about#company',
             name: 'about',
             component: () => import("@/pages/about/index")
         },
@@ -39,7 +66,7 @@ const router = new Router({
             component: () => import("@/pages/help/index")
         },
         {
-            path: '/partner',
+            path: '/partner#intro',
             name: 'partner',
             component: () => import("@/pages/partner/index")
         },

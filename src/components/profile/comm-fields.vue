@@ -15,6 +15,7 @@
             :type="item.subtype"
             v-if="item.type === 1 && !item.append"
             v-model="item.value"
+            :readonly="item.readonly"
             :placeholder="item.placeholder || `输入${item.label}` "
           ></b-form-input>
 

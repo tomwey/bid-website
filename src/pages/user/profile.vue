@@ -558,7 +558,8 @@ export default {
           label: "企业名称",
           placeholder: "",
           required: true,
-          field: "comname"
+          field: "comname",
+          readonly: false
         },
         {
           id: "company-nature",
@@ -582,7 +583,8 @@ export default {
           label: "统一社会信用代码",
           placeholder: "",
           field: "comuscc",
-          required: true
+          required: true,
+          readonly: false
         },
         {
           id: "company-id-exp",
@@ -970,6 +972,9 @@ export default {
     populateData() {
       // 填充主数据表单
       let object = this.$store.state.supprofile;
+
+      this.baseFormData[0].readonly = !!this.$store.state.supid;
+      this.baseFormData[2].readonly = !!this.$store.state.supid;
 
       this.baseFormData.forEach(control => {
         if (control.type === 3) {

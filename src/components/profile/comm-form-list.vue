@@ -121,7 +121,7 @@ export default {
     newItem() {
       this.currentEditItem = null;
 
-      // this.$refs.form.reset();
+      this.$refs.form.reset();
       this.formData.forEach(control => {
         control.value = null;
       });

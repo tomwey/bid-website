@@ -4,6 +4,8 @@
     <div class="box">
       <card-head title="联系方式" step="2"/>
       <horizontal-table :items="items" :fields="fields"/>
+
+      <div class="empty-error-box" v-if="items.length === 0">暂无联系方式</div>
     </div>
   </div>
 </template>
@@ -62,7 +64,7 @@ export default {
     };
   },
   mounted() {
-    this.items = this.$store.state.supprofile.man;
+    this.items = this.$store.state.supprofile.man || [];
   }
 };
 </script>

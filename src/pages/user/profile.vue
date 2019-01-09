@@ -45,15 +45,18 @@
 
         <comm-form-list
           v-if="currentStep.step === 2"
-          model="联系方式"
+          model="man"
+          name="联系方式"
           :items="manData"
+          @controlvaluechanged="controlValueChanged"
           :fields="manFields"
           :form-data="manFormData"
         />
 
         <comm-form-list
           v-if="currentStep.step === 4"
-          model="服务类别"
+          model="service_type"
+          name="服务类别"
           :items="serviceTypeData"
           :fields="serviceTypeFields"
           :form-data="serviceTypeFormData"
@@ -94,7 +97,8 @@
           </div>
 
           <comm-form-list
-            model="公司业绩"
+            model="yj_data"
+            name="公司业绩"
             :items="achieveData"
             :fields="achieveFields"
             :form-data="achieveFormData"
@@ -143,7 +147,7 @@ export default {
   data() {
     return {
       currentStep: null,
-      achieveData: [],
+      achieveData: this.$store.state.supprofile.yj_data || [],
       achieveFields: [
         {
           label: "城市",
@@ -287,10 +291,10 @@ export default {
         }
       ],
       achieveYearData: {
-        output: null,
-        sale: null
+        output: this.$store.state.supprofile.outputvalueyear,
+        sale: this.$store.state.supprofile.turnoveryear
       },
-      serviceTypeData: [],
+      serviceTypeData: this.$store.state.supprofile.types || [],
       serviceTypeFields: [
         {
           label: "对口服务类别",
@@ -370,7 +374,7 @@ export default {
           required: true
         }
       ],
-      manData: [],
+      manData: this.$store.state.supprofile.man || [],
       manFormData: [
         {
           id: "contact-type",
@@ -816,6 +820,8 @@ export default {
   mounted() {
     this.loadBaseConfigData();
 
+    this.loadManConfigs();
+
     // if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
     // this.loadProfileData(1);
     // this.loadProfileData(2);
@@ -839,6 +845,110 @@ export default {
     // }
   },
   methods: {
+    controlValueChanged(val) {
+      console.log(val);
+      let control = val.control;
+      if (control.id !== "contact-type") return;
+
+      val = val.data;
+
+      if (!val) return;
+
+      val = val.split("-");
+      if (val.length !== 2) return;
+      val = val[1];
+
+      if (val === "1") {
+        if (this.manFormData.length === 7) {
+          const fields = [
+            {
+              id: "shebao",
+              label: "联系人社保证明",
+              required: true,
+              field: "sscertificateannex",
+              type: 4,
+              subtype: 1,
+              domanid: this.$store.state.supinfo.accountid || "0",
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "sscertificateannex"
+            },
+            {
+              id: "entrust",
+              label: "授权委托（附件）",
+              required: true,
+              field: "authdelegationannex",
+              type: 4,
+              subtype: 2, // 普通文件
+              domanid: this.$store.state.supinfo.accountid || "0",
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "authdelegationannex"
+              //   subtype: "text"
+            }
+          ];
+          this.manFormData = this.manFormData.concat(fields);
+        }
+      } else {
+        if (this.manFormData.length === 9) {
+          this.manFormData.splice(this.manFormData.length - 1, 1);
+          this.manFormData.splice(this.manFormData.length - 1, 1);
+        }
+      }
+    },
+    loadManConfigs() {
+      // 联系人类型
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "3",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择联系人类型"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: `${ele.sy_name}-${ele.sy_value}`,
+                text: ele.sy_name
+              });
+            });
+            this.manFormData[0].options = temp;
+          }
+        }
+      );
+
+      // 联系人职位
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "4",
+          p2: "0"
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [
+              {
+                value: null,
+                text: "请选择联系人职位"
+              }
+            ];
+            arr.forEach(ele => {
+              temp.push({
+                value: `${ele.sy_name}-${ele.sy_value}`,
+                text: ele.sy_name
+              });
+            });
+            this.manFormData[1].options = temp;
+          }
+        }
+      );
+    },
     populateData() {
       // 填充主数据表单
       let object = this.$store.state.supprofile;

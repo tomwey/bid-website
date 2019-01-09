@@ -14,6 +14,8 @@
         <b-table striped hover responsive :items="achieveData" :fields="achieveFields"></b-table>
       </div>-->
       <horizontal-table :items="items" :fields="fields"/>
+
+      <div class="empty-error-box" v-if="items.length === 0">暂无公司业绩</div>
     </div>
   </div>
 </template>

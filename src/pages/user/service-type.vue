@@ -53,7 +53,7 @@ export default {
     };
   },
   mounted() {
-    this.items = this.$store.state.supprofile.types;
+    this.items = this.$store.state.supprofile.types || [];
   }
 };
 </script>

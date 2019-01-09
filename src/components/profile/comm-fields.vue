@@ -152,11 +152,11 @@ export default {
     },
     reset() {
       this.formData.forEach(item => {
-        if (item.type === 4) {
-          const ref = item.id.replace(/-/g, "");
-          const fileInput = this.$refs[ref][0];
-          fileInput && fileInput.reset();
-        }
+        // if (item.type === 4) {
+        //   const ref = item.id.replace(/-/g, "");
+        //   const fileInput = this.$refs[ref][0];
+        //   fileInput && fileInput.reset();
+        // }
 
         item.value = null;
       });

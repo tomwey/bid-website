@@ -4,10 +4,10 @@
       <b-col cols="8">
         共
         <span class="digit">{{items.length}}</span>
-        条{{this.model}}
+        条{{this.name}}
       </b-col>
       <b-col cols="4">
-        <b-button @click="newItem">新增{{this.model}}</b-button>
+        <b-button @click="newItem">新增{{this.name}}</b-button>
       </b-col>
     </b-row>
     <horizontal-table
@@ -16,14 +16,14 @@
       :fields="fields"
       :actions="actions"
     />
-    <div class="empty-error-box" v-if="items.length === 0">暂无{{this.model}}</div>
+    <div class="empty-error-box" v-if="items.length === 0">暂无{{this.name}}</div>
 
     <b-modal
       id="formModal"
       :no-close-on-backdrop="true"
       :no-close-on-esc="true"
       centered
-      :title="'新增' + this.model"
+      :title="'新增' + this.name"
       ok-title="保存"
       ok-variant="danger"
       size="lg"
@@ -31,7 +31,7 @@
       cancel-title="取消"
       @ok="commit"
     >
-      <comm-fields :form-data="formData" ref="form"/>
+      <comm-fields :form-data="formData" ref="form" @change="changeValue"/>
     </b-modal>
   </div>
 </template>
@@ -42,6 +42,7 @@ export default {
     items: Array,
     fields: Array,
     model: String,
+    name: String,
     formData: Array
   },
   components: {
@@ -69,7 +70,15 @@ export default {
       ]
     };
   },
+  mounted() {},
   methods: {
+    changeValue(val) {
+      // console.log(val);
+      // if (this.model === "man") {
+      //   this._handleManForm(val);
+      // }
+      this.$emit("controlvaluechanged", val);
+    },
     actionClick(ev) {
       // console.log(ev);
       const action = ev.action;
@@ -115,10 +124,10 @@ export default {
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
-        // if (control.required && !control.value) {
-        //   alert(control.label + "不能为空");
-        //   return;
-        // }
+        if (control.required && !control.value) {
+          alert(control.label + "不能为空");
+          return;
+        }
 
         if (control.type === 2 && control.value) {
           obj[control.field] = control.value.split("-")[1];

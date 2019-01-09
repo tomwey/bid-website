@@ -135,7 +135,26 @@ export default {
     if (route.name === "user_home") {
       this.currentMenu = this.menus[0];
     }
-    // console.log(this.$router.currentRoute);
+    console.log(this.$router.currentRoute);
+  },
+  watch: {
+    $route: function(to) {
+      console.log(123);
+      this.menus.forEach(menu => {
+        menu.menu_items.forEach(item => {
+          const name = this.$router.currentRoute.name;
+          // console.log(item);
+          if (item.route === name) {
+            this.currentMenuItem = item;
+          }
+        });
+      });
+
+      const route = this.$router.currentRoute;
+      if (route.name === "user_home") {
+        this.currentMenu = this.menus[0];
+      }
+    }
   },
   methods: {
     selectTopMenu(menu) {

@@ -28,12 +28,11 @@ export default {
         res => {
           console.log(res);
           if (res.code === "0") {
+            this.$store.commit("changeeditstate", res.code === "0");
             this.$router.push({ name: "profile", query: { s: this.step } });
           } else {
             alert(res.codemsg);
           }
-
-          this.$store.commit("changeeditstate", res.code === "0");
         }
       );
     }

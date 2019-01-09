@@ -211,7 +211,8 @@ export default {
           type: 5,
           field: "ismodel",
           required: true,
-          label: "是否标杆企业（地产前100强为标杆企业）"
+          label: "是否标杆企业",
+          special_desc: "地产前100强为标杆企业"
         },
         {
           id: "proj-manager",
@@ -261,6 +262,8 @@ export default {
           label: "合同附件",
           field: "contractannex",
           accept: ".zip,.rar",
+          upload_desc:
+            "上传附件为压缩包文件，格式为：zip,rar等。（压缩包需要包含：合同封面首页图片；合同结尾页图片；合同中间页图片【内容包括范围、金额、工期】）",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
           fieldname: "contractannex"

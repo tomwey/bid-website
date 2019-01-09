@@ -104,7 +104,7 @@ export default {
           value: "contractmoney"
         },
         {
-          label: "合同规模(万)",
+          label: "合同规模",
           value: "contractsize"
         },
         {

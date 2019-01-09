@@ -116,7 +116,23 @@ export default {
   },
   methods: {
     editProfile() {
-      this.$router.push({ name: "profile" });
+      // this.$router.push({ name: "profile" });
+      this.$post(
+        {
+          action: "P_SUP_CanModifySubInfo",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            this.$store.commit("changeeditstate", res.code === "0");
+            this.$router.push({ name: "profile" });
+          } else {
+            alert(res.codemsg);
+          }
+        }
+      );
     }
   }
 };

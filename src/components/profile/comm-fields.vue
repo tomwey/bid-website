@@ -55,7 +55,7 @@
               @change="uploadFiles($event, item);"
               plain
             ></b-form-file>
-            <p class="upload-help-text">{{item.upload_desc || "上传附件为图片，格式为：jpg,jpeg,png,gif"}}</p>
+            <p class="upload-help-text">{{item.upload_desc || "上传附件为图片，格式建议：jpg,jpeg,png,gif"}}</p>
             <div class="progress-box" v-show="item.progress && item.progress > 0">
               <b-row>
                 <b-col cols="10">
@@ -76,7 +76,13 @@
             </div>
           </div>
           <!-- 单值checkbox控件 -->
-          <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">{{item.label}}</b-form-checkbox>
+          <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">
+            {{item.label}}
+            <span v-if="item.special_desc">
+              （
+              <span class="special">{{item.special_desc}}</span>）
+            </span>
+          </b-form-checkbox>
 
           <!-- 单选框控件 -->
           <b-form-radio-group
@@ -249,7 +255,11 @@ $theme-color: #e46623;
     margin: 0;
     margin-top: 5px;
     padding: 0;
-    line-height: 14px;
+    line-height: 18px;
+  }
+
+  .special {
+    color: $theme-color;
   }
 
   .file-preview {

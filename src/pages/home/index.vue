@@ -44,8 +44,11 @@
           </div>
 
           <div class="logined-wrap" v-if="!!$store.state.token">
-            <h4>{{$store.state.supinfo.loginname}}，您好</h4>
-            <p>欢迎使用合能招投标系统</p>
+            <div class="user-info">
+              <v-icon name="user-circle" scale="4"/>
+              <p class="name">{{$store.state.supinfo.loginname}}，您好</p>
+              <p class="slogan">欢迎使用合能招投标系统</p>
+            </div>
             <span class="hn-btn" @click="gotoDashboard">进入用户中心</span>
             <span class="hn-btn light" @click="logout">退出登录</span>
           </div>
@@ -64,17 +67,21 @@
       <div class="sec-box company">
         <h1>合能集团</h1>
         <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
-        <img src="../../assets/images/img-comp-intro.jpg" class="img-fluid">
+        <div class="container">
+          <img src="../../assets/images/img-comp-intro.png" class="img-fluid">
+        </div>
       </div>
 
       <div class="sec-box pattern">
-        <h1>优质合作伙伴</h1>
-        <h4>合作共赢，有容乃大</h4>
-        <img src="../../assets/images/img-pattern.png" class="img-fluid">
+        <div class="container">
+          <!-- <h1>优质合作伙伴</h1>
+          <h4>合作共赢，有容乃大</h4>-->
+          <img src="../../assets/images/img-pattern.png" class="img-fluid">
+        </div>
       </div>
     </div>
 
-    <div class="sec-box contact">
+    <!-- <div class="sec-box contact">
       <div class="container">
         <b-row>
           <b-col cols="4">
@@ -83,27 +90,23 @@
               <span class="name">集团总机：028-86248000</span>
               <p class="kefu">客服热线：4006-490-900</p>
             </div>
-            <div class="info-box">
-              <v-icon name="fax"/>
-              <span class="name">028-86248000</span>
-            </div>
           </b-col>
           <b-col cols="6">
             <div class="info-box">
               <v-icon name="map-marker"/>
               <span class="name">地址：四川省成都市青羊区西大街1号</span>
-            </div>
-            <div class="info-box">
+    </div>-->
+    <!-- <div class="info-box">
               <v-icon name="envelope"/>
               <span class="name">人力资源：hr@heneng.cn</span>
-            </div>
-          </b-col>
+    </div>-->
+    <!-- </b-col>
           <b-col cols="2" class="qrcode-wrap">
-            <img src="../../assets/images/icon_qrcode.png" class="img-fluid">
+            <img src="../../assets/images/icon_qrcode.jpg" class="img-fluid">
           </b-col>
         </b-row>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -124,9 +127,12 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.commit("logout");
-      // this.currentMenuItem = null;
-      this.$router.replace({ name: "home" });
+      let a = confirm("您确定要退出登录吗？");
+      if (a) {
+        this.$store.commit("logout");
+        // this.currentMenuItem = null;
+        this.$router.replace({ name: "home" });
+      }
     },
     login() {
       this.error = null;
@@ -213,23 +219,51 @@ $theme-color: #e46623;
 .sec-box {
   width: 100%;
   text-align: center;
+  background: #fff;
   img {
     width: 100% !important;
+  }
+
+  &.pattern {
+    background: #fff;
   }
 }
 
 .logined-wrap {
-  padding: 20px;
+  padding: 30px 20px;
+  .user-info {
+    text-align: center;
+    .fa-icon {
+      color: #999;
+    }
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    .name {
+      font-size: 16px;
+      color: #333;
+      margin-top: 10px;
+    }
+    .slogan {
+      font-size: 16px;
+      color: $theme-color;
+      margin: 20px 0;
+    }
+  }
   h4 {
     font-size: 16px;
     color: #333;
     font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid #f1f1f1;
   }
 
   p {
     font-size: 14px;
     color: #666;
-    text-align: center;
+    // text-align: center;
     margin-top: 20px;
   }
 }
@@ -261,7 +295,7 @@ $theme-color: #e46623;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
     box-shadow: 0 1px 5px #ccc;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
     .title {
       font-size: 20px;
       color: #333;
@@ -341,7 +375,7 @@ $theme-color: #e46623;
 }
 
 .sec-box {
-  padding: 60px 0;
+  padding: 60px 0 30px;
   h1,
   h4 {
     margin: 0;
@@ -361,64 +395,6 @@ $theme-color: #e46623;
     font-size: 18px;
     font-weight: normal;
     // color: #666;
-  }
-}
-
-.bid-flow {
-  background: #fff;
-}
-
-.company {
-  .image-container {
-    margin-top: 30px;
-    background: #fff;
-    // padding: 0 120px;
-    text-align: center;
-  }
-}
-
-.partners {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  .partner {
-    flex: 0 0 25%;
-    width: 25%;
-    padding: 5px;
-    img {
-      width: 100%;
-      height: 80px;
-    }
-  }
-}
-
-.contact {
-  // background: #fff;
-
-  .info-box {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 30px;
-    height: 40px;
-    // line-height: 14px;
-    .name {
-      line-height: 14px;
-      vertical-align: middle;
-      padding-left: 10px;
-      .fa-icon {
-        vertical-align: -4px;
-      }
-    }
-    .kefu {
-      padding-left: 26px;
-    }
-  }
-  .qrcode-wrap {
-    text-align: right;
-    img {
-      width: 120px;
-      height: auto;
-    }
   }
 }
 </style>

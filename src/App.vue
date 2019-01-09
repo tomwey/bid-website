@@ -20,9 +20,30 @@
 
     <footer class="footer">
       <div class="container">
-        <span class="text-muted">版权所有 © 2018 合能集团 保留所有权利.蜀ICP备14031323号</span>
+        <!-- <span class="text-muted">版权所有 © 2018 合能集团 保留所有权利.蜀ICP备14031323号</span>
         <div class="float-right links">
           <a href="http://www.heneng.cn" target="_blank">合能集团</a>
+        </div>-->
+        <div class="info-wrap">
+          <div class="info-box">
+            <div class="info-text">
+              <p class="info">服务热线: 4006-490-900</p>
+              <p class="info">集团总机: 028-86248000</p>
+              <p class="info">举报电话: 028-86248000</p>
+              <p class="info">举报邮箱: hr@heneng.cn</p>
+              <p class="info">总部地址: 成都市青羊区西大街1号</p>
+            </div>
+            <p class="copyright">
+              版权所有 © {{new Date().getYear()}}
+              <a href="http://www.heneng.cn" target="_blank">合能集团</a> 保留所有权利.蜀ICP备14031323号
+            </p>
+          </div>
+          <div class="qrcode">
+            <div class="qrcode-inner">
+              <img src="@/assets/images/icon_qrcode.jpg" class="img-fluid">
+              <p>供应商APP客户端</p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

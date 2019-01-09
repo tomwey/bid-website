@@ -6,7 +6,7 @@ html {
   }
   body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 180px;
     background: #f9f9f9;
   }
   .footer {
@@ -14,11 +14,64 @@ html {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 60px;
-    line-height: 60px; /* Vertically center the text there */
+    height: 180px;
+    // padding: 20px;
+    // line-height: 300px; /* Vertically center the text there */
     background-color: #585858;//#E46623;//#d8832a;
     .text-muted {
       color: #fff !important;
+    }
+
+    .info-wrap {
+      display: flex;
+
+      .info-box {
+        flex: 1;
+        height: 180px;
+      }
+
+      .info-text {
+        margin-top: 20px;
+      }
+
+      .info {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        color: #fff;
+        line-height: 20px;
+      }
+
+      .copyright {
+        margin-top: 15px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        a {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+
+      .qrcode {
+        flex: 0 0 120px;
+        width: 120px;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        .qrcode-inner {
+          position: absolute;
+          top: 20px;
+          right: 0;
+          p {
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 5px;
+          }
+        }
+        
+      }
     }
   }
 

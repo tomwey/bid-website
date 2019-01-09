@@ -16,7 +16,7 @@
               登录账号：
               <span class="name">{{$store.state.supinfo.loginname}}</span>
             </p>
-            <b-badge :variant="variant">{{changestatename}}</b-badge>
+            <b-badge :variant="variant">{{$store.state.supinfo.supstatename}}</b-badge>
           </div>
           <div class="edit-wrap">
             <b-button @click="editProfile">供方资料修改</b-button>
@@ -92,26 +92,20 @@ export default {
   },
   computed: {
     variant() {
-      if (this.$store.state.supinfo.changestate == 10) {
-        return "warning";
-      } else if (this.$store.state.supinfo.changestate == 40) {
+      if (this.$store.state.supinfo.supstate == 20) {
+        return "primary";
+      } else if (this.$store.state.supinfo.supstate == 40) {
         return "success";
-      } else if (this.$store.state.supinfo.changestate == 80) {
+      } else if (this.$store.state.supinfo.supstate == 5) {
         return "danger";
+      } else if (this.$store.state.supinfo.supstate == 50) {
+        return "warning";
+      } else if (this.$store.state.supinfo.supstate == 10) {
+        // 待考察
+        return "info";
       }
 
-      return "";
-    },
-    changestatename() {
-      if (this.$store.state.supinfo.changestate == 10) {
-        return "待审核";
-      } else if (this.$store.state.supinfo.changestate == 40) {
-        return "审核通过";
-      } else if (this.$store.state.supinfo.changestate == 80) {
-        return "审核被拒";
-      }
-
-      return "";
+      return "secondary";
     }
   },
   methods: {
@@ -183,6 +177,7 @@ export default {
         // font-size: 14px;
         font-weight: normal;
         color: #fff;
+        font-size: 12px;
         // vertical-align: middle;
         // line-break: 12px;
       }

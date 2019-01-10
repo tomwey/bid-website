@@ -778,7 +778,7 @@ export default {
       if (val.length !== 2) return;
       val = val[1];
 
-      if (val === "1") {
+      if (val === "1" || val === "第一联系人") {
         if (this.manFormData.length === 7) {
           const fields = [
             {

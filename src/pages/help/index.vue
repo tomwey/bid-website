@@ -63,6 +63,9 @@ export default {
   },
   mounted() {
     for (let i = 1; i <= 19; i++) {
+      if (i === 3) {
+        continue;
+      }
       this.images.push({
         src: require("@/assets/images/help/help-" + i + ".png")
       });

@@ -71,10 +71,12 @@
                 </b-col>
               </b-row>
             </div>
-            <div class="file-preview" v-if="item._fileurl">
-              <img :src="item._fileurl" v-if="item._isimage">
-              <a :href="item._fileurl" target="_blank" v-if="!item._isimage">{{item._filename}}</a>
+            <!-- <div class="file-preview-box" v-for="(_item,index) in item._files" :key="index"> -->
+            <div class="file-preview" v-for="(file,index) in item._files" :key="index">
+              <img :src="file._fileurl" v-if="file._isimage">
+              <a :href="file._fileurl" target="_blank" v-if="!file._isimage">{{file._filename}}</a>
             </div>
+            <!-- </div> -->
           </div>
           <!-- 单值checkbox控件 -->
           <b-form-checkbox v-if="item.type === 5" :id="item.id" v-model="item.value">
@@ -203,6 +205,34 @@ export default {
             this.$set(item, "progress", 100);
             if (res.data && res.data.code === "0") {
               item.value = res.data.IDS;
+              this.$post(
+                {
+                  action: "P_SY_GetAnnex",
+                  p1: res.data.IDS
+                },
+                res => {
+                  // console.log(res);
+                  if (res.code === "0") {
+                    let arr = res.data;
+                    let temp = [];
+                    arr.forEach(file => {
+                      let fileName = file.filename || "";
+                      temp.push({
+                        _filename: file.filename,
+                        _fileurl: file.url,
+                        _isimage:
+                          fileName.indexOf(".png") !== -1 ||
+                          fileName.indexOf(".gif") !== -1 ||
+                          fileName.indexOf(".jpg") !== -1 ||
+                          fileName.indexOf(".jpeg") !== -1 ||
+                          fileName.indexOf(".webp") !== -1
+                      });
+                    });
+                    // item._files = temp;
+                    this.$set(item, "_files", temp);
+                  }
+                }
+              );
             }
           })
           .catch(error => {

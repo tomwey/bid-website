@@ -149,6 +149,11 @@ export default {
         } else if (control.type === 5) {
           obj[control.field] = control.value ? "是" : "否";
         } else {
+          if (control.type === 4) {
+            obj[control.field + "_isfile"] = true;
+            // let files = control._files;
+            obj._files = control._files;
+          }
           obj[control.field] = control.value;
         }
       }
@@ -157,6 +162,8 @@ export default {
       //     item: obj,
       //     currentItem: this.currentEditItem
       //   });
+
+      console.log(obj);
 
       if (this.currentEditItem) {
         // 编辑

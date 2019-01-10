@@ -1,8 +1,12 @@
 <template>
   <div class="value-item">
-    <span v-if="!imageValue && !fileValue">{{textValue}}</span>
-    <img :src="imageValue.url" v-if="imageValue">
-    <a :href="fileValue.url" v-if="fileValue && !imageValue">{{fileValue.name}}</a>
+    <span v-if="!isFile">{{textValue}}</span>
+    <div v-if="isFile">
+      <div class="files" v-for="(file,index) in files" :key="index">
+        <img :src="file._fileurl" v-if="file._isimage">
+        <a :href="file._fileurl" v-if="!file._isimage">{{file._filename}}</a>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -13,6 +17,10 @@ export default {
     field: String
   },
   computed: {
+    isFile() {
+      let key = this.field + "_isfile";
+      return this.item[key];
+    },
     textValue() {
       let key = this.field + "name";
       let value = this.item[key] || this.item[this.field] || "";
@@ -28,6 +36,47 @@ export default {
       }
 
       return value;
+    },
+    files() {
+      if (this.item._files) {
+        return this.item._files;
+      } else {
+        let urlKey = this.field + "url";
+        let urlValue = this.item[urlKey];
+
+        if (urlValue) {
+          let nameKey = this.field + "name";
+          let filename = this.item[nameKey];
+          let isimage =
+            filename.indexOf(".png") !== -1 ||
+            filename.indexOf(".gif") !== -1 ||
+            filename.indexOf(".jpg") !== -1 ||
+            filename.indexOf(".jpeg") !== -1 ||
+            filename.indexOf(".webp") !== -1;
+
+          return [
+            {
+              _fileurl: urlValue,
+              _filename: filename,
+              _isimage: isimage
+            }
+          ];
+          // if (
+          // filename.indexOf(".png") !== -1 ||
+          // filename.indexOf(".gif") !== -1 ||
+          // filename.indexOf(".jpg") !== -1 ||
+          // filename.indexOf(".jpeg") !== -1 ||
+          // filename.indexOf(".webp") !== -1
+          // ) {
+          //   return {
+          //     url: urlValue,
+          //     name: filename
+          //   };
+          // }
+        } else {
+          return [];
+        }
+      }
     },
     imageValue() {
       let urlKey = this.field + "url";

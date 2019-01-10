@@ -892,14 +892,26 @@ export default {
           if (object[urlKey] && object[nameKey]) {
             let fileUrl = object[urlKey];
             let fileName = object[nameKey];
-            control._fileurl = fileUrl;
-            control._filename = fileName;
-            control._isimage =
-              fileName.indexOf(".png") !== -1 ||
-              fileName.indexOf(".gif") !== -1 ||
-              fileName.indexOf(".jpg") !== -1 ||
-              fileName.indexOf(".jpeg") !== -1 ||
-              fileName.indexOf(".webp") !== -1;
+
+            let file = {
+              _fileurl: fileUrl,
+              _filename: fileName,
+              _isimage:
+                fileName.indexOf(".png") !== -1 ||
+                fileName.indexOf(".gif") !== -1 ||
+                fileName.indexOf(".jpg") !== -1 ||
+                fileName.indexOf(".jpeg") !== -1 ||
+                fileName.indexOf(".webp") !== -1
+            };
+            control._files = [file];
+            // control._fileurl = fileUrl;
+            // control._filename = fileName;
+            // control._isimage =
+            //   fileName.indexOf(".png") !== -1 ||
+            //   fileName.indexOf(".gif") !== -1 ||
+            //   fileName.indexOf(".jpg") !== -1 ||
+            //   fileName.indexOf(".jpeg") !== -1 ||
+            //   fileName.indexOf(".webp") !== -1;
           }
         } else {
           control.value =
@@ -933,14 +945,27 @@ export default {
             if (object[urlKey] && object[nameKey]) {
               let fileUrl = object[urlKey];
               let fileName = object[nameKey];
-              control._fileurl = fileUrl;
-              control._filename = fileName;
-              control._isimage =
-                fileName.indexOf(".png") !== -1 ||
-                fileName.indexOf(".gif") !== -1 ||
-                fileName.indexOf(".jpg") !== -1 ||
-                fileName.indexOf(".jpeg") !== -1 ||
-                fileName.indexOf(".webp") !== -1;
+              //   control._fileurl = fileUrl;
+              //   control._filename = fileName;
+              //   control._isimage =
+              //     fileName.indexOf(".png") !== -1 ||
+              //     fileName.indexOf(".gif") !== -1 ||
+              //     fileName.indexOf(".jpg") !== -1 ||
+              //     fileName.indexOf(".jpeg") !== -1 ||
+              //     fileName.indexOf(".webp") !== -1;
+              // }
+
+              let file = {
+                _fileurl: fileUrl,
+                _filename: fileName,
+                _isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              };
+              control._files = [file];
             }
           }
         });
@@ -981,14 +1006,25 @@ export default {
                     if (object[urlKey] && object[nameKey]) {
                       let fileUrl = object[urlKey];
                       let fileName = object[nameKey];
-                      control._fileurl = fileUrl;
-                      control._filename = fileName;
-                      control._isimage =
-                        fileName.indexOf(".png") !== -1 ||
-                        fileName.indexOf(".gif") !== -1 ||
-                        fileName.indexOf(".jpg") !== -1 ||
-                        fileName.indexOf(".jpeg") !== -1 ||
-                        fileName.indexOf(".webp") !== -1;
+                      // control._fileurl = fileUrl;
+                      // control._filename = fileName;
+                      // control._isimage =
+                      //   fileName.indexOf(".png") !== -1 ||
+                      //   fileName.indexOf(".gif") !== -1 ||
+                      //   fileName.indexOf(".jpg") !== -1 ||
+                      //   fileName.indexOf(".jpeg") !== -1 ||
+                      //   fileName.indexOf(".webp") !== -1;
+                      let file = {
+                        _fileurl: fileUrl,
+                        _filename: fileName,
+                        _isimage:
+                          fileName.indexOf(".png") !== -1 ||
+                          fileName.indexOf(".gif") !== -1 ||
+                          fileName.indexOf(".jpg") !== -1 ||
+                          fileName.indexOf(".jpeg") !== -1 ||
+                          fileName.indexOf(".webp") !== -1
+                      };
+                      control._files = [file];
                     }
                   } else {
                     control.value =
@@ -1047,14 +1083,25 @@ export default {
                       if (object[urlKey] && object[nameKey]) {
                         let fileUrl = object[urlKey];
                         let fileName = object[nameKey];
-                        control._fileurl = fileUrl;
-                        control._filename = fileName;
-                        control._isimage =
-                          fileName.indexOf(".png") !== -1 ||
-                          fileName.indexOf(".gif") !== -1 ||
-                          fileName.indexOf(".jpg") !== -1 ||
-                          fileName.indexOf(".jpeg") !== -1 ||
-                          fileName.indexOf(".webp") !== -1;
+                        // control._fileurl = fileUrl;
+                        // control._filename = fileName;
+                        // control._isimage =
+                        //   fileName.indexOf(".png") !== -1 ||
+                        //   fileName.indexOf(".gif") !== -1 ||
+                        //   fileName.indexOf(".jpg") !== -1 ||
+                        //   fileName.indexOf(".jpeg") !== -1 ||
+                        //   fileName.indexOf(".webp") !== -1;
+                        let file = {
+                          _fileurl: fileUrl,
+                          _filename: fileName,
+                          _isimage:
+                            fileName.indexOf(".png") !== -1 ||
+                            fileName.indexOf(".gif") !== -1 ||
+                            fileName.indexOf(".jpg") !== -1 ||
+                            fileName.indexOf(".jpeg") !== -1 ||
+                            fileName.indexOf(".webp") !== -1
+                        };
+                        control._files = [file];
                       }
                     }
                   });

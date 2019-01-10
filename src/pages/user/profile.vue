@@ -116,6 +116,7 @@
 </template>
 <script>
 import merge from "webpack-merge";
+import tableFields from "@/utils/table-fields";
 
 export default {
   name: "profile",
@@ -131,56 +132,13 @@ export default {
     return {
       currentStep: null,
       achieveData: this.$store.state.supprofile.yj_data || [],
-      achieveFields: [
-        {
-          label: "城市",
-          value: "cityname"
-        },
-        {
-          label: "项目名称",
-          value: "projectname"
-        },
-        {
-          label: "合作单位名称",
-          value: "partnername"
-        },
-        {
-          label: "是否标杆企业",
-          value: "ismodel"
-        },
-        {
-          label: "项目经理",
-          value: "manager"
-        },
-        {
-          label: "合同金额(万)",
-          value: "contractmoney"
-        },
-        {
-          label: "合同规模",
-          value: "contractsize"
-        },
-        {
-          label: "开始日期",
-          value: "begindate"
-        },
-        {
-          label: "结束日期",
-          value: "enddate"
-        },
-        {
-          label: "合同附件",
-          value: "contractannex"
-        },
-        {
-          label: "其他说明",
-          value: "othermemo"
-        },
+      achieveFields: tableFields.achieve.concat([
         {
           label: "操作",
-          value: "actions"
+          value: "actions",
+          width: 180
         }
-      ],
+      ]),
       achieveFormData: [
         {
           id: "city",
@@ -282,36 +240,13 @@ export default {
         sale: this.$store.state.supprofile.turnoveryear
       },
       serviceTypeData: this.$store.state.supprofile.types || [],
-      serviceTypeFields: [
-        {
-          label: "对口服务类别",
-          value: "servertype"
-        },
-        {
-          label: "是否主要类别",
-          value: "ismain"
-        },
-        {
-          label: "资质名称",
-          value: "quaname"
-        },
-        {
-          label: "资质级别",
-          value: "qualevel"
-        },
-        {
-          label: "资质审核到期日期",
-          value: "quaexaminedate"
-        },
-        {
-          label: "其他说明",
-          value: "othermemo"
-        },
+      serviceTypeFields: tableFields.serviceType.concat([
         {
           label: "操作",
-          value: "actions"
+          value: "actions",
+          width: 180
         }
-      ],
+      ]),
       serviceTypeFormData: [
         {
           id: "service-type",
@@ -433,48 +368,13 @@ export default {
           // value: null
         }
       ],
-      manFields: [
-        {
-          label: "联系人类型",
-          value: "contacttype"
-        },
-        {
-          label: "联系人职位",
-          value: "contactposition"
-        },
-        {
-          label: "联系人姓名",
-          value: "contactname"
-        },
-        {
-          label: "联系人电话",
-          value: "contacttel"
-        },
-        {
-          label: "联系人手机",
-          value: "contactphone"
-        },
-        {
-          label: "电子邮件",
-          value: "email"
-        },
-        {
-          label: "身份证号码",
-          value: "contactidno"
-        },
-        {
-          label: "联系人社保证明",
-          value: "sscertificateannex"
-        },
-        {
-          label: "附件委托",
-          value: "authdelegationannex"
-        },
+      manFields: tableFields.man.concat([
         {
           label: "操作",
-          value: "actions"
+          value: "actions",
+          width: 180
         }
-      ],
+      ]),
       areaFormData: [
         {
           id: "service-area",

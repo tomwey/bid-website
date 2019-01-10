@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import tableFields from "@/utils/table-fields";
 export default {
   name: "service-type",
   components: {
@@ -24,32 +25,7 @@ export default {
   data() {
     return {
       items: [],
-      fields: [
-        {
-          label: "对口服务类别",
-          value: "servertype"
-        },
-        {
-          label: "是否主要类别",
-          value: "ismain"
-        },
-        {
-          label: "资质名称",
-          value: "quaname"
-        },
-        {
-          label: "资质级别",
-          value: "qualevel"
-        },
-        {
-          label: "资质审核到期日期",
-          value: "quaexaminedate"
-        },
-        {
-          label: "其他说明",
-          value: "othermemo"
-        }
-      ]
+      fields: tableFields.serviceType
     };
   },
   mounted() {

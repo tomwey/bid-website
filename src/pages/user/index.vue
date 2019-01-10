@@ -275,6 +275,7 @@ $theme-color: #e46623;
   }
   .main-content {
     flex: 1;
+    width: calc(100% - 150px);
   }
 }
 </style>

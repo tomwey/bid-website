@@ -3,7 +3,9 @@
     <!-- <man-list :items="manData" :fields="manFields"/> -->
     <div class="box">
       <card-head title="联系方式" step="2"/>
-      <horizontal-table :items="items" :fields="fields"/>
+      <div class>
+        <horizontal-table :items="items" :fields="fields"/>
+      </div>
 
       <div class="empty-error-box" v-if="items.length === 0">暂无联系方式</div>
     </div>
@@ -26,39 +28,48 @@ export default {
       fields: [
         {
           label: "联系人类型",
-          value: "contacttype"
+          value: "contacttype",
+          width: 150
         },
         {
           label: "联系人职位",
-          value: "contactposition"
+          value: "contactposition",
+          width: 120
         },
         {
           label: "联系人姓名",
-          value: "contactname"
+          value: "contactname",
+          width: 120
         },
         {
           label: "联系人电话",
-          value: "contacttel"
+          value: "contacttel",
+          width: 120
         },
         {
           label: "联系人手机",
-          value: "contactphone"
+          value: "contactphone",
+          width: 120
         },
         {
           label: "电子邮件",
-          value: "email"
+          value: "email",
+          width: 120
         },
         {
           label: "身份证号码",
-          value: "contactidno"
+          value: "contactidno",
+          width: 120
         },
         {
           label: "联系人社保证明",
-          value: "sscertificateannex"
+          value: "sscertificateannex",
+          width: 150
         },
         {
           label: "附件委托",
-          value: "authdelegationannex"
+          value: "authdelegationannex",
+          width: 150
         }
       ]
     };

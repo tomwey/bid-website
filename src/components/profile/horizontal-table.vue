@@ -1,15 +1,21 @@
 <template>
   <div class="table-wrap">
-    <table class="table table-responsive-lg">
-      <thead class="thead-light">
-        <tr>
-          <th v-for="(field, index1) in fields" :key="index1">{{field.label}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td v-for="(field,index2) in fields" :key="index2">
-            <!-- <span v-if="!item.filetype">{{item.value}}</span>
+    <div class="table-responsive">
+      <table class="table table-bordered" style="table-layout: fixed;">
+        <thead class="thead-light">
+          <tr>
+            <th
+              style="text-align:center;"
+              :width="field.width"
+              v-for="(field, index1) in fields"
+              :key="index1"
+            >{{field.label}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in items" :key="index">
+            <td align="center" v-for="(field,index2) in fields" :key="index2">
+              <!-- <span v-if="!item.filetype">{{item.value}}</span>
           
           <img v-if="item.filetype === 'image'" :src="item.fileurl">
           <a
@@ -17,21 +23,22 @@
             v-if="item.filetype === 'file'"
             class="file-link"
             target="_blank"
-            >{{item.filename}}</a>-->
-            <!-- {{item[field.value]}} -->
-            <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
-            <div class="actions" v-if="field.value === 'actions'">
-              <b-button
-                :variant="btn.variant"
-                v-for="(btn,index4) in btnActions(item)"
-                :key="index4"
-                @click="click(btn, item);"
-              >{{btn.name}}</b-button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              >{{item.filename}}</a>-->
+              <!-- {{item[field.value]}} -->
+              <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
+              <div class="actions" v-if="field.value === 'actions'">
+                <b-button
+                  :variant="btn.variant"
+                  v-for="(btn,index4) in btnActions(item)"
+                  :key="index4"
+                  @click="click(btn, item);"
+                >{{btn.name}}</b-button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <script>
@@ -60,13 +67,21 @@ export default {
 <style lang="scss" scoped>
 .table-wrap {
   padding-bottom: 20px;
+  width: 100%;
+  // overflow-x: auto;
   .table {
     width: 100%;
+    td {
+      vertical-align: middle;
+    }
   }
 
   .actions {
+    text-align: center;
+    width: 100%;
     .btn {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
+      margin: 0 5px;
     }
   }
 }

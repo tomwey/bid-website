@@ -18,6 +18,27 @@ export default {
   },
   computed: {
     isFile() {
+      let urlKey = this.field + "url";
+      let urlValue = this.item[urlKey];
+      if (urlValue) {
+        let nameKey = this.field + "name";
+        let filename = this.item[nameKey];
+        this.$set(this.item, "_files", [
+          {
+            _fileurl: urlValue,
+            _filename: filename,
+            _isimage:
+              filename.indexOf(".png") !== -1 ||
+              filename.indexOf(".gif") !== -1 ||
+              filename.indexOf(".jpg") !== -1 ||
+              filename.indexOf(".jpeg") !== -1 ||
+              filename.indexOf(".webp") !== -1
+          }
+        ]);
+
+        return true;
+      }
+
       let key = this.field + "_isfile";
       return this.item[key];
     },

@@ -223,24 +223,4 @@ export default {
     }
   }
 }
-
-.modal-btns {
-  text-align: center;
-  .hn2-btn {
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    background: #e46623;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    margin-right: 15px;
-    &.cancel {
-      background: #999;
-    }
-  }
-}
 </style>

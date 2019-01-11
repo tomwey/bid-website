@@ -136,21 +136,42 @@ li {
   box-shadow: inset 0 0 5px rgba(228,102,35,0.2);
 }
 
-.btn:focus,
-        .btn:active:focus,
-        .btn.active:focus,
-        .btn.focus,
-        .btn:active.focus,
-        .btn.active.focus {
-            outline: none;    
-            box-shadow:none
-        }
 .hn-btn-style {
   .btn {
     font-size: 14px;
     background: #fff;
     border-color: #E46623;
     color: #E46623;
+    // &:focus {
+    //   outline: 0!important;
+    // }
   }
+
+  .btn-primary:hover,.btn-primary:focus,.btn-primary:active, 
+.btn-primary:active:focus:not(:disabled):not(.disabled),
+.btn:focus, .btn:active, .btn:hover{
+    box-shadow: none!important;
+    outline: 0;
+}
   
+}
+
+.modal-btns {
+  text-align: center;
+  .hn2-btn {
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    background: #e46623;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    margin-right: 15px;
+    &.cancel {
+      background: #999;
+    }
+  }
 }

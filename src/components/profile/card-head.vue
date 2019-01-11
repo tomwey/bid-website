@@ -3,7 +3,7 @@
     <h2>
       {{title}}
       <span class="float-right hn-btn-style" style="margin-top:-5px;">
-        <b-button size="sm" @click="gotoStep">编辑</b-button>
+        <b-button size="sm" variant="secondary-outline" @click="gotoStep">编辑</b-button>
       </span>
     </h2>
   </div>

@@ -93,6 +93,10 @@ $theme-color: #e46623;
         margin-bottom: 15px;
         border-radius: 0;
         border-color: #f2f2f2;
+        font-size: 14px;
+        &:focus {
+          border-color: $theme-color;
+        }
       }
 
       .reg-btn {

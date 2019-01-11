@@ -166,11 +166,11 @@ export default {
       options: [
         {
           value: "0",
-          text: "通过原手机号找回"
+          text: "通过原手机号绑定"
         },
         {
           value: "1",
-          text: "通过申请找回"
+          text: "通过申请绑定"
         }
       ],
       old_mobile: this.$store.state.supinfo.telephone,
@@ -295,6 +295,9 @@ $theme-color: #e46623;
     font-size: 14px;
     border-radius: 0;
     border-color: #eee;
+    &:focus {
+      border-color: #e46623;
+    }
   }
 
   .code-control-wrap {

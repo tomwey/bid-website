@@ -19,7 +19,7 @@
               </p>
             </div>
             <div class="button-wrap hn-btn-style">
-              <b-button size="sm" v-b-modal.loginNameModal>修改</b-button>
+              <b-button size="sm" variant="secondary-outline" v-b-modal.loginNameModal>修改</b-button>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
               </p>
             </div>
             <div class="button-wrap hn-btn-style">
-              <b-button size="sm" @click="bindMobile">修改</b-button>
+              <b-button size="sm" variant="secondary-outline" @click="bindMobile">修改</b-button>
             </div>
           </div>
         </div>
@@ -96,18 +96,7 @@
         </table>
       </div>
     </b-modal>-->
-    <b-modal
-      id="loginNameModal"
-      centered
-      title="修改登录名"
-      ok-title="保存"
-      ok-variant="danger"
-      cancel-title="取消"
-      @ok="commit"
-      @cancel="reset"
-      @hide="reset"
-      ref="loginModal"
-    >
+    <b-modal id="loginNameModal" centered title="修改登录名" ref="loginModal">
       <div class="fields-wrap">
         <div class="error-box" v-if="!!error">{{error}}</div>
         <table class="table">
@@ -126,6 +115,13 @@
             </td>
           </tr>
         </table>
+      </div>
+
+      <div slot="modal-footer" class="w-100">
+        <div class="modal-btns">
+          <span class="hn2-btn cancel" @click="cancel">取&emsp;消</span>
+          <span class="hn2-btn" @click="commit">保&emsp;存</span>
+        </div>
       </div>
     </b-modal>
   </div>
@@ -157,93 +153,96 @@ export default {
       // this.mobile = null;
       // this.code = null;
     },
+    cancel() {
+      this.$refs.loginModal.hide();
+    },
     commit(ev) {
       // console.log(ev);
       this.error = null;
       ev.preventDefault();
 
-      const id = ev.target.id;
-      // console.log(id);
-      if (id === "loginNameModal") {
-        // 修改登录名
-        if (!this.loginname) {
-          this.error = "登录名不能为空";
-          return;
-        }
-
-        if (this.loginname === this.$store.state.supinfo.loginname) {
-          this.error = "新登录名不能与原登录名一致";
-          return;
-        }
-
-        const loginname = this.loginname;
-
-        this.$post(
-          {
-            action: "updateaccountinfo",
-            p1: this.$store.state.supinfo.accountid,
-            p2: this.$store.state.token,
-            p3: "1",
-            p4: loginname,
-            p5: ""
-          },
-          res => {
-            if (res.code === "0") {
-              this.$store.commit("updateloginname", loginname);
-              this.$refs.loginModal.hide();
-
-              this.loginname = null;
-              this.mobile = null;
-              this.code = null;
-            } else {
-              this.error = res.codemsg;
-            }
-          }
-        );
-      } else if (id === "mobileModal") {
-        const mobile = this.mobile;
-
-        if (!this.mobile) {
-          this.error = "手机号不能为空";
-          return;
-        }
-
-        if (this.mobile === this.$store.state.supinfo.telephone) {
-          this.error = "新手机号不能与原手机号一致";
-          return;
-        }
-
-        // 验证码
-        if (!this.code) {
-          this.error = "验证码不能为空";
-          return;
-        }
-
-        this.$post(
-          {
-            action: "updateaccountinfo",
-            p1: this.$store.state.supinfo.accountid,
-            p2: this.$store.state.token,
-            p3: "2",
-            p4: this.mobile,
-            p5: "",
-            p6: this.code,
-            p7: this.codetype
-          },
-          res => {
-            if (res.code === "0") {
-              this.$store.commit("updatemobile", mobile);
-              this.$refs.mobileModal.hide();
-
-              this.loginname = null;
-              this.mobile = null;
-              this.code = null;
-            } else {
-              this.error = res.codemsg;
-            }
-          }
-        );
+      // const id = ev.target.id;
+      // // console.log(id);
+      // if (id === "loginNameModal") {
+      // 修改登录名
+      if (!this.loginname) {
+        this.error = "登录名不能为空";
+        return;
       }
+
+      if (this.loginname === this.$store.state.supinfo.loginname) {
+        this.error = "新登录名不能与原登录名一致";
+        return;
+      }
+
+      const loginname = this.loginname;
+
+      this.$post(
+        {
+          action: "updateaccountinfo",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token,
+          p3: "1",
+          p4: loginname,
+          p5: ""
+        },
+        res => {
+          if (res.code === "0") {
+            this.$store.commit("updateloginname", loginname);
+            this.$refs.loginModal.hide();
+
+            this.loginname = null;
+            this.mobile = null;
+            this.code = null;
+          } else {
+            this.error = res.codemsg;
+          }
+        }
+      );
+      //   } else if (id === "mobileModal") {
+      //     const mobile = this.mobile;
+
+      //     if (!this.mobile) {
+      //       this.error = "手机号不能为空";
+      //       return;
+      //     }
+
+      //     if (this.mobile === this.$store.state.supinfo.telephone) {
+      //       this.error = "新手机号不能与原手机号一致";
+      //       return;
+      //     }
+
+      //     // 验证码
+      //     if (!this.code) {
+      //       this.error = "验证码不能为空";
+      //       return;
+      //     }
+
+      //     this.$post(
+      //       {
+      //         action: "updateaccountinfo",
+      //         p1: this.$store.state.supinfo.accountid,
+      //         p2: this.$store.state.token,
+      //         p3: "2",
+      //         p4: this.mobile,
+      //         p5: "",
+      //         p6: this.code,
+      //         p7: this.codetype
+      //       },
+      //       res => {
+      //         if (res.code === "0") {
+      //           this.$store.commit("updatemobile", mobile);
+      //           this.$refs.mobileModal.hide();
+
+      //           this.loginname = null;
+      //           this.mobile = null;
+      //           this.code = null;
+      //         } else {
+      //           this.error = res.codemsg;
+      //         }
+      //       }
+      //     );
+      //   }
     }
   }
 };
@@ -359,6 +358,9 @@ $theme-color: #e46623;
         // margin-bottom: 15px;
         border-radius: 0;
         border-color: #f2f2f2;
+        &:focus {
+          border-color: #e46623;
+        }
       }
     }
   }

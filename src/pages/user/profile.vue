@@ -132,13 +132,13 @@ export default {
     return {
       currentStep: null,
       achieveData: this.$store.state.supprofile.yj_data || [],
-      achieveFields: tableFields.achieve.concat([
+      achieveFields: [
         {
           label: "操作",
           value: "actions",
-          width: 180
+          width: 80
         }
-      ]),
+      ].concat(tableFields.achieve),
       achieveFormData: [
         {
           id: "city",
@@ -240,13 +240,13 @@ export default {
         sale: this.$store.state.supprofile.turnoveryear
       },
       serviceTypeData: this.$store.state.supprofile.types || [],
-      serviceTypeFields: tableFields.serviceType.concat([
+      serviceTypeFields: [
         {
           label: "操作",
           value: "actions",
-          width: 180
+          width: 80
         }
-      ]),
+      ].concat(tableFields.serviceType),
       serviceTypeFormData: [
         {
           id: "service-type",
@@ -368,13 +368,13 @@ export default {
           // value: null
         }
       ],
-      manFields: tableFields.man.concat([
+      manFields: [
         {
           label: "操作",
           value: "actions",
-          width: 180
+          width: 80
         }
-      ]),
+      ].concat(tableFields.man),
       areaFormData: [
         {
           id: "service-area",
@@ -707,6 +707,7 @@ export default {
     this.currentStep = this.steps[stepIndex - 1];
   },
   mounted() {
+    // console.log(456);
     this.loadBaseConfigData();
 
     this.loadManConfigs();
@@ -873,8 +874,9 @@ export default {
       // 填充主数据表单
       let object = this.$store.state.supprofile;
 
-      this.baseFormData[0].readonly = !!this.$store.state.supid;
-      this.baseFormData[2].readonly = !!this.$store.state.supid;
+      // console.log(this.$store.state.supinfo);
+      this.baseFormData[0].readonly = this.baseFormData[2].readonly =
+        object.comname && object.comname.length > 0;
 
       this.baseFormData.forEach(control => {
         if (control.type === 3) {

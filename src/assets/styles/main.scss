@@ -130,3 +130,27 @@ li {
   font-size: 16px;
   color: #E46623;
 }
+
+.form-control:focus {
+  border-color: #E46623;
+  box-shadow: inset 0 0 5px rgba(228,102,35,0.2);
+}
+
+.btn:focus,
+        .btn:active:focus,
+        .btn.active:focus,
+        .btn.focus,
+        .btn:active.focus,
+        .btn.active.focus {
+            outline: none;    
+            box-shadow:none
+        }
+.hn-btn-style {
+  .btn {
+    font-size: 14px;
+    background: #fff;
+    border-color: #E46623;
+    color: #E46623;
+  }
+  
+}

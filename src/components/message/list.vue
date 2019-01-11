@@ -1,9 +1,12 @@
 <template>
-  <div class="messages">
-    <div class="message" v-for="(item,index) in messages" :key="index">
-      <p class="title">{{item.title}}</p>
-      <p class="time">{{item.time}}</p>
+  <div class="message-list">
+    <div class="messages">
+      <div class="message" v-for="(item,index) in messages" :key="index">
+        <p class="title">{{item.title}}</p>
+        <p class="time">{{item.time}}</p>
+      </div>
     </div>
+    <div class="empty-error-box">即将上线...</div>
   </div>
 </template>
 <script>

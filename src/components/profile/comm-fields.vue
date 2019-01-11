@@ -310,6 +310,9 @@ $theme-color: #e46623;
     margin: 0;
     padding: 0;
     width: 100%;
+    .form-control {
+      font-size: 14px !important;
+    }
     &.readonly {
       border-top: 1px solid #eee;
 
@@ -341,7 +344,9 @@ $theme-color: #e46623;
       }
       .required {
         color: $theme-color;
-        font-size: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        vertical-align: -3px;
       }
     }
   }

@@ -19,7 +19,7 @@
             <b-badge :variant="variant">{{$store.state.supinfo.supstatename}}</b-badge>
           </div>
           <div class="edit-wrap">
-            <b-button @click="editProfile">供方资料修改</b-button>
+            <b-button @click="editProfile">资料维护</b-button>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@
         >{{messages.length}}</b-badge>
       </h2>
       <message-list :messages="messages"/>
-      <div class="empty-error-box" v-if="messages.length === 0">暂无未读消息</div>
+      <!-- <div class="empty-error-box" v-if="messages.length === 0">暂无未读消息</div> -->
     </div>
   </div>
 </template>
@@ -133,6 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$theme-color: #e46623;
 .base-info {
   padding: 15px 15px 0;
   .info-wrap {
@@ -152,6 +153,12 @@ export default {
       width: 120px;
       text-align: right;
       padding-top: 20px;
+      .btn {
+        background: #fff;
+        font-size: 14px;
+        color: $theme-color;
+        border-color: $theme-color;
+      }
     }
     .content-wrap {
       flex: 1;

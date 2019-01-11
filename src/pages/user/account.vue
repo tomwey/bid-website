@@ -18,7 +18,7 @@
                 {{$store.state.supinfo.loginname}}
               </p>
             </div>
-            <div class="button-wrap">
+            <div class="button-wrap hn-btn-style">
               <b-button size="sm" v-b-modal.loginNameModal>修改</b-button>
             </div>
           </div>
@@ -41,7 +41,7 @@
                 {{$store.state.supinfo.telephone}}
               </p>
             </div>
-            <div class="button-wrap">
+            <div class="button-wrap hn-btn-style">
               <b-button size="sm" @click="bindMobile">修改</b-button>
             </div>
           </div>

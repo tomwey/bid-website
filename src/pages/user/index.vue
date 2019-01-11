@@ -140,6 +140,7 @@ export default {
   watch: {
     $route: function(to) {
       console.log(123);
+      this.currentMenu = null;
       this.menus.forEach(menu => {
         menu.menu_items.forEach(item => {
           const name = this.$router.currentRoute.name;

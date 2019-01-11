@@ -6,7 +6,7 @@
         <span class="digit">{{items.length}}</span>
         条{{this.name}}
       </b-col>
-      <b-col cols="4">
+      <b-col cols="4" class="hn-btn-style">
         <b-button @click="newItem">新增{{this.name}}</b-button>
       </b-col>
     </b-row>
@@ -23,15 +23,17 @@
       :no-close-on-backdrop="true"
       :no-close-on-esc="true"
       centered
-      :title="'新增' + this.name"
-      ok-title="保存"
-      ok-variant="danger"
       size="lg"
+      :title="'新增' + this.name"
       ref="formModal"
-      cancel-title="取消"
-      @ok="commit"
     >
       <comm-fields :form-data="formData" ref="form" @change="changeValue"/>
+      <div slot="modal-footer" class="w-100">
+        <div class="modal-btns">
+          <span class="hn2-btn cancel" @click="cancel">取&emsp;消</span>
+          <span class="hn2-btn" @click="commit">保&emsp;存</span>
+        </div>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -60,11 +62,15 @@ export default {
         {
           name: "编辑",
           code: "edit",
+          icon: "edit",
+          scale: 1.1,
           variant: "secondary"
         },
         {
           name: "删除",
           code: "delete",
+          icon: "trash-alt",
+          scale: 1.0,
           variant: "danger"
         }
       ]
@@ -88,6 +94,7 @@ export default {
         // data.edit = true;
         this.formData.forEach(control => {
           if (control.type === 2) {
+            // console.log(data);
             if (data[control.field]) {
               control.value = `${data[control.field + "name"]}-${
                 data[control.field]
@@ -127,6 +134,9 @@ export default {
       });
 
       this.$refs.formModal.show();
+    },
+    cancel() {
+      this.$refs.formModal.hide();
     },
     commit(evt) {
       evt.preventDefault();
@@ -210,6 +220,26 @@ export default {
     .col-4 {
       text-align: right;
       padding: 0;
+    }
+  }
+}
+
+.modal-btns {
+  text-align: center;
+  .hn2-btn {
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    background: #e46623;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    margin-right: 15px;
+    &.cancel {
+      background: #999;
     }
   }
 }

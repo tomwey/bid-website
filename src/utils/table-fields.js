@@ -1,4 +1,15 @@
 const tableFields = {
+    actions: [
+        {
+            label: "编辑",
+            icon: "edit"
+        },
+        {
+            label: "删除",
+            icon: "trash-alt"
+        },
+    ],
+
     man: [
         {
             label: "联系人类型",
@@ -41,7 +52,7 @@ const tableFields = {
             width: 150
         },
         {
-            label: "附件委托",
+            label: "授权文件",
             value: "authdelegationannex",
             width: 150
         }

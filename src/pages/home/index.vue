@@ -121,6 +121,15 @@ export default {
       logined: false
     };
   },
+  created() {
+    let that = this;
+    document.onkeyup = function(e) {
+      let key = window.event.keyCode;
+      if (key == 13) {
+        that.login();
+      }
+    };
+  },
   mounted() {
     this.logined = !!this.$getToken();
   },
@@ -312,7 +321,10 @@ $theme-color: #e46623;
         margin-bottom: 15px;
         border-radius: 0;
         border-color: #f2f2f2;
-        font-size: 16px;
+        font-size: 14px;
+        &:focus {
+          border-color: #e46623;
+        }
       }
 
       .login-state-wrap {
@@ -360,14 +372,14 @@ $theme-color: #e46623;
       //   text-align: center;
       // margin-top: 10px;
       .find-login-link {
-        font-size: 16px;
+        font-size: 14px;
         color: #333;
         text-decoration: underline;
         cursor: pointer;
         user-select: none;
       }
       .reg-link {
-        font-size: 16px;
+        font-size: 14px;
         color: $theme-color;
         cursor: pointer;
         user-select: none;

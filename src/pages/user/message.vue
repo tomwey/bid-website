@@ -24,74 +24,15 @@ export default {
     };
   },
   mounted() {
-    this.messages = [
-      {
-        title: "消息1",
-        time: "2018-12-12 13:00:23"
-      },
-      {
-        title: "消息1",
-        time: "2018-12-12 13:00:23"
-      },
-      {
-        title: "消息1",
-        time: "2018-12-12 13:00:23"
-      }
-    ];
+    this.messages = [];
   },
   methods: {
     selectTab(index) {
       this.active = index;
       if (index === 1) {
-        this.messages = [
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息2",
-            time: "2018-12-12 13:00:23"
-          }
-        ];
+        this.messages = [];
       } else {
-        this.messages = [
-          {
-            title: "消息1",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息1",
-            time: "2018-12-12 13:00:23"
-          },
-          {
-            title: "消息1",
-            time: "2018-12-12 13:00:23"
-          }
-        ];
+        this.messages = [];
       }
     }
   }

@@ -27,12 +27,20 @@
               <!-- {{item[field.value]}} -->
               <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
               <div class="actions" v-if="field.value === 'actions'">
-                <b-button
+                <!-- <b-button
                   :variant="btn.variant"
                   v-for="(btn,index4) in btnActions(item)"
                   :key="index4"
                   @click="click(btn, item);"
-                >{{btn.name}}</b-button>
+                >{{btn.name}}</b-button>-->
+                <span
+                  class="action-btn"
+                  v-for="(btn,index4) in btnActions(item)"
+                  :key="index4"
+                  @click="click(btn, item);"
+                >
+                  <v-icon :name="btn.icon" :scale="btn.scale"/>
+                </span>
               </div>
             </td>
           </tr>
@@ -82,6 +90,15 @@ export default {
     .btn {
       // margin-bottom: 10px;
       margin: 0 5px;
+    }
+
+    .action-btn {
+      display: inline-block;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+      font-size: 16px;
+      padding: 10px 5px;
     }
   }
 }

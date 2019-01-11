@@ -179,7 +179,7 @@ export default {
           value: "sscertificateannex"
         },
         {
-          label: "附件委托",
+          label: "授权文件",
           value: "authdelegationannex"
         },
         {

@@ -1364,7 +1364,7 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      console.log(params);
+      // console.log(params);
 
       this.$post(params, res => {
         // console.log(res);

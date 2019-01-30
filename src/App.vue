@@ -90,6 +90,12 @@ export default {
           href: "/#partner"
         },
         {
+          id: 7,
+          name: "合能官网",
+          route: "hn",
+          href: "http://www.heneng.cn"
+        },
+        {
           id: 6,
           name: "操作手册",
           route: "help"
@@ -149,7 +155,8 @@ export default {
       // this.selectedIndex = index;
       if (
         this.links[index].route === "about" ||
-        this.links[index].route === "partner"
+        this.links[index].route === "partner" ||
+        this.links[index].route === "hn"
       ) {
         return;
       }

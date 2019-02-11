@@ -20,7 +20,7 @@ export default {
   background-repeat: no-repeat;
   background-position: top left;
   background-size: 100% auto;
-  padding-top: 180px;
+  padding-top: 160px;
 }
 </style>
 

@@ -305,6 +305,9 @@ $theme-color: #e46623;
         margin-bottom: 15px;
         border-radius: 0;
         border-color: #f2f2f2;
+        &:focus {
+          border-color: #e46623;
+        }
       }
 
       .file-wrap {

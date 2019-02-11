@@ -1337,22 +1337,85 @@ export default {
       params["token"] = this.$store.state.token;
 
       // 填充联系人信息
-      params["man"] =
-        (this.manData.length === 0
+      // params["man"] =
+      //   (this.manData.length === 0
+      //     ? this.$store.state.supprofile.man
+      //     : this.manData) || [];
+      let manData =
+        this.manData.length === 0
           ? this.$store.state.supprofile.man
-          : this.manData) || [];
+          : this.manData;
+      let temp = [];
+      manData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key !== "_files" &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            obj[key] = element || "";
+          }
+        }
+        temp.push(obj);
+      });
+      params["man"] = temp;
 
       // 填充服务类别
-      params["types"] =
+      // params["types"] =
+      //   this.serviceTypeData.length === 0
+      //     ? this.$store.state.supprofile.types
+      //     : this.serviceTypeData;
+      let servTypeData =
         this.serviceTypeData.length === 0
           ? this.$store.state.supprofile.types
           : this.serviceTypeData;
+      let temp2 = [];
+      servTypeData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key !== "_files" &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            obj[key] = element || "";
+          }
+        }
+        temp2.push(obj);
+      });
+
+      params["types"] = temp2;
 
       // 填充公司业绩
-      params["achievements"] =
+      // params["achievements"] =
+      //   this.achieveData.length === 0
+      //     ? this.$store.state.supprofile.yj_data
+      //     : this.achieveData;
+      let achieveData =
         this.achieveData.length === 0
           ? this.$store.state.supprofile.yj_data
           : this.achieveData;
+      let temp3 = [];
+
+      achieveData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key !== "_files" &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            obj[key] = element || "";
+          }
+        }
+        temp3.push(obj);
+      });
+
+      params["achievements"] = temp3;
 
       // 填充其它附件信息
       let fileObj = {};
@@ -1372,7 +1435,7 @@ export default {
           alert("提交成功");
           this.$router.replace({ path: "/admin/company" });
         } else {
-          console.log(res.codemsg);
+          // console.log(res.codemsg);
 
           alert(res.codemsg);
         }

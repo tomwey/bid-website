@@ -16,6 +16,16 @@
         </div>
         <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
         <b-form-input v-model="password_confirm" type="password" placeholder="输入确认密码"></b-form-input>
+        <b-form-checkbox v-model="status" value="1" unchecked-value="0">
+          <span class="accepts">
+            我已阅读并同意
+            <a
+              href="http://erp20-mobiledoc.heneng.cn:16660/view/YxmhgSw"
+              target="_blank"
+              class="accept-links"
+            >《合能招标采购平台注册协议》</a>
+          </span>
+        </b-form-checkbox>
         <span class="reg-btn" @click="commit">注&emsp;册</span>
       </div>
     </div>
@@ -37,7 +47,8 @@ export default {
       code: null,
       codetype: "2",
       password: null,
-      password_confirm: null
+      password_confirm: null,
+      status: "0"
     };
   },
   methods: {
@@ -63,6 +74,11 @@ export default {
 
       if (this.password !== this.password_confirm) {
         alert("两次密码输入不一致");
+        return;
+      }
+
+      if (this.status !== "1") {
+        alert("需要接受合能招标采购平台注册协议");
         return;
       }
 
@@ -112,7 +128,7 @@ $theme-color: #e46623;
 .register {
   .form-box {
     background: #fff;
-    width: 360px;
+    width: 380px;
     margin: 0 auto;
     box-shadow: 0 0 1px #e6e6e6;
     .title {
@@ -121,6 +137,16 @@ $theme-color: #e46623;
       border-bottom: 1px solid #e6e6e6;
       font-size: 20px;
       color: #333;
+    }
+
+    .accepts {
+      font-size: 14px !important;
+      color: #333;
+    }
+
+    .accept-links {
+      color: $theme-color;
+      text-decoration: none;
     }
 
     .code-control-wrap {
@@ -143,6 +169,9 @@ $theme-color: #e46623;
         border-radius: 0;
         border-color: #f2f2f2;
         font-size: 14px;
+        &:focus {
+          border-color: #e46623;
+        }
       }
 
       .reg-btn {

@@ -18,6 +18,7 @@
           <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
           <b-form-input v-model="password_confirm" type="password" placeholder="输入确认密码"></b-form-input>
           <span class="reg-btn">注&emsp;册</span>
+          <!-- http://erp20-mobiledoc.heneng.cn:16660/view/YxmhgSw -->
         </div>
       </div>
     </div>
@@ -32,7 +33,8 @@ export default {
       mobile: null,
       code: null,
       password: null,
-      password_confirm: null
+      password_confirm: null,
+      status: "0"
     };
   }
 };

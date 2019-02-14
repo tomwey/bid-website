@@ -114,6 +114,8 @@ export default {
           }
         });
 
+        // console.log(this.formData);
+
         this.$refs.formModal.show();
       } else if (action.code === "delete") {
         var a = confirm("您确定要删除吗？");
@@ -147,6 +149,22 @@ export default {
         if (control.required && control.type !== 5 && !control.value) {
           alert(control.label + "不能为空");
           return;
+        }
+
+        if (control.subtype === "date") {
+          if (control.value) {
+            let val = control.value
+              .replace("年", "-")
+              .replace("月", "-")
+              .replace("日", "")
+              .replace("/", "-");
+            console.log(val);
+            let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
+            if (!reg.test(val)) {
+              alert(control.label + "不正确");
+              return;
+            }
+          }
         }
 
         if (control.type === 2 && control.value) {

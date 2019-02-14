@@ -227,13 +227,38 @@ export default {
       //   console.log(this.manFormData);
       // this.reset();
       let obj = {};
-      this.yjFormData.forEach(control => {
+
+      for (let i = 0; i < this.yjFormData.length; i++) {
+        const control = this.yjFormData[i];
+
+        if (control.subtype === "date") {
+          if (control.value) {
+            let val = control.value
+              .replace("年", "-")
+              .replace("月", "-")
+              .replace("日", "");
+            let reg = new RegExp("^d{4}-d{1,2}-d{1,2}$");
+            if (!reg.test(val)) {
+              alert(control.label + "不正确");
+              return;
+            }
+          }
+        }
+
         if (control.type === 5) {
           obj[control.field] = control.value === true ? "是" : "否";
         } else {
           obj[control.field] = control.value;
         }
-      });
+      }
+
+      // this.yjFormData.forEach(control => {
+      //   if (control.type === 5) {
+      //     obj[control.field] = control.value === true ? "是" : "否";
+      //   } else {
+      //     obj[control.field] = control.value;
+      //   }
+      // });
 
       this.items.push(obj);
 

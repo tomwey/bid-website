@@ -1318,6 +1318,26 @@ export default {
     commit() {
       let params = { action: "updatesupinfo" };
       console.log(this.baseFormData);
+
+      for (let i = 0; i < this.baseFormData.length; i++) {
+        const control = this.baseFormData[i];
+
+        if (control.subtype === "date") {
+          if (control.value) {
+            let val = control.value
+              .replace("年", "-")
+              .replace("月", "-")
+              .replace("日", "")
+              .replace("/", "-");
+            let reg = new RegExp("^d{4}-d{1,2}-d{1,2}$");
+            if (!reg.test(val)) {
+              alert(control.label + "不正确");
+              return;
+            }
+          }
+        }
+      }
+
       // 填充基础数据
       this._fillData(this.baseFormData, params);
 

@@ -1329,7 +1329,7 @@ export default {
               .replace("月", "-")
               .replace("日", "")
               .replace("/", "-");
-            let reg = new RegExp("^d{4}-d{1,2}-d{1,2}$");
+            let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
             if (!reg.test(val)) {
               alert(control.label + "不正确");
               return;

@@ -79,7 +79,7 @@ export default {
               route: "user_man"
             },
             {
-              name: "服务区域",
+              name: "服务城市",
               route: "user_area"
             },
             {

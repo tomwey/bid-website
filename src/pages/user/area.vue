@@ -1,7 +1,7 @@
 <template>
   <div class="area">
     <div class="box">
-      <card-head title="服务区域" step="3"/>
+      <card-head title="服务城市" step="3"/>
       <vertical-table :items="items" step="1"/>
     </div>
   </div>
@@ -21,13 +21,13 @@ export default {
     return {
       items: [
         {
-          label: "服务区域",
+          label: "服务城市",
           value: "",
           type: 1,
           field: "serverareaids"
         },
         {
-          label: "主要服务区域",
+          label: "主要服务城市",
           value: "",
           type: 1,
           field: "mainareaid"

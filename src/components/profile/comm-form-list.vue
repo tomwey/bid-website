@@ -151,6 +151,14 @@ export default {
           return;
         }
 
+        if (control.pattern) {
+          let reg = new RegExp(control.pattern);
+          if (!!control.value && !reg.test(control.value)) {
+            alert(control.label + "不正确");
+            return;
+          }
+        }
+
         if (control.subtype === "date") {
           if (control.value) {
             let val = control.value

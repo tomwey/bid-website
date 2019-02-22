@@ -57,6 +57,9 @@
               plain
             ></b-form-file>
             <p class="upload-help-text">{{item.upload_desc || "上传附件为图片，格式建议：jpg,jpeg,png,gif"}}</p>
+            <div class="download-link" v-if="!!item.tpl_file">
+              <a :href="item.tpl_file.url" target="_blank">{{item.tpl_file.name}}</a>
+            </div>
             <div class="progress-box" v-show="item.progress && item.progress > 0">
               <b-row>
                 <b-col cols="10">
@@ -274,6 +277,17 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
+.download-link {
+  margin-top: 5px;
+  color: #e46623;
+  font-size: 14px;
+  a {
+    color: #e46623;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+}
+
 .tree-data-wrap {
   position: relative;
   cursor: pointer;

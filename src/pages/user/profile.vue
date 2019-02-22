@@ -221,7 +221,7 @@ export default {
           field: "contractannex",
           accept: ".zip,.rar",
           upload_desc:
-            "上传附件为压缩包文件，格式为：zip,rar等。（压缩包需要包含：合同封面首页图片；合同结尾页图片；合同中间页图片【内容包括范围、金额、工期】）",
+            "上传附件为压缩包文件，格式为：zip,rar等。（1个合同上传不超过5页，压缩包需要包含：合同封面首页图片；合同结尾页图片；合同中间页图片【内容包括范围、金额、工期】）",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
           fieldname: "contractannex"
@@ -293,7 +293,7 @@ export default {
           subtype: "text",
           label: "其他说明",
           field: "othermemo",
-          required: true
+          required: false
         }
       ],
       manData: this.$store.state.supprofile.man || [],
@@ -346,7 +346,8 @@ export default {
           required: true,
           type: 1,
           field: "contactphone",
-          subtype: "tel"
+          subtype: "tel",
+          pattern: /^1[3456789]\d{9}$/
           // value: null
         },
         {
@@ -361,10 +362,11 @@ export default {
         {
           id: "idcard",
           label: "身份证号码",
-          required: false,
+          required: true,
           field: "contactidno",
           type: 1,
-          subtype: "text"
+          subtype: "text",
+          pattern: /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/
           // value: null
         }
       ],
@@ -379,7 +381,7 @@ export default {
         {
           id: "service-area",
           type: 3,
-          label: "服务区域",
+          label: "服务城市",
           placeholder: "",
           required: true,
           field: "serverareaids",
@@ -389,7 +391,7 @@ export default {
         {
           id: "main-service-area",
           type: 6,
-          label: "主要服务区域",
+          label: "主要服务城市",
           field: "mainareaid",
           options: [],
           required: true
@@ -400,7 +402,7 @@ export default {
           id: "child-company-name",
           type: 1,
           subtype: "text",
-          label: "分公司信息",
+          label: "分公司信息（含地址、电话）",
           field: "branchinfo",
           placeholder: ""
           //   required: true
@@ -660,7 +662,7 @@ export default {
           needReset: false
         },
         {
-          name: "服务区域",
+          name: "服务城市",
           step: 3,
           needReset: false
         },
@@ -785,7 +787,7 @@ export default {
             {
               id: "shebao",
               label: "联系人社保证明",
-              required: true,
+              required: false,
               field: "sscertificateannex",
               type: 4,
               subtype: 1,
@@ -802,7 +804,13 @@ export default {
               subtype: 2, // 普通文件
               domanid: this.$store.state.supinfo.accountid || "0",
               tablename: "H_Sup_Contact_Info",
-              fieldname: "authdelegationannex"
+              fieldname: "authdelegationannex",
+              upload_desc: "请下载授权委托书模板，填写并盖公章后扫描上传",
+              tpl_file: {
+                name: "授权委托书模板",
+                url:
+                  "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
+              }
               //   subtype: "text"
             }
           ];
@@ -1317,7 +1325,7 @@ export default {
     },
     commit() {
       let params = { action: "updatesupinfo" };
-      console.log(this.baseFormData);
+      // console.log(this.baseFormData);
 
       for (let i = 0; i < this.baseFormData.length; i++) {
         const control = this.baseFormData[i];
@@ -1434,6 +1442,11 @@ export default {
         }
         temp3.push(obj);
       });
+
+      if (temp3.length < 2) {
+        alert("至少需要录入2条公司业绩");
+        return;
+      }
 
       params["achievements"] = temp3;
 

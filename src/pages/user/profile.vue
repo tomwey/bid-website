@@ -1245,7 +1245,7 @@ export default {
       this.$post(
         {
           action: "P_SY_GetAreaOrType",
-          p1: "1",
+          p1: "3",
           p2: "0"
         },
         res => {

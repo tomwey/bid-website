@@ -109,7 +109,12 @@
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
         <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span>
         <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span>
-        <span class="custom-btn" @click="commit" v-if="currentStep.step === steps.length">提交审核</span>
+        <span
+          class="custom-btn"
+          :class="{disabled:commiting===true}"
+          @click="commit"
+          v-if="currentStep.step === steps.length"
+        >{{commitBtnText}}</span>
       </div>
     </div>
   </div>
@@ -132,6 +137,7 @@ export default {
     return {
       currentStep: null,
       achieveData: this.$store.state.supprofile.yj_data || [],
+      commiting: false,
       achieveFields: [
         {
           label: "操作",
@@ -738,6 +744,11 @@ export default {
     //   console.log(to);
     // }
   },
+  computed: {
+    commitBtnText() {
+      return this.commiting ? "正在提交..." : "提交审核";
+    }
+  },
   methods: {
     loadServiceTypeConfigs() {
       this.$post(
@@ -1324,6 +1335,10 @@ export default {
       });
     },
     commit() {
+      if (this.commiting) return;
+
+      this.commiting = true;
+
       let params = { action: "updatesupinfo" };
       // console.log(this.baseFormData);
 
@@ -1552,6 +1567,10 @@ $theme-color: #e46623;
         border: 1px solid $theme-color;
         color: $theme-color;
         background: #fff;
+      }
+
+      &.disabled {
+        opacity: 0.4;
       }
     }
   }

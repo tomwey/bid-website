@@ -58,6 +58,7 @@
           model="service_type"
           name="服务类别"
           :items="serviceTypeData"
+          @controlvaluechanged="serviceTypeChanged"
           :fields="serviceTypeFields"
           :form-data="serviceTypeFormData"
         />
@@ -261,7 +262,8 @@ export default {
           value: null,
           field: "servertype",
           required: true,
-          options: []
+          options: [],
+          assoc_control_id: "zz-name"
         },
         {
           id: "is-main-type",
@@ -272,19 +274,26 @@ export default {
         },
         {
           id: "zz-name",
-          type: 1,
-          subtype: "text",
-          required: true,
+          type: 2,
+          // subtype: "text",
+          options: [
+            {
+              text: "无",
+              value: null
+            }
+          ],
+          value: null,
+          required: false,
           field: "quaname",
           label: "资质名称"
         },
-        {
-          id: "zz-level",
-          type: 1,
-          subtype: "text",
-          field: "qualevel",
-          label: "资质级别"
-        },
+        // {
+        //   id: "zz-level",
+        //   type: 1,
+        //   subtype: "text",
+        //   field: "qualevel",
+        //   label: "资质级别"
+        // },
         {
           id: "zz-approve-date",
           type: 1,
@@ -778,6 +787,92 @@ export default {
           }
         }
       );
+    },
+    serviceTypeChanged(val) {
+      console.log(val);
+      // this.manFormData.length ==
+      const control = val.control;
+      const value = val.data;
+      if (control.field == "servertype") {
+        this.$post(
+          {
+            action: "P_SY_GetAreaOrType",
+            p1: "5",
+            p2: (value || {}).value || ""
+          },
+          res => {
+            if (res.code === "0") {
+              let arr = res.data;
+              let temp = [{ text: "无", value: null }];
+
+              // console.log(arr);
+
+              arr.forEach(ele => {
+                temp.push({
+                  value: `${ele.supqualistname}-${ele.supqualistid}`,
+                  text: ele.supqualistname
+                });
+              });
+
+              for (let i = 0; i < this.serviceTypeFormData.length; i++) {
+                const con = this.serviceTypeFormData[i];
+                if (con.id == control.assoc_control_id) {
+                  con.options = temp;
+                  break;
+                }
+              }
+            }
+          }
+        );
+      } else if (control.field == "quaname") {
+        // 资质名称
+        console.log(value);
+        let sVals = (value || "").split("-");
+        let id_str = "";
+        if (sVals.length === 2) {
+          id_str = sVals[1];
+        }
+        this.$post(
+          {
+            action: "P_SY_GetAreaOrType",
+            p1: "4",
+            p2: id_str
+          },
+          res => {
+            if (res.code === "0") {
+              let arr = res.data;
+
+              if (arr.length === 0) {
+                // 需要删掉添加的资质级别
+                if (this.serviceTypeFormData.length === 6) {
+                  this.serviceTypeFormData.splice(3, 1);
+                }
+              } else {
+                // 需要新增一个资质级别的字段
+                if (this.serviceTypeFormData.length === 5) {
+                  let temp = [{ text: "请选择资质级别", value: null }];
+                  arr.forEach(ele => {
+                    temp.push({
+                      value: `${ele.supquagradename}-${ele.supquagradeid}`,
+                      text: ele.supquagradename
+                    });
+                  });
+                  this.serviceTypeFormData.splice(3, 0, {
+                    id: "zz-level",
+                    type: 2,
+                    // subtype: "text",
+                    options: temp,
+                    value: null,
+                    required: true,
+                    field: "qualevel",
+                    label: "资质级别"
+                  });
+                }
+              }
+            }
+          }
+        );
+      }
     },
     controlValueChanged(val) {
       console.log(val);

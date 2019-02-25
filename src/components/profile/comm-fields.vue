@@ -189,6 +189,7 @@ export default {
         // this.$set(this.currentItem, this.currentItem.field + "name", val.text);
         this.openTreeData = false;
         console.log(this.currentItem);
+        this.$emit("change", { control: this.currentItem, data: val });
         // this.currentItem = null;
       }
     },

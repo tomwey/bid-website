@@ -104,7 +104,7 @@ export default {
           value: "contractmoney"
         },
         {
-          label: "合同规模",
+          label: "合同体量",
           value: "contractsize"
         },
         {
@@ -180,7 +180,7 @@ export default {
           subtype: "text",
           field: "contractsize",
           required: true,
-          label: "合同规模"
+          label: "合同体量"
         },
         {
           id: "start-date",

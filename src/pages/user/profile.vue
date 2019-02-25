@@ -180,6 +180,15 @@ export default {
           special_desc: "地产前100强为标杆企业"
         },
         {
+          id: "service-type",
+          type: 7,
+          label: "服务类别",
+          value: null,
+          field: "suptype",
+          required: true,
+          options: []
+        },
+        {
           id: "proj-manager",
           type: 1,
           subtype: "text",
@@ -202,7 +211,7 @@ export default {
           subtype: "text",
           field: "contractsize",
           required: true,
-          label: "合同规模"
+          label: "合同体量"
         },
         {
           id: "start-date",
@@ -590,7 +599,7 @@ export default {
           id: "law-man-idcard",
           type: 1,
           subtype: "text",
-          label: "法定代表人身份证",
+          label: "法定代表人身份证号码",
           field: "corporatemanidno",
           placeholder: ""
         },
@@ -784,6 +793,7 @@ export default {
             // console.log(arr);
 
             this.serviceTypeFormData[0].options = temp;
+            this.achieveFormData[4].options = temp;
           }
         }
       );
@@ -808,10 +818,12 @@ export default {
               // console.log(arr);
 
               arr.forEach(ele => {
-                temp.push({
-                  value: `${ele.supqualistname}-${ele.supqualistid}`,
-                  text: ele.supqualistname
-                });
+                if (!!ele.supqualistid && !!ele.supqualistname) {
+                  temp.push({
+                    value: `${ele.supqualistname}-${ele.supqualistid}`,
+                    text: ele.supqualistname
+                  });
+                }
               });
 
               for (let i = 0; i < this.serviceTypeFormData.length; i++) {
@@ -1430,10 +1442,6 @@ export default {
       });
     },
     commit() {
-      if (this.commiting) return;
-
-      this.commiting = true;
-
       let params = { action: "updatesupinfo" };
       // console.log(this.baseFormData);
 
@@ -1570,10 +1578,13 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      // console.log(params);
+      if (this.commiting) return;
+      this.commiting = true;
 
       this.$post(params, res => {
         // console.log(res);
+        this.commiting = false;
+
         if (res.code === "0") {
           alert("提交成功");
           this.$router.replace({ path: "/admin/company" });

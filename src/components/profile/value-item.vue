@@ -145,6 +145,10 @@ export default {
     font-size: 14px;
     color: #e46623;
     text-decoration: underline;
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    // text-wrap: unrestricted;
   }
 }
 </style>

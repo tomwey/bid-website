@@ -111,6 +111,11 @@ const tableFields = {
             width: 120
         },
         {
+            label: "服务类别",
+            value: "suptype",
+            width: 150
+        },
+        {
             label: "项目经理",
             value: "manager",
             width: 100
@@ -121,7 +126,7 @@ const tableFields = {
             width: 120
         },
         {
-            label: "合同规模",
+            label: "合同体量",
             value: "contractsize",
             width: 120
         },

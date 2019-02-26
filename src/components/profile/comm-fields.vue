@@ -27,6 +27,8 @@
             type="date"
             size="large"
             :readonly="item.readonly"
+            value-format="yyyy-MM-dd"
+            format="yyyy-MM-dd"
             :placeholder="item.placeholder || `设置${item.label}`"
           ></el-date-picker>
 

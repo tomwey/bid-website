@@ -10,6 +10,8 @@ import "@/utils/ajax";
 import "@/utils/funcs";
 import store from "@/store/index";
 
+import './plugins/eleme';
+
 // import '@babel/polyfill';
 
 import Icon from 'vue-awesome/components/Icon';

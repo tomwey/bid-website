@@ -16,8 +16,19 @@
             v-if="item.type === 1 && !item.append"
             v-model="item.value"
             :readonly="item.readonly"
-            :placeholder="item.placeholder || `输入${item.label}` "
+            :placeholder="item.placeholder || `输入${item.label}`"
           ></b-form-input>
+
+          <!-- 日期控件 -->
+          <el-date-picker
+            :id="item.id"
+            v-model="item.value"
+            v-if="item.type === 12"
+            type="date"
+            size="large"
+            :readonly="item.readonly"
+            :placeholder="item.placeholder || `设置${item.label}`"
+          ></el-date-picker>
 
           <b-input-group :append="item.append" v-if="item.type === 1 && item.append">
             <b-form-input
@@ -173,6 +184,10 @@ export default {
     console.log("@@@@@@@@");
   },
   methods: {
+    changeDate(item, ev) {
+      console.log(item);
+      console.log(ev);
+    },
     itemChange(item, ev) {
       this.$emit("change", { control: item, data: ev });
     },
@@ -288,6 +303,11 @@ $theme-color: #e46623;
     font-size: 14px;
     text-decoration: underline;
   }
+}
+
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100% !important;
 }
 
 .tree-data-wrap {

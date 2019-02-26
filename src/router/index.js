@@ -339,7 +339,7 @@ function loadProfile(_store, callback) {
         uid: _store.state.supinfo.accountid,
         token: _store.state.token
     }, res => {
-        console.log("##### profile: ", res);
+        // console.log("##### profile: ", res);
         if (res.code === "0") {
             _store.commit("updatesupprofile", res.data);
         }

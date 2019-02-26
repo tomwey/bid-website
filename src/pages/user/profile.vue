@@ -223,19 +223,21 @@ export default {
         },
         {
           id: "start-date",
-          type: 1,
-          subtype: "date",
+          type: 12,
+          // subtype: "date",
           required: true,
           field: "begindate",
-          label: "开始日期"
+          label: "开始日期",
+          value: null
         },
         {
           id: "end-date",
-          type: 1,
-          subtype: "date",
+          type: 12,
+          // subtype: "date",
           required: true,
           field: "enddate",
-          label: "结束日期"
+          label: "结束日期",
+          value: null
         },
         {
           id: "contract-file",
@@ -313,11 +315,12 @@ export default {
         // },
         {
           id: "zz-approve-date",
-          type: 1,
-          subtype: "date",
+          type: 12,
+          // subtype: "date",
           label: "资质审核到期日期",
           field: "quaexaminedate",
-          required: true
+          required: true,
+          value: null
         },
         {
           id: "memo",
@@ -522,12 +525,13 @@ export default {
         },
         {
           id: "company-id-exp",
-          type: 1,
-          subtype: "date",
+          type: 12,
+          // subtype: "date",
           label: "统一社会信用代码有效期",
           placeholder: "",
           field: "comusccinvaliddate",
-          required: true
+          required: true,
+          value: null
         },
         {
           id: "license-file",
@@ -567,13 +571,13 @@ export default {
           fieldname: "addtaxapplytable"
         },
         {
-          id: "found-date",
-          type: 1,
-          subtype: "date",
+          id: "company-id-exp",
+          type: 12,
           label: "企业注册日期",
           placeholder: "",
           field: "comregdate",
-          required: true
+          required: true,
+          value: null
         },
         {
           id: "found-address",
@@ -624,12 +628,12 @@ export default {
         },
         {
           id: "safe-license-expire-date",
-          type: 1,
-          subtype: "date",
+          type: 12,
           label: "安全许可证到期日",
           placeholder: "",
           field: "safeproductionldate",
-          required: false
+          required: false,
+          value: null
         },
         {
           id: "iso-supports",
@@ -807,7 +811,7 @@ export default {
       );
     },
     serviceTypeChanged(val) {
-      console.log(val);
+      // console.log(val);
       // this.manFormData.length ==
       const control = val.control;
       const value = val.data;
@@ -846,7 +850,7 @@ export default {
         );
       } else if (control.field == "quaname") {
         // 资质名称
-        console.log(value);
+        // console.log(value);
         let sVals = (value || "").split("-");
         let id_str = "";
         if (sVals.length === 2) {
@@ -895,7 +899,7 @@ export default {
       }
     },
     controlValueChanged(val) {
-      console.log(val);
+      // console.log(val);
       let control = val.control;
       if (control.id !== "contact-type") return;
 
@@ -1210,7 +1214,7 @@ export default {
                   this.achieveData = res.data;
                 } else if (step == 7) {
                   this.otherFilesFormData.forEach(control => {
-                    control.value = obj[control.field];
+                    control.value = object[control.field];
 
                     if (control.type === 4) {
                       // 文件附件

@@ -132,12 +132,13 @@ export default {
     newItem() {
       this.currentEditItem = null;
 
-      this.$refs.form.reset();
       this.formData.forEach(control => {
         control.value = null;
         delete control["progress"];
         delete control["_files"];
       });
+
+      this.$refs.form.reset();
 
       this.$refs.formModal.show();
     },
@@ -153,14 +154,22 @@ export default {
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
         if (control.required && control.type !== 5 && !control.value) {
-          alert(control.label + "不能为空");
+          // alert(control.label + "不能为空");
+          this.$message({
+            message: control.label + "不能为空",
+            type: "error"
+          });
           return;
         }
 
         if (control.pattern) {
           let reg = new RegExp(control.pattern);
           if (!!control.value && !reg.test(control.value)) {
-            alert(control.label + "不正确");
+            // alert(control.label + "不正确");
+            this.$message({
+              message: control.label + "不正确",
+              type: "error"
+            });
             return;
           }
         }
@@ -179,7 +188,11 @@ export default {
           }
 
           if (hasPrimary) {
-            alert("服务类别只能有一个主要类别");
+            // alert("服务类别只能有一个主要类别");
+            this.$message({
+              message: "服务类别只能有一个主要类别",
+              type: "error"
+            });
             return;
           }
         }
@@ -194,7 +207,10 @@ export default {
             // console.log(val);
             let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
             if (!reg.test(val)) {
-              alert(control.label + "不正确");
+              this.$message({
+                message: control.label + "不正确",
+                type: "error"
+              });
               return;
             }
           }
@@ -227,7 +243,7 @@ export default {
         }
       } else {
         // 新增
-        console.log(obj);
+        // console.log(obj);
         this.items.push(obj);
       }
 

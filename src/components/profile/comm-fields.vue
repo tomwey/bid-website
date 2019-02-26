@@ -283,7 +283,11 @@ export default {
           })
           .catch(() => {
             // console.log(error);
-            alert("上传失败!");
+            // alert("上传失败!");
+            this.$message({
+              message: "上传失败！",
+              type: "error"
+            });
           });
       }
     }

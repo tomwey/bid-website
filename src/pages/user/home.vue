@@ -123,7 +123,11 @@ export default {
             this.$store.commit("changeeditstate", res.code === "0");
             this.$router.push({ name: "profile" });
           } else {
-            alert(res.codemsg);
+            // alert(res.codemsg);
+            this.$message({
+              message: res.codemsg,
+              type: "error"
+            });
           }
         }
       );

@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" v-loading="commiting">
     <div class="box">
       <h2>供方资料维护</h2>
       <div class="steps">
@@ -1470,7 +1470,11 @@ export default {
               .replace("/", "-");
             let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
             if (!reg.test(val)) {
-              alert(control.label + "不正确");
+              // alert(control.label + "不正确");
+              this.$message({
+                message: control.label + "不正确",
+                type: "error"
+              });
               return;
             }
           }
@@ -1575,7 +1579,11 @@ export default {
       });
 
       if (temp3.length < 2) {
-        alert("至少需要录入2条公司业绩");
+        // alert("至少需要录入2条公司业绩");
+        this.$message({
+          message: "至少需要录入2条公司业绩",
+          type: "error"
+        });
         return;
       }
 
@@ -1599,12 +1607,20 @@ export default {
         this.commiting = false;
 
         if (res.code === "0") {
-          alert("提交成功");
+          // alert("提交成功");
+          this.$message({
+            message: "提交成功！",
+            type: "success"
+          });
           this.$router.replace({ path: "/admin/company" });
         } else {
           // console.log(res.codemsg);
 
-          alert(res.codemsg);
+          // alert(res.codemsg);
+          this.$message({
+            message: res.codemsg,
+            type: "error"
+          });
         }
       });
     }

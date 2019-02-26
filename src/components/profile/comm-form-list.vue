@@ -27,7 +27,9 @@
       :title="'新增' + this.name"
       ref="formModal"
     >
-      <comm-fields :form-data="formData" ref="form" @change="changeValue"/>
+      <b-form ref="form">
+        <comm-fields :form-data="formData" @change="changeValue"/>
+      </b-form>
       <div slot="modal-footer" class="w-100">
         <div class="modal-btns">
           <span class="hn2-btn cancel" @click="cancel">取&emsp;消</span>
@@ -133,6 +135,8 @@ export default {
       this.$refs.form.reset();
       this.formData.forEach(control => {
         control.value = null;
+        delete control["progress"];
+        delete control["_files"];
       });
 
       this.$refs.formModal.show();

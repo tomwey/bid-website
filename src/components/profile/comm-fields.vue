@@ -181,13 +181,9 @@ export default {
   //   }
   // },
   mounted() {
-    console.log("@@@@@@@@");
+    // console.log("@@@@@@@@");
   },
   methods: {
-    changeDate(item, ev) {
-      console.log(item);
-      console.log(ev);
-    },
     itemChange(item, ev) {
       this.$emit("change", { control: item, data: ev });
     },
@@ -198,18 +194,18 @@ export default {
       this.currentItem = item;
     },
     selectedItem(val) {
-      console.log(val);
+      // console.log(val);
       if (this.currentItem) {
         this.$set(this.currentItem, "value", val);
         // this.$set(this.currentItem, this.currentItem.field + "name", val.text);
         this.openTreeData = false;
-        console.log(this.currentItem);
+        // console.log(this.currentItem);
         this.$emit("change", { control: this.currentItem, data: val });
         // this.currentItem = null;
       }
     },
     reset() {
-      console.log("1111111");
+      // console.log("1111111");
       this.formData.forEach(item => {
         // if (item.type === 4) {
         //   const ref = item.id.replace(/-/g, "");
@@ -283,8 +279,8 @@ export default {
               );
             }
           })
-          .catch(error => {
-            console.log(error);
+          .catch(() => {
+            // console.log(error);
             alert("上传失败!");
           });
       }

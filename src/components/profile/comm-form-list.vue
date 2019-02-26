@@ -170,7 +170,7 @@ export default {
               .replace("月", "-")
               .replace("日", "")
               .replace("/", "-");
-            console.log(val);
+            // console.log(val);
             let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
             if (!reg.test(val)) {
               alert(control.label + "不正确");
@@ -203,7 +203,7 @@ export default {
       //     currentItem: this.currentEditItem
       //   });
 
-      console.log(obj);
+      // console.log(obj);
 
       if (this.currentEditItem) {
         // 编辑

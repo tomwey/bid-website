@@ -11,6 +11,7 @@ import "@/utils/funcs";
 import store from "@/store/index";
 
 import './plugins/eleme';
+import '@/assets/styles/theme-variables.scss';
 
 // import '@babel/polyfill';
 

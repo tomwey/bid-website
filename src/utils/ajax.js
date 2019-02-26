@@ -13,7 +13,7 @@ function post(param, callback) {
     let ak = md5(payload + i + "HNSUP.2018._.123");
 
     // 10.19.0.162 vendor.heneng.cn
-    axios.post("http://vendor.heneng.cn:16791/api/gwc", {
+    axios.post("http://10.19.0.183:16791/api/gwc", {
         ak: ak,
         i: i,
         payload: payload

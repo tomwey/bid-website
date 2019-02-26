@@ -237,7 +237,7 @@ export default {
           field: "contractannex",
           accept: ".zip,.rar",
           upload_desc:
-            "上传附件为压缩包文件，格式为：zip,rar等。（1个合同上传不超过5页，压缩包需要包含：合同封面首页图片；合同结尾页图片；合同中间页图片【内容包括范围、金额、工期】）",
+            "上传附件为压缩包文件，格式为：zip,rar等。（1个合同上传不超过5页，压缩包需要包含：合同封面首页、合同结尾页、合同实质内容页面（合同范围、内容、工期、项目团队）",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
           fieldname: "contractannex"

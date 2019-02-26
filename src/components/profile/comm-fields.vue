@@ -194,6 +194,7 @@ export default {
       }
     },
     reset() {
+      console.log("1111111");
       this.formData.forEach(item => {
         // if (item.type === 4) {
         //   const ref = item.id.replace(/-/g, "");

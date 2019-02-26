@@ -189,6 +189,14 @@ export default {
           options: []
         },
         {
+          id: "server-content",
+          type: 1,
+          subtype: "text",
+          required: false,
+          field: "servercontent",
+          label: "服务内容"
+        },
+        {
           id: "proj-manager",
           type: 1,
           subtype: "text",

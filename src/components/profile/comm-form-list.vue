@@ -148,6 +148,8 @@ export default {
       evt.preventDefault();
       let obj = {};
 
+      // console.log(this.items);
+
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
         if (control.required && control.type !== 5 && !control.value) {
@@ -159,6 +161,25 @@ export default {
           let reg = new RegExp(control.pattern);
           if (!!control.value && !reg.test(control.value)) {
             alert(control.label + "不正确");
+            return;
+          }
+        }
+
+        if (control.field == "ismain") {
+          // console.log(control);
+          let hasPrimary = false;
+          if (control.value === true) {
+            for (let index = 0; index < this.items.length; index++) {
+              const ele = this.items[index];
+              if (ele.ismain == "是" || ele.ismain == "true") {
+                hasPrimary = true;
+                break;
+              }
+            }
+          }
+
+          if (hasPrimary) {
+            alert("服务类别只能有一个主要类别");
             return;
           }
         }
@@ -198,13 +219,6 @@ export default {
         }
       }
 
-      //   this.$emit("changeitem", {
-      //     item: obj,
-      //     currentItem: this.currentEditItem
-      //   });
-
-      // console.log(obj);
-
       if (this.currentEditItem) {
         // 编辑
         const index = this.items.indexOf(this.currentEditItem);
@@ -213,6 +227,7 @@ export default {
         }
       } else {
         // 新增
+        console.log(obj);
         this.items.push(obj);
       }
 

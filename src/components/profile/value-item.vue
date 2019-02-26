@@ -59,6 +59,11 @@ export default {
       return value;
     },
     files() {
+      // console.log(this.item);
+      // console.log(this.field);
+
+      if (!this.item[this.field]) return null;
+
       if (this.item._files) {
         return this.item._files;
       } else {

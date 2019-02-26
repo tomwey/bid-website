@@ -935,6 +935,7 @@ export default {
               domanid: this.$store.state.supinfo.accountid || "0",
               tablename: "H_Sup_Contact_Info",
               fieldname: "authdelegationannex",
+              accept: "*",
               upload_desc: "请下载授权委托书模板，填写并盖公章后扫描上传",
               tpl_file: {
                 name: "授权委托书模板",

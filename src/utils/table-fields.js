@@ -39,7 +39,7 @@ const tableFields = {
         {
             label: "电子邮件",
             value: "email",
-            width: 120
+            width: 200
         },
         {
             label: "身份证号码",

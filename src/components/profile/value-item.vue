@@ -23,7 +23,7 @@ export default {
       if (urlValue) {
         let nameKey = this.field + "name";
         let filename = this.item[nameKey];
-        this.$set(this.item, "_files", [
+        this.$set(this.item, this.item.field + "_files", [
           {
             _fileurl: urlValue,
             _filename: filename,
@@ -64,8 +64,8 @@ export default {
 
       if (!this.item[this.field]) return null;
 
-      if (this.item._files) {
-        return this.item._files;
+      if (this.item[this.field + "_files"]) {
+        return this.item[this.field + "_files"];
       } else {
         let urlKey = this.field + "url";
         let urlValue = this.item[urlKey];

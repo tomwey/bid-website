@@ -87,6 +87,51 @@ export default {
       // }
       this.$emit("controlvaluechanged", val);
     },
+    changeFormData(data) {
+      let val = data["contacttype"];
+      if (val === "1" || val === "第一联系人") {
+        if (this.formData.length === 7) {
+          const fields = [
+            {
+              id: "shebao",
+              label: "联系人社保证明",
+              required: false,
+              field: "sscertificateannex",
+              type: 4,
+              subtype: 1,
+              domanid: this.$store.state.supinfo.accountid || "0",
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "sscertificateannex"
+            },
+            {
+              id: "entrust",
+              label: "授权委托（附件）",
+              required: true,
+              field: "authdelegationannex",
+              type: 4,
+              subtype: 2, // 普通文件
+              domanid: this.$store.state.supinfo.accountid || "0",
+              tablename: "H_Sup_Contact_Info",
+              fieldname: "authdelegationannex",
+              accept: "*",
+              upload_desc: "请下载授权委托书模板，填写并盖公章后扫描上传",
+              tpl_file: {
+                name: "授权委托书模板",
+                url:
+                  "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
+              }
+              //   subtype: "text"
+            }
+          ];
+          this.formData = this.formData.concat(fields);
+        }
+      } else {
+        if (this.formData.length === 9) {
+          this.formData.splice(this.formData.length - 1, 1);
+          this.formData.splice(this.formData.length - 1, 1);
+        }
+      }
+    },
     actionClick(ev) {
       // console.log(ev);
       const action = ev.action;
@@ -94,6 +139,11 @@ export default {
       if (action.code === "edit") {
         this.currentEditItem = data;
         // data.edit = true;
+        // console.log(this.model);
+        if (this.model == "man") {
+          this.changeFormData(data);
+        }
+
         this.formData.forEach(control => {
           if (control.type === 2) {
             // console.log(data);
@@ -103,6 +153,26 @@ export default {
               }`;
             } else {
               control.value = null;
+            }
+          } else if (control.type === 4) {
+            // 文件附件
+            const nameKey = control.field + "name";
+            const urlKey = control.field + "url";
+            if (data[urlKey] && data[nameKey]) {
+              let fileUrl = data[urlKey];
+              let fileName = data[nameKey];
+
+              let file = {
+                _fileurl: fileUrl,
+                _filename: fileName,
+                _isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              };
+              control[control.field + "_files"] = [file];
             }
           } else if (control.type === 7) {
             // 树形控件
@@ -135,7 +205,7 @@ export default {
       this.formData.forEach(control => {
         control.value = null;
         delete control["progress"];
-        delete control["_files"];
+        delete control[control.field + "_files"];
       });
 
       this.$refs.form.reset();
@@ -229,7 +299,7 @@ export default {
           if (control.type === 4) {
             obj[control.field + "_isfile"] = true;
             // let files = control._files;
-            obj._files = control._files;
+            obj[control.field + "_files"] = control[control.field + "_files"];
           }
           obj[control.field] = control.value;
         }

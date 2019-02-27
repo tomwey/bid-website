@@ -88,7 +88,11 @@
               </b-row>
             </div>
             <!-- <div class="file-preview-box" v-for="(_item,index) in item._files" :key="index"> -->
-            <div class="file-preview" v-for="(file,index) in item._files" :key="index">
+            <div
+              class="file-preview"
+              v-for="(file,index) in item[item.field + '_files']"
+              :key="index"
+            >
               <img :src="file._fileurl" v-if="file._isimage">
               <a :href="file._fileurl" target="_blank" v-if="!file._isimage">{{file._filename}}</a>
             </div>
@@ -275,7 +279,7 @@ export default {
                       });
                     });
                     // item._files = temp;
-                    this.$set(item, "_files", temp);
+                    this.$set(item, item.field + "_files", temp);
                   }
                 }
               );

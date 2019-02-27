@@ -1050,7 +1050,7 @@ export default {
                 fileName.indexOf(".jpeg") !== -1 ||
                 fileName.indexOf(".webp") !== -1
             };
-            control._files = [file];
+            control[control.field + "_files"] = [file];
             // control._fileurl = fileUrl;
             // control._filename = fileName;
             // control._isimage =
@@ -1112,7 +1112,7 @@ export default {
                   fileName.indexOf(".jpeg") !== -1 ||
                   fileName.indexOf(".webp") !== -1
               };
-              control._files = [file];
+              control[control.field + "_files"] = [file];
             }
           }
         });
@@ -1529,7 +1529,7 @@ export default {
         for (const key in object) {
           if (
             object.hasOwnProperty(key) &&
-            key !== "_files" &&
+            key.indexOf("_files") === -1 &&
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];
@@ -1556,7 +1556,7 @@ export default {
         for (const key in object) {
           if (
             object.hasOwnProperty(key) &&
-            key !== "_files" &&
+            key.indexOf("_files") === -1 &&
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];
@@ -1584,7 +1584,7 @@ export default {
         for (const key in object) {
           if (
             object.hasOwnProperty(key) &&
-            key !== "_files" &&
+            key.indexOf("_files") === -1 &&
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];

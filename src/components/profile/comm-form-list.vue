@@ -139,9 +139,12 @@ export default {
       if (action.code === "edit") {
         this.currentEditItem = data;
         // data.edit = true;
-        // console.log(this.model);
+        console.log(this.model);
+        console.log(data);
+
         if (this.model == "man") {
           this.changeFormData(data);
+        } else if (this.model == "service_type") {
         }
 
         this.formData.forEach(control => {

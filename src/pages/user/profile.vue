@@ -303,7 +303,7 @@ export default {
           ],
           value: null,
           required: false,
-          field: "quaname",
+          field: "quaid",
           label: "资质名称"
         },
         // {
@@ -811,16 +811,24 @@ export default {
       );
     },
     serviceTypeChanged(val) {
-      // console.log(val);
+      console.log(val);
       // this.manFormData.length ==
       const control = val.control;
       const value = val.data;
+      let idVal = (value || {}).value;
+      if (idVal) {
+        let arr = idVal.split("-");
+        if (arr.length > 1) {
+          idVal = arr[1];
+        }
+      }
+
       if (control.field == "servertype") {
         this.$post(
           {
             action: "P_SY_GetAreaOrType",
             p1: "5",
-            p2: (value || {}).value || ""
+            p2: idVal || ""
           },
           res => {
             if (res.code === "0") {
@@ -848,7 +856,7 @@ export default {
             }
           }
         );
-      } else if (control.field == "quaname") {
+      } else if (control.field == "quaid") {
         // 资质名称
         // console.log(value);
         let sVals = (value || "").split("-");
@@ -888,7 +896,7 @@ export default {
                     options: temp,
                     value: null,
                     required: true,
-                    field: "qualevel",
+                    field: "qualevelid",
                     label: "资质级别"
                   });
                 }

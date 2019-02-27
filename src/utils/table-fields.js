@@ -70,12 +70,12 @@ const tableFields = {
         },
         {
             label: "资质名称",
-            value: "quaname",
+            value: "quaid",
             width: 150
         },
         {
             label: "资质级别",
-            value: "qualevel",
+            value: "qualevelid",
             width: 150
         },
         {

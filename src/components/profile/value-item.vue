@@ -155,6 +155,12 @@ export default {
     word-wrap: break-word;
     // text-wrap: unrestricted;
   }
+
+  span {
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
 }
 </style>
 

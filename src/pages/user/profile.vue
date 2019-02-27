@@ -1018,6 +1018,12 @@ export default {
         object.comname && object.comname.length > 0;
 
       this.baseFormData.forEach(control => {
+        if (control.field == "comuscc" || control.field == "comname") {
+          control.readonly = object["canmodify"] === "false";
+          // console.log(object);
+          // console.log(11111);
+        }
+
         if (control.type === 3) {
           control.value =
             object[control.field] && object[control.field].split(",");
@@ -1114,145 +1120,154 @@ export default {
 
       // console.log(this.otherFilesFormData);
     },
-    loadProfileData(step) {
-      this.$post(
-        {
-          action: "P_SUP_GetSupInfo",
-          p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token,
-          p3: step
-        },
-        res => {
-          // console.log(res);
-          if (res.code === "0") {
-            let arr = res.data;
-            if (arr.length > 0) {
-              let object = arr[0];
-              // console.log(object);
-              if (step == 1) {
-                this.baseFormData.forEach(control => {
-                  if (control.type === 3) {
-                    control.value =
-                      object[control.field] && object[control.field].split(",");
-                  } else if (control.type === 1 && control.subtype === "date") {
-                    control.value =
-                      object[control.field] &&
-                      object[control.field].split(" ")[0];
-                  } else if (control.type === 4) {
-                    // 文件附件
-                    control.value = object[control.field] || "";
+    // loadProfileData(step) {
+    //   this.$post(
+    //     {
+    //       action: "P_SUP_GetSupInfo",
+    //       p1: this.$store.state.supinfo.accountid,
+    //       p2: this.$store.state.token,
+    //       p3: step
+    //     },
+    //     res => {
+    //       // console.log(res);
+    //       if (res.code === "0") {
+    //         let arr = res.data;
+    //         if (arr.length > 0) {
+    //           let object = arr[0];
+    //           console.log(object);
+    //           if (step == 1) {
+    //             this.baseFormData.forEach(control => {
+    //               console.log(control);
+    //               if (
+    //                 control.field == "comuscc" ||
+    //                 control.field == "comname"
+    //               ) {
+    //                 control.readonly = object["canmodify"] === "false";
+    //                 console.log(object);
+    //                 console.log(11111);
+    //               }
+    //               if (control.type === 3) {
+    //                 control.value =
+    //                   object[control.field] && object[control.field].split(",");
+    //               } else if (control.type === 1 && control.subtype === "date") {
+    //                 control.value =
+    //                   object[control.field] &&
+    //                   object[control.field].split(" ")[0];
+    //               } else if (control.type === 4) {
+    //                 // 文件附件
+    //                 control.value = object[control.field] || "";
 
-                    const nameKey = control.field + "name";
-                    const urlKey = control.field + "url";
-                    if (object[urlKey] && object[nameKey]) {
-                      let fileUrl = object[urlKey];
-                      let fileName = object[nameKey];
-                      // control._fileurl = fileUrl;
-                      // control._filename = fileName;
-                      // control._isimage =
-                      //   fileName.indexOf(".png") !== -1 ||
-                      //   fileName.indexOf(".gif") !== -1 ||
-                      //   fileName.indexOf(".jpg") !== -1 ||
-                      //   fileName.indexOf(".jpeg") !== -1 ||
-                      //   fileName.indexOf(".webp") !== -1;
-                      let file = {
-                        _fileurl: fileUrl,
-                        _filename: fileName,
-                        _isimage:
-                          fileName.indexOf(".png") !== -1 ||
-                          fileName.indexOf(".gif") !== -1 ||
-                          fileName.indexOf(".jpg") !== -1 ||
-                          fileName.indexOf(".jpeg") !== -1 ||
-                          fileName.indexOf(".webp") !== -1
-                      };
-                      control._files = [file];
-                    }
-                  } else {
-                    control.value =
-                      object[control.field + "str"] || object[control.field];
-                  }
-                });
+    //                 const nameKey = control.field + "name";
+    //                 const urlKey = control.field + "url";
+    //                 if (object[urlKey] && object[nameKey]) {
+    //                   let fileUrl = object[urlKey];
+    //                   let fileName = object[nameKey];
+    //                   // control._fileurl = fileUrl;
+    //                   // control._filename = fileName;
+    //                   // control._isimage =
+    //                   //   fileName.indexOf(".png") !== -1 ||
+    //                   //   fileName.indexOf(".gif") !== -1 ||
+    //                   //   fileName.indexOf(".jpg") !== -1 ||
+    //                   //   fileName.indexOf(".jpeg") !== -1 ||
+    //                   //   fileName.indexOf(".webp") !== -1;
+    //                   let file = {
+    //                     _fileurl: fileUrl,
+    //                     _filename: fileName,
+    //                     _isimage:
+    //                       fileName.indexOf(".png") !== -1 ||
+    //                       fileName.indexOf(".gif") !== -1 ||
+    //                       fileName.indexOf(".jpg") !== -1 ||
+    //                       fileName.indexOf(".jpeg") !== -1 ||
+    //                       fileName.indexOf(".webp") !== -1
+    //                   };
+    //                   control._files = [file];
+    //                 }
+    //               } else {
+    //                 control.value =
+    //                   object[control.field + "str"] || object[control.field];
+    //               }
+    //             });
 
-                // console.log(object);
-                // console.log(this.baseFormData);
+    //             // console.log(object);
+    //             // console.log(this.baseFormData);
 
-                this.otherInfoFormData.forEach(control => {
-                  control.value = object[control.field];
-                });
+    //             this.otherInfoFormData.forEach(control => {
+    //               control.value = object[control.field];
+    //             });
 
-                this.areaFormData.forEach(control => {
-                  if (control.type === 3) {
-                    control.value =
-                      object[control.field] && object[control.field].split(",");
-                    const options = control.value || [];
-                    const cities = this.areaFormData[0].options || [];
+    //             this.areaFormData.forEach(control => {
+    //               if (control.type === 3) {
+    //                 control.value =
+    //                   object[control.field] && object[control.field].split(",");
+    //                 const options = control.value || [];
+    //                 const cities = this.areaFormData[0].options || [];
 
-                    let temp = [];
-                    options.forEach(v => {
-                      for (let i = 0; i < cities.length; i++) {
-                        if (v === cities[i].value) {
-                          temp.push(cities[i]);
-                          break;
-                        }
-                      }
-                    });
+    //                 let temp = [];
+    //                 options.forEach(v => {
+    //                   for (let i = 0; i < cities.length; i++) {
+    //                     if (v === cities[i].value) {
+    //                       temp.push(cities[i]);
+    //                       break;
+    //                     }
+    //                   }
+    //                 });
 
-                    this.areaFormData[1].options = temp;
-                  } else {
-                    control.value = object[control.field];
-                  }
-                });
+    //                 this.areaFormData[1].options = temp;
+    //               } else {
+    //                 control.value = object[control.field];
+    //               }
+    //             });
 
-                this.achieveYearData.output = object["outputvalueyear"];
-                this.achieveYearData.sale = object["turnoveryear"];
-              } else {
-                // console.info(step, res);
-                if (step == 2) {
-                  this.manData = res.data;
-                } else if (step == 4) {
-                  this.serviceTypeData = res.data;
-                } else if (step == 5) {
-                  this.achieveData = res.data;
-                } else if (step == 7) {
-                  this.otherFilesFormData.forEach(control => {
-                    control.value = object[control.field];
+    //             this.achieveYearData.output = object["outputvalueyear"];
+    //             this.achieveYearData.sale = object["turnoveryear"];
+    //           } else {
+    //             // console.info(step, res);
+    //             if (step == 2) {
+    //               this.manData = res.data;
+    //             } else if (step == 4) {
+    //               this.serviceTypeData = res.data;
+    //             } else if (step == 5) {
+    //               this.achieveData = res.data;
+    //             } else if (step == 7) {
+    //               this.otherFilesFormData.forEach(control => {
+    //                 control.value = object[control.field];
 
-                    if (control.type === 4) {
-                      // 文件附件
-                      const nameKey = control.field + "name";
-                      const urlKey = control.field + "url";
-                      if (object[urlKey] && object[nameKey]) {
-                        let fileUrl = object[urlKey];
-                        let fileName = object[nameKey];
-                        // control._fileurl = fileUrl;
-                        // control._filename = fileName;
-                        // control._isimage =
-                        //   fileName.indexOf(".png") !== -1 ||
-                        //   fileName.indexOf(".gif") !== -1 ||
-                        //   fileName.indexOf(".jpg") !== -1 ||
-                        //   fileName.indexOf(".jpeg") !== -1 ||
-                        //   fileName.indexOf(".webp") !== -1;
-                        let file = {
-                          _fileurl: fileUrl,
-                          _filename: fileName,
-                          _isimage:
-                            fileName.indexOf(".png") !== -1 ||
-                            fileName.indexOf(".gif") !== -1 ||
-                            fileName.indexOf(".jpg") !== -1 ||
-                            fileName.indexOf(".jpeg") !== -1 ||
-                            fileName.indexOf(".webp") !== -1
-                        };
-                        control._files = [file];
-                      }
-                    }
-                  });
-                }
-              }
-            }
-          }
-        }
-      );
-    },
+    //                 if (control.type === 4) {
+    //                   // 文件附件
+    //                   const nameKey = control.field + "name";
+    //                   const urlKey = control.field + "url";
+    //                   if (object[urlKey] && object[nameKey]) {
+    //                     let fileUrl = object[urlKey];
+    //                     let fileName = object[nameKey];
+    //                     // control._fileurl = fileUrl;
+    //                     // control._filename = fileName;
+    //                     // control._isimage =
+    //                     //   fileName.indexOf(".png") !== -1 ||
+    //                     //   fileName.indexOf(".gif") !== -1 ||
+    //                     //   fileName.indexOf(".jpg") !== -1 ||
+    //                     //   fileName.indexOf(".jpeg") !== -1 ||
+    //                     //   fileName.indexOf(".webp") !== -1;
+    //                     let file = {
+    //                       _fileurl: fileUrl,
+    //                       _filename: fileName,
+    //                       _isimage:
+    //                         fileName.indexOf(".png") !== -1 ||
+    //                         fileName.indexOf(".gif") !== -1 ||
+    //                         fileName.indexOf(".jpg") !== -1 ||
+    //                         fileName.indexOf(".jpeg") !== -1 ||
+    //                         fileName.indexOf(".webp") !== -1
+    //                     };
+    //                     control._files = [file];
+    //                   }
+    //                 }
+    //               });
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   );
+    // },
     populateAreaData() {
       let object = this.$store.state.supprofile;
 
@@ -1534,6 +1549,7 @@ export default {
         this.serviceTypeData.length === 0
           ? this.$store.state.supprofile.types
           : this.serviceTypeData;
+      // console.log(servTypeData);
       let temp2 = [];
       servTypeData.forEach(object => {
         let obj = {};
@@ -1587,6 +1603,8 @@ export default {
         return;
       }
 
+      // console.log(temp3);
+
       params["achievements"] = temp3;
 
       // 填充其它附件信息
@@ -1598,6 +1616,8 @@ export default {
       });
 
       params["otherfiles"] = [fileObj];
+
+      console.log(params);
 
       if (this.commiting) return;
       this.commiting = true;

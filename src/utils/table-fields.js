@@ -44,7 +44,7 @@ const tableFields = {
         {
             label: "身份证号码",
             value: "contactidno",
-            width: 180
+            width: 200
         },
         {
             label: "联系人社保证明",

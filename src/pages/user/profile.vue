@@ -811,7 +811,7 @@ export default {
       );
     },
     serviceTypeChanged(val) {
-      console.log(val);
+      // console.log(val);
       // this.manFormData.length ==
       const control = val.control;
       const value = val.data;
@@ -908,12 +908,18 @@ export default {
     },
     controlValueChanged(val) {
       // console.log(val);
+      if (!val) {
+        return;
+      }
+
       let control = val.control;
       if (control.id !== "contact-type") return;
 
       val = val.data;
 
-      if (!val) return;
+      if (!val) {
+        return;
+      }
 
       val = val.split("-");
       if (val.length !== 2) return;
@@ -1541,6 +1547,14 @@ export default {
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];
+            if (
+              key == "contacttype" &&
+              object[key] == "普通联系人" &&
+              (key.indexOf("authdelegationannex") !== -1 ||
+                key.indexOf("sscertificateannex") !== -1)
+            ) {
+              continue;
+            }
             obj[key] = element || "";
           }
         }

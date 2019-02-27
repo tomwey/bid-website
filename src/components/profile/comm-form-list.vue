@@ -87,67 +87,29 @@ export default {
       // }
       this.$emit("controlvaluechanged", val);
     },
-    changeFormData(data) {
+    changeFormData(control, data) {
       let val = data["contacttype"];
-      if (val === "1" || val === "第一联系人") {
-        if (this.formData.length === 7) {
-          const fields = [
-            {
-              id: "shebao",
-              label: "联系人社保证明",
-              required: false,
-              field: "sscertificateannex",
-              type: 4,
-              subtype: 1,
-              domanid: this.$store.state.supinfo.accountid || "0",
-              tablename: "H_Sup_Contact_Info",
-              fieldname: "sscertificateannex"
-            },
-            {
-              id: "entrust",
-              label: "授权委托（附件）",
-              required: true,
-              field: "authdelegationannex",
-              type: 4,
-              subtype: 2, // 普通文件
-              domanid: this.$store.state.supinfo.accountid || "0",
-              tablename: "H_Sup_Contact_Info",
-              fieldname: "authdelegationannex",
-              accept: "*",
-              upload_desc: "请下载授权委托书模板，填写并盖公章后扫描上传",
-              tpl_file: {
-                name: "授权委托书模板",
-                url:
-                  "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
-              }
-              //   subtype: "text"
-            }
-          ];
-          this.formData = this.formData.concat(fields);
-        }
-      } else {
-        if (this.formData.length === 9) {
-          this.formData.splice(this.formData.length - 1, 1);
-          this.formData.splice(this.formData.length - 1, 1);
-        }
-      }
+      control.value = `${val}-${val}`;
+      this.$emit("controlvaluechanged", {
+        control: control,
+        data: `${val}-${val}`
+      });
     },
     actionClick(ev) {
       // console.log(ev);
+      // this.$refs.form.reset();
+
       const action = ev.action;
       const data = ev.data;
       if (action.code === "edit") {
         this.currentEditItem = data;
-        // data.edit = true;
-        console.log(this.model);
-        console.log(data);
 
         if (this.model == "man") {
-          this.changeFormData(data);
-        } else if (this.model == "service_type") {
+          this.changeFormData(this.formData[0], data);
         }
 
         this.formData.forEach(control => {
+          // console.log(control);
           if (control.type === 2) {
             // console.log(data);
             if (data[control.field]) {
@@ -155,6 +117,10 @@ export default {
                 data[control.field]
               }`;
             } else {
+              control.value = null;
+            }
+
+            if (control.field == "quaid" && data["quaid"] == "0") {
               control.value = null;
             }
           } else if (control.type === 4) {
@@ -176,6 +142,7 @@ export default {
                   fileName.indexOf(".webp") !== -1
               };
               control[control.field + "_files"] = [file];
+              // console.log(control);
             }
           } else if (control.type === 7) {
             // 树形控件
@@ -186,6 +153,10 @@ export default {
             };
           } else {
             control.value = data[control.field];
+          }
+
+          if (this.model == "service_type") {
+            this.reformServiceForm(control, data);
           }
         });
 
@@ -202,8 +173,34 @@ export default {
         }
       }
     },
+    reformServiceForm(control, data) {
+      // console.log(control);
+
+      if (control.field == "servertype") {
+        this.$emit("controlvaluechanged", {
+          control: control,
+          data: { text: data["servertypename"], value: data["servertypeid"] }
+        });
+      } else if (control.field == "quaid") {
+        this.$emit("controlvaluechanged", {
+          control: control,
+          data: `${data["quaidname"]}-${data["quaid"]}`
+        });
+      }
+    },
     newItem() {
       this.currentEditItem = null;
+
+      if (this.model == "man") {
+        if (this.formData.length === 9) {
+          this.formData.splice(this.formData.length - 1, 1);
+          this.formData.splice(this.formData.length - 1, 1);
+        }
+      } else if (this.model == "service_type") {
+        if (this.formData.length === 6) {
+          this.formData.splice(3, 1);
+        }
+      }
 
       this.formData.forEach(control => {
         control.value = null;

@@ -931,7 +931,7 @@ export default {
             {
               id: "shebao",
               label: "联系人社保证明",
-              required: false,
+              required: true,
               field: "sscertificateannex",
               type: 4,
               subtype: 1,

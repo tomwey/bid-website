@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title>合能供方管理平台</title>
+  <script>
+    var userAgent = navigator.userAgent;
+    var isOpera = userAgent.indexOf("Opera") > -1;
+    if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+      window.location.href = "http://www.heneng.cn/index/up";
+    };
+  </script>
 </head>
 
 <body>
@@ -15,6 +22,7 @@
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
+
 </body>
 
 </html>

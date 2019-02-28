@@ -15,9 +15,11 @@
             :type="item.subtype"
             v-if="item.type === 1 && !item.append"
             v-model="item.value"
-            :readonly="item.readonly"
+            :disabled="item.readonly"
+            @blur.native="inputBlur(item);"
             :placeholder="item.placeholder || `输入${item.label}`"
           ></b-form-input>
+          <div class="error-tips" v-if="!!item.error_tips">{{item.error_tips}}</div>
 
           <!-- 日期控件 -->
           <el-date-picker
@@ -26,7 +28,7 @@
             v-if="item.type === 12"
             type="date"
             size="large"
-            :readonly="item.readonly"
+            :disabled="item.readonly"
             value-format="yyyy-MM-dd"
             format="yyyy-MM-dd"
             :placeholder="item.placeholder || `设置${item.label}`"
@@ -190,6 +192,36 @@ export default {
     // console.log("@@@@@@@@");
   },
   methods: {
+    inputBlur(item) {
+      let type = null;
+      if (item.field == "comname") {
+        type = "0";
+      } else if (item.field == "comuscc") {
+        type = "1";
+      } else {
+        return;
+      }
+
+      this.$post(
+        {
+          action: "P_SY_IsDuplicateUSCCOrCom",
+          p1: item.value,
+          p2: type,
+          p3: this.$store.state.supinfo.supid || ""
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "1") {
+            // item.error_tips = `${item.name}已存在`;
+            // console.log(item);
+            this.$set(item, "error_tips", `${item.label}已存在`);
+          } else {
+            // item.error_tips = null;
+            this.$set(item, "error_tips", null);
+          }
+        }
+      );
+    },
     itemChange(item, ev) {
       this.$emit("change", { control: item, data: ev });
     },
@@ -300,6 +332,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
+
+.error-tips {
+  font-size: 14px;
+  color: $theme-color;
+  margin-top: 3px;
+}
+
 .download-link {
   margin-top: 5px;
   color: #e46623;

@@ -96,7 +96,7 @@ export default {
       });
     },
     actionClick(ev) {
-      // console.log(ev);
+      console.log(ev);
       // this.$refs.form.reset();
 
       const action = ev.action;
@@ -142,6 +142,7 @@ export default {
                   fileName.indexOf(".webp") !== -1
               };
               control[control.field + "_files"] = [file];
+              control.value = data[control.field] || null;
               // console.log(control);
             }
           } else if (control.type === 7) {
@@ -223,6 +224,7 @@ export default {
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
+        console.log(control);
         if (control.required && control.type !== 5 && !control.value) {
           // alert(control.label + "不能为空");
           this.$message({

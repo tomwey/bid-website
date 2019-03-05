@@ -96,7 +96,7 @@ export default {
       });
     },
     actionClick(ev) {
-      console.log(ev);
+      // console.log(ev);
       // this.$refs.form.reset();
 
       const action = ev.action;
@@ -224,9 +224,22 @@ export default {
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
-        console.log(control);
+        // console.log(control);
+        if (
+          control.required &&
+          control.type == 7 &&
+          (!control.value || !control.value.value)
+        ) {
+          this.$message({
+            message: control.label + "不能为空",
+            type: "error"
+          });
+          return;
+        }
+
         if (control.required && control.type !== 5 && !control.value) {
           // alert(control.label + "不能为空");
+
           this.$message({
             message: control.label + "不能为空",
             type: "error"
@@ -318,6 +331,8 @@ export default {
         // console.log(obj);
         this.items.push(obj);
       }
+
+      console.log(this.items);
 
       // this.reset();
       this.$refs.formModal.hide();

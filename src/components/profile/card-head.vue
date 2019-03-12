@@ -26,7 +26,7 @@ export default {
           p2: this.$store.state.token
         },
         res => {
-          console.log(res);
+          // console.log(res);
           if (res.code === "0") {
             this.$store.commit("changeeditstate", res.code === "0");
             this.$router.push({ name: "profile", query: { s: this.step } });

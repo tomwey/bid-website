@@ -109,6 +109,7 @@
       <div class="buttons">
         <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
         <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span>
+        <span class="custom-btn" @click="saveDraft">保存</span>
         <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span>
         <span
           class="custom-btn"
@@ -752,12 +753,6 @@ export default {
 
     this.loadServiceTypeConfigs();
 
-    // if (this.$store.state.supinfo.supid && this.$store.state.supinfo.canedit) {
-    // this.loadProfileData(1);
-    // this.loadProfileData(2);
-    // this.loadProfileData(4);
-    // this.loadProfileData(5);
-    // this.loadProfileData(7);
     this.populateData();
     // }
   },
@@ -1483,9 +1478,135 @@ export default {
         params[control.field] = val;
       });
     },
+    saveDraft() {
+      let params = { action: "savesupdraft" };
+
+      // 填充基础数据
+      this._fillData(this.baseFormData, params);
+
+      params["outputvalueyear"] = this.achieveYearData.output || "0";
+      params["turnoveryear"] = this.achieveYearData.sale || "0";
+
+      // 填充其它信息
+      this._fillData(this.otherInfoFormData, params);
+
+      // 填充区域信息
+      this._fillData(this.areaFormData, params);
+
+      params["_loginuid"] = this.$store.state.supinfo.accountid;
+
+      params["token"] = this.$store.state.token;
+
+      // 填充联系人信息
+      let manData =
+        this.manData.length === 0
+          ? this.$store.state.supprofile.man
+          : this.manData;
+      let temp = [];
+      manData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key.indexOf("_files") === -1 &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            if (
+              key == "contacttype" &&
+              object[key] == "普通联系人" &&
+              (key.indexOf("authdelegationannex") !== -1 ||
+                key.indexOf("sscertificateannex") !== -1)
+            ) {
+              continue;
+            }
+            obj[key] = element || "";
+          }
+        }
+        temp.push(obj);
+      });
+      params["man"] = temp;
+
+      // 填充服务类别
+      let servTypeData =
+        this.serviceTypeData.length === 0
+          ? this.$store.state.supprofile.types
+          : this.serviceTypeData;
+      let temp2 = [];
+      servTypeData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key.indexOf("_files") === -1 &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            obj[key] = element || "";
+          }
+        }
+        temp2.push(obj);
+      });
+
+      params["types"] = temp2;
+
+      let achieveData =
+        this.achieveData.length === 0
+          ? this.$store.state.supprofile.yj_data
+          : this.achieveData;
+      let temp3 = [];
+
+      achieveData.forEach(object => {
+        let obj = {};
+        for (const key in object) {
+          if (
+            object.hasOwnProperty(key) &&
+            key.indexOf("_files") === -1 &&
+            key.indexOf("_isfile") === -1
+          ) {
+            const element = object[key];
+            obj[key] = element || "";
+          }
+        }
+        temp3.push(obj);
+      });
+
+      params["achievements"] = temp3;
+
+      // 填充其它附件信息
+      let fileObj = {};
+      this.otherFilesFormData.forEach(control => {
+        if (control.value) {
+          fileObj[control.field] = control.value;
+        }
+      });
+
+      params["otherfiles"] = [fileObj];
+
+      if (this.commiting) return;
+      this.commiting = true;
+
+      this.$post(params, res => {
+        // console.log(res);
+        this.commiting = false;
+
+        if (res.code === "0") {
+          // alert("提交成功");
+          this.$message({
+            message: "提交成功！",
+            type: "success"
+          });
+          // this.$router.replace({ path: "/admin/company" });
+        } else {
+          this.$message({
+            message: res.codemsg,
+            type: "error"
+          });
+        }
+      });
+    },
     commit() {
       let params = { action: "updatesupinfo" };
-      // console.log(this.baseFormData);
 
       for (let i = 0; i < this.baseFormData.length; i++) {
         const control = this.baseFormData[i];

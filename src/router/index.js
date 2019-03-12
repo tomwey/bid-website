@@ -5,6 +5,7 @@ import funcs from '@/utils/funcs';
 import store from '../store';
 
 import post from '@/utils/ajax';
+import { Message, MessageBox } from 'element-ui';
 
 Vue.use(funcs);
 
@@ -253,6 +254,10 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     store.commit("getToken");
+    if (to.path !== '/admin/profile') {
+        store.commit("set_draft_alert", false);
+    }
+
     if (to.matched.some(r => r.meta.requireAuth)) {
         let token = store.state.token;
         if (token) {
@@ -287,23 +292,22 @@ router.beforeEach((to, from, next) => {
                         } else {
                             // 
                             if (to.meta.needLoadProfile) {
+                                // console.log(to.path);
                                 // 提前加载供应商资料数据
-                                loadProfile(store, () => {
+                                loadProfile(to.path, store, () => {
                                     next();
                                 });
+
                             } else {
                                 next();
                             }
-
-                            // next();
-
                         }
                     });
                 } else {
                     // 已经录入过资料，直接放行
                     if (to.meta.needLoadProfile) {
                         // 提前加载供应商资料数据
-                        loadProfile(store, () => {
+                        loadProfile(to.path, store, () => {
                             next();
                         });
                     } else {
@@ -315,7 +319,7 @@ router.beforeEach((to, from, next) => {
                 // 已经录入过资料，直接放行
                 if (to.meta.needLoadProfile) {
                     // 提前加载供应商资料数据
-                    loadProfile(store, () => {
+                    loadProfile(to.path, store, () => {
                         next();
                     });
                 } else {
@@ -333,7 +337,108 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-function loadProfile(_store, callback) {
+function loadDraftProfile(_store, callback) {
+    post(
+        {
+            action: "P_SUP_GetSupDraft",
+            p1: _store.state.supinfo.accountid,
+            p2: _store.state.token
+        },
+        res => {
+            if (res.code === "0") {
+                // console.log(res);
+                const item = res.data[0];
+
+                if (item.code === "0") {
+                    // 有草稿
+                    if (_store.state.has_draft_alert) {
+                        post(
+                            {
+                                action: "getsupdraftinfo",
+                                uid: _store.state.supinfo.accountid,
+                                token: _store.state.token,
+                                subid: item.subid
+                            },
+                            res => {
+                                // console.log(res);
+                                if (res.code === "0") {
+                                    _store.commit("updatesupprofile", res.data);
+
+                                    callback();
+                                } else {
+                                    Message({
+                                        message: res.codemsg,
+                                        type: "error"
+                                    });
+                                    callback();
+                                }
+                            }
+                        );
+                    } else {
+                        MessageBox({
+                            message: "之前有保存草稿，是否加载草稿？",
+                            title: "提示",
+                            showCancelButton: true,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                        })
+                            .then(() => {
+                                _store.commit("set_draft_alert", true);
+                                post(
+                                    {
+                                        action: "getsupdraftinfo",
+                                        uid: _store.state.supinfo.accountid,
+                                        token: _store.state.token,
+                                        subid: item.subid
+                                    },
+                                    res => {
+                                        // console.log(res);
+                                        if (res.code === "0") {
+                                            _store.commit("updatesupprofile", res.data);
+
+                                            callback();
+                                        } else {
+                                            Message({
+                                                message: res.codemsg,
+                                                type: "error"
+                                            });
+                                            callback();
+                                        }
+                                    }
+                                );
+                            })
+                            .catch(() => {
+                                _store.commit("set_draft_alert", true);
+                                // console.log(234);
+                                // callback();
+                                loadProfile('1', _store, callback);
+                            });
+                    }
+
+                } else {
+                    _store.commit("set_draft_alert", false);
+                    // 无草稿
+                    // callback();
+                    loadProfile('1', _store, callback);
+                }
+            } else {
+                _store.commit("set_draft_alert", false);
+                Message({
+                    message: res.codemsg,
+                    type: "error"
+                });
+                callback();
+            }
+        });
+}
+
+function loadProfile(path, _store, callback) {
+    if (path === '/admin/profile') {
+        loadDraftProfile(_store, callback);
+        return;
+    }
+
     post({
         action: "getsupinfo",
         uid: _store.state.supinfo.accountid,

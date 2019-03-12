@@ -8,7 +8,8 @@ const store = new Vuex.Store({
         supinfo: {},
         supprofile: {},
         token: null,
-        title: ''
+        title: '',
+        has_draft_alert: false,
     },
     mutations: {
         getToken: (state) => {
@@ -55,8 +56,11 @@ const store = new Vuex.Store({
         },
         changeeditstate: (state, data) => {
             state.supinfo.canedit = data;
+        },
+        set_draft_alert: (state, value) => {
+            state.has_draft_alert = value;
         }
-    }
+    },
 })
 
 function _saveToken(data) {

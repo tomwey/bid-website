@@ -424,11 +424,12 @@ function loadDraftProfile(_store, callback) {
                 }
             } else {
                 _store.commit("set_draft_alert", false);
-                Message({
-                    message: res.codemsg,
-                    type: "error"
-                });
-                callback();
+                // Message({
+                //     message: res.codemsg,
+                //     type: "error"
+                // });
+                loadProfile('1', _store, callback);
+                // callback();
             }
         });
 }

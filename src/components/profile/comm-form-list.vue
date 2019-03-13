@@ -108,6 +108,8 @@ export default {
           this.changeFormData(this.formData[0], data);
         }
 
+        // console.log(this.formData);
+
         this.formData.forEach(control => {
           // console.log(control);
           if (control.type === 2) {
@@ -124,26 +126,32 @@ export default {
               control.value = null;
             }
           } else if (control.type === 4) {
-            // 文件附件
-            const nameKey = control.field + "name";
-            const urlKey = control.field + "url";
-            if (data[urlKey] && data[nameKey]) {
-              let fileUrl = data[urlKey];
-              let fileName = data[nameKey];
+            if (control.field) {
+              // 文件附件
+              const nameKey = control.field + "name";
+              const urlKey = control.field + "url";
+              if (data[control.field + "_files"]) {
+                control[control.field + "_files"] =
+                  data[control.field + "_files"];
+                control.value = data[control.field] || null;
+              } else if (data[urlKey] && data[nameKey]) {
+                let fileUrl = data[urlKey];
+                let fileName = data[nameKey];
 
-              let file = {
-                _fileurl: fileUrl,
-                _filename: fileName,
-                _isimage:
-                  fileName.indexOf(".png") !== -1 ||
-                  fileName.indexOf(".gif") !== -1 ||
-                  fileName.indexOf(".jpg") !== -1 ||
-                  fileName.indexOf(".jpeg") !== -1 ||
-                  fileName.indexOf(".webp") !== -1
-              };
-              control[control.field + "_files"] = [file];
-              control.value = data[control.field] || null;
-              // console.log(control);
+                let file = {
+                  _fileurl: fileUrl,
+                  _filename: fileName,
+                  _isimage:
+                    fileName.indexOf(".png") !== -1 ||
+                    fileName.indexOf(".gif") !== -1 ||
+                    fileName.indexOf(".jpg") !== -1 ||
+                    fileName.indexOf(".jpeg") !== -1 ||
+                    fileName.indexOf(".webp") !== -1
+                };
+                control[control.field + "_files"] = [file];
+                control.value = data[control.field] || null;
+                // console.log(control);
+              }
             }
           } else if (control.type === 7) {
             // 树形控件
@@ -214,6 +222,14 @@ export default {
       this.$refs.formModal.show();
     },
     cancel() {
+      this.formData.forEach(control => {
+        control.value = null;
+        delete control["progress"];
+        delete control[control.field + "_files"];
+      });
+
+      this.$refs.form.reset();
+
       this.$refs.formModal.hide();
     },
     commit(evt) {

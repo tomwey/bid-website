@@ -754,6 +754,7 @@ export default {
     this.loadServiceTypeConfigs();
 
     this.populateData();
+    console.log(this.$store.state.supprofile);
     // }
   },
   watch: {

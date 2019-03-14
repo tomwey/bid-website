@@ -156,38 +156,6 @@ export default {
       currentItem: null
     };
   },
-  // watch: {
-  //   formEntity: function() {
-  //     console.log(this.formEntity);
-  //     if (this.formEntity) {
-  //       let data = this.formEntity;
-
-  //       this.formData.forEach(control => {
-  //         if (control.type === 2) {
-  //           // console.log(data);
-  //           if (data[control.field]) {
-  //             control.value = `${data[control.field + "name"]}-${
-  //               data[control.field]
-  //             }`;
-  //           } else {
-  //             control.value = null;
-  //           }
-  //         } else if (control.type === 7) {
-  //           // 树形控件
-  //           control.value = {
-  //             value: data[control.field],
-  //             text: data[control.field + "name"],
-  //             childcount: 0
-  //           };
-  //         } else {
-  //           control.value = data[control.field];
-  //         }
-  //       });
-
-  //       console.log(this.formData);
-  //     }
-  //   }
-  // },
   mounted() {
     // console.log("@@@@@@@@");
   },

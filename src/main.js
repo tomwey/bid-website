@@ -13,7 +13,7 @@ import store from "@/store/index";
 import './plugins/eleme';
 import '@/assets/styles/theme-variables.scss';
 
-// import '@babel/polyfill';
+import '@babel/polyfill';
 
 import Icon from 'vue-awesome/components/Icon';
 import funcs from './utils/funcs';

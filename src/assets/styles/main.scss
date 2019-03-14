@@ -67,6 +67,10 @@ html {
           position: absolute;
           top: 20px;
           right: 0;
+          width: 100%;
+          img {
+            max-width: 100%;
+          }
           p {
             color: #fff;
             font-size: 14px;

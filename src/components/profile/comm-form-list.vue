@@ -104,70 +104,72 @@ export default {
       if (action.code === "edit") {
         this.currentEditItem = data;
 
-        if (this.model == "man") {
-          this.changeFormData(this.formData[0], data);
-        }
+        this.$emit("editform", data);
 
-        // console.log(this.formData);
+        // if (this.model == "man") {
+        //   this.changeFormData(this.formData[0], data);
+        // }
 
-        this.formData.forEach(control => {
-          // console.log(control);
-          if (control.type === 2) {
-            // console.log(data);
-            if (data[control.field]) {
-              control.value = `${data[control.field + "name"]}-${
-                data[control.field]
-              }`;
-            } else {
-              control.value = null;
-            }
+        // // console.log(this.formData);
 
-            if (control.field == "quaid" && data["quaid"] == "0") {
-              control.value = null;
-            }
-          } else if (control.type === 4) {
-            if (control.field) {
-              // 文件附件
-              const nameKey = control.field + "name";
-              const urlKey = control.field + "url";
-              if (data[control.field + "_files"]) {
-                control[control.field + "_files"] =
-                  data[control.field + "_files"];
-                control.value = data[control.field] || null;
-              } else if (data[urlKey] && data[nameKey]) {
-                let fileUrl = data[urlKey];
-                let fileName = data[nameKey];
+        // this.formData.forEach(control => {
+        //   // console.log(control);
+        //   if (control.type === 2) {
+        //     // console.log(data);
+        //     if (data[control.field]) {
+        //       control.value = `${data[control.field + "name"]}-${
+        //         data[control.field]
+        //       }`;
+        //     } else {
+        //       control.value = null;
+        //     }
 
-                let file = {
-                  _fileurl: fileUrl,
-                  _filename: fileName,
-                  _isimage:
-                    fileName.indexOf(".png") !== -1 ||
-                    fileName.indexOf(".gif") !== -1 ||
-                    fileName.indexOf(".jpg") !== -1 ||
-                    fileName.indexOf(".jpeg") !== -1 ||
-                    fileName.indexOf(".webp") !== -1
-                };
-                control[control.field + "_files"] = [file];
-                control.value = data[control.field] || null;
-                // console.log(control);
-              }
-            }
-          } else if (control.type === 7) {
-            // 树形控件
-            control.value = {
-              value: data[control.field],
-              text: data[control.field + "name"],
-              childcount: 0
-            };
-          } else {
-            control.value = data[control.field];
-          }
+        //     if (control.field == "quaid" && data["quaid"] == "0") {
+        //       control.value = null;
+        //     }
+        //   } else if (control.type === 4) {
+        //     if (control.field) {
+        //       // 文件附件
+        //       const nameKey = control.field + "name";
+        //       const urlKey = control.field + "url";
+        //       if (data[control.field + "_files"]) {
+        //         control[control.field + "_files"] =
+        //           data[control.field + "_files"];
+        //         control.value = data[control.field] || null;
+        //       } else if (data[urlKey] && data[nameKey]) {
+        //         let fileUrl = data[urlKey];
+        //         let fileName = data[nameKey];
 
-          if (this.model == "service_type") {
-            this.reformServiceForm(control, data);
-          }
-        });
+        //         let file = {
+        //           _fileurl: fileUrl,
+        //           _filename: fileName,
+        //           _isimage:
+        //             fileName.indexOf(".png") !== -1 ||
+        //             fileName.indexOf(".gif") !== -1 ||
+        //             fileName.indexOf(".jpg") !== -1 ||
+        //             fileName.indexOf(".jpeg") !== -1 ||
+        //             fileName.indexOf(".webp") !== -1
+        //         };
+        //         control[control.field + "_files"] = [file];
+        //         control.value = data[control.field] || null;
+        //         // console.log(control);
+        //       }
+        //     }
+        //   } else if (control.type === 7) {
+        //     // 树形控件
+        //     control.value = {
+        //       value: data[control.field],
+        //       text: data[control.field + "name"],
+        //       childcount: 0
+        //     };
+        //   } else {
+        //     control.value = data[control.field];
+        //   }
+
+        //   if (this.model == "service_type") {
+        //     this.reformServiceForm(control, data);
+        //   }
+        // });
 
         // console.log(this.formData);
 
@@ -237,6 +239,8 @@ export default {
       let obj = {};
 
       // console.log(this.items);
+
+      // console.log(this.formData);
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
@@ -348,7 +352,7 @@ export default {
         this.items.push(obj);
       }
 
-      console.log(this.items);
+      // console.log(this.items);
 
       // this.reset();
       this.$refs.formModal.hide();

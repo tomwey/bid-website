@@ -50,6 +50,7 @@
           :items="manData"
           @controlvaluechanged="controlValueChanged"
           :fields="manFields"
+          @editform="editManForm"
           :form-data="manFormData"
         />
 
@@ -60,6 +61,7 @@
           :items="serviceTypeData"
           @controlvaluechanged="serviceTypeChanged"
           :fields="serviceTypeFields"
+          @editform="editServiceForm"
           :form-data="serviceTypeFormData"
         />
 
@@ -102,6 +104,7 @@
             name="公司业绩"
             :items="achieveData"
             :fields="achieveFields"
+            @editform="editAchieveForm"
             :form-data="achieveFormData"
           />
         </div>
@@ -754,7 +757,7 @@ export default {
     this.loadServiceTypeConfigs();
 
     this.populateData();
-    console.log(this.$store.state.supprofile);
+    // console.log(this.$store.state.supprofile);
     // }
   },
   watch: {
@@ -876,6 +879,13 @@ export default {
                   this.serviceTypeFormData.splice(3, 1);
                 }
               } else {
+                let srcData = val.srcData || {};
+
+                let currVal = null;
+                if (srcData.qualevelidname && srcData.qualevelid) {
+                  currVal = `${srcData.qualevelidname}-${srcData.qualevelid}`;
+                }
+
                 // 需要新增一个资质级别的字段
                 if (this.serviceTypeFormData.length === 5) {
                   let temp = [{ text: "请选择资质级别", value: null }];
@@ -890,7 +900,7 @@ export default {
                     type: 2,
                     // subtype: "text",
                     options: temp,
-                    value: null,
+                    value: currVal,
                     required: true,
                     field: "qualevelid",
                     label: "资质级别"
@@ -901,6 +911,196 @@ export default {
           }
         );
       }
+    },
+    editManForm(data) {
+      // console.log(data);
+      data = data || {};
+
+      if (data["contacttype"] == "1" || data["contacttype"] == "第一联系人") {
+        this.controlValueChanged({
+          control: this.manFormData[0],
+          data: `${data["contacttype"]}-${data["contacttype"]}`
+        });
+      }
+
+      this.manFormData.forEach(control => {
+        if (control.type === 2) {
+          // console.log(data);
+          if (data[control.field]) {
+            control.value = `${data[control.field + "name"]}-${
+              data[control.field]
+            }`;
+          } else {
+            control.value = null;
+          }
+          if (control.field == "quaid" && data["quaid"] == "0") {
+            control.value = null;
+          }
+        } else if (control.type === 4) {
+          if (control.field) {
+            // 文件附件
+            const nameKey = control.field + "name";
+            const urlKey = control.field + "url";
+            if (data[control.field + "_files"]) {
+              control[control.field + "_files"] =
+                data[control.field + "_files"];
+              control.value = data[control.field] || null;
+            } else if (data[urlKey] && data[nameKey]) {
+              let fileUrl = data[urlKey];
+              let fileName = data[nameKey];
+              let file = {
+                _fileurl: fileUrl,
+                _filename: fileName,
+                _isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              };
+              control[control.field + "_files"] = [file];
+              control.value = data[control.field] || null;
+              // console.log(control);
+            }
+          }
+        } else if (control.type === 7) {
+          // 树形控件
+          control.value = {
+            value: data[control.field],
+            text: data[control.field + "name"],
+            childcount: 0
+          };
+        } else {
+          control.value = data[control.field];
+        }
+      });
+    },
+    editServiceForm(data) {
+      // console.log(data);
+      data = data || {};
+
+      this.serviceTypeFormData.forEach(control => {
+        if (control.type === 2) {
+          // console.log(data);
+          if (data[control.field]) {
+            control.value = `${data[control.field + "name"]}-${
+              data[control.field]
+            }`;
+          } else {
+            control.value = null;
+          }
+          if (control.field == "quaid" && data["quaid"] == "0") {
+            control.value = null;
+          }
+        } else if (control.type === 4) {
+          if (control.field) {
+            // 文件附件
+            const nameKey = control.field + "name";
+            const urlKey = control.field + "url";
+            if (data[control.field + "_files"]) {
+              control[control.field + "_files"] =
+                data[control.field + "_files"];
+              control.value = data[control.field] || null;
+            } else if (data[urlKey] && data[nameKey]) {
+              let fileUrl = data[urlKey];
+              let fileName = data[nameKey];
+              let file = {
+                _fileurl: fileUrl,
+                _filename: fileName,
+                _isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              };
+              control[control.field + "_files"] = [file];
+              control.value = data[control.field] || null;
+              // console.log(control);
+            }
+          }
+        } else if (control.type === 7) {
+          // 树形控件
+          control.value = {
+            value: data[control.field] || data[control.field + "id"],
+            text: data[control.field + "name"],
+            childcount: 0
+          };
+        } else {
+          control.value = data[control.field];
+        }
+      });
+
+      let typeControl = this.serviceTypeFormData[0];
+      this.serviceTypeChanged({
+        control: typeControl,
+        data: { text: data["servertypename"], value: data["servertypeid"] },
+        srcData: Object.assign({}, data)
+      });
+
+      let quaControl = this.serviceTypeFormData[2];
+      this.serviceTypeChanged({
+        control: quaControl,
+        data: `${data["quaidname"]}-${data["quaid"]}`,
+        srcData: Object.assign({}, data)
+      });
+    },
+    editAchieveForm(data) {
+      // console.log(data);
+
+      data = data || {};
+
+      this.achieveFormData.forEach(control => {
+        if (control.type === 2) {
+          // console.log(data);
+          if (data[control.field]) {
+            control.value = `${data[control.field + "name"]}-${
+              data[control.field]
+            }`;
+          } else {
+            control.value = null;
+          }
+          if (control.field == "quaid" && data["quaid"] == "0") {
+            control.value = null;
+          }
+        } else if (control.type === 4) {
+          if (control.field) {
+            // 文件附件
+            const nameKey = control.field + "name";
+            const urlKey = control.field + "url";
+            if (data[control.field + "_files"]) {
+              control[control.field + "_files"] =
+                data[control.field + "_files"];
+              control.value = data[control.field] || null;
+            } else if (data[urlKey] && data[nameKey]) {
+              let fileUrl = data[urlKey];
+              let fileName = data[nameKey];
+              let file = {
+                _fileurl: fileUrl,
+                _filename: fileName,
+                _isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              };
+              control[control.field + "_files"] = [file];
+              control.value = data[control.field] || null;
+              // console.log(control);
+            }
+          }
+        } else if (control.type === 7) {
+          // 树形控件
+          control.value = {
+            value: data[control.field],
+            text: data[control.field + "name"],
+            childcount: 0
+          };
+        } else {
+          control.value = data[control.field];
+        }
+      });
     },
     controlValueChanged(val) {
       // console.log(val);

@@ -1594,7 +1594,7 @@ export default {
         if (res.code === "0") {
           // alert("提交成功");
           this.$message({
-            message: "提交成功！",
+            message: "已保存草稿",
             type: "success"
           });
           // this.$router.replace({ path: "/admin/company" });

@@ -3,6 +3,7 @@
     <h2>
       {{title}}
       <span class="float-right hn-btn-style" style="margin-top:-5px;">
+        <!-- <el-button plain type="primary" @click="gotoStep">编辑</el-button> -->
         <b-button size="sm" variant="secondary-outline" @click="gotoStep">编辑</b-button>
       </span>
     </h2>

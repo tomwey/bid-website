@@ -7,7 +7,8 @@
         条{{this.name}}
       </b-col>
       <b-col cols="4" class="hn-btn-style">
-        <b-button @click="newItem">新增{{this.name}}</b-button>
+        <!-- <b-button @click="newItem">新增{{this.name}}</b-button> -->
+        <el-button @click="newItem" plain type="primary">新增{{this.name}}</el-button>
       </b-col>
     </b-row>
     <horizontal-table

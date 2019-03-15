@@ -19,7 +19,8 @@
             <b-badge :variant="variant">{{$store.state.supinfo.supstatename}}</b-badge>
           </div>
           <div class="edit-wrap">
-            <b-button @click="editProfile">资料维护</b-button>
+            <!-- <b-button @click="editProfile">资料维护</b-button> -->
+            <el-button @click="editProfile" plain type="primary">资料维护</el-button>
           </div>
         </div>
       </div>

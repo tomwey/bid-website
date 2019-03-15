@@ -110,16 +110,26 @@
         </div>
       </div>
       <div class="buttons">
-        <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span>
-        <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span>
-        <span class="custom-btn" @click="saveDraft">保存</span>
-        <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span>
-        <span
+        <!-- <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span> -->
+        <el-button @click="prevClick" v-if="currentStep.step > 1" plain type="primary">上一步</el-button>
+        <el-button @click="resetClick" v-if="currentStep.needReset" plain type="primary">重置</el-button>
+        <!-- <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span> -->
+        <!-- <span class="custom-btn" @click="saveDraft">保存</span> -->
+        <el-button @click="saveDraft" type="primary">保存</el-button>
+        <el-button
+          @click="nextClick"
+          v-if="currentStep.step < steps.length"
+          plain
+          type="primary"
+        >下一步</el-button>
+        <!-- <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span> -->
+        <!-- <span
           class="custom-btn"
           :class="{disabled:commiting===true}"
           @click="commit"
           v-if="currentStep.step === steps.length"
-        >{{commitBtnText}}</span>
+        >{{commitBtnText}}</span>-->
+        <el-button type="primary" @click="commit" v-if="currentStep.step === steps.length">提交审核</el-button>
       </div>
     </div>
   </div>

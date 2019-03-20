@@ -5,7 +5,7 @@ module.exports = {
         'es6.promise',
         'es6.symbol'
       ],
-    }*/, { useBuiltIns: 'entry' }]
+    }*/, { useBuiltIns: 'usage' }]
   ],
   "plugins": [
     [

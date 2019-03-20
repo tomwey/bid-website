@@ -245,7 +245,7 @@ const router = new Router({
                         requireAuth: true,
                         needLoadProfile: true,
                     },
-                    component: () => import('@/pages/user/profile')
+                    component: () => import('@/pages/user/profile-refactor')
                 }
             ]
         }

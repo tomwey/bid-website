@@ -16,31 +16,52 @@
       </div>
       <div class="form-wrap">
         <div class="form-fields">
-          <comm-fields
+          <form-fields
+            form-ref="baseForm"
             v-if="currentStep.step === 1"
-            :form-data="baseFormData"
-            :ref="`step${currentStep.step}`"
-            step="1"
-          />
-          <comm-fields
+            :controls="baseFormControls"
+            :form-model="baseFormModel"
+          ></form-fields>
+
+          <!-- <comm-fields
             v-if="currentStep.step === 6"
             :form-data="otherInfoFormData"
             :ref="`step${currentStep.step}`"
             step="1"
-          />
-          <comm-fields
+          />-->
+          <form-fields
+            form-ref="otherInfoForm"
+            v-if="currentStep.step === 6"
+            :controls="otherInfoFormControls"
+            :form-model="otherInfoFormModel"
+          ></form-fields>
+
+          <form-fields
+            form-ref="otherFilesForm"
+            v-if="currentStep.step === 7"
+            :controls="otherFilesFormControls"
+            :form-model="otherFilesFormModel"
+          ></form-fields>
+
+          <!-- <comm-fields
             v-if="currentStep.step === 7"
             :form-data="otherFilesFormData"
             :ref="`step${currentStep.step}`"
             step="7"
-          />
-          <comm-fields
+          />-->
+          <form-fields
+            v-if="currentStep.step === 3"
+            form-ref="step3Form"
+            :controls="areaFormControls"
+            :form-model="areaFormModel"
+          ></form-fields>
+          <!-- <comm-fields
             v-if="currentStep.step === 3"
             :form-data="areaFormData"
             :ref="`step${currentStep.step}`"
             @change="areaChange"
             step="1"
-          />
+          />-->
         </div>
 
         <comm-form-list
@@ -110,11 +131,8 @@
         </div>
       </div>
       <div class="buttons">
-        <!-- <span class="custom-btn" @click="prevClick" v-if="currentStep.step > 1">上一步</span> -->
         <el-button @click="prevClick" v-if="currentStep.step > 1" plain type="primary">上一步</el-button>
         <el-button @click="resetClick" v-if="currentStep.needReset" plain type="primary">重置</el-button>
-        <!-- <span class="custom-btn outline" @click="resetClick" v-if="currentStep.needReset">重置</span> -->
-        <!-- <span class="custom-btn" @click="saveDraft">保存</span> -->
         <el-button @click="saveDraft" type="primary">保存</el-button>
         <el-button
           @click="nextClick"
@@ -122,16 +140,10 @@
           plain
           type="primary"
         >下一步</el-button>
-        <!-- <span class="custom-btn" @click="nextClick" v-if="currentStep.step < steps.length">下一步</span> -->
-        <!-- <span
-          class="custom-btn"
-          :class="{disabled:commiting===true}"
-          @click="commit"
-          v-if="currentStep.step === steps.length"
-        >{{commitBtnText}}</span>-->
         <el-button type="primary" @click="commit" v-if="currentStep.step === steps.length">提交审核</el-button>
       </div>
     </div>
+    <!-- <bid-upload></bid-upload> -->
   </div>
 </template>
 <script>
@@ -141,11 +153,14 @@ import tableFields from "@/utils/table-fields";
 export default {
   name: "profile",
   components: {
-    commFields: function(resolve) {
-      require(["@/components/profile/comm-fields"], resolve);
+    formFields: resolve => {
+      require(["@/components/profile/form-fields"], resolve);
     },
     commFormList: function(resolve) {
       require(["@/components/profile/comm-form-list"], resolve);
+    },
+    bidUpload: resolve => {
+      require(["@/components/bid-upload"], resolve);
     }
   },
   data() {
@@ -426,31 +441,12 @@ export default {
           width: 80
         }
       ].concat(tableFields.man),
-      areaFormData: [
-        {
-          id: "service-area",
-          type: 3,
-          label: "服务城市",
-          placeholder: "",
-          required: true,
-          field: "serverareaids",
-          options: []
-          //   required: true
-        },
-        {
-          id: "main-service-area",
-          type: 6,
-          label: "主要服务城市",
-          field: "mainareaid",
-          options: [],
-          required: true
-        }
-      ],
-      otherInfoFormData: [
+      otherInfoFormModel: {},
+      otherInfoFormControls: [
         {
           id: "child-company-name",
           type: 1,
-          subtype: "text",
+          // subtype: "text",
           label: "分公司信息（含地址、电话）",
           field: "branchinfo",
           placeholder: ""
@@ -459,17 +455,19 @@ export default {
         {
           id: "relate-company-name",
           type: 1,
-          subtype: "text",
+          // subtype: "text",
           label: "关联公司信息",
           field: "relateinfo",
           placeholder: ""
           //   required: true
         }
       ],
-      otherFilesFormData: [
+      otheerInfoFormModel: {},
+      otherFilesFormModel: {},
+      otherFilesFormControls: [
         {
           id: "finance-approve-file",
-          type: 4,
+          type: 8,
           //   subtype: "file",
           label: "近三年财务审计报告(附件)",
           placeholder: "",
@@ -480,7 +478,7 @@ export default {
         },
         {
           id: "auth-license-file",
-          type: 4,
+          type: 8,
           //   subtype: "file",
           label: "认证或荣誉证书(附件)",
           placeholder: "",
@@ -491,7 +489,7 @@ export default {
         },
         {
           id: "beian-file",
-          type: 4,
+          type: 8,
           //   subtype: "file",
           label: "外地备案证(附件)",
           placeholder: "",
@@ -501,63 +499,109 @@ export default {
           fieldname: "fieldcertificate"
         }
       ],
-      baseFormData: [
+      areaFormControls: [
         {
-          id: "company-name",
+          id: "service-area",
+          type: 4,
+          label: "服务城市",
+          field: "serverareaids",
+          options: [],
+          changeFunc: values => {
+            // console.log(values);
+            let arr = this.areaFormControls[0].options || [];
+            // arr.forEach(ele => {
+            //   if
+            // })
+            let temp = [];
+            values.forEach(val => {
+              for (let i = 0; i < arr.length; i++) {
+                if (val === arr[i].value) {
+                  temp.push(arr[i]);
+                }
+              }
+            });
+            this.areaFormControls[1].options = temp;
+          },
+          rules: [
+            { required: true, message: "服务城市不能为空", trigger: "change" }
+          ]
+        },
+        {
+          id: "main-service-area",
+          type: 3,
+          label: "主要服务城市",
+          field: "mainareaid",
+          options: [],
+          rules: [
+            {
+              required: true,
+              message: "主要服务城市不能为空",
+              trigger: "change"
+            }
+          ]
+        }
+      ],
+      areaFormModel: { serverareaids: [] },
+      baseFormControls: [
+        {
+          id: "comp-name",
           type: 1,
-          subtype: "text",
           label: "企业名称",
-          placeholder: "",
-          required: true,
           field: "comname",
-          readonly: false
+          rules: [
+            { required: true, message: "企业名称不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "company-nature",
           type: 2,
           label: "企业性质",
-          required: true,
           field: "comtype",
-          options: [
-            {
-              value: "null",
-              text: "请选择企业性质"
-            }
-          ],
+          options: [],
           placeholder: "请选择企业性质",
-          value: null
+          rules: [
+            { required: true, message: "企业性质不能为空", trigger: "change" }
+          ]
         },
         {
           id: "company-id",
           type: 1,
-          subtype: "text",
           label: "统一社会信用代码",
-          placeholder: "",
           field: "comuscc",
-          required: true,
-          readonly: false
+          rules: [
+            {
+              required: true,
+              message: "统一社会信用代码不能为空",
+              trigger: "blur"
+            }
+          ]
         },
         {
           id: "company-id-exp",
-          type: 12,
+          type: 7,
           // subtype: "date",
           label: "统一社会信用代码有效期",
-          placeholder: "",
           field: "comusccinvaliddate",
-          required: true,
-          value: null
+          rules: [
+            {
+              required: true,
+              message: "统一社会信用代码有效期不能为空",
+              trigger: "blur"
+            }
+          ]
         },
         {
           id: "license-file",
-          type: 4,
+          type: 8,
           //   subtype: "file",
           label: "营业执照附件",
-          placeholder: "",
           field: "combi",
-          required: true,
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "ComBI"
+          fieldname: "ComBI",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
           id: "tax-type",
@@ -567,139 +611,154 @@ export default {
           options: [
             {
               value: "null",
-              text: "请选择纳税人状态"
+              label: "请选择纳税人状态"
             }
           ],
-          placeholder: "请选择纳税人状态",
-          value: null
+          placeholder: "请选择纳税人状态"
         },
         {
           id: "apply-cert-file",
-          type: 4,
+          type: 8,
           label: "增值税一般纳税人申请认定表",
-          placeholder: "",
           field: "addtaxapplytable",
-          required: true,
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "addtaxapplytable"
+          fieldname: "addtaxapplytable",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
-          id: "company-id-exp",
-          type: 12,
+          id: "company-reg-date",
+          type: 7,
           label: "企业注册日期",
           placeholder: "",
           field: "comregdate",
-          required: true,
-          value: null
+          rules: [
+            { required: true, message: "企业注册日期不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "found-address",
           type: 1,
-          subtype: "text",
           label: "企业注册地址",
           field: "comregaddr",
-          placeholder: "",
-          required: true
+          rules: [
+            { required: true, message: "企业注册地址不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "found-money",
           type: 1,
           subtype: "number",
           label: "注册资本",
-          placeholder: "",
           field: "regmoney",
-          required: true,
-          append: "万"
+          unit: "万",
+          rules: [
+            { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "law-man-name",
           type: 1,
-          subtype: "text",
           label: "法定代表人",
           field: "corporateman",
-          placeholder: "",
-          required: true
+          rules: [
+            { required: true, message: "法定代表人不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "law-man-idcard",
           type: 1,
-          subtype: "text",
           label: "法定代表人身份证号码",
-          field: "corporatemanidno",
-          placeholder: ""
+          field: "corporatemanidno"
         },
         {
           id: "safe-product-license-file",
-          type: 4,
+          type: 8,
           label: "安全生产许可证",
           field: "safeproductionl",
-          placeholder: "",
-          required: false,
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "safeproductionl"
+          fieldname: "safeproductionl",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
           id: "safe-license-expire-date",
-          type: 12,
+          type: 7,
           label: "安全许可证到期日",
-          placeholder: "",
-          field: "safeproductionldate",
-          required: false,
-          value: null
+          field: "safeproductionldate"
         },
         {
           id: "iso-supports",
-          type: 3,
+          type: 4,
           options: [],
           label: "体系认证",
-          field: "sysauth",
-          placeholder: ""
+          field: "sysauth"
         },
         {
           id: "zliang-license-file",
-          type: 4,
+          type: 8,
           // multiple: true,
           label: "质量保证体系认证文件（附件）",
           field: "quaauthannex",
           placeholder: "",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "quaauthannex"
+          fieldname: "quaauthannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
           id: "mgr-license-file",
-          type: 4,
+          type: 8,
           // multiple: false,
           label: "管理体系认证（ISO9001/14001/HSE等附件）",
           field: "manageauthannex",
           placeholder: "",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "manageauthannex"
+          fieldname: "manageauthannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
           id: "bank-auth-file",
-          type: 4,
+          type: 8,
           // multiple: true,
           label: "银行信用等级和授信额度（附件）",
-          placeholder: "",
           field: "banklevelandcredit",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
-          fieldname: "banklevelandcredit"
+          fieldname: "banklevelandcredit",
+          // upload_tips: "附件格式，大小不超过5MB",
+          accept: ".jpg,.jpeg,.png,.gif",
+          fileSize: 5
         },
         {
           id: "address",
           type: 1,
-          subtype: "text",
           label: "(总部)办公地址",
-          placeholder: "",
-          required: true,
-          field: "hqaddr"
+          field: "hqaddr",
+          rules: [
+            {
+              required: true,
+              message: "(总部)办公地址不能为空",
+              trigger: "blur"
+            }
+          ]
         }
       ],
+      baseFormModel: {},
+      baseFormRules: {
+        comname: [
+          { required: true, message: "企业名称不能为空", trigger: "blur" }
+        ]
+      },
       steps: [
         {
           name: "基本信息",
@@ -766,7 +825,7 @@ export default {
 
     this.loadServiceTypeConfigs();
 
-    this.populateData();
+    // this.populateData();
     // console.log(this.$store.state.supprofile);
     // }
   },
@@ -779,9 +838,6 @@ export default {
         });
       }
     }
-    // $route: function(to) {
-    //   console.log(to);
-    // }
   },
   computed: {
     commitBtnText() {
@@ -1335,17 +1391,17 @@ export default {
     populateAreaData() {
       let object = this.$store.state.supprofile;
 
-      this.areaFormData.forEach(control => {
-        if (control.type === 3) {
+      this.areaFormControls.forEach(control => {
+        if (control.type === 4) {
           // console.log(object);
           let options = [];
           if (object[control.field]) {
             options = object[control.field].split(",");
           }
 
-          control.value = options;
+          this.areaFormModel[control.field] = options;
 
-          const cities = this.areaFormData[0].options || [];
+          const cities = this.areaFormControls[0].options || [];
           let temp = [];
           options.forEach(v => {
             for (let i = 0; i < cities.length; i++) {
@@ -1356,13 +1412,23 @@ export default {
             }
           });
 
-          this.areaFormData[1].options = temp;
+          this.areaFormControls[1].options = temp;
         } else {
-          control.value = object[control.field];
+          // control.value = object[control.field];
+          this.areaFormModel[control.field] = object[control.field];
         }
       });
     },
     loadBaseConfigData() {
+      this.baseFormControls.forEach(control => {
+        // this.baseFormModel[control.field] = null;
+        if (control.type === 4) {
+          this.$set(this.baseFormModel, control.field, []);
+        } else {
+          this.$set(this.baseFormModel, control.field, null);
+        }
+      });
+
       // 获取企业性质
       this.$post(
         {
@@ -1377,16 +1443,17 @@ export default {
             let temp = [
               {
                 value: null,
-                text: "请选择企业性质"
+                label: "请选择企业性质"
               }
             ];
             arr.forEach(ele => {
               temp.push({
                 value: ele.sy_value,
-                text: ele.sy_name
+                label: ele.sy_name
               });
             });
-            this.baseFormData[1].options = temp;
+            this.baseFormModel["comtype"] = null;
+            this.baseFormControls[1].options = temp;
           }
         }
       );
@@ -1404,16 +1471,16 @@ export default {
             let temp = [
               {
                 value: null,
-                text: "请选择纳税人状态"
+                label: "请选择纳税人状态"
               }
             ];
             arr.forEach(ele => {
               temp.push({
                 value: ele.sy_value,
-                text: ele.sy_name
+                label: ele.sy_name
               });
             });
-            this.baseFormData[5].options = temp;
+            this.baseFormControls[5].options = temp;
           }
         }
       );
@@ -1432,14 +1499,23 @@ export default {
             arr.forEach(ele => {
               temp.push({
                 value: ele.sy_value,
-                text: ele.sy_name
+                label: ele.sy_name
               });
             });
-            this.baseFormData[14].options = temp;
+            this.baseFormControls[14].options = temp;
           }
         }
       );
       // 获取服务区域
+
+      this.areaFormControls.forEach(control => {
+        // this.baseFormModel[control.field] = null;
+        if (control.type === 4) {
+          this.$set(this.areaFormModel, control.field, []);
+        } else {
+          this.$set(this.areaFormModel, control.field, null);
+        }
+      });
 
       this.$post(
         {
@@ -1455,10 +1531,11 @@ export default {
             arr.forEach(ele => {
               temp.push({
                 value: ele.area_id,
-                text: ele.area_name
+                label: ele.area_name
               });
             });
-            this.areaFormData[0].options = temp;
+            // this.areaFormModel[this.areaFormControls[0].field] = null;
+            this.areaFormControls[0].options = temp;
 
             this.populateAreaData();
           }
@@ -1555,7 +1632,7 @@ export default {
       // 填充联系人信息
       let manData =
         this.manData.length === 0
-          ? this.$store.state.supprofile.man || []
+          ? this.$store.state.supprofile.man
           : this.manData;
       let temp = [];
       manData.forEach(object => {
@@ -1585,7 +1662,7 @@ export default {
       // 填充服务类别
       let servTypeData =
         this.serviceTypeData.length === 0
-          ? this.$store.state.supprofile.types || []
+          ? this.$store.state.supprofile.types
           : this.serviceTypeData;
       let temp2 = [];
       servTypeData.forEach(object => {
@@ -1607,7 +1684,7 @@ export default {
 
       let achieveData =
         this.achieveData.length === 0
-          ? this.$store.state.supprofile.yj_data || []
+          ? this.$store.state.supprofile.yj_data
           : this.achieveData;
       let temp3 = [];
 
@@ -1711,7 +1788,7 @@ export default {
       //     : this.manData) || [];
       let manData =
         this.manData.length === 0
-          ? this.$store.state.supprofile.man || []
+          ? this.$store.state.supprofile.man
           : this.manData;
       let temp = [];
       manData.forEach(object => {
@@ -1749,9 +1826,6 @@ export default {
           : this.serviceTypeData;
       // console.log(servTypeData);
       let temp2 = [];
-
-      servTypeData = servTypeData || [];
-
       servTypeData.forEach(object => {
         let obj = {};
         for (const key in object) {
@@ -1779,8 +1853,6 @@ export default {
           ? this.$store.state.supprofile.yj_data
           : this.achieveData;
       let temp3 = [];
-
-      achieveData = achieveData || [];
 
       achieveData.forEach(object => {
         let obj = {};

@@ -23,12 +23,6 @@
             :form-model="baseFormModel"
           ></form-fields>
 
-          <!-- <comm-fields
-            v-if="currentStep.step === 6"
-            :form-data="otherInfoFormData"
-            :ref="`step${currentStep.step}`"
-            step="1"
-          />-->
           <form-fields
             form-ref="otherInfoForm"
             v-if="currentStep.step === 6"
@@ -43,25 +37,12 @@
             :form-model="otherFilesFormModel"
           ></form-fields>
 
-          <!-- <comm-fields
-            v-if="currentStep.step === 7"
-            :form-data="otherFilesFormData"
-            :ref="`step${currentStep.step}`"
-            step="7"
-          />-->
           <form-fields
             v-if="currentStep.step === 3"
             form-ref="step3Form"
             :controls="areaFormControls"
             :form-model="areaFormModel"
           ></form-fields>
-          <!-- <comm-fields
-            v-if="currentStep.step === 3"
-            :form-data="areaFormData"
-            :ref="`step${currentStep.step}`"
-            @change="areaChange"
-            step="1"
-          />-->
         </div>
 
         <comm-form-list
@@ -69,7 +50,7 @@
           model="man"
           name="联系方式"
           :items="manData"
-          @controlvaluechanged="controlValueChanged"
+          ref="manList"
           :fields="manFields"
           @editform="editManForm"
           :form-data="manFormData"
@@ -88,36 +69,40 @@
 
         <div class="achieve-wrap" v-if="currentStep.step === 5">
           <div class="input-table">
+            <!-- <el-form ref="yjForm"> -->
             <table class="table">
               <tr>
                 <td class="label">
                   <label for="year-output">年产值额</label>
                 </td>
                 <td class="input-control">
-                  <b-input-group append="万">
-                    <b-form-input
-                      id="year-output"
-                      v-model="achieveYearData.output"
-                      placeholder="输入年产值额"
-                      type="number"
-                    ></b-form-input>
-                  </b-input-group>
+                  <!-- <el-form-item label="输入年产值额" prop="output"> -->
+                  <el-input
+                    type="number"
+                    v-model.number="achieveYearData.output"
+                    placeholder="输入年产值额"
+                  >
+                    <template slot="append">万</template>
+                  </el-input>
+                  <!-- </el-form-item> -->
                 </td>
                 <td class="label">
                   <label for="year-sale">年营业额</label>
                 </td>
                 <td class="input-control">
-                  <b-input-group append="万">
-                    <b-form-input
-                      id="year-sale"
-                      v-model="achieveYearData.sale"
-                      placeholder="输入年营业额"
-                      type="number"
-                    ></b-form-input>
-                  </b-input-group>
+                  <!-- <el-form-item label="输入年营业额" prop="sale"> -->
+                  <el-input
+                    type="number"
+                    v-model.number="achieveYearData.sale"
+                    placeholder="输入年营业额"
+                  >
+                    <template slot="append">万</template>
+                  </el-input>
+                  <!-- </el-form-item> -->
                 </td>
               </tr>
             </table>
+            <!-- </el-form> -->
           </div>
 
           <comm-form-list
@@ -149,6 +134,7 @@
 <script>
 import merge from "webpack-merge";
 import tableFields from "@/utils/table-fields";
+import { MobileCheck, IDCardCheck } from "@/components/profile/validators";
 
 export default {
   name: "profile",
@@ -157,7 +143,7 @@ export default {
       require(["@/components/profile/form-fields"], resolve);
     },
     commFormList: function(resolve) {
-      require(["@/components/profile/comm-form-list"], resolve);
+      require(["@/components/profile/comm-form-list2"], resolve);
     },
     bidUpload: resolve => {
       require(["@/components/bid-upload"], resolve);
@@ -179,113 +165,144 @@ export default {
         {
           id: "city",
           type: 1,
-          subtype: "text",
-          required: true,
+          // subtype: "text",
+          // required: true,
           field: "cityname",
-          label: "城市"
+          label: "城市",
+          rules: [{ required: true, message: "城市不能为空", trigger: "blur" }]
         },
         {
           id: "proj-name",
           type: 1,
-          subtype: "text",
-          required: true,
+          // subtype: "text",
+          // required: true,
           field: "projectname",
-          label: "项目名称"
+          label: "项目名称",
+          rules: [
+            { required: true, message: "项目名称不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "partner-company",
           type: 1,
-          subtype: "text",
-          required: true,
+          // subtype: "text",
+          // required: true,
           field: "partnername",
-          label: "合作单位名称"
+          label: "合作单位名称",
+          rules: [
+            { required: true, message: "合作单位名称不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "is-good-company",
           type: 5,
           field: "ismodel",
-          required: true,
+          // required: true,
           label: "是否标杆企业",
-          special_desc: "地产前100强为标杆企业"
+          special_desc: "地产前100强为标杆企业",
+          rules: [
+            { required: true, message: "合作单位名称不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "service-type",
-          type: 7,
+          type: 9,
           label: "服务类别",
-          value: null,
+          // value: null,
           field: "suptype",
-          required: true,
-          options: []
+          // required: true,
+          options: [],
+          rules: [
+            { required: true, message: "合作单位名称不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "server-content",
           type: 1,
-          subtype: "text",
-          required: false,
+          // subtype: "text",
+          // required: false,
           field: "servercontent",
           label: "服务内容"
         },
         {
           id: "proj-manager",
           type: 1,
-          subtype: "text",
-          required: true,
+          // subtype: "text",
+          // required: true,
           field: "manager",
-          label: "项目经理"
+          label: "项目经理",
+          rules: [
+            { required: true, message: "项目经理不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "contract-money",
           type: 1,
           subtype: "number",
-          required: true,
+          // required: true,
           field: "contractmoney",
           label: "合同金额",
-          append: "万"
+          unit: "万",
+          rules: [
+            { required: true, message: "合同金额不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "contract-scale",
           type: 1,
-          subtype: "text",
+          // subtype: "text",
           field: "contractsize",
-          required: true,
-          label: "合同体量"
+          // required: true,
+          label: "合同体量",
+          rules: [
+            { required: true, message: "合同体量不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "start-date",
-          type: 12,
+          type: 7,
           // subtype: "date",
-          required: true,
+          // required: true,
           field: "begindate",
           label: "开始日期",
-          value: null
+          // value: null,
+          rules: [
+            { required: true, message: "开始日期不能为空", trigger: "change" }
+          ]
         },
         {
           id: "end-date",
-          type: 12,
+          type: 7,
           // subtype: "date",
-          required: true,
+          // required: true,
           field: "enddate",
           label: "结束日期",
-          value: null
+          // value: null
+          rules: [
+            { required: true, message: "结束日期不能为空", trigger: "change" }
+          ]
         },
         {
           id: "contract-file",
-          type: 4,
-          required: true,
+          type: 8,
+          // required: true,
           label: "合同附件",
           field: "contractannex",
           accept: ".zip,.rar",
-          upload_desc:
+          upload_tips:
             "上传附件为压缩包文件，格式为：zip,rar等。（1个合同上传不超过5页，压缩包需要包含：合同封面首页、合同结尾页、合同实质内容页面（合同范围、内容、工期、项目团队）",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Achievement_Info",
-          fieldname: "contractannex"
+          fieldname: "contractannex",
+          rules: [
+            { required: true, message: "合同附件不能为空", trigger: "change" }
+          ]
         },
         {
           id: "summary",
           type: 1,
-          subtype: "text",
-          required: false,
+          // subtype: "text",
+          // required: false,
           field: "othermemo",
           label: "其他说明"
         }
@@ -305,20 +322,24 @@ export default {
       serviceTypeFormData: [
         {
           id: "service-type",
-          type: 7,
+          type: 9,
           label: "对口服务类别",
-          value: null,
+          // value: null,
           field: "servertype",
-          required: true,
+          // required: true,
           options: [],
-          assoc_control_id: "zz-name"
+          assoc_control_id: "zz-name",
+          rules: [
+            { required: true, message: "对口服务类别", trigger: "change" }
+          ]
         },
         {
           id: "is-main-type",
           label: "是否主要类别",
           field: "ismain",
-          required: true,
-          type: 5
+          // required: true,
+          type: 5,
+          rules: [{ required: true, message: "是否主要类别", trigger: "blur" }]
         },
         {
           id: "zz-name",
@@ -326,12 +347,12 @@ export default {
           // subtype: "text",
           options: [
             {
-              text: "无",
+              label: "无",
               value: null
             }
           ],
-          value: null,
-          required: false,
+          // value: null,
+          // required: false,
           field: "quaid",
           label: "资质名称"
         },
@@ -344,20 +365,23 @@ export default {
         // },
         {
           id: "zz-approve-date",
-          type: 12,
+          type: 7,
           // subtype: "date",
           label: "资质审核到期日期",
           field: "quaexaminedate",
-          required: true,
-          value: null
+          // required: true,
+          // value: null
+          rules: [
+            { required: true, message: "资质审核到期日期", trigger: "change" }
+          ]
         },
         {
           id: "memo",
           type: 1,
-          subtype: "text",
+          // subtype: "text",
           label: "其他说明",
-          field: "othermemo",
-          required: false
+          field: "othermemo"
+          // required: false
         }
       ],
       manData: this.$store.state.supprofile.man || [],
@@ -366,58 +390,122 @@ export default {
           id: "contact-type",
           label: "联系人类型",
           type: 2,
-          required: true,
-          value: null,
+          // required: true,
+          // value: null,
           field: "contacttype",
           options: [
             {
               value: null,
-              text: "选择联系人类型"
+              label: "选择联系人类型"
             }
-          ]
+          ],
+          rules: [
+            { required: true, message: "联系人类型不能为空", trigger: "change" }
+          ],
+          changeFunc: value => {
+            if (value.indexOf("第一联系人") !== -1) {
+              if (this.manFormData.length === 7) {
+                const fields = [
+                  {
+                    id: "shebao",
+                    label: "联系人社保证明",
+                    // required: true,
+                    field: "sscertificateannex",
+                    type: 8,
+                    // subtype: 1,
+                    domanid: this.$store.state.supinfo.accountid || "0",
+                    tablename: "H_Sup_Contact_Info",
+                    fieldname: "sscertificateannex"
+                  },
+                  {
+                    id: "entrust",
+                    label: "授权委托（附件）",
+                    // required: true,
+                    field: "authdelegationannex",
+                    type: 8,
+                    // subtype: 2, // 普通文件
+                    domanid: this.$store.state.supinfo.accountid || "0",
+                    tablename: "H_Sup_Contact_Info",
+                    fieldname: "authdelegationannex",
+                    accept: ".docx,.doc",
+                    upload_tips: "请下载授权委托书模板，填写并盖公章后扫描上传",
+                    tpl_files: [
+                      {
+                        name: "授权委托书模板",
+                        url:
+                          "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
+                      }
+                    ]
+                    //   subtype: "text"
+                  }
+                ];
+                this.manFormData = this.manFormData.concat(fields);
+              }
+            } else {
+              if (this.manFormData.length === 9) {
+                this.manFormData.splice(this.manFormData.length - 1, 1);
+                this.manFormData.splice(this.manFormData.length - 1, 1);
+              }
+            }
+
+            this.$refs["manList"].reset();
+          }
           // changeFunc: this.changeContactType
         },
         {
           id: "contact-job",
           label: "联系人职位",
           type: 2,
-          value: null,
-          required: true,
+          // value: null,
+          // required: true,
           field: "contactposition",
-          options: []
+          options: [],
+          rules: [
+            { required: true, message: "联系人职位不能为空", trigger: "change" }
+          ]
         },
         {
           id: "name",
           label: "联系人姓名",
-          required: true,
+          // required: true,
           field: "contactname",
           type: 1,
-          subtype: "text"
+          rules: [
+            { required: true, message: "联系人姓名不能为空", trigger: "blur" }
+          ]
+          // subtype: "text"
           // value: null
         },
         {
           id: "phone",
           label: "联系人电话",
-          required: true,
+          // required: true,
           field: "contacttel",
           type: 1,
-          subtype: "tel"
+          rules: [
+            { required: true, message: "联系人电话不能为空", trigger: "blur" }
+          ]
+          // subtype: "tel"
           // value: null
         },
         {
           id: "mobile",
           label: "联系人手机",
-          required: true,
+          // required: true,
           type: 1,
           field: "contactphone",
-          subtype: "tel",
-          pattern: /^1[3456789]\d{9}$/
+          // subtype: "tel",
+          // pattern: /^1[3456789]\d{9}$/,
+          rules: [
+            { required: true, message: "联系人手机不能为空", trigger: "blur" },
+            { validator: MobileCheck, trigger: "change" }
+          ]
           // value: null
         },
         {
           id: "email",
           label: "电子邮件",
-          required: false,
+          // required: false,
           type: 1,
           field: "email",
           subtype: "email"
@@ -426,11 +514,15 @@ export default {
         {
           id: "idcard",
           label: "身份证号码",
-          required: true,
+          // required: true,
           field: "contactidno",
           type: 1,
-          subtype: "text",
-          pattern: /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/
+          rules: [
+            { required: true, message: "身份证号码不能为空", trigger: "blur" },
+            { validator: IDCardCheck, trigger: "change" }
+          ]
+          // subtype: "text",
+          // pattern: /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/
           // value: null
         }
       ],
@@ -1242,15 +1334,15 @@ export default {
           if (res.code === "0") {
             let arr = res.data;
             let temp = [
-              {
-                value: null,
-                text: "请选择联系人类型"
-              }
+              // {
+              //   value: null,
+              //   label: "请选择联系人类型"
+              // }
             ];
             arr.forEach(ele => {
               temp.push({
                 value: `${ele.sy_name}-${ele.sy_value}`,
-                text: ele.sy_name
+                label: ele.sy_name
               });
             });
             this.manFormData[0].options = temp;
@@ -1269,15 +1361,15 @@ export default {
           if (res.code === "0") {
             let arr = res.data;
             let temp = [
-              {
-                value: null,
-                text: "请选择联系人职位"
-              }
+              // {
+              //   value: null,
+              //   label: "请选择联系人职位"
+              // }
             ];
             arr.forEach(ele => {
               temp.push({
                 value: `${ele.sy_name}-${ele.sy_value}`,
-                text: ele.sy_name
+                label: ele.sy_name
               });
             });
             this.manFormData[1].options = temp;

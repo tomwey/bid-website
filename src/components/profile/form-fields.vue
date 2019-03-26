@@ -6,6 +6,7 @@
         :prop="control.field"
         v-for="control in controls"
         :key="control.id"
+        :validate-on-rule-change="false"
       >
         <el-input
           v-model="formModel[control.field]"
@@ -35,6 +36,7 @@
           :multiple="control.multiple"
           v-model="formModel[control.field]"
           :disabled="control.disabled"
+          @change="itemChange(control,$event)"
           :placeholder="control.placeholder || '选择' + control.label"
         >
           <el-option
@@ -102,26 +104,20 @@
 
         <!-- 上传组件 type = 8 -->
         <bid-upload v-if="control.type === 8" :control="control" v-model="formModel[control.field]"></bid-upload>
-        <!-- <el-upload
-          v-if="control.type === 8"
-          class="upload-demo"
-          action="http://erp20-app.heneng.cn:16681/upload"
-          :on-preview="handlePreview"
-          :before-remove="beforeRemove"
-          :on-remove="handleRemove"
-          multiple
-          :before-upload="beforeUpload"
-          :limit="control.limit || 1"
-          :accept="control.accept"
-          :on-success="handleSuccess"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-          :ref="'upload' + control.id"
-          :data="{ mid: '0', domanid: control.domanid, tablename: control.tablename, fieldname: control.fieldname }"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>-->
+
+        <!-- 树形组件 type = 9 -->
+        <!-- <div class="tree-data-wrap" @click="toggle(control);" v-if="control.type === 9">
+          {{item.value ? item.value.text : "请选择" + item.label}}
+          <span class="caret"></span>
+          <tree-data
+            @selected="selectedItem"
+            v-show="openTreeData"
+            v-if="control.type === 9"
+            :data="control.options"
+            :id="control.id"
+            :target="control"
+          ></tree-data>
+        </div>-->
       </el-form-item>
     </el-form>
   </div>
@@ -375,6 +371,10 @@ $theme-color: #e46623;
     margin-top: 5px;
     padding: 0;
     line-height: 18px;
+  }
+
+  .el-select {
+    width: 100%;
   }
 
   .special {

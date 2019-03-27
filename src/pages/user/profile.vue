@@ -133,8 +133,8 @@
       </div>
     </div>
 
-    <el-dialog title="地产100强" :visible.sync="top100ImgVisible">
-      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%">
+    <el-dialog title="地产100强" :visible.sync="top100ImgVisible" style="text-align:center;">
+      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%;">
     </el-dialog>
   </div>
 </template>

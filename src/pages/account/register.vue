@@ -3,8 +3,20 @@
     <div class="form-box">
       <h2 class="title">供方注册</h2>
       <div class="form-controls">
-        <b-form-input v-model="comname" type="text" placeholder="公司名字"></b-form-input>
-        <b-form-input v-model="comuscc" type="text" placeholder="统一社会信用代码"></b-form-input>
+        <b-form-input
+          v-model="comname"
+          type="text"
+          @blur.native="inputBlur('comname');"
+          placeholder="公司名字"
+        ></b-form-input>
+        <div class="error-tips" v-if="compExists">公司名字已存在</div>
+        <b-form-input
+          v-model="comuscc"
+          type="text"
+          @blur.native="inputBlur('comuscc');"
+          placeholder="统一社会信用代码"
+        ></b-form-input>
+        <div class="error-tips" v-if="usccExists">统一社会信用代码已存在</div>
         <!-- <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input> -->
         <b-form-input v-model="loginname" type="text" placeholder="登录名"></b-form-input>
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
@@ -46,6 +58,8 @@ export default {
       comname: null,
       comuscc: null,
       loginname: null,
+      compExists: false,
+      usccExists: false,
       // company: null,
       mobile: null,
       code: null,
@@ -56,6 +70,49 @@ export default {
     };
   },
   methods: {
+    inputBlur(item) {
+      let type = null;
+      let value = null;
+      if (item == "comname") {
+        type = "0";
+        value = this.comname;
+      } else if (item == "comuscc") {
+        type = "1";
+        value = this.comuscc;
+      } else {
+        return;
+      }
+
+      this.$post(
+        {
+          action: "P_SUP_Reg_IsRepeatComOrCode",
+          p1: value,
+          p2: type
+          // p3: this.$store.state.supinfo.supid || ""
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "1") {
+            // item.error_tips = `${item.name}已存在`;
+            // console.log(item);
+            // this.$set(item, "error_tips", `${item.label}已存在`);
+            if (item == "comname") {
+              this.compExists = true;
+            } else if (item == "comuscc") {
+              this.usccExists = true;
+            }
+          } else {
+            // item.error_tips = null;
+            // this.$set(item, "error_tips", null);
+            if (item == "comname") {
+              this.compExists = false;
+            } else if (item == "comuscc") {
+              this.usccExists = false;
+            }
+          }
+        }
+      );
+    },
     commit() {
       if (!this.comname) {
         this.$message({
@@ -171,6 +228,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 $theme-color: #e46623;
+.error-tips {
+  font-size: 14px;
+  color: $theme-color;
+  // margin-top: 3px;
+  margin-bottom: 15px;
+}
+
 .register {
   .form-box {
     background: #fff;

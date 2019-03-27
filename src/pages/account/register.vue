@@ -3,6 +3,8 @@
     <div class="form-box">
       <h2 class="title">供方注册</h2>
       <div class="form-controls">
+        <b-form-input v-model="comname" type="text" placeholder="公司名字"></b-form-input>
+        <b-form-input v-model="comuscc" type="text" placeholder="统一社会信用代码"></b-form-input>
         <!-- <b-form-input v-model="company" type="text" placeholder="公司名称"></b-form-input> -->
         <b-form-input v-model="loginname" type="text" placeholder="登录名"></b-form-input>
         <b-form-input v-model="mobile" type="tel" placeholder="手机号"></b-form-input>
@@ -41,6 +43,8 @@ export default {
   },
   data() {
     return {
+      comname: null,
+      comuscc: null,
       loginname: null,
       // company: null,
       mobile: null,
@@ -53,32 +57,72 @@ export default {
   },
   methods: {
     commit() {
+      if (!this.comname) {
+        this.$message({
+          type: "error",
+          message: "公司名字不能为空"
+        });
+        return;
+      }
+
+      if (!this.comuscc) {
+        this.$message({
+          type: "error",
+          message: "统一社会信用代码不能为空"
+        });
+        return;
+      }
+
       if (!this.loginname) {
-        alert("登录名不能为空");
+        // alert("登录名不能为空");
+        this.$message({
+          type: "error",
+          message: "登录名不能为空"
+        });
         return;
       }
       if (!this.mobile) {
-        alert("手机号不能为空");
+        // alert("手机号不能为空");
+        this.$message({
+          type: "error",
+          message: "手机号不能为空"
+        });
         return;
       }
 
       if (!this.isPhone(this.mobile)) {
-        alert("不正确的手机号");
+        // alert("不正确的手机号");
+        this.$message({
+          type: "error",
+          message: "不正确的手机号"
+        });
         return;
       }
 
       if (!this.password || this.password.length < 6) {
-        alert("密码太短，至少为6位");
+        // alert("密码太短，至少为6位");
+        this.$message({
+          type: "error",
+          message: "密码太短，至少为6位"
+        });
         return;
       }
 
       if (this.password !== this.password_confirm) {
-        alert("两次密码输入不一致");
+        // alert("两次密码输入不一致");
+        this.$message({
+          type: "error",
+          message: "两次密码输入不一致"
+        });
         return;
       }
 
       if (this.status !== "1") {
-        alert("需要接受合能招标采购平台注册协议");
+        // alert("需要接受合能招标采购平台注册协议");
+        this.$message({
+          type: "error",
+          message: "需要接受合能招标采购平台注册协议"
+        });
         return;
       }
 
@@ -89,7 +133,9 @@ export default {
           p2: this.mobile,
           p3: this.GetPassword(this.password),
           p4: this.code,
-          p5: this.codetype
+          p5: this.codetype,
+          p6: this.comname,
+          p7: this.comuscc
         },
         res => {
           if (res.code == 0) {

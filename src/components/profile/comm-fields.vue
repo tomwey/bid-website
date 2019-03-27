@@ -105,7 +105,7 @@
             {{item.label}}
             <span v-if="item.special_desc">
               （
-              <span class="special">{{item.special_desc}}</span>）
+              <span class="special" @click="showSpecial(item);">{{item.special_desc}}</span>）
             </span>
           </b-form-checkbox>
 
@@ -208,6 +208,12 @@ export default {
         // console.log(this.currentItem);
         this.$emit("change", { control: this.currentItem, data: val });
         // this.currentItem = null;
+      }
+    },
+    showSpecial(control) {
+      // console.log(ev);
+      if (control.clickCallback) {
+        control.clickCallback();
       }
     },
     reset() {
@@ -368,6 +374,9 @@ $theme-color: #e46623;
 
   .special {
     color: $theme-color;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
   }
 
   .file-preview {

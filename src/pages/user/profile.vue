@@ -132,6 +132,10 @@
         <el-button type="primary" @click="commit" v-if="currentStep.step === steps.length">提交审核</el-button>
       </div>
     </div>
+
+    <el-dialog title="地产100强" :visible.sync="top100ImgVisible">
+      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%">
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -153,6 +157,7 @@ export default {
       currentStep: null,
       achieveData: this.$store.state.supprofile.yj_data || [],
       commiting: false,
+      top100ImgVisible: false,
       achieveFields: [
         {
           label: "操作",
@@ -191,7 +196,11 @@ export default {
           field: "ismodel",
           required: true,
           label: "是否标杆企业",
-          special_desc: "地产前100强为标杆企业"
+          special_desc: "地产前100强为标杆企业",
+          clickCallback: () => {
+            // console.log(123);
+            this.top100ImgVisible = true;
+          }
         },
         {
           id: "service-type",
@@ -510,7 +519,7 @@ export default {
           placeholder: "",
           required: true,
           field: "comname",
-          readonly: false
+          readonly: true
         },
         {
           id: "company-nature",
@@ -535,7 +544,7 @@ export default {
           placeholder: "",
           field: "comuscc",
           required: true,
-          readonly: false
+          readonly: true
         },
         {
           id: "company-id-exp",

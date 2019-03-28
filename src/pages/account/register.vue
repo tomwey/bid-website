@@ -34,7 +34,7 @@
           <span class="accepts">
             我已阅读并同意
             <a
-              href="http://erp20-mobiledoc.heneng.cn:16660/view/YxmhgSw"
+              href="http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-03-28%2F1611376%2F1611376.docx"
               target="_blank"
               class="accept-links"
             >《合能招标采购平台注册协议》</a>

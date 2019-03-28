@@ -196,7 +196,7 @@ export default {
           field: "ismodel",
           required: true,
           label: "是否标杆企业",
-          special_desc: "地产前100强为标杆企业",
+          special_desc: "标杆企业名单",
           clickCallback: () => {
             // console.log(123);
             this.top100ImgVisible = true;

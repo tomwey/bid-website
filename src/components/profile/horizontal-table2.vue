@@ -15,24 +15,8 @@
         <tbody>
           <tr v-for="(item, index) in items" :key="index">
             <td align="center" v-for="(field,index2) in fields" :key="index2">
-              <!-- <span v-if="!item.filetype">{{item.value}}</span>
-          
-          <img v-if="item.filetype === 'image'" :src="item.fileurl">
-          <a
-            :href="item.fileurl"
-            v-if="item.filetype === 'file'"
-            class="file-link"
-            target="_blank"
-              >{{item.filename}}</a>-->
-              <!-- {{item[field.value]}} -->
               <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
               <div class="actions" v-if="field.value === 'actions'">
-                <!-- <b-button
-                  :variant="btn.variant"
-                  v-for="(btn,index4) in btnActions(item)"
-                  :key="index4"
-                  @click="click(btn, item);"
-                >{{btn.name}}</b-button>-->
                 <span
                   class="action-btn"
                   v-for="(btn,index4) in btnActions(item)"
@@ -59,7 +43,7 @@ export default {
   },
   components: {
     valueItem: function(resolve) {
-      require(["@/components/profile/value-item"], resolve);
+      require(["@/components/profile/value-item2"], resolve);
     }
   },
   methods: {

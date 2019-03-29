@@ -58,12 +58,18 @@ export default {
       fileSize: this.control.fileSize || 5
     };
   },
+  mounted() {
+    if (this.value) {
+      this.loadAnnexes();
+    }
+  },
   watch: {
-    fileList(newVal) {
-      console.log(newVal);
-    },
     value(newVal) {
-      console.log(newVal);
+      if (!newVal) {
+        this.fileList = [];
+      } else {
+        this.loadAnnexes();
+      }
     }
   },
   computed: {
@@ -73,6 +79,7 @@ export default {
   },
   methods: {
     changeValues(id, isAdd) {
+      // console.log(this.fileList);
       if (isAdd) {
         var temp = [];
         if (this.value) {
@@ -83,6 +90,7 @@ export default {
         // this.value = temp.join(",");
         this.$emit("input", temp.join(","));
       } else {
+        // console.log(this.value);
         if (this.value) {
           var temp = this.value.split(",");
           const index = temp.indexOf(id);
@@ -98,10 +106,12 @@ export default {
     handleSuccess(res, file) {
       this.changeValues(res.IDS, true);
       // console.log(this.fileList);
+    },
+    loadAnnexes() {
       this.$post(
         {
           action: "P_SY_GetAnnex",
-          p1: res.IDS
+          p1: this.value
         },
         res => {
           // console.log(res);
@@ -109,10 +119,12 @@ export default {
             let arr = res.data;
             let temp = [];
             arr.forEach(file => {
+              // console.log(file);
               let fileName = file.filename || "";
               temp.push({
                 name: file.filename,
                 url: file.url,
+                annexid: file.annexid,
                 isimage:
                   fileName.indexOf(".png") !== -1 ||
                   fileName.indexOf(".gif") !== -1 ||
@@ -121,7 +133,7 @@ export default {
                   fileName.indexOf(".webp") !== -1
               });
             });
-            this.fileList = this.fileList.concat(temp);
+            this.fileList = temp;
           }
         }
       );
@@ -159,13 +171,16 @@ export default {
     beforeRemove(file, fileList) {
       return true;
     },
-    handleRemove(file) {
+    handleRemove(file, fileList) {
       // console.log(file);
-      // var ID = file.id;
-      // this.changeValues();
-      if (file.response) {
-        this.changeValues(file.response.IDS, false);
-      }
+      // console.log(fileList);
+      // if (file.response) {
+      // const index = this.fileList.indexOf(file);
+      // if (index !== -1) {
+      //   this.fileList.splice(index, 1);
+      // }
+      this.changeValues(file.annexid, false);
+      // }
     },
     handleExceed(files, fileList) {
       const limit = this.control.limit || 1;

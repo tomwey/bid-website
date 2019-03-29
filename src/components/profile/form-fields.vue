@@ -216,37 +216,18 @@ export default {
     selectedItem(val) {
       // console.log(val);
       if (this.currentItem) {
-        // this.$set(this.currentItem, "value", val);
-        // this.$set(this.currentItem, this.currentItem.field + "name", val.text);
         this.openTreeData = false;
 
-        // this.$set(this.currentItem, this.currentItem.field, val.value);
-        // this.$set(this.)
         this.$set(this.formModel, this.currentItem.field + "name", val.text);
         this.$set(this.formModel, this.currentItem.field, val.value);
         this.$set(this.formModel, this.currentItem.field + "id", val.value);
 
         if (this.currentItem.changeFunc) {
-          // this.currentItem[this.currentItem.field] = val.value;
-          // this.currentItem[]
           this.currentItem.changeFunc(val);
         }
-        // console.log(this.currentItem);
-        // this.$emit("change", { control: this.currentItem, data: val });
-        // this.currentItem = null;
       }
     },
     reset() {
-      // console.log("1111111");
-      // this.formData.forEach(item => {
-      // if (item.type === 4) {
-      //   const ref = item.id.replace(/-/g, "");
-      //   const fileInput = this.$refs[ref][0];
-      //   fileInput && fileInput.reset();
-      // }
-
-      //   item.value = null;
-      // });
       this.formModel.forEach(item => {
         item[control.field] = null;
       });
@@ -264,79 +245,6 @@ export default {
           }
         }
       });
-    },
-    // commit() {
-    //   console.log(this.formModel);
-    // },
-    uploadFiles(ev, item) {
-      // console.log(ev);
-      let files = ev.target.files;
-      if (files && files.length > 0) {
-        let formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          formData.append("file", files[i]);
-        }
-        formData.append("mid", "0");
-        formData.append("domanid", (item.uid || 0).toString());
-        formData.append("tablename", item.tablename || "H_Sup_Annex");
-        formData.append("fieldname", item.fieldname || "AnnexID");
-
-        this.$axios
-          .post("http://erp20-app.heneng.cn:16681/upload", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            },
-            onUploadProgress: progressEvent => {
-              let loaded = progressEvent.loaded;
-              let total = progressEvent.total;
-              let percent = (parseFloat(loaded) / parseFloat(total)).toFixed(2);
-              percent = parseInt(percent * 100);
-              this.$set(item, "progress", percent);
-            }
-          })
-          .then(res => {
-            this.$set(item, "progress", 100);
-            if (res.data && res.data.code === "0") {
-              item.value = res.data.IDS;
-              this.$post(
-                {
-                  action: "P_SY_GetAnnex",
-                  p1: res.data.IDS
-                },
-                res => {
-                  // console.log(res);
-                  if (res.code === "0") {
-                    let arr = res.data;
-                    let temp = [];
-                    arr.forEach(file => {
-                      let fileName = file.filename || "";
-                      temp.push({
-                        _filename: file.filename,
-                        _fileurl: file.url,
-                        _isimage:
-                          fileName.indexOf(".png") !== -1 ||
-                          fileName.indexOf(".gif") !== -1 ||
-                          fileName.indexOf(".jpg") !== -1 ||
-                          fileName.indexOf(".jpeg") !== -1 ||
-                          fileName.indexOf(".webp") !== -1
-                      });
-                    });
-                    // item._files = temp;
-                    this.$set(item, item.field + "_files", temp);
-                  }
-                }
-              );
-            }
-          })
-          .catch(() => {
-            // console.log(error);
-            // alert("上传失败!");
-            this.$message({
-              message: "上传失败！",
-              type: "error"
-            });
-          });
-      }
     }
   }
 };

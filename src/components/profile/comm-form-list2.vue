@@ -51,7 +51,7 @@ export default {
       require(["@/components/profile/form-fields"], resolve);
     },
     horizontalTable: function(resolve) {
-      require(["@/components/profile/horizontal-table"], resolve);
+      require(["@/components/profile/horizontal-table2"], resolve);
     }
   },
   data() {
@@ -174,15 +174,6 @@ export default {
 
       this.reset();
 
-      // this.$nextTick(() => {
-      //   if (
-      //     this.$refs["dialogForm"] &&
-      //     this.$refs["dialogForm"].$refs["form"]
-      //   ) {
-      //     this.$refs["dialogForm"].$refs["form"].resetFields();
-      //   }
-      // });
-
       let object = {};
       this.formData.forEach(control => {
         object[control.field] = "";
@@ -196,7 +187,7 @@ export default {
       this.dialogFormVisible = true;
     },
     commit(evt) {
-      console.log(this.formModel);
+      // console.log(this.formModel);
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
           let obj = Object.assign({}, this.formModel);

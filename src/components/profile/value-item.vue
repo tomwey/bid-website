@@ -43,6 +43,8 @@ export default {
       return this.item[key];
     },
     textValue() {
+      // console.log(this.item);
+
       let key = this.field + "name";
       let value = this.item[key] || this.item[this.field] || "";
 
@@ -50,15 +52,13 @@ export default {
         return "";
       }
 
-      // value = value.replace("00:00:00 +0000 UTC", "");
-      // value = value.replace("+0000 UTC", "");
-
-      if (value === "true") {
-        return "是";
-      }
-
-      if (value === "false") {
-        return "否";
+      if (this.field == "ismain" || this.field == "ismodel") {
+        if (value === "true" || value === true) {
+          return "是";
+        }
+        if (!value || value === "false" || value === false) {
+          return "否";
+        }
       }
 
       return value;

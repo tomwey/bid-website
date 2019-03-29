@@ -110,7 +110,6 @@
             name="公司业绩"
             :items="achieveData"
             :fields="achieveFields"
-            @editform="editAchieveForm"
             :form-data="achieveFormData"
           />
         </div>
@@ -199,10 +198,10 @@ export default {
           field: "ismodel",
           // required: true,
           label: "是否标杆企业",
-          special_desc: "地产前100强为标杆企业",
-          rules: [
-            { required: true, message: "合作单位名称不能为空", trigger: "blur" }
-          ]
+          special_desc: "地产前100强为标杆企业"
+          // rules: [
+          //   { required: true, message: "合作单位名称不能为空", trigger: "blur" }
+          // ]
         },
         {
           id: "service-type",
@@ -213,7 +212,7 @@ export default {
           // required: true,
           options: [],
           rules: [
-            { required: true, message: "合作单位名称不能为空", trigger: "blur" }
+            { required: true, message: "服务类别不能为空", trigger: "blur" }
           ]
         },
         {
@@ -763,7 +762,13 @@ export default {
           id: "law-man-idcard",
           type: 1,
           label: "法定代表人身份证号码",
-          field: "corporatemanidno"
+          field: "corporatemanidno",
+          rules: [
+            {
+              validator: IDCardCheck,
+              trigger: "change"
+            }
+          ]
         },
         {
           id: "safe-product-license-file",

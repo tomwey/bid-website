@@ -105,8 +105,8 @@ export default {
     actionClick(ev) {
       const action = ev.action;
       const data = ev.data;
+      console.log(data);
       if (action.code === "edit") {
-        // this.$refs.dialogForm.clearValidate();
         this.$nextTick(() => {
           if (
             this.$refs["dialogForm"] &&
@@ -117,7 +117,31 @@ export default {
         });
 
         this.currentEditItem = data;
-        this.formModel = Object.assign({}, data);
+        // this.formModel = Object.assign({}, data);
+        this.formModel = {};
+        for (let i = 0; i < this.formData.length; i++) {
+          const control = this.formData[i];
+          if (control.type === 5) {
+            if (
+              data[control.field] == "true" ||
+              data[control.field] == "是" ||
+              data[control.field] == "1"
+            ) {
+              this.formModel[control.field] = true;
+            } else {
+              this.formModel[control.field] = false;
+            }
+          } else if (control.type === 9) {
+            this.formModel[control.field + "name"] =
+              data[control.field + "name"];
+            this.formModel[control.field] =
+              (data[control.field + "id"] || data[control.field]) == "0"
+                ? ""
+                : data[control.field + "id"] || data[control.field];
+          } else {
+            this.formModel[control.field] = data[control.field];
+          }
+        }
 
         if (this.model === "man") {
           for (let i = 0; i < this.formData.length; i++) {
@@ -145,36 +169,26 @@ export default {
         }
       }
     },
-    reformServiceForm(control, data) {
-      // console.log(control);
-
-      if (control.field == "servertype") {
-        this.$emit("controlvaluechanged", {
-          control: control,
-          data: { text: data["servertypename"], value: data["servertypeid"] }
-        });
-      } else if (control.field == "quaid") {
-        this.$emit("controlvaluechanged", {
-          control: control,
-          data: `${data["quaidname"]}-${data["quaid"]}`
-        });
-      }
-    },
     newItem() {
       this.currentEditItem = null;
 
-      this.$nextTick(() => {
-        if (
-          this.$refs["dialogForm"] &&
-          this.$refs["dialogForm"].$refs["form"]
-        ) {
-          this.$refs["dialogForm"].$refs["form"].resetFields();
-        }
-      });
+      this.reset();
+
+      // this.$nextTick(() => {
+      //   if (
+      //     this.$refs["dialogForm"] &&
+      //     this.$refs["dialogForm"].$refs["form"]
+      //   ) {
+      //     this.$refs["dialogForm"].$refs["form"].resetFields();
+      //   }
+      // });
 
       let object = {};
       this.formData.forEach(control => {
         object[control.field] = "";
+        if (control.type == 5) {
+          object[control.field] = false;
+        }
       });
 
       this.formModel = object;
@@ -182,117 +196,26 @@ export default {
       this.dialogFormVisible = true;
     },
     commit(evt) {
-      // evt.preventDefault();
-      let obj = {};
+      console.log(this.formModel);
+      this.$refs.dialogForm.validateFields(flag => {
+        if (flag) {
+          let obj = Object.assign({}, this.formModel);
 
-      for (let i = 0; i < this.formData.length; i++) {
-        let control = this.formData[i];
-        // console.log(control);
-        if (
-          control.required &&
-          control.type == 7 &&
-          (!control.value || !control.value.value)
-        ) {
-          this.$message({
-            message: control.label + "不能为空",
-            type: "error"
-          });
-          return;
-        }
+          // this.dialogFormVisible = false;
 
-        if (control.required && control.type !== 5 && !control.value) {
-          // alert(control.label + "不能为空");
-
-          this.$message({
-            message: control.label + "不能为空",
-            type: "error"
-          });
-          return;
-        }
-
-        if (control.pattern) {
-          let reg = new RegExp(control.pattern);
-          if (!!control.value && !reg.test(control.value)) {
-            // alert(control.label + "不正确");
-            this.$message({
-              message: control.label + "不正确",
-              type: "error"
-            });
-            return;
-          }
-        }
-
-        if (control.field == "ismain") {
-          // console.log(control);
-          let hasPrimary = false;
-          if (control.value === true) {
-            for (let index = 0; index < this.items.length; index++) {
-              const ele = this.items[index];
-              if (ele.ismain == "是" || ele.ismain == "true") {
-                hasPrimary = true;
-                break;
-              }
+          if (this.currentEditItem) {
+            // 编辑
+            const index = this.items.indexOf(this.currentEditItem);
+            if (index !== -1) {
+              this.items.splice(index, 1, obj);
             }
+          } else {
+            // 新增
+            this.items.push(obj);
           }
-
-          if (hasPrimary) {
-            // alert("服务类别只能有一个主要类别");
-            this.$message({
-              message: "服务类别只能有一个主要类别",
-              type: "error"
-            });
-            return;
-          }
+          this.dialogFormVisible = false;
         }
-
-        if (control.subtype === "date") {
-          if (control.value) {
-            let val = control.value
-              .replace("年", "-")
-              .replace("月", "-")
-              .replace("日", "")
-              .replace("/", "-");
-            // console.log(val);
-            let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
-            if (!reg.test(val)) {
-              this.$message({
-                message: control.label + "不正确",
-                type: "error"
-              });
-              return;
-            }
-          }
-        }
-
-        if (control.type === 2 && control.value) {
-          obj[control.field] = control.value.split("-")[1];
-          obj[control.field + "name"] = control.value.split("-")[0];
-        } else if (control.type === 7 && control.value) {
-          obj[control.field] = control.value.value;
-          obj[control.field + "name"] = control.value.text;
-          obj[control.field + "id"] = control.value.value;
-        } else if (control.type === 5) {
-          obj[control.field] = control.value ? "是" : "否";
-        } else {
-          if (control.type === 4) {
-            obj[control.field + "_isfile"] = true;
-            // let files = control._files;
-            obj[control.field + "_files"] = control[control.field + "_files"];
-          }
-          obj[control.field] = control.value;
-        }
-      }
-
-      if (this.currentEditItem) {
-        // 编辑
-        const index = this.items.indexOf(this.currentEditItem);
-        if (index !== -1) {
-          this.items.splice(index, 1, obj);
-        }
-      } else {
-        // 新增
-        this.items.push(obj);
-      }
+      });
     }
   }
 };

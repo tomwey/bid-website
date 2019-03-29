@@ -106,9 +106,11 @@
         <bid-upload v-if="control.type === 8" :control="control" v-model="formModel[control.field]"></bid-upload>
 
         <!-- 树形组件 type = 9 -->
-        <!-- <div class="tree-data-wrap" @click="toggle(control);" v-if="control.type === 9">
-          {{item.value ? item.value.text : "请选择" + item.label}}
-          <span class="caret"></span>
+        <div class="tree-data-wrap" @click="toggle(control);" v-if="control.type === 9">
+          {{formModel[control.field] ? formModel[control.field + 'name'] : "请选择" + control.label}}
+          <span
+            class="caret"
+          ></span>
           <tree-data
             @selected="selectedItem"
             v-show="openTreeData"
@@ -117,7 +119,7 @@
             :id="control.id"
             :target="control"
           ></tree-data>
-        </div>-->
+        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -128,6 +130,9 @@ export default {
   components: {
     bidUpload: resolve => {
       require(["@/components/bid-upload"], resolve);
+    },
+    treeData: resolve => {
+      require(["@/components/tree-data"], resolve);
     }
   },
   props: {
@@ -157,7 +162,9 @@ export default {
   },
   data() {
     return {
-      fileList: []
+      fileList: [],
+      openTreeData: false,
+      currentItem: null
     };
   },
   mounted() {
@@ -209,29 +216,58 @@ export default {
     selectedItem(val) {
       // console.log(val);
       if (this.currentItem) {
-        this.$set(this.currentItem, "value", val);
+        // this.$set(this.currentItem, "value", val);
         // this.$set(this.currentItem, this.currentItem.field + "name", val.text);
         this.openTreeData = false;
+
+        // this.$set(this.currentItem, this.currentItem.field, val.value);
+        // this.$set(this.)
+        this.$set(this.formModel, this.currentItem.field + "name", val.text);
+        this.$set(this.formModel, this.currentItem.field, val.value);
+        this.$set(this.formModel, this.currentItem.field + "id", val.value);
+
+        if (this.currentItem.changeFunc) {
+          // this.currentItem[this.currentItem.field] = val.value;
+          // this.currentItem[]
+          this.currentItem.changeFunc(val);
+        }
         // console.log(this.currentItem);
-        this.$emit("change", { control: this.currentItem, data: val });
+        // this.$emit("change", { control: this.currentItem, data: val });
         // this.currentItem = null;
       }
     },
     reset() {
       // console.log("1111111");
-      this.formData.forEach(item => {
-        // if (item.type === 4) {
-        //   const ref = item.id.replace(/-/g, "");
-        //   const fileInput = this.$refs[ref][0];
-        //   fileInput && fileInput.reset();
-        // }
+      // this.formData.forEach(item => {
+      // if (item.type === 4) {
+      //   const ref = item.id.replace(/-/g, "");
+      //   const fileInput = this.$refs[ref][0];
+      //   fileInput && fileInput.reset();
+      // }
 
-        item.value = null;
+      //   item.value = null;
+      // });
+      this.formModel.forEach(item => {
+        item[control.field] = null;
       });
 
       // this.$emit("reset");
     },
-    commit() {},
+    validateFields(callback) {
+      // console.log(124);
+      this.$refs[this.formRef].validate(valid => {
+        if (valid) {
+          if (callback) {
+            callback(true);
+          } else {
+            callback(false);
+          }
+        }
+      });
+    },
+    // commit() {
+    //   console.log(this.formModel);
+    // },
     uploadFiles(ev, item) {
       // console.log(ev);
       let files = ev.target.files;
@@ -337,6 +373,7 @@ $theme-color: #e46623;
   width: 100%;
   height: 30px;
   line-height: 30px;
+  margin-top: 5px;
   .caret {
     display: inline-block;
     vertical-align: middle;

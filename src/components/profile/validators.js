@@ -13,6 +13,7 @@ export function MobileCheck(rule, value, callback) {
 }
 
 export function IDCardCheck(rule, value, callback) {
+    console.log(rule);
     if (!value) {
         callback(new Error('身份证号不能为空'));
     } else {

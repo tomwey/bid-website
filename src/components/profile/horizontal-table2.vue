@@ -15,7 +15,12 @@
         <tbody>
           <tr v-for="(item, index) in items" :key="index">
             <td align="center" v-for="(field,index2) in fields" :key="index2">
-              <value-item :item="item" :field="field.value" v-if="field.value !== 'actions'"/>
+              <value-item
+                ref="valueItem"
+                :item="item"
+                :field="field.value"
+                v-if="field.value !== 'actions'"
+              />
               <div class="actions" v-if="field.value === 'actions'">
                 <span
                   class="action-btn"
@@ -40,6 +45,16 @@ export default {
     items: Array,
     fields: Array,
     actions: Array
+  },
+  watch: {
+    items() {
+      // console.log(123);
+      // console.log(this.$refs);
+
+      this.$refs["valueItem"].forEach(comp => {
+        comp.reloadAnnexesIfNeeded();
+      });
+    }
   },
   components: {
     valueItem: function(resolve) {

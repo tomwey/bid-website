@@ -105,7 +105,7 @@ export default {
     actionClick(ev) {
       const action = ev.action;
       const data = ev.data;
-      console.log(data);
+      // console.log(data);
       if (action.code === "edit") {
         this.$nextTick(() => {
           if (
@@ -118,7 +118,7 @@ export default {
 
         this.currentEditItem = data;
         // this.formModel = Object.assign({}, data);
-        this.formModel = {};
+        let obj = {};
         for (let i = 0; i < this.formData.length; i++) {
           const control = this.formData[i];
           if (control.type === 5) {
@@ -127,21 +127,26 @@ export default {
               data[control.field] == "是" ||
               data[control.field] == "1"
             ) {
-              this.formModel[control.field] = true;
+              obj[control.field] = true;
             } else {
-              this.formModel[control.field] = false;
+              obj[control.field] = false;
             }
+          } else if (control.type === 8) {
+            // 附件
+            obj[control.field + "url"] = data[control.field + "url"];
+            obj[control.field] = data[control.field];
           } else if (control.type === 9) {
-            this.formModel[control.field + "name"] =
-              data[control.field + "name"];
-            this.formModel[control.field] =
+            obj[control.field + "name"] = data[control.field + "name"];
+            obj[control.field] =
               (data[control.field + "id"] || data[control.field]) == "0"
                 ? ""
                 : data[control.field + "id"] || data[control.field];
           } else {
-            this.formModel[control.field] = data[control.field];
+            obj[control.field] = data[control.field];
           }
         }
+
+        this.formModel = obj;
 
         if (this.model === "man") {
           for (let i = 0; i < this.formData.length; i++) {

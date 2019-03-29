@@ -23,11 +23,14 @@ export default {
     };
   },
   mounted() {
-    if (this.isFile) {
-      this.loadAnnexes();
-    }
+    this.reloadAnnexesIfNeeded();
   },
   methods: {
+    reloadAnnexesIfNeeded() {
+      if (this.isFile) {
+        this.loadAnnexes();
+      }
+    },
     loadAnnexes() {
       this.$post(
         {
@@ -64,6 +67,7 @@ export default {
     isFile() {
       const urlKey = this.field + "url";
       let urlVal = this.item[urlKey];
+      console.log(urlVal);
       return !!urlVal;
     },
     textValue() {

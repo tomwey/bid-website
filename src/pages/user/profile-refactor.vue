@@ -414,7 +414,14 @@ export default {
                     // subtype: 1,
                     domanid: this.$store.state.supinfo.accountid || "0",
                     tablename: "H_Sup_Contact_Info",
-                    fieldname: "sscertificateannex"
+                    fieldname: "sscertificateannex",
+                    rules: [
+                      {
+                        required: true,
+                        message: "联系人社保证明不能为空",
+                        trigger: "blur"
+                      }
+                    ]
                   },
                   {
                     id: "entrust",
@@ -433,6 +440,13 @@ export default {
                         name: "授权委托书模板",
                         url:
                           "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
+                      }
+                    ],
+                    rules: [
+                      {
+                        required: true,
+                        message: "授权委托（附件）不能为空",
+                        trigger: "blur"
                       }
                     ]
                     //   subtype: "text"

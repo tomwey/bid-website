@@ -12,7 +12,7 @@
       </b-col>
     </b-row>
     <horizontal-table
-      :items="items"
+      :items="tableData"
       @actionclick="actionClick"
       :fields="fields"
       :actions="actions"
@@ -59,6 +59,7 @@ export default {
       formModel: {},
       dialogFormVisible: false,
       currentEditItem: null,
+      tableData: this.items,
       actions: [
         {
           name: "编辑",
@@ -167,9 +168,9 @@ export default {
       } else if (action.code === "delete") {
         var a = confirm("您确定要删除吗？");
         if (a) {
-          const index = this.items.indexOf(data);
+          const index = this.tableData.indexOf(data);
           if (index !== -1) {
-            this.items.splice(index, 1);
+            this.tableData.splice(index, 1);
           }
         }
       }
@@ -195,19 +196,48 @@ export default {
       // console.log(this.formModel);
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
-          let obj = Object.assign({}, this.formModel);
+          // let obj = Object.assign({}, this.formModel);
+
+          let obj = {};
+          // console.log(this.formModel);
+          this.formData.forEach(control => {
+            if (control.type == 2) {
+              if (this.formModel[control.field]) {
+                obj[control.field + "name"] = this.formModel[
+                  control.field
+                ].split("-")[0];
+                obj[control.field] = this.formModel[control.field].split(
+                  "-"
+                )[1];
+              } else {
+                obj[control.field] = "";
+                obj[control.field + "name"] = "";
+              }
+              obj[control.field + "name"] = this.formModel[control.field];
+              obj[control.field] = this.formModel[control.field];
+            } else {
+              // console.log(control.field);
+              // console.log("-------------");
+              // console.log(this.formModel[control.field]);
+              obj[control.field] = this.formModel[control.field];
+            }
+          });
+
+          // console.log(obj);
 
           // this.dialogFormVisible = false;
 
           if (this.currentEditItem) {
             // 编辑
-            const index = this.items.indexOf(this.currentEditItem);
+            const index = this.tableData.indexOf(this.currentEditItem);
             if (index !== -1) {
-              this.items.splice(index, 1, obj);
+              // console.log("123----");
+              this.tableData.splice(index, 1, obj);
             }
+            // console.log(this.items);
           } else {
             // 新增
-            this.items.push(obj);
+            this.tableData.push(obj);
           }
           this.dialogFormVisible = false;
         }

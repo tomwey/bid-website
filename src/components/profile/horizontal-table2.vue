@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index">
+          <tr v-for="(item, index) in tableData" :key="index">
             <td align="center" v-for="(field,index2) in fields" :key="index2">
               <value-item
                 ref="valueItem"
@@ -46,10 +46,16 @@ export default {
     fields: Array,
     actions: Array
   },
+  data() {
+    return {
+      tableData: this.items
+    };
+  },
   watch: {
-    items() {
+    tableData() {
       // console.log(123);
       // console.log(this.$refs);
+      // console.log(this.items);
 
       this.$refs["valueItem"].forEach(comp => {
         comp.reloadAnnexesIfNeeded();

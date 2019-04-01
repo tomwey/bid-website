@@ -1,7 +1,7 @@
 <template>
   <div class="value-item">
-    <span v-if="!isFile">{{textValue}}</span>
-    <div v-if="isFile">
+    <span v-if="!isfile">{{textValue}}</span>
+    <div v-if="isfile">
       <div class="files" v-for="(file,index) in fileList" :key="index">
         <img :src="file.url" v-if="file.isimage">
         <a :href="file.url" v-if="!file.isimage">{{file.name}}</a>
@@ -19,7 +19,8 @@ export default {
   data() {
     return {
       // isfile: false,
-      fileList: []
+      fileList: [],
+      isfile: false
     };
   },
   mounted() {
@@ -27,11 +28,25 @@ export default {
   },
   methods: {
     reloadAnnexesIfNeeded() {
-      if (this.isFile) {
+      if (this.isFile()) {
+        this.isfile = true;
         this.loadAnnexes();
+      } else {
+        this.isfile = false;
       }
     },
+    isFile() {
+      // console.log(this.field);
+      // console.log(this.item);
+      const urlKey = this.field + "url";
+      let urlVal = this.item[urlKey];
+      // console.log(urlVal);
+      return !!urlVal || this.field.indexOf("annex") !== -1;
+    },
+
     loadAnnexes() {
+      // console.log(this.item);
+      // console.log("loading...");
       this.$post(
         {
           action: "P_SY_GetAnnex",
@@ -64,17 +79,15 @@ export default {
     }
   },
   computed: {
-    isFile() {
-      const urlKey = this.field + "url";
-      let urlVal = this.item[urlKey];
-      console.log(urlVal);
-      return !!urlVal;
-    },
     textValue() {
       // console.log(this.item);
 
       let key = this.field + "name";
       let value = this.item[key] || this.item[this.field] || "";
+
+      if (this.field == "contacttype") {
+        return value.split("-")[0];
+      }
 
       if (key == "quaidname" && value == "0") {
         return "";
@@ -107,6 +120,12 @@ export default {
     overflow: hidden;
     word-wrap: break-word;
     // text-wrap: unrestricted;
+  }
+
+  .files {
+    img {
+      max-width: 100%;
+    }
   }
 
   span {

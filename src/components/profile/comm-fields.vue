@@ -118,9 +118,12 @@
           ></b-form-radio-group>
 
           <!-- 自定义树形控件 -->
-          <div class="tree-data-wrap" @click="toggle(item);" v-if="item.type === 7">
-            {{item.value ? item.value.text : "请选择" + item.label}}
-            <span class="caret"></span>
+          <div class="tree-data-wrap" v-if="item.type === 7">
+            <span style="display:inline-block;min-width: 150px;" @click="toggle(item);">
+              {{item.value ? item.value.text : "请选择" + item.label}}
+              <span class="caret"></span>
+            </span>
+            <span class="special-text" v-if="!!item.special_text" v-html="item.special_text"></span>
             <tree-data
               @selected="selectedItem"
               v-show="openTreeData"
@@ -336,6 +339,11 @@ $theme-color: #e46623;
   width: 100%;
   height: 30px;
   line-height: 30px;
+  .special-text {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 14px;
+  }
   .caret {
     display: inline-block;
     vertical-align: middle;

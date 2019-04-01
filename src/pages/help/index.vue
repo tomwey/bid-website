@@ -55,8 +55,8 @@ export default {
         },
         {
           area: "集团总部",
-          name: "王荣锐",
-          phone: "15320393328"
+          name: "郑芳",
+          phone: "13547896150"
         }
       ]
     };

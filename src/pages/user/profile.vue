@@ -305,7 +305,8 @@ export default {
           field: "servertype",
           required: true,
           options: [],
-          assoc_control_id: "zz-name"
+          assoc_control_id: "zz-name",
+          special_text: `<a target="_blank" style="color: #e46623!important; text-decoration:underline" href="http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-03-29%2F1622767%2F1622767.xlsx">供应商入库标准</a>`
         },
         {
           id: "is-main-type",

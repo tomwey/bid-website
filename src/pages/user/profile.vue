@@ -330,13 +330,34 @@ export default {
           field: "quaid",
           label: "资质名称"
         },
-        // {
-        //   id: "zz-level",
-        //   type: 1,
-        //   subtype: "text",
-        //   field: "qualevel",
-        //   label: "资质级别"
-        // },
+        {
+          id: "zz-level",
+          type: 2,
+          // subtype: "text",
+          options: [
+            {
+              text: "选择资质级别",
+              value: null
+            }
+          ],
+          value: null,
+          required: false,
+          field: "qualevelid",
+          label: "资质级别"
+        },
+        {
+          id: "qua-file",
+          type: 4,
+          // subtype: "text",
+          // options: temp,
+          value: null,
+          required: false,
+          field: "quaannexid",
+          label: "资质证书扫描件",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "quaannexid"
+        },
         {
           id: "zz-approve-date",
           type: 12,
@@ -352,6 +373,7 @@ export default {
           subtype: "text",
           label: "其他说明",
           field: "othermemo",
+          value: null,
           required: false
         }
       ],
@@ -831,7 +853,8 @@ export default {
     },
     serviceTypeChanged(val) {
       // console.log(val);
-      // this.manFormData.length ==
+      const hasValue = !!val.data;
+
       const control = val.control;
       const value = val.data;
       let idVal = (value || {}).value;
@@ -842,7 +865,28 @@ export default {
         }
       }
 
+      let srcData = val.srcData;
+
       if (control.field == "servertype") {
+        // 处理资质名称
+        const assocControl1 = this.serviceTypeFormData[2];
+        const assocControl2 = this.serviceTypeFormData[3];
+        const assocControl3 = this.serviceTypeFormData[4];
+
+        // assocControl1.required = hasValue;
+        assocControl1.value = null;
+        assocControl1.options = [{ text: "无", value: null }];
+
+        assocControl2.required = false;
+        assocControl2.value = null;
+        assocControl2.options = [{ text: "选择资质级别", value: null }];
+
+        assocControl3.required = false;
+        assocControl3.value = null;
+        // assocControl3["quaannexid_files"] = [];
+        delete assocControl3["quaannexid_files"];
+        delete assocControl3["progress"];
+
         this.$post(
           {
             action: "P_SY_GetAreaOrType",
@@ -854,8 +898,6 @@ export default {
               let arr = res.data;
               let temp = [{ text: "无", value: null }];
 
-              // console.log(arr);
-
               arr.forEach(ele => {
                 if (!!ele.supqualistid && !!ele.supqualistname) {
                   temp.push({
@@ -865,19 +907,26 @@ export default {
                 }
               });
 
-              for (let i = 0; i < this.serviceTypeFormData.length; i++) {
-                const con = this.serviceTypeFormData[i];
-                if (con.id == control.assoc_control_id) {
-                  con.options = temp;
-                  break;
-                }
-              }
+              assocControl1.options = temp;
             }
           }
         );
       } else if (control.field == "quaid") {
+        // 处理资质级别
+
+        const assocControl2 = this.serviceTypeFormData[3];
+        const assocControl3 = this.serviceTypeFormData[4];
+
+        assocControl2.required = hasValue;
+        assocControl2.value = null;
+        assocControl2.options = [{ text: "选择资质级别", value: null }];
+
+        assocControl3.required = false;
+        assocControl3.value = null;
+        delete assocControl3["quaannexid_files"];
+        delete assocControl3["progress"];
+
         // 资质名称
-        // console.log(value);
         let sVals = (value || "").split("-");
         let id_str = "";
         if (sVals.length === 2) {
@@ -893,43 +942,25 @@ export default {
             if (res.code === "0") {
               let arr = res.data;
 
-              if (arr.length === 0) {
-                // 需要删掉添加的资质级别
-                if (this.serviceTypeFormData.length === 6) {
-                  this.serviceTypeFormData.splice(3, 1);
-                }
-              } else {
-                let srcData = val.srcData || {};
+              let temp = [{ text: "选择资质级别", value: null }];
+              arr.forEach(ele => {
+                temp.push({
+                  value: `${ele.supquagradename}-${ele.supquagradeid}`,
+                  text: ele.supquagradename
+                });
+              });
 
-                let currVal = null;
-                if (srcData.qualevelidname && srcData.qualevelid) {
-                  currVal = `${srcData.qualevelidname}-${srcData.qualevelid}`;
-                }
-
-                // 需要新增一个资质级别的字段
-                if (this.serviceTypeFormData.length === 5) {
-                  let temp = [{ text: "请选择资质级别", value: null }];
-                  arr.forEach(ele => {
-                    temp.push({
-                      value: `${ele.supquagradename}-${ele.supquagradeid}`,
-                      text: ele.supquagradename
-                    });
-                  });
-                  this.serviceTypeFormData.splice(3, 0, {
-                    id: "zz-level",
-                    type: 2,
-                    // subtype: "text",
-                    options: temp,
-                    value: currVal,
-                    required: true,
-                    field: "qualevelid",
-                    label: "资质级别"
-                  });
-                }
-              }
+              assocControl2.options = temp;
             }
           }
         );
+      } else if (control.field == "qualevelid") {
+        const assocControl3 = this.serviceTypeFormData[4];
+
+        assocControl3.required = hasValue;
+        assocControl3.value = null;
+        delete assocControl3["quaannexid_files"];
+        delete assocControl3["progress"];
       }
     },
     editManForm(data) {
@@ -995,8 +1026,69 @@ export default {
         }
       });
     },
+    newServiceTypeForm() {
+      this.serviceTypeFormData = [
+        {
+          id: "service-type",
+          type: 7,
+          label: "对口服务类别",
+          value: null,
+          field: "servertype",
+          required: true,
+          options: this.serviceTypeFormData[0].options,
+          assoc_control_id: "zz-name",
+          special_text: `<a target="_blank" style="color: #e46623!important; text-decoration:underline" href="http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-03-29%2F1622767%2F1622767.xlsx">供应商入库标准</a>`
+        },
+        {
+          id: "is-main-type",
+          label: "是否主要类别",
+          field: "ismain",
+          required: true,
+          type: 5
+        },
+        {
+          id: "zz-name",
+          type: 2,
+          // subtype: "text",
+          options: [
+            {
+              text: "无",
+              value: null
+            }
+          ],
+          value: null,
+          required: false,
+          field: "quaid",
+          label: "资质名称"
+        },
+        // {
+        //   id: "zz-level",
+        //   type: 1,
+        //   subtype: "text",
+        //   field: "qualevel",
+        //   label: "资质级别"
+        // },
+        {
+          id: "zz-approve-date",
+          type: 12,
+          // subtype: "date",
+          label: "资质审核到期日期",
+          field: "quaexaminedate",
+          required: true,
+          value: null
+        },
+        {
+          id: "memo",
+          type: 1,
+          subtype: "text",
+          label: "其他说明",
+          field: "othermemo",
+          required: false
+        }
+      ];
+    },
     editServiceForm(data) {
-      // console.log(data);
+      console.log(data);
       data = data || {};
 
       this.serviceTypeFormData.forEach(control => {
@@ -1049,21 +1141,90 @@ export default {
         } else {
           control.value = data[control.field];
         }
+
+        if (control.field == "ismain") {
+          if (
+            control.value === "是" ||
+            control.value === true ||
+            control.value === "true"
+          ) {
+            control.value = true;
+          } else {
+            control.value = false;
+          }
+        }
       });
 
-      let typeControl = this.serviceTypeFormData[0];
-      this.serviceTypeChanged({
-        control: typeControl,
-        data: { text: data["servertypename"], value: data["servertypeid"] },
-        srcData: Object.assign({}, data)
-      });
+      // console.log(data);
+      // console.log(this.serviceTypeFormData);
+      let control = this.serviceTypeFormData[0];
+      let val = control.value || {};
+      val = val.value || "";
+      this.$post(
+        {
+          action: "P_SY_GetAreaOrType",
+          p1: "5",
+          p2: val
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [{ text: "无", value: null }];
 
-      let quaControl = this.serviceTypeFormData[2];
-      this.serviceTypeChanged({
-        control: quaControl,
-        data: `${data["quaidname"]}-${data["quaid"]}`,
-        srcData: Object.assign({}, data)
-      });
+            arr.forEach(ele => {
+              if (!!ele.supqualistid && !!ele.supqualistname) {
+                temp.push({
+                  value: `${ele.supqualistname}-${ele.supqualistid}`,
+                  text: ele.supqualistname
+                });
+              }
+            });
+
+            this.serviceTypeFormData[2].options = temp;
+          }
+        }
+      );
+
+      control = this.serviceTypeFormData[2];
+      val = control.value || "";
+      val = val.split("-");
+      if (val.length > 1) {
+        val = val[1];
+      }
+      this.$post(
+        {
+          action: "P_SY_GetAreaOrType",
+          p1: "4",
+          p2: val
+        },
+        res => {
+          if (res.code === "0") {
+            let arr = res.data;
+
+            let temp = [{ text: "选择资质级别", value: null }];
+            arr.forEach(ele => {
+              temp.push({
+                value: `${ele.supquagradename}-${ele.supquagradeid}`,
+                text: ele.supquagradename
+              });
+            });
+
+            this.serviceTypeFormData[3].options = temp;
+          }
+        }
+      );
+
+      // if (this.serviceTypeFormData[0].value) {
+      //   this.serviceTypeFormData[2].required = true;
+      // }
+
+      if (this.serviceTypeFormData[2].value) {
+        this.serviceTypeFormData[3].required = true;
+      }
+
+      if (this.serviceTypeFormData[3].value) {
+        this.serviceTypeFormData[4].required = true;
+      }
     },
     editAchieveForm(data) {
       // console.log(data);

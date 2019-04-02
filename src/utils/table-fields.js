@@ -79,6 +79,11 @@ const tableFields = {
             width: 150
         },
         {
+            label: "资质证书扫描件",
+            value: "quaannexid",
+            width: 150
+        },
+        {
             label: "资质审核到期日期",
             value: "quaexaminedate",
             width: 150

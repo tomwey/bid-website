@@ -107,6 +107,8 @@ export default {
 
         this.$emit("editform", data);
 
+        // this.$emit("openform", data);
+
         // if (this.model == "man") {
         //   this.changeFormData(this.formData[0], data);
         // }
@@ -209,9 +211,13 @@ export default {
           this.formData.splice(this.formData.length - 1, 1);
         }
       } else if (this.model == "service_type") {
-        if (this.formData.length === 6) {
-          this.formData.splice(3, 1);
-        }
+        // if (this.formData.length === 6) {
+        //   this.formData.splice(3, 1);
+        // }
+        // this.$emit("openform");
+        this.formData[2].required = false;
+        this.formData[3].required = false;
+        this.formData[4].required = false;
       }
 
       this.formData.forEach(control => {
@@ -238,10 +244,6 @@ export default {
     commit(evt) {
       evt.preventDefault();
       let obj = {};
-
-      // console.log(this.items);
-
-      // console.log(this.formData);
 
       for (let i = 0; i < this.formData.length; i++) {
         let control = this.formData[i];
@@ -340,6 +342,9 @@ export default {
           obj[control.field] = control.value;
         }
       }
+
+      // console.log(obj);
+      // return;
 
       if (this.currentEditItem) {
         // 编辑

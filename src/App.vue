@@ -90,13 +90,12 @@ export default {
           href: "/#partner"
         },
         {
-          id: 7,
+          id: 6,
           name: "合能官网",
-          route: "hn",
-          href: "http://www.heneng.cn"
+          route: "hn"
         },
         {
-          id: 6,
+          id: 7,
           name: "操作手册",
           route: "help"
         }
@@ -155,11 +154,17 @@ export default {
       // this.selectedIndex = index;
       if (
         this.links[index].route === "about" ||
-        this.links[index].route === "partner" ||
-        this.links[index].route === "hn"
+        this.links[index].route === "partner"
       ) {
         return;
       }
+
+      if (this.links[index].route === "hn") {
+        window.open("http://www.heneng.cn");
+        // this.selectedIndex = -1;
+        return;
+      }
+
       this.$router.push({ name: this.links[index].route });
     },
     _updateSelectedLink(route) {
@@ -168,7 +173,7 @@ export default {
       if (route.hash === "#about") {
         this.selectedIndex = 1;
       } else if (route.hash === "#partner") {
-        this.selectedIndex = this.links.length - 2;
+        this.selectedIndex = this.links.length - 3;
       } else {
         for (let index = 0; index < this.links.length; index++) {
           const link = this.links[index];

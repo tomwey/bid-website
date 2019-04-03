@@ -9,8 +9,8 @@
         :interval="3000"
         v-model="slide"
       >
-        <b-carousel-slide :img-src="require('../../assets/images/banner1.jpg')"></b-carousel-slide>
-        <b-carousel-slide :img-src="require('../../assets/images/banner2.jpg')"></b-carousel-slide>
+        <b-carousel-slide :img-src="require('../../assets/images/banner1.png')"></b-carousel-slide>
+        <!-- <b-carousel-slide :img-src="require('../../assets/images/banner2.jpg')"></b-carousel-slide> -->
       </b-carousel>
       <div class="login-box-wrap">
         <div class="login-box">

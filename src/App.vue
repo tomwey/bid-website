@@ -177,7 +177,11 @@ export default {
       } else {
         for (let index = 0; index < this.links.length; index++) {
           const link = this.links[index];
-          if (link.route === route.name) {
+          console.log(route);
+          if (
+            link.route === route.name ||
+            (route.path && route.path.indexOf(link.route) !== -1)
+          ) {
             this.selectedIndex = index;
           }
         }

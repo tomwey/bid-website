@@ -62,6 +62,11 @@ const router = new Router({
             component: () => import("@/pages/bid-notice/index")
         },
         {
+            path: '/bid_notice/:id',
+            name: 'notice-detail',
+            component: () => import("@/pages/bid-notice/detail")
+        },
+        {
             path: '/help',
             name: 'help',
             component: () => import("@/pages/help/index")

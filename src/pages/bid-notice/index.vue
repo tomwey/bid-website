@@ -77,6 +77,7 @@ export default {
       keyword: null,
       tableData: [
         {
+          id: 111,
           name:
             "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
@@ -86,6 +87,7 @@ export default {
           unread: true
         },
         {
+          id: 114,
           name:
             "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道",
           publish_date: "2019-01-01",
@@ -95,6 +97,7 @@ export default {
           unread: true
         },
         {
+          id: 115,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -103,6 +106,7 @@ export default {
           unread: true
         },
         {
+          id: 116,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -110,6 +114,7 @@ export default {
           type: "warning"
         },
         {
+          id: 117,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -117,6 +122,7 @@ export default {
           type: "warning"
         },
         {
+          id: 118,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -124,6 +130,7 @@ export default {
           type: "warning"
         },
         {
+          id: 119,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -131,6 +138,7 @@ export default {
           type: "warning"
         },
         {
+          id: 120,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -138,6 +146,7 @@ export default {
           type: "warning"
         },
         {
+          id: 121,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -145,6 +154,7 @@ export default {
           type: "warning"
         },
         {
+          id: 122,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -152,6 +162,7 @@ export default {
           type: "warning"
         },
         {
+          id: 123,
           name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
           publish_date: "2019-01-01",
           expire_date: "2019-01-05 18:30",
@@ -164,7 +175,8 @@ export default {
   methods: {
     search() {},
     selectItem(item) {
-      console.log(item);
+      // console.log(item);
+      this.$router.push({ path: "/bid_notice/" + item.id });
     }
   }
 };

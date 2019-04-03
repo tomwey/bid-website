@@ -32,16 +32,140 @@
       </div>
       <div class="buttons">
         <el-button plain @click="back">返回</el-button>&emsp;
-        <el-button type="primary">立即报名</el-button>
+        <el-button type="primary" @click="apply">立即报名</el-button>
       </div>
     </div>
+
+    <el-dialog
+      title="报名"
+      :visible.sync="applyFormVisible"
+      :append-to-body="true"
+      center
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <form-fields
+        form-ref="form"
+        ref="applyForm"
+        :controls="applyControls"
+        :form-model="applyFormModel"
+      ></form-fields>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="applyFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="commit">提 交</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 export default {
   name: "notice-detail",
+  components: {
+    formFields: function(resolve) {
+      require(["@/components/profile/form-fields"], resolve);
+    }
+  },
   data() {
     return {
+      applyFormVisible: false,
+      applyControls: [
+        {
+          id: "service-type",
+          type: 2,
+          label: "服务类别",
+          field: "servicetype",
+          options: [],
+          placeholder: "请选择服务类别",
+          rules: [
+            { required: true, message: "服务类别不能为空", trigger: "change" }
+          ]
+        },
+        {
+          id: "service-area",
+          type: 4,
+          label: "服务区域",
+          field: "serverareaids",
+          options: [
+            {
+              label: "成都",
+              value: "成都"
+            },
+            {
+              label: "西安",
+              value: "西安"
+            },
+            {
+              label: "长沙",
+              value: "长沙"
+            }
+          ],
+          rules: [
+            { required: true, message: "服务区域不能为空", trigger: "change" }
+          ]
+        },
+        {
+          id: "found-money",
+          type: 1,
+          subtype: "number",
+          label: "注册资本",
+          field: "regmoney",
+          unit: "万",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "grade",
+          type: 2,
+          label: "评估分级",
+          field: "grade",
+          options: [],
+          placeholder: "请选择评估分级",
+          rules: [
+            { required: true, message: "评估分级不能为空", trigger: "change" }
+          ]
+        },
+        {
+          id: "grade1",
+          type: 2,
+          label: "档次分档",
+          field: "grade1",
+          options: [],
+          placeholder: "请选择档次分档",
+          rules: [
+            { required: true, message: "档次分档不能为空", trigger: "change" }
+          ]
+        },
+        {
+          id: "requirement",
+          type: 1,
+          // subtype: "number",
+          label: "资质要求",
+          field: "requirement",
+          // unit: "万",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "is-model",
+          label: "是否具备标杆企业业绩",
+          field: "ismodel",
+          // required: true,
+          type: 5
+          // rules: [{ required: true, message: "是否主要类别", trigger: "blur" }]
+        },
+        {
+          id: "is-company",
+          label: "是否要求展示区类单位",
+          field: "iscompany",
+          // required: true,
+          type: 5
+          // rules: [{ required: true, message: "是否主要类别", trigger: "blur" }]
+        }
+      ],
+      applyFormModel: {},
       tableData: [
         {
           label: "招标事项",
@@ -79,7 +203,11 @@ export default {
   methods: {
     back() {
       this.$router.push({ path: "/bid_notice" });
-    }
+    },
+    apply() {
+      this.applyFormVisible = true;
+    },
+    commit() {}
   }
 };
 </script>

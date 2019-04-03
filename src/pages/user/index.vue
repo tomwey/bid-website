@@ -57,11 +57,23 @@ export default {
           icon: "gavel",
           menu_items: [
             {
-              name: "招标文件",
-              route: "user_bid"
+              name: "我的报名",
+              route: "user_apply"
             },
             {
-              name: "中标结果",
+              name: "我的入围",
+              route: "user_applied"
+            },
+            {
+              name: "我的投标",
+              route: "user_bids"
+            },
+            {
+              name: "答疑",
+              route: "user_bid_faq"
+            },
+            {
+              name: "定标",
               route: "user_bid_result"
             }
           ]

@@ -28,8 +28,9 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="name" label="标题">
           <template slot-scope="scope">
-            <span class="name">
-              <span class="unread" v-if="scope.row.unread"></span>
+            <span class="name" @click="selectItem(scope.row);">
+              <span class="unread dot" v-if="scope.row.unread"></span>
+              <span class="read dot" v-if="!scope.row.unread"></span>
               {{scope.row.name}}
             </span>
           </template>
@@ -161,7 +162,10 @@ export default {
     };
   },
   methods: {
-    search() {}
+    search() {},
+    selectItem(item) {
+      console.log(item);
+    }
   }
 };
 </script>
@@ -191,15 +195,26 @@ export default {
     display: inline-block;
     vertical-align: middle;
     font-size: 14px;
-    .unread {
+    .dot {
       display: inline-block;
-      width: 4px;
-      height: 4px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: rgb(231, 90, 22);
       margin-right: 2px;
       vertical-align: middle;
-      // line-height: 6px;
+    }
+    .unread {
+      background: rgb(231, 90, 22);
+      // color: #333 !important;
+    }
+    .read {
+      background: #fff;
+      // color: #999 !important;
+    }
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+      color: rgb(231, 90, 22);
     }
   }
 }

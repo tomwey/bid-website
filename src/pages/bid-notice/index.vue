@@ -1,6 +1,6 @@
 <template>
   <div class="home-main-wrap container">
-    <div class="search-toolbar">
+    <!-- <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
           <span class="label">报名截止时间:</span>
@@ -42,12 +42,6 @@
             <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag>
           </template>
         </el-table-column>
-        <!-- <el-table-column fixed="right" label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </template>
-        </el-table-column>-->
       </el-table>
     </div>
     <div class="page-container">
@@ -58,7 +52,7 @@
         :page-size="20"
         :current-page="1"
       ></el-pagination>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>

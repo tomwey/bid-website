@@ -165,6 +165,14 @@ export default {
         return;
       }
 
+      if (this.links[index].route === "help") {
+        window.open(
+          "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-03%2F1646316%2F1646316.docx"
+        );
+        // this.selectedIndex = -1;
+        return;
+      }
+
       this.$router.push({ name: this.links[index].route });
     },
     _updateSelectedLink(route) {
@@ -177,7 +185,7 @@ export default {
       } else {
         for (let index = 0; index < this.links.length; index++) {
           const link = this.links[index];
-          console.log(route);
+          // console.log(route);
           if (
             link.route === route.name ||
             (route.path && route.path.indexOf(link.route) !== -1)

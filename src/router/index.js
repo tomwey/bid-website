@@ -120,6 +120,15 @@ const router = new Router({
                     component: () => import('@/pages/user/message'),
                 },
                 {
+                    path: 'messages/:id',
+                    name: 'user_messages_detail',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/message-detail'),
+                },
+                {
                     path: 'applying-bids',
                     name: 'user_apply',
                     meta: {

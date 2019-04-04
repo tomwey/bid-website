@@ -185,9 +185,24 @@
                     <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
                   </template>
               </el-table-column>-->
-              <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280"></el-table-column>
+              <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280">
+                <template slot-scope="scope">
+                  <span
+                    @click="showMoney(scope.row);"
+                  >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
               <el-table-column label="商务标附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column label="其它标书附件">
                 <template slot-scope="scope">
                   <a
                     style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
@@ -243,7 +258,13 @@
           </div>
           <div class="list">
             <el-table key="bidPrice2Table" :data="bidPrice2Data" stripe style="width: 100%">
-              <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280"></el-table-column>
+              <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280">
+                <template slot-scope="scope">
+                  <span
+                    @click="showMoney(scope.row);"
+                  >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
               <el-table-column label="议标商务标附件">
                 <template slot-scope="scope">
@@ -738,6 +759,9 @@ export default {
       // console.log(123);
       // console.log(step);
       this.step = step;
+    },
+    showMoney(item) {
+      this.$set(item, "showmoney", true);
     }
   }
 };

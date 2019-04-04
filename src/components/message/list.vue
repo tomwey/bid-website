@@ -4,7 +4,7 @@
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="标题">
           <template slot-scope="scope">
-            <span class="title">{{scope.row.title}}</span>
+            <span class="title" @click="showDetail(scope.row);">{{scope.row.title}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="time" label="时间" width="180"></el-table-column>
@@ -22,37 +22,48 @@ export default {
     return {
       tableData: [
         {
+          id: 153,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         },
         {
+          id: 152,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         },
         {
+          id: 151,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         },
         {
+          id: 15,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         },
         {
+          id: 12,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         },
         {
+          id: 8,
           title: "消息一",
           time: "2019-01-01 12:34:32",
           msgtype: "报名通过"
         }
       ]
     };
+  },
+  methods: {
+    showDetail(item) {
+      this.$router.push({ path: "/admin/messages/" + item.id });
+    }
   }
 };
 </script>

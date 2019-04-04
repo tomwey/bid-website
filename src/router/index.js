@@ -120,8 +120,8 @@ const router = new Router({
                     component: () => import('@/pages/user/message'),
                 },
                 {
-                    path: 'bids',
-                    name: 'user_bid',
+                    path: 'applying-bids',
+                    name: 'user_apply',
                     meta: {
                         requireAuth: true,
                         requireApprove: true
@@ -129,13 +129,49 @@ const router = new Router({
                     component: () => import('@/pages/user/bid-list'),
                 },
                 {
-                    path: 'bid_result',
+                    path: 'applied-bids',
+                    name: 'user_applied',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-list'),
+                },
+                {
+                    path: 'bids',
+                    name: 'user_bids',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-list'),
+                },
+                {
+                    path: 'bid-faq',
+                    name: 'user_bid_faq',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-list'),
+                },
+                {
+                    path: 'bid-result',
                     name: 'user_bid_result',
                     meta: {
                         requireAuth: true,
                         requireApprove: true
                     },
-                    component: () => import('@/pages/user/bid-result'),
+                    component: () => import('@/pages/user/bid-list'),
+                },
+                {
+                    path: 'bids/:id',
+                    name: 'user_bid_detail',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-detail'),
                 },
                 {
                     path: 'company',

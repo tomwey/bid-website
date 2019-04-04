@@ -2,7 +2,7 @@ import Vue from 'vue';
 import {
     DatePicker, Loading, Message, MessageBox, Table, TableColumn, Button, Form, FormItem,
     Input, Select, Option, RadioGroup, Radio, CheckboxGroup, Checkbox, Switch, TimeSelect,
-    Upload, Progress, Dialog, Row, Col, Tag, Pagination, Breadcrumb, BreadcrumbItem
+    Upload, Progress, Dialog, Row, Col, Tag, Pagination, Breadcrumb, BreadcrumbItem, Steps, Step
 } from 'element-ui';
 
 Vue.use(DatePicker);
@@ -31,6 +31,8 @@ Vue.use(Tag);
 Vue.use(Pagination);
 Vue.use(Breadcrumb);
 Vue.use(BreadcrumbItem);
+Vue.use(Steps);
+Vue.use(Step);
 // Vue.use(Popover);
 // Vue.use(DatePicker);
 // Vue.use(Message);

@@ -147,7 +147,7 @@ export default {
     if (route.name === "user_home") {
       this.currentMenu = this.menus[0];
     }
-    console.log(this.$router.currentRoute);
+    // console.log(this.$router.currentRoute);
   },
   watch: {
     $route: function(to) {
@@ -156,7 +156,7 @@ export default {
       this.menus.forEach(menu => {
         menu.menu_items.forEach(item => {
           const name = this.$router.currentRoute.name;
-          // console.log(item);
+          console.log(item);
           if (item.route === name) {
             this.currentMenuItem = item;
           }
@@ -209,7 +209,7 @@ $theme-color: #e46623;
     flex: 0 0 150px;
     width: 150px;
     // height: 688px;
-    max-height: 780px;
+    max-height: 880px;
     background: #fff;
     margin-right: 20px;
     // padding: 20px;

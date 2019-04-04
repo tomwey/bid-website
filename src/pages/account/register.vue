@@ -211,14 +211,40 @@ export default {
                 loginname: item.loginname
               });
 
-              this.$router.push({
-                name: "user_home"
-              });
+              MessageBox({
+                message: "是否查看操作手册？",
+                title: "提示",
+                showCancelButton: true,
+                confirmButtonText: "查看",
+                cancelButtonText: "不了",
+                type: "warning"
+              })
+                .then(() => {
+                  this.$router.push({
+                    name: "user_home"
+                  });
+                  window.open(
+                    "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-03%2F1646316%2F1646316.docx"
+                  );
+                })
+                .catch(() => {
+                  this.$router.push({
+                    name: "user_home"
+                  });
+                });
             } else {
-              alert("不正确的注册结果");
+              // alert("不正确的注册结果");
+              this.$message({
+                type: "error",
+                message: "不正确的注册结果"
+              });
             }
           } else {
-            alert(res.codemsg);
+            // alert(res.codemsg);
+            this.$message({
+              type: "error",
+              message: res.codemsg
+            });
           }
         }
       );

@@ -16,12 +16,6 @@
             :key="item.step"
             @click.native="selectStep(item.step)"
           ></el-step>
-          <!-- <el-step title="答疑" @click.native="selectStep(2)" description="2019-10-25截止"></el-step>
-          <el-step title="投标保证金" @click.native="selectStep(3)" description="提交缴纳凭证"></el-step>
-          <el-step title="技术标" @click.native="selectStep(3)" description="2019-11-20截止"></el-step>
-          <el-step title="商务标" @click.native="selectStep(4)" description="2019-11-20截止"></el-step>
-          <el-step title="议标" @click.native="selectStep(5)" description="2019-11-20截止"></el-step>
-          <el-step title="定标" @click.native="selectStep(6)" description></el-step>-->
         </el-steps>
       </div>
       <div class="step-content">
@@ -100,6 +94,214 @@
             </div>
           </el-dialog>
         </div>
+        <div v-if="step === 3" class="bid-money">
+          <form-fields
+            form-ref="form"
+            ref="bidMoneyForm"
+            :controls="bidMoneyFormControls"
+            :form-model="bidMoneyFormModel"
+          ></form-fields>
+          <div style="text-align:center">
+            <!-- <el-button @click="faqDialogFormVisible = false">取 消</el-button> -->
+            <el-button type="primary">保 存</el-button>
+          </div>
+        </div>
+        <div v-if="step === 4" class="bid-func">
+          <div class="stat-newbar">
+            <el-row>
+              <el-col :span="16">
+                <span class="stat">共10条</span>
+              </el-col>
+              <el-col :span="8" style="text-align:right;">
+                <el-button type="primary" @click="faqDialogFormVisible = true">新增技术回标</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="list">
+            <el-table key="bidFuncTable" :data="bidFuncData" stripe style="width: 100%">
+              <!-- <el-table-column prop="title" label="提疑内容">
+                  <template slot-scope="scope">
+                    <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
+                  </template>
+              </el-table-column>-->
+              <el-table-column label="技术附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >技术附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
+              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+            </el-table>
+            <div class="page-container">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="50"
+                :page-size="20"
+                :current-page="1"
+              ></el-pagination>
+            </div>
+          </div>
+          <el-dialog
+            title="新增技术回标"
+            :visible.sync="faqDialogFormVisible"
+            :append-to-body="true"
+            center
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+          >
+            <form-fields
+              form-ref="form"
+              ref="bidFuncForm"
+              :controls="bidFuncFormControls"
+              :form-model="bidFuncFormModel"
+            ></form-fields>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
+            </div>
+          </el-dialog>
+        </div>
+        <div v-if="step === 5" class="bid-price">
+          <div class="stat-newbar">
+            <el-row>
+              <el-col :span="16">
+                <span class="stat">共10条</span>
+              </el-col>
+              <el-col :span="8" style="text-align:right;">
+                <el-button type="primary" @click="faqDialogFormVisible = true">新增商务回标</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="list">
+            <el-table key="bidPriceTable" :data="bidPriceData" stripe style="width: 100%">
+              <!-- <el-table-column prop="title" label="提疑内容">
+                  <template slot-scope="scope">
+                    <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
+                  </template>
+              </el-table-column>-->
+              <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280"></el-table-column>
+              <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
+              <el-table-column label="商务标附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
+              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+            </el-table>
+            <div class="page-container">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="50"
+                :page-size="20"
+                :current-page="1"
+              ></el-pagination>
+            </div>
+          </div>
+          <el-dialog
+            title="新增商务回标"
+            :visible.sync="faqDialogFormVisible"
+            :append-to-body="true"
+            center
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+          >
+            <form-fields
+              form-ref="form"
+              ref="bidFuncForm"
+              :controls="bidPriceFormControls"
+              :form-model="bidPriceFormModel"
+            ></form-fields>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
+            </div>
+          </el-dialog>
+        </div>
+        <div v-if="step === 6" class="bid-discuss">
+          <div class="stat-newbar">
+            <el-row>
+              <el-col :span="16">
+                <span class="stat">共10条</span>
+              </el-col>
+              <el-col :span="8" style="text-align:right;">
+                <el-button type="primary" @click="faqDialogFormVisible = true">新增议标</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="list">
+            <el-table key="bidPrice2Table" :data="bidPrice2Data" stripe style="width: 100%">
+              <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280"></el-table-column>
+              <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
+              <el-table-column label="议标商务标附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column label="其它标书附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="议标时间" width="180"></el-table-column>
+              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+            </el-table>
+            <div class="page-container">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="50"
+                :page-size="20"
+                :current-page="1"
+              ></el-pagination>
+            </div>
+          </div>
+          <el-dialog
+            title="新增议标"
+            :visible.sync="faqDialogFormVisible"
+            :append-to-body="true"
+            center
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+          >
+            <form-fields
+              form-ref="form"
+              ref="bidFuncForm"
+              :controls="bidPrice2FormControls"
+              :form-model="bidPrice2FormModel"
+            ></form-fields>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
+            </div>
+          </el-dialog>
+        </div>
+        <div
+          v-if="step === 7"
+          class="bid-result"
+          style="text-align: center;padding-top: 60px;"
+        >此处直接预览中标附件，不再做设计</div>
       </div>
     </div>
   </div>
@@ -114,7 +316,7 @@ export default {
   },
   data() {
     return {
-      active: 0,
+      active: 2,
       step: 1,
       steps: [
         {
@@ -291,7 +493,244 @@ export default {
           fileSize: 5
         }
       ],
-      faqFormModel: {}
+      faqFormModel: {},
+      bidMoneyFormModel: {},
+      bidMoneyFormControls: [
+        {
+          id: "money-content",
+          type: 1,
+          subtype: "textarea",
+          label: "备注说明",
+          field: "content",
+          // unit: "万",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "money-file",
+          type: 8,
+          //   subtype: "file",
+          label: "缴纳附件",
+          field: "moneyannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        }
+      ],
+      bidFuncData: [
+        {
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          time: "2019-01-01 12:30:03"
+        }
+      ],
+      bidFuncFormControls: [
+        {
+          id: "faq-content",
+          type: 1,
+          subtype: "textarea",
+          label: "投标说明",
+          field: "content",
+          // unit: "万",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "faq-file",
+          type: 8,
+          //   subtype: "file",
+          label: "技术标附件",
+          field: "faqannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        }
+      ],
+      bidFuncFormModel: {},
+      bidPriceData: [
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        }
+      ],
+      bidPriceFormControls: [
+        {
+          id: "price-money",
+          type: 1,
+          subtype: "number",
+          label: "回标总金额",
+          field: "money",
+          unit: "元",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "price-rate",
+          type: 1,
+          subtype: "number",
+          label: "税率",
+          field: "rate",
+          unit: "%",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "price-file",
+          type: 8,
+          //   subtype: "file",
+          label: "商务标附件",
+          field: "faqannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        }
+      ],
+      bidPriceFormModel: {},
+      bidPrice2Data: [
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        },
+        {
+          money: "2394483",
+          rate: "0.03",
+          time: "2019-01-01 12:30:03"
+        }
+      ],
+      bidPrice2FormControls: [
+        {
+          id: "price-money",
+          type: 1,
+          subtype: "number",
+          label: "回标总金额",
+          field: "money",
+          unit: "元",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "price-rate",
+          type: 1,
+          subtype: "number",
+          label: "税率",
+          field: "rate",
+          unit: "%",
+          rules: [
+            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "price-file",
+          type: 8,
+          //   subtype: "file",
+          label: "商务标附件",
+          field: "faqannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        },
+        {
+          id: "price-file2",
+          type: 8,
+          //   subtype: "file",
+          label: "其它标书附件",
+          field: "faqannex2",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        }
+      ],
+      bidPrice2FormModel: {}
     };
   },
   methods: {
@@ -365,6 +804,10 @@ export default {
 }
 .list {
   padding: 0 10px;
+}
+.bid-money {
+  padding: 30px 0;
+  padding-right: 60px;
 }
 </style>
 

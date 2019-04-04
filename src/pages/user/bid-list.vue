@@ -1,7 +1,7 @@
 <template>
   <div class="bid-list">
     <!-- 即将上线... -->
-    <!-- <h2 class="title">招标事项列表</h2>
+    <h2 class="title">招标事项列表</h2>
     <div class="list">
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="招标事项">
@@ -21,7 +21,7 @@
           :current-page="1"
         ></el-pagination>
       </div>
-    </div>-->
+    </div>
   </div>
 </template>
 <script>

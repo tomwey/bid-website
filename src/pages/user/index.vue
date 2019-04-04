@@ -15,7 +15,10 @@
             @click="selectMenu(item);"
             v-for="(item,index2) in menu.menu_items"
             :key="index2"
-          >{{item.name}}</dd>
+          >
+            {{item.name}}
+            <el-badge :value="item.badge" v-if="item.badge"/>
+          </dd>
         </dl>
 
         <div class="logout">
@@ -48,7 +51,8 @@ export default {
           menu_items: [
             {
               name: "我的消息",
-              route: "user_messages"
+              route: "user_messages",
+              badge: 3
             }
           ]
         },
@@ -227,6 +231,12 @@ $theme-color: #e46623;
       dd {
         vertical-align: middle;
         line-height: 20px;
+        position: relative;
+        .el-badge {
+          position: absolute;
+          top: 7px;
+          right: 2px;
+        }
         &.active {
           color: $theme-color;
           position: relative;

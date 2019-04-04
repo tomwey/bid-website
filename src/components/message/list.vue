@@ -1,7 +1,7 @@
 <template>
   <div class="message-list">
     <div class="messages">
-      <el-table :data="[]" stripe style="width: 100%">
+      <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="标题">
           <template slot-scope="scope">
             <span class="title">{{scope.row.title}}</span>

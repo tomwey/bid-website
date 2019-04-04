@@ -14,6 +14,11 @@
             :href="item.href"
           >{{item.name}}</b-nav-item>
         </b-navbar-nav>
+        <b-navbar-nav>
+          <!-- <b-nav-item href="#" disabled> -->
+          <el-button type="primary" @click="gotoUserHome">用户中心</el-button>
+          <!-- </b-nav-item> -->
+        </b-navbar-nav>
       </div>
     </b-navbar>
 
@@ -99,6 +104,11 @@ export default {
           name: "操作手册",
           route: "help"
         }
+        // {
+        //   id: 8,
+        //   name: "用户中心",
+        //   route: "user_home"
+        // }
       ]
     };
   },
@@ -147,6 +157,9 @@ export default {
     }
   },
   methods: {
+    gotoUserHome() {
+      this.$router.push({ name: "user_home" });
+    },
     gotoHome() {
       this.$router.push({ name: "home" });
     },

@@ -1088,7 +1088,7 @@ export default {
       ];
     },
     editServiceForm(data) {
-      console.log(data);
+      // console.log(data);
       data = data || {};
 
       this.serviceTypeFormData.forEach(control => {
@@ -1222,7 +1222,12 @@ export default {
         this.serviceTypeFormData[3].required = true;
       }
 
-      if (this.serviceTypeFormData[3].value) {
+      console.log(this.serviceTypeFormData[3]);
+
+      if (
+        this.serviceTypeFormData[3].value &&
+        this.serviceTypeFormData[3].value !== "-0"
+      ) {
         this.serviceTypeFormData[4].required = true;
       }
     },

@@ -295,14 +295,14 @@ export default {
             }
           }
 
-          if (hasPrimary) {
-            // alert("服务类别只能有一个主要类别");
-            this.$message({
-              message: "服务类别只能有一个主要类别",
-              type: "error"
-            });
-            return;
-          }
+          // if (hasPrimary) {
+          //   // alert("服务类别只能有一个主要类别");
+          //   this.$message({
+          //     message: "服务类别只能有一个主要类别",
+          //     type: "error"
+          //   });
+          //   return;
+          // }
         }
 
         if (control.subtype === "date") {

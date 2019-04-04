@@ -46,6 +46,7 @@
   </div>
 </template>
 <script>
+import { MessageBox } from "element-ui";
 export default {
   name: "register",
   components: {
@@ -195,7 +196,9 @@ export default {
           p7: this.comuscc
         },
         res => {
-          if (res.code == 0) {
+          // console.log(res);
+          if (res.code == "0") {
+            // console.log(555);
             if (res.count == 1) {
               let arr = res.data;
               let item = arr[0];
@@ -210,6 +213,9 @@ export default {
                 days: 1,
                 loginname: item.loginname
               });
+
+              // console.log(123);
+              // console.log(1111);
 
               MessageBox({
                 message: "是否查看操作手册？",
@@ -233,6 +239,7 @@ export default {
                   });
                 });
             } else {
+              // console.log(234);
               // alert("不正确的注册结果");
               this.$message({
                 type: "error",
@@ -241,6 +248,7 @@ export default {
             }
           } else {
             // alert(res.codemsg);
+            // console.log(2222);
             this.$message({
               type: "error",
               message: res.codemsg

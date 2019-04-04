@@ -1,6 +1,6 @@
 <template>
   <div class="home-main-wrap container">
-    <div class="search-toolbar">
+    <!-- <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
           <span class="label">报名截止时间:</span>
@@ -52,7 +52,7 @@
         :page-size="20"
         :current-page="1"
       ></el-pagination>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>

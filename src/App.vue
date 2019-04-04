@@ -16,7 +16,7 @@
         </b-navbar-nav>
         <b-navbar-nav>
           <!-- <b-nav-item href="#" disabled> -->
-          <el-button type="primary" @click="gotoUserHome">用户中心</el-button>
+          <span class="custom-btn" @click="gotoUserHome">用户中心</span>
           <!-- </b-nav-item> -->
         </b-navbar-nav>
       </div>
@@ -269,6 +269,26 @@ $theme-color: #e46623;
 .logo {
   max-height: 32px;
   // width: 51px;
+}
+
+.custom-btn {
+  display: inline-block;
+  width: 88px;
+  height: 36px;
+  line-height: 36px;
+  // background: rgb(231, 90, 22);
+  color: rgb(231, 90, 22);
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid rgb(231, 90, 22);
+  text-align: center;
+  margin-left: 15px;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    background: rgb(231, 90, 22);
+    color: #fff;
+  }
 }
 </style>
 

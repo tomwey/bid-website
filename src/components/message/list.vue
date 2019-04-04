@@ -1,11 +1,7 @@
 <template>
   <div class="message-list">
     <div class="messages">
-      <!-- <div class="message" v-for="(item,index) in messages" :key="index">
-        <p class="title">{{item.title}}</p>
-        <p class="time">{{item.time}}</p>
-      </div>-->
-      <el-table :data="tableData" stripe style="width: 100%">
+      <el-table :data="[]" stripe style="width: 100%">
         <el-table-column prop="title" label="标题">
           <template slot-scope="scope">
             <span class="title">{{scope.row.title}}</span>

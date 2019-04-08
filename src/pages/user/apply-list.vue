@@ -203,12 +203,12 @@ export default {
   },
   watch: {
     $route: function(to) {
-      console.log(to);
+      // console.log(to);
     }
   },
   methods: {
     selectItem(item) {
-      this.$router.push({ path: "/admin/bids/" + item.id });
+      this.$router.push({ path: "/admin/my-bids/" + item.id });
     },
     abandon() {
       this.dialogFormVisible = true;

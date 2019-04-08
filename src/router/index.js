@@ -147,6 +147,15 @@ const router = new Router({
                     component: () => import('@/pages/user/apply-list'),
                 },
                 {
+                    path: 'my-bids/:id',
+                    name: 'user_apply_detail',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/apply-detail'),
+                },
+                {
                     path: 'applied-bids',
                     name: 'user_applied',
                     meta: {

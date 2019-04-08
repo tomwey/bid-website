@@ -51,18 +51,26 @@
               </table>
             </el-tab-pane>
             <el-tab-pane label="补充材料附件">
-              <table class="table">
-                <tr v-for="(item,index) in downloadFiles2" :key="index">
-                  <td class="label">{{item.label}}</td>
-                  <td class="value">
-                    <div class="files">
-                      <div class="file" v-for="(file,index2) in item.files" :key="index2">
-                        <a :href="file.url" class="file-link">{{file.name}}</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              <el-table :data="attachmentData" key="faqTable135" stripe style="width: 100%">
+                <el-table-column prop="title" label="上传描述"></el-table-column>
+                <el-table-column label="附件">
+                  <template slot-scope="scope">
+                    <a
+                      style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                      :href="scope.row.url"
+                      target="_blank"
+                    >附件1</a>
+                    <br>
+                    <a
+                      style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                      :href="scope.row.url"
+                      target="_blank"
+                    >附件2</a>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="time" label="上传时间" width="180"></el-table-column>
+                <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+              </el-table>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -86,7 +94,7 @@
                       <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="提问附件">
+                  <el-table-column label="提问附件" width="120">
                     <template slot-scope="scope">
                       <a
                         style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
@@ -197,7 +205,6 @@
                   <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
                 </template>
               </el-table-column>
-              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
             </el-table>
             <div class="page-container">
               <el-pagination
@@ -229,15 +236,6 @@
               <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
             </div>
           </el-dialog>
-          <!-- <form-fields
-            form-ref="form"
-            ref="bidMoneyForm"
-            :controls="bidMoneyFormControls"
-            :form-model="bidMoneyFormModel"
-          ></form-fields>
-          <div style="text-align:center">
-            <el-button type="primary">保 存</el-button>
-          </div>-->
         </div>
         <div v-if="step === 4" class="bid-func">
           <div class="stat-newbar">
@@ -308,50 +306,48 @@
             </el-row>
           </div>
           <div class="list">
-            <el-table key="bidPriceTable" :data="bidPriceData" stripe style="width: 100%">
-              <!-- <el-table-column prop="title" label="提疑内容">
-                  <template slot-scope="scope">
-                    <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
-                  </template>
-              </el-table-column>-->
-              <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280">
-                <template slot-scope="scope">
-                  <span
-                    @click="showMoney(scope.row);"
-                  >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
-                </template>
+            <el-table
+              key="bidPriceTableParent"
+              :data="bidPriceParentData"
+              stripe
+              style="width: 100%"
+            >
+              <el-table-column type="expand">
+                <el-table key="bidPriceTable" :data="bidPriceData" stripe style="width: 100%">
+                  <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280">
+                    <template slot-scope="scope">
+                      <span
+                        @click="showMoney(scope.row);"
+                      >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
+                  <el-table-column label="商务标附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="其它标书附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
+                </el-table>
               </el-table-column>
-              <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
-              <el-table-column label="商务标附件">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column label="其它标书附件">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
-              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+              <el-table-column label="事项名称" prop="title"></el-table-column>
+              <el-table-column label="项目" prop="project" width="120"></el-table-column>
+              <el-table-column label="楼栋/标段" prop="room" width="120"></el-table-column>
+              <el-table-column label="投标截止时间" prop="time" width="120"></el-table-column>
             </el-table>
-            <!-- <div class="page-container">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="50"
-                :page-size="20"
-                :current-page="1"
-              ></el-pagination>
-            </div>-->
           </div>
           <el-dialog
             title="新增商务回标"
@@ -386,7 +382,49 @@
             </el-row>
           </div>
           <div class="list">
-            <el-table key="bidPrice2Table" :data="bidPrice2Data" stripe style="width: 100%">
+            <el-table
+              key="bidPriceTableParent2"
+              :data="bidPriceParentData"
+              stripe
+              style="width: 100%"
+            >
+              <el-table-column type="expand">
+                <el-table key="bidPriceTable2" :data="bidPriceData" stripe style="width: 100%">
+                  <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280">
+                    <template slot-scope="scope">
+                      <span
+                        @click="showMoney(scope.row);"
+                      >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
+                  <el-table-column label="议标商务标附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="其它标书附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
+                </el-table>
+              </el-table-column>
+              <el-table-column label="事项名称" prop="title"></el-table-column>
+              <el-table-column label="项目" prop="project" width="120"></el-table-column>
+              <el-table-column label="楼栋/标段" prop="room" width="120"></el-table-column>
+              <el-table-column label="投标截止时间" prop="time" width="120"></el-table-column>
+            </el-table>
+            <!-- <el-table key="bidPrice2Table" :data="bidPrice2Data" stripe style="width: 100%">
               <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280">
                 <template slot-scope="scope">
                   <span
@@ -414,8 +452,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="议标时间" width="180"></el-table-column>
-              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
-            </el-table>
+            </el-table>-->
             <div class="page-container">
               <el-pagination
                 background
@@ -447,11 +484,26 @@
             </div>
           </el-dialog>
         </div>
-        <div
-          v-if="step === 7"
-          class="bid-result"
-          style="text-align: center;padding-top: 60px;"
-        >此处直接预览中标附件，不再做设计</div>
+        <div v-if="step === 7" class="bid-result" style="padding: 30px;">
+          <el-table key="bidResultTable" :data="bidResultData" stripe style="width: 100%">
+            <el-table-column label="投标事项名称" prop="title"></el-table-column>
+            <el-table-column label="通知书附件" width="160">
+              <template slot-scope="scope">
+                <a
+                  style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                  :href="scope.row.url"
+                  target="_blank"
+                >附件</a>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否中标" width="120">
+              <template slot-scope="scope">
+                <el-tag type="danger" v-if="!scope.row.status">未中标</el-tag>
+                <el-tag type="success" v-if="scope.row.status">已中标</el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
   </div>
@@ -505,6 +557,16 @@ export default {
           step: 7
         }
       ],
+      bidResultData: [
+        {
+          title: "《合能.深圳中央花园商业及住宅维修整改工程招标",
+          status: true
+        },
+        {
+          title: "《合能.深圳中央花园商业及住宅维修整改工程招标",
+          status: false
+        }
+      ],
       faqData: [
         {
           title: "这是疑问，这是疑问，这是问题",
@@ -525,6 +587,20 @@ export default {
         {
           title: "这是疑问，这是疑问，这是问题",
           time: "2019-01-01 12:32:39"
+        }
+      ],
+      attachmentData: [
+        {
+          title: "第一次上传",
+          time: "2019-02-03 13:30:12"
+        },
+        {
+          title: "第二次上传",
+          time: "2019-03-03 13:30:12"
+        },
+        {
+          title: "第三次上传",
+          time: "2019-04-03 13:30:12"
         }
       ],
       faqData2: [
@@ -829,6 +905,32 @@ export default {
         //   time: "2019-01-01 12:30:03"
         // }
       ],
+      bidPriceParentData: [
+        {
+          title: "子事项一",
+          project: "项目一",
+          room: "5栋#3标段",
+          time: "2019-03-06"
+        },
+        {
+          title: "子事项一",
+          project: "项目一",
+          room: "5栋#3标段",
+          time: "2019-03-06"
+        },
+        {
+          title: "子事项一",
+          project: "项目一",
+          room: "5栋#3标段",
+          time: "2019-03-06"
+        },
+        {
+          title: "子事项一",
+          project: "项目一",
+          room: "5栋#3标段",
+          time: "2019-03-06"
+        }
+      ],
       bidPriceFormControls: [
         {
           id: "price-money",
@@ -1000,6 +1102,20 @@ export default {
   .step-bar-wrap {
     padding: 30px 20px;
     margin-bottom: 30px;
+    .el-step {
+      &.selected {
+        position: relative;
+        &::after {
+          content: " ";
+          width: 30px;
+          height: 2px;
+          background: rgb(231, 90, 22);
+          position: absolute;
+          bottom: -10px;
+          left: 48px;
+        }
+      }
+    }
   }
 
   .bid-info {

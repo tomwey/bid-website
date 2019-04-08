@@ -75,15 +75,15 @@ export default {
             {
               name: "我的投标",
               route: "user_bids"
-            },
-            {
-              name: "答疑",
-              route: "user_bid_faq"
-            },
-            {
-              name: "定标",
-              route: "user_bid_result"
             }
+            // {
+            //   name: "答疑",
+            //   route: "user_bid_faq"
+            // },
+            // {
+            //   name: "定标",
+            //   route: "user_bid_result"
+            // }
           ]
         },
         {

@@ -86,6 +86,15 @@
                       <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
                     </template>
                   </el-table-column>
+                  <el-table-column label="提问附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="time" label="提问时间" width="180"></el-table-column>
                   <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
                 </el-table>
@@ -110,7 +119,8 @@
               </div>
               <div class="list">
                 <el-table :data="faqData2" key="faqTable2" stripe style="width: 100%">
-                  <el-table-column label="答疑附件">
+                  <el-table-column prop="title" label="提问内容"></el-table-column>
+                  <el-table-column label="答疑附件" width="120">
                     <template slot-scope="scope">
                       <a
                         style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
@@ -242,7 +252,7 @@
           </div>
           <div class="list">
             <el-table key="bidFuncTable" :data="bidFuncData" stripe style="width: 100%">
-              <el-table-column label="技术附件">
+              <el-table-column label="技术附件" width="180">
                 <template slot-scope="scope">
                   <a
                     style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
@@ -251,6 +261,7 @@
                   >技术附件</a>
                 </template>
               </el-table-column>
+              <el-table-column prop="memo" label="投标说明"></el-table-column>
               <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
               <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
             </el-table>
@@ -332,7 +343,7 @@
               <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
               <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
             </el-table>
-            <div class="page-container">
+            <!-- <div class="page-container">
               <el-pagination
                 background
                 layout="prev, pager, next"
@@ -340,7 +351,7 @@
                 :page-size="20"
                 :current-page="1"
               ></el-pagination>
-            </div>
+            </div>-->
           </div>
           <el-dialog
             title="新增商务回标"
@@ -460,37 +471,37 @@ export default {
       steps: [
         {
           title: "下载招标文件",
-          // desc: "标书文件下载",
+          desc: "2019-04-05截止",
           step: 1
         },
         {
           title: "答疑",
-          // desc: "2019-05-05截止",
+          desc: "2019-05-05截止",
           step: 2
         },
         {
           title: "投标保证金缴纳",
-          // desc: "2019-06-05截止",
+          desc: "2019-06-05截止",
           step: 3
         },
         {
           title: "技术标",
-          // desc: "2019-08-05截止",
+          desc: "2019-08-05截止",
           step: 4
         },
         {
           title: "商务标",
-          // desc: "2019-012-05截止",
+          desc: "2019-12-05截止",
           step: 5
         },
         {
           title: "议标",
-          // desc: "反馈议标结果",
+          desc: "2019-12-15截止",
           step: 6
         },
         {
           title: "定标",
-          // desc: "公示中标结果",
+          desc: "2019-12-25截止",
           step: 7
         }
       ],
@@ -729,22 +740,29 @@ export default {
       ],
       bidFuncData: [
         {
-          time: "2019-01-01 12:30:03"
+          time: "2019-01-01 12:30:03",
+          memo:
+            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
         },
         {
-          time: "2019-01-01 12:30:03"
+          time: "2019-01-01 12:30:03",
+          memo:
+            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
         },
         {
-          time: "2019-01-01 12:30:03"
+          time: "2019-01-01 12:30:03",
+          memo:
+            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
         },
         {
-          time: "2019-01-01 12:30:03"
+          time: "2019-01-01 12:30:03",
+          memo:
+            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
         },
         {
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          time: "2019-01-01 12:30:03"
+          time: "2019-01-01 12:30:03",
+          memo:
+            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
         }
       ],
       bidFuncFormControls: [
@@ -784,32 +802,32 @@ export default {
           money: "2394483",
           rate: "0.03",
           time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
         }
+        // {
+        //   money: "2394483",
+        //   rate: "0.03",
+        //   time: "2019-01-01 12:30:03"
+        // },
+        // {
+        //   money: "2394483",
+        //   rate: "0.03",
+        //   time: "2019-01-01 12:30:03"
+        // },
+        // {
+        //   money: "2394483",
+        //   rate: "0.03",
+        //   time: "2019-01-01 12:30:03"
+        // },
+        // {
+        //   money: "2394483",
+        //   rate: "0.03",
+        //   time: "2019-01-01 12:30:03"
+        // },
+        // {
+        //   money: "2394483",
+        //   rate: "0.03",
+        //   time: "2019-01-01 12:30:03"
+        // }
       ],
       bidPriceFormControls: [
         {
@@ -840,6 +858,19 @@ export default {
           //   subtype: "file",
           label: "商务标附件",
           field: "faqannex",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "faqannex",
+          // upload_tips: "只能上传图片格式，大小不超过5MB",
+          accept: ".pdf",
+          fileSize: 5
+        },
+        {
+          id: "other-file",
+          type: 8,
+          //   subtype: "file",
+          label: "其它标书附件",
+          field: "faqannex1",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Sub_Info",
           fieldname: "faqannex",

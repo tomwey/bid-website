@@ -32,7 +32,12 @@
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <!-- <el-button type="success" size="small">报名</el-button> -->
-            <el-button type="warning" size="small">资料补充</el-button>
+            <el-button
+              type="warning"
+              size="small"
+              @click="dialogFormVisible2 = true"
+              :disabled="scope.row.disabled"
+            >资料补充</el-button>
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
@@ -64,6 +69,27 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="commit">提 交</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="资料补充"
+      key="addForm"
+      :visible.sync="dialogFormVisible2"
+      :append-to-body="true"
+      center
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <form-fields
+        form-ref="form"
+        ref="dialogForm2"
+        :controls="applyControls2"
+        :form-model="applyFormModel"
+      ></form-fields>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible2 = false">取 消</el-button>
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
@@ -109,6 +135,12 @@ export default {
           ]
         },
         {
+          field: "file",
+          type: 8,
+          label: "放弃函件"
+          // subtype: "textarea"
+        },
+        {
           field: "memo",
           type: 1,
           label: "备注信息",
@@ -116,30 +148,55 @@ export default {
         }
       ],
       applyFormModel: {},
+      dialogFormVisible2: false,
+      applyControls2: [
+        {
+          id: "agency-file",
+          type: 8,
+          // subtype: "number",
+          label: "委托书附件",
+          field: "agencyfiles",
+          // unit: "万",
+          rules: [
+            { required: true, message: "委托书附件不能为空", trigger: "blur" }
+          ]
+        },
+        {
+          id: "other-file",
+          label: "其它附件",
+          field: "otherfile",
+          // required: true,
+          type: 8
+        }
+      ],
       tableData: [
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
           state: "已放弃",
-          id: 110
+          id: 110,
+          disabled: true
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
           state: "审核中",
-          id: 111
+          id: 111,
+          disabled: true
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
           state: "已通过",
-          id: 112
+          id: 112,
+          disabled: false
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
           state: "未通过",
-          id: 113
+          id: 113,
+          disabled: true
         }
       ]
     };

@@ -6,7 +6,7 @@
           <span class="label">报名截止时间:</span>
           <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <span class="label">报名状态:</span>
           <el-select v-model="state" placeholder="请选择">
             <el-option
@@ -17,7 +17,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="8">
           <el-input placeholder="输入搜索内容" v-model="keyword">
             <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
           </el-input>

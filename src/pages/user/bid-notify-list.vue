@@ -97,6 +97,12 @@ export default {
           ]
         },
         {
+          field: "file",
+          type: 8,
+          label: "放弃函件"
+          // subtype: "textarea"
+        },
+        {
           field: "memo",
           type: 1,
           label: "备注信息",

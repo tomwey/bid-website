@@ -29,7 +29,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="280">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <!-- <el-button type="success" size="small">报名</el-button> -->
             <el-button type="warning" size="small">资料补充</el-button>

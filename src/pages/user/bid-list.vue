@@ -20,7 +20,7 @@
         <el-table-column label="操作" width="90">
           <template slot-scope="scope">
             <!-- <el-button type="success" size="small">报名</el-button> -->
-            <el-button type="danger" size="small" @click="abandon">放弃</el-button>
+            <el-button type="danger" size="small" @click="abandon">弃标</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -1,7 +1,7 @@
 <template>
   <div class="bid-list">
     <!-- 即将上线... -->
-    <h2 class="title">招标事项列表</h2>
+    <h2 class="title">报名通知列表</h2>
     <div class="list">
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="招标事项">
@@ -9,17 +9,10 @@
             <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="时间" width="140"></el-table-column>
-        <el-table-column prop="state" label="状态" width="120">
+        <el-table-column prop="date" label="截止时间" width="140"></el-table-column>
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="90">
-          <template slot-scope="scope">
-            <!-- <el-button type="success" size="small">报名</el-button> -->
+            <el-button type="success" size="small">报名</el-button>
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
@@ -35,7 +28,7 @@
       </div>
     </div>
     <el-dialog
-      title="放弃投标"
+      title="放弃报名"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       center
@@ -58,13 +51,14 @@
 </template>
 <script>
 export default {
-  name: "bid-list",
+  name: "bid-notify-list",
   components: {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
     }
   },
   data() {
+    //业务量饱和、招标业务体量不匹配、支付方式不接受、对我司合作评估不佳、其他
     return {
       dialogFormVisible: false,
       applyControls: [
@@ -139,12 +133,12 @@ export default {
   },
   watch: {
     $route: function(to) {
-      console.log(to);
+      // console.log(to);
     }
   },
   methods: {
     selectItem(item) {
-      this.$router.push({ path: "/admin/bids/" + item.id });
+      this.$router.push({ path: "/admin/apply-bid/" + item.id });
     },
     abandon() {
       this.dialogFormVisible = true;

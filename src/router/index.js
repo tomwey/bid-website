@@ -129,13 +129,22 @@ const router = new Router({
                     component: () => import('@/pages/user/message-detail'),
                 },
                 {
+                    path: 'apply-notify',
+                    name: 'user_apply_notify',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-notify-list'),
+                },
+                {
                     path: 'applying-bids',
                     name: 'user_apply',
                     meta: {
                         requireAuth: true,
                         requireApprove: true
                     },
-                    component: () => import('@/pages/user/bid-list'),
+                    component: () => import('@/pages/user/apply-list'),
                 },
                 {
                     path: 'applied-bids',
@@ -145,6 +154,15 @@ const router = new Router({
                         requireApprove: true
                     },
                     component: () => import('@/pages/user/bid-list'),
+                },
+                {
+                    path: 'apply-bid/:id',
+                    name: 'user_apply_bid_detail',
+                    meta: {
+                        requireAuth: true,
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/bid-apply-detail'),
                 },
                 {
                     path: 'bids',

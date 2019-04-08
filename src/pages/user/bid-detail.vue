@@ -2,11 +2,25 @@
   <div class="bid-detail">
     <div class="breadcrumb-wrapper">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/applying-bids' }">我的报名</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/applying-bids' }">招标事项列表</el-breadcrumb-item>
         <el-breadcrumb-item>详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="maincontent">
+      <div class="bid-info">
+        <h2 class="title">合能地产成都公司68亩沉降观测合同招标公告</h2>
+        <div class="summary">
+          <span class="date">发布日期: 2019-01-01</span>&emsp;
+          <span class="company">招标单位: 成都兴露合能地产开发有限公司</span>&emsp;
+          <span class="view-count">浏览次数: 135</span>
+        </div>
+        <div class="apply-wrapper">
+          <p class="end-date-tip">
+            距离截止日期还剩
+            <span class="countdown">15天12小时32分20秒</span>
+          </p>
+        </div>
+      </div>
       <div class="step-bar-wrap">
         <el-steps :active="active" align-center finish-status="success">
           <el-step
@@ -342,37 +356,37 @@ export default {
       steps: [
         {
           title: "下载招标文件",
-          desc: "标书文件下载",
+          // desc: "标书文件下载",
           step: 1
         },
         {
           title: "答疑",
-          desc: "2019-05-05截止",
+          // desc: "2019-05-05截止",
           step: 2
         },
         {
           title: "投标保证金缴纳",
-          desc: "2019-06-05截止",
+          // desc: "2019-06-05截止",
           step: 3
         },
         {
           title: "技术标",
-          desc: "2019-08-05截止",
+          // desc: "2019-08-05截止",
           step: 4
         },
         {
           title: "商务标",
-          desc: "2019-012-05截止",
+          // desc: "2019-012-05截止",
           step: 5
         },
         {
           title: "议标",
-          desc: "反馈议标结果",
+          // desc: "反馈议标结果",
           step: 6
         },
         {
           title: "定标",
-          desc: "公示中标结果",
+          // desc: "公示中标结果",
           step: 7
         }
       ],
@@ -783,6 +797,38 @@ export default {
 
   .step-bar-wrap {
     padding: 30px 20px;
+    margin-bottom: 30px;
+  }
+
+  .bid-info {
+    margin-top: 20px;
+    padding: 30px 15px 10px;
+    background: #fff;
+    // min-height: 660px;
+    .title {
+      text-align: center;
+      font-size: 24px;
+      color: #333;
+    }
+    .summary {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 20px;
+    }
+    .apply-wrapper {
+      text-align: center;
+      .end-date-tip {
+        font-size: 16px;
+        text-align: center;
+        color: #333;
+        padding: 0 20px;
+      }
+      .countdown {
+        color: rgb(231, 90, 22);
+      }
+    }
   }
 
   .download-files {

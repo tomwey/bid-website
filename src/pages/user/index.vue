@@ -61,6 +61,10 @@ export default {
           icon: "gavel",
           menu_items: [
             {
+              name: "报名通知",
+              route: "user_apply_notify"
+            },
+            {
               name: "我的报名",
               route: "user_apply"
             },

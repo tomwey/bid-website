@@ -28,65 +28,113 @@
             :title="item.title"
             :description="item.desc"
             :key="item.step"
+            :class="{selected:step === item.step}"
             @click.native="selectStep(item.step)"
           ></el-step>
         </el-steps>
       </div>
       <div class="step-content">
         <div v-if="step === 1" class="download-files">
-          <table class="table">
-            <tr v-for="(item,index) in downloadFiles" :key="index">
-              <td class="label">{{item.label}}</td>
-              <td class="value">
-                <div class="files">
-                  <div class="file" v-for="(file,index2) in item.files" :key="index2">
-                    <a :href="file.url" class="file-link">{{file.name}}</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </table>
+          <el-tabs key="filesTab">
+            <el-tab-pane label="标书附件">
+              <table class="table">
+                <tr v-for="(item,index) in downloadFiles" :key="index">
+                  <td class="label">{{item.label}}</td>
+                  <td class="value">
+                    <div class="files">
+                      <div class="file" v-for="(file,index2) in item.files" :key="index2">
+                        <a :href="file.url" class="file-link">{{file.name}}</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </el-tab-pane>
+            <el-tab-pane label="补充材料附件">
+              <table class="table">
+                <tr v-for="(item,index) in downloadFiles2" :key="index">
+                  <td class="label">{{item.label}}</td>
+                  <td class="value">
+                    <div class="files">
+                      <div class="file" v-for="(file,index2) in item.files" :key="index2">
+                        <a :href="file.url" class="file-link">{{file.name}}</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </el-tab-pane>
+          </el-tabs>
         </div>
         <div v-if="step === 2" class="faq-list">
-          <div class="stat-newbar">
-            <el-row>
-              <el-col :span="16">
-                <span class="stat">共10条</span>
-              </el-col>
-              <el-col :span="8" style="text-align:right;">
-                <el-button type="primary" @click="faqDialogFormVisible = true">新增质疑</el-button>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="list">
-            <el-table :data="faqData" stripe style="width: 100%">
-              <el-table-column prop="title" label="提疑内容">
-                <template slot-scope="scope">
-                  <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="答疑附件" width="180">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >答疑附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="提疑时间" width="180"></el-table-column>
-              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
-            </el-table>
-            <div class="page-container">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="50"
-                :page-size="20"
-                :current-page="1"
-              ></el-pagination>
-            </div>
-          </div>
+          <el-tabs key="faqTab">
+            <el-tab-pane label="提问">
+              <div class="stat-newbar">
+                <el-row>
+                  <el-col :span="16">
+                    <span class="stat">共10条</span>
+                  </el-col>
+                  <el-col :span="8" style="text-align:right;">
+                    <el-button type="primary" @click="faqDialogFormVisible = true">新增质疑</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="list">
+                <el-table :data="faqData" key="faqTable1" stripe style="width: 100%">
+                  <el-table-column prop="title" label="提问内容">
+                    <template slot-scope="scope">
+                      <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="time" label="提问时间" width="180"></el-table-column>
+                  <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+                </el-table>
+                <div class="page-container">
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="50"
+                    :page-size="20"
+                    :current-page="1"
+                  ></el-pagination>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="回复">
+              <div class="stat-newbar">
+                <el-row>
+                  <el-col :span="16">
+                    <span class="stat">共10条</span>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="list">
+                <el-table :data="faqData2" key="faqTable2" stripe style="width: 100%">
+                  <el-table-column label="答疑附件">
+                    <template slot-scope="scope">
+                      <a
+                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                        :href="scope.row.url"
+                        target="_blank"
+                      >附件</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="time" label="回复时间" width="180"></el-table-column>
+                  <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+                </el-table>
+                <div class="page-container">
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="50"
+                    :page-size="20"
+                    :current-page="1"
+                  ></el-pagination>
+                </div>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+
           <el-dialog
             title="新增质疑"
             :visible.sync="faqDialogFormVisible"
@@ -109,16 +157,77 @@
           </el-dialog>
         </div>
         <div v-if="step === 3" class="bid-money">
-          <form-fields
+          <div class="stat-newbar">
+            <el-row>
+              <el-col :span="16">
+                <span class="stat">共10条</span>
+              </el-col>
+              <el-col :span="8" style="text-align:right;">
+                <el-button type="primary" @click="faqDialogFormVisible = true">新增投标保证金</el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="list">
+            <el-table key="bidMoneyDataTable" :data="bidMoneyData" stripe style="width: 100%">
+              <el-table-column label="缴纳凭证附件" width="180">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column prop="opinion" label="审批意见"></el-table-column>
+              <el-table-column prop="time" label="时间" width="180"></el-table-column>
+              <el-table-column prop="state" label="状态" width="120">
+                <template slot-scope="scope">
+                  <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
+                  <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
+                  <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
+            </el-table>
+            <div class="page-container">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="50"
+                :page-size="20"
+                :current-page="1"
+              ></el-pagination>
+            </div>
+          </div>
+          <el-dialog
+            title="新增保证金缴纳凭证"
+            :visible.sync="faqDialogFormVisible"
+            :append-to-body="true"
+            center
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+          >
+            <form-fields
+              form-ref="form"
+              ref="bidMoneyForm"
+              :controls="bidMoneyFormControls"
+              :form-model="bidMoneyFormModel"
+            ></form-fields>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
+            </div>
+          </el-dialog>
+          <!-- <form-fields
             form-ref="form"
             ref="bidMoneyForm"
             :controls="bidMoneyFormControls"
             :form-model="bidMoneyFormModel"
           ></form-fields>
           <div style="text-align:center">
-            <!-- <el-button @click="faqDialogFormVisible = false">取 消</el-button> -->
             <el-button type="primary">保 存</el-button>
-          </div>
+          </div>-->
         </div>
         <div v-if="step === 4" class="bid-func">
           <div class="stat-newbar">
@@ -133,11 +242,6 @@
           </div>
           <div class="list">
             <el-table key="bidFuncTable" :data="bidFuncData" stripe style="width: 100%">
-              <!-- <el-table-column prop="title" label="提疑内容">
-                  <template slot-scope="scope">
-                    <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
-                  </template>
-              </el-table-column>-->
               <el-table-column label="技术附件">
                 <template slot-scope="scope">
                   <a
@@ -412,6 +516,56 @@ export default {
           time: "2019-01-01 12:32:39"
         }
       ],
+      faqData2: [
+        {
+          title: "这是疑问，这是疑问，这是问题",
+          time: "2019-01-01 12:32:39"
+        },
+        {
+          title: "这是疑问，这是疑问，这是问题",
+          time: "2019-01-01 12:32:39"
+        },
+        {
+          title: "这是疑问，这是疑问，这是问题",
+          time: "2019-01-01 12:32:39"
+        },
+        {
+          title: "这是疑问，这是疑问，这是问题",
+          time: "2019-01-01 12:32:39"
+        },
+        {
+          title: "这是疑问，这是疑问，这是问题",
+          time: "2019-01-01 12:32:39"
+        }
+      ],
+      downloadFiles2: [
+        {
+          label: "补充材料一",
+          files: [
+            {
+              name: "文件一",
+              url: "#"
+            },
+            {
+              name: "文件2",
+              url: "#"
+            }
+          ]
+        },
+        {
+          label: "补充材料二",
+          files: [
+            {
+              name: "文件一",
+              url: "#"
+            },
+            {
+              name: "文件2",
+              url: "#"
+            }
+          ]
+        }
+      ],
       downloadFiles: [
         {
           label: "招标文件正文",
@@ -529,6 +683,23 @@ export default {
         }
       ],
       faqFormModel: {},
+      bidMoneyData: [
+        {
+          time: "2019-02-03 12:30:30",
+          opinion: "无",
+          state: "审核中"
+        },
+        {
+          time: "2019-02-03 12:30:30",
+          opinion: "无",
+          state: "已通过"
+        },
+        {
+          time: "2019-02-03 12:30:30",
+          opinion: "这是审核意见，这是审核意见",
+          state: "已放弃"
+        }
+      ],
       bidMoneyFormModel: {},
       bidMoneyFormControls: [
         {
@@ -878,6 +1049,10 @@ export default {
 .bid-money {
   padding: 30px 0;
   padding-right: 60px;
+}
+
+.faq-list {
+  padding: 0 30px 30px;
 }
 </style>
 

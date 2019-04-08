@@ -10,6 +10,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="date" label="截止时间" width="140"></el-table-column>
+        <el-table-column prop="state" label="状态" width="120">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
+            <el-tag type="info" v-if="scope.row.state == '已查看'">{{scope.row.state}}</el-tag>
+            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button type="success" size="small">报名</el-button>
@@ -101,32 +108,20 @@ export default {
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已放弃",
+          state: "已查看",
           id: 110
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "审核中",
+          state: "未查看",
           id: 111
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已通过",
+          state: "已报名",
           id: 112
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 113
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 114
         }
       ]
     };

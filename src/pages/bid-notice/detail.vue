@@ -71,98 +71,22 @@ export default {
       applyFormVisible: false,
       applyControls: [
         {
-          id: "service-type",
-          type: 2,
-          label: "服务类别",
-          field: "servicetype",
-          options: [],
-          placeholder: "请选择服务类别",
-          rules: [
-            { required: true, message: "服务类别不能为空", trigger: "change" }
-          ]
-        },
-        {
-          id: "service-area",
-          type: 4,
-          label: "服务区域",
-          field: "serverareaids",
-          options: [
-            {
-              label: "成都",
-              value: "成都"
-            },
-            {
-              label: "西安",
-              value: "西安"
-            },
-            {
-              label: "长沙",
-              value: "长沙"
-            }
-          ],
-          rules: [
-            { required: true, message: "服务区域不能为空", trigger: "change" }
-          ]
-        },
-        {
-          id: "found-money",
-          type: 1,
-          subtype: "number",
-          label: "注册资本",
-          field: "regmoney",
-          unit: "万",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
-        },
-        {
-          id: "grade",
-          type: 2,
-          label: "评估分级",
-          field: "grade",
-          options: [],
-          placeholder: "请选择评估分级",
-          rules: [
-            { required: true, message: "评估分级不能为空", trigger: "change" }
-          ]
-        },
-        {
-          id: "grade1",
-          type: 2,
-          label: "档次分档",
-          field: "grade1",
-          options: [],
-          placeholder: "请选择档次分档",
-          rules: [
-            { required: true, message: "档次分档不能为空", trigger: "change" }
-          ]
-        },
-        {
-          id: "requirement",
-          type: 1,
+          id: "agency-file",
+          type: 8,
           // subtype: "number",
-          label: "资质要求",
-          field: "requirement",
+          label: "委托书附件",
+          field: "agencyfiles",
           // unit: "万",
           rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
+            { required: true, message: "委托书附件不能为空", trigger: "blur" }
           ]
         },
         {
-          id: "is-model",
-          label: "是否具备标杆企业业绩",
-          field: "ismodel",
+          id: "other-file",
+          label: "其它附件",
+          field: "otherfile",
           // required: true,
-          type: 5
-          // rules: [{ required: true, message: "是否主要类别", trigger: "blur" }]
-        },
-        {
-          id: "is-company",
-          label: "是否要求展示区类单位",
-          field: "iscompany",
-          // required: true,
-          type: 5
-          // rules: [{ required: true, message: "是否主要类别", trigger: "blur" }]
+          type: 8
         }
       ],
       applyFormModel: {},
@@ -177,8 +101,14 @@ export default {
         },
         {
           label: "招标基本条件要求",
-          value:
-            "1、必须满足条件一<br>2、条件二<br>3、条件二<br>4、条件二<br>5、条件二"
+          value: `1、<strong>服务类别</strong>：类别一<br>
+             2、<strong>服务区域</strong>：成都、西安<br>
+             3、<strong>注册资本</strong>：1000万<br>
+             4、<strong>评估分级</strong>：三级<br>
+             5、<strong>档次分档</strong>：1档<br>
+             6、<strong>资质要求</strong>：甲级<br>
+             7、<strong>是否具备标杆企业业绩</strong>：否<br>
+             8、<strong>是否要求展示区类单位</strong>：是`
         },
         {
           label: "公告说明",
@@ -192,11 +122,11 @@ export default {
         {
           label: "招标公告附件",
           value: `<a href="#" style="color: rgb(231,90,22);text-decoration:underline;">1、附件一</a><br><a style="color: rgb(231,90,22);text-decoration:underline;">2、附件2</a><br><a href="#" style="color: rgb(231,90,22);text-decoration:underline;">3、附件3</a>`
-        },
-        {
-          label: "延迟后报名时间",
-          value: "2019-05-23 19:30"
         }
+        // {
+        //   label: "延迟后报名时间",
+        //   value: "2019-05-23 19:30"
+        // }
       ]
     };
   },

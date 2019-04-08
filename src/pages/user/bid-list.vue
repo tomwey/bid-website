@@ -14,7 +14,7 @@
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
             <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
+            <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="90">

@@ -8,18 +8,31 @@
             <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="报名附件" width="120">
+          <template slot-scope="scope">
+            <a
+              style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+              :href="scope.row.url"
+              target="_blank"
+            >附件</a>
+          </template>
+        </el-table-column>
         <el-table-column prop="date" label="报名时间" width="140"></el-table-column>
-        <el-table-column prop="state" label="状态" width="120">
+        <el-table-column prop="state" label="状态" width="180">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
             <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
+            <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
+            <span v-if="scope.row.state == '未通过'">
+              <el-tag type="danger">审核未通过</el-tag>
+              <p>原因：资料不齐全</p>
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="280">
           <template slot-scope="scope">
-            <el-button type="success" size="small">报名</el-button>
-            <el-button type="primary" size="small">资料补充</el-button>
+            <!-- <el-button type="success" size="small">报名</el-button> -->
+            <el-button type="warning" size="small">资料补充</el-button>
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
@@ -125,14 +138,8 @@ export default {
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已通过",
+          state: "未通过",
           id: 113
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 114
         }
       ]
     };

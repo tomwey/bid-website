@@ -1,6 +1,30 @@
 <template>
   <div class="bid-list">
     <h2 class="title">我的报名</h2>
+    <div class="search-toolbar">
+      <el-row>
+        <el-col :span="8">
+          <span class="label">截止时间:</span>
+          <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
+        </el-col>
+        <el-col :span="8">
+          <span class="label">状态:</span>
+          <el-select v-model="state" placeholder="请选择">
+            <el-option
+              v-for="item in stateOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="8">
+          <el-input placeholder="输入搜索内容" v-model="keyword">
+            <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+    </div>
     <div class="list">
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="招标事项">
@@ -240,6 +264,22 @@ export default {
   text-align: center;
   padding: 30px;
   background: #fff;
+}
+
+.search-toolbar {
+  background: #fff;
+  padding: 15px;
+  margin: 15px 0;
+  // border-bottom: 1px solid #f1f1f1;
+  .label {
+    font-size: 14px;
+    color: #666;
+    padding-right: 10px;
+    vertical-align: middle;
+  }
+  .el-date-editor--daterange.el-input__inner {
+    width: 120px !important;
+  }
 }
 </style>
 

@@ -83,7 +83,7 @@
                     <span class="stat">共10条</span>
                   </el-col>
                   <el-col :span="8" style="text-align:right;">
-                    <el-button type="primary" @click="faqDialogFormVisible = true">新增质疑</el-button>
+                    <el-button type="primary" @click="faqDialogFormVisible = true">新增提疑</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -154,7 +154,7 @@
           </el-tabs>
 
           <el-dialog
-            title="新增质疑"
+            title="新增提疑"
             :visible.sync="faqDialogFormVisible"
             :append-to-body="true"
             center
@@ -424,35 +424,6 @@
               <el-table-column label="楼栋/标段" prop="room" width="120"></el-table-column>
               <el-table-column label="投标截止时间" prop="time" width="120"></el-table-column>
             </el-table>
-            <!-- <el-table key="bidPrice2Table" :data="bidPrice2Data" stripe style="width: 100%">
-              <el-table-column label="议标报价总金额（含税总价，单位元）" prop="money" width="280">
-                <template slot-scope="scope">
-                  <span
-                    @click="showMoney(scope.row);"
-                  >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
-              <el-table-column label="议标商务标附件">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column label="其它标书附件">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="议标时间" width="180"></el-table-column>
-            </el-table>-->
             <div class="page-container">
               <el-pagination
                 background
@@ -767,6 +738,12 @@ export default {
           // upload_tips: "只能上传图片格式，大小不超过5MB",
           accept: ".pdf",
           fileSize: 5
+        },
+        {
+          id: "is-reconnaissance",
+          type: 5,
+          label: "是否踏勘",
+          field: "isreconnaissance"
         }
       ],
       faqFormModel: {},

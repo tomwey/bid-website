@@ -1079,20 +1079,20 @@ export default {
   .step-bar-wrap {
     padding: 30px 20px;
     margin-bottom: 30px;
-    .el-step {
-      &.selected {
-        position: relative;
-        &::after {
-          content: " ";
-          width: 30px;
-          height: 2px;
-          background: rgb(231, 90, 22);
-          position: absolute;
-          bottom: -10px;
-          left: 48px;
-        }
-      }
-    }
+    // .el-step {
+    //   &.selected {
+    //     position: relative;
+    //     &::after {
+    //       content: " ";
+    //       width: 30px;
+    //       height: 2px;
+    //       background: rgb(231, 90, 22);
+    //       position: absolute;
+    //       bottom: -10px;
+    //       left: 48px;
+    //     }
+    //   }
+    // }
   }
 
   .bid-info {
@@ -1179,5 +1179,42 @@ export default {
   padding: 0 30px 30px;
 }
 </style>
+<style lang="scss">
+.el-step__head.is-process {
+  color: rgb(231, 90, 22);
+  border-color: rgb(231, 90, 22);
+}
+
+.el-step__title.is-process,
+.el-step__description.is-process {
+  color: rgb(231, 90, 22);
+}
+
+.el-step {
+  &:hover {
+    color: rgb(231, 90, 22);
+    cursor: pointer;
+
+    .el-step__head,
+    .el-step__title,
+    .el-step__description {
+      color: rgb(231, 90, 22);
+      border-color: rgb(231, 90, 22);
+    }
+  }
+  &.selected {
+    color: rgb(231, 90, 22);
+    cursor: pointer;
+
+    .el-step__head,
+    .el-step__title,
+    .el-step__description {
+      color: rgb(231, 90, 22);
+      border-color: rgb(231, 90, 22);
+    }
+  }
+}
+</style>
+
 
 

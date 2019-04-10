@@ -36,14 +36,18 @@
         <el-table-column prop="date" label="截止时间" width="140"></el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
+            <span
+              class="state-tag"
+              :class="{success:scope.row.state == '已报名', info:scope.row.state == '已查看',warning:scope.row.state == '未查看'}"
+            >{{scope.row.state}}</span>
+            <!-- <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
             <el-tag type="info" v-if="scope.row.state == '已查看'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>
+            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>-->
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button type="success" size="small">报名</el-button>
+            <el-button type="primary" plain size="small">报名</el-button>&nbsp;
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
@@ -152,6 +156,42 @@ export default {
           date: "2019-03-13",
           state: "已报名",
           id: 112
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "已查看",
+          id: 110
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "未查看",
+          id: 111
+        },
+        // {
+        //   title: "合能集团成都公司总包招投标",
+        //   date: "2019-03-13",
+        //   state: "已报名",
+        //   id: 112
+        // },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "已查看",
+          id: 110
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "未查看",
+          id: 111
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "已报名",
+          id: 112
         }
       ]
     };
@@ -173,6 +213,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table {
+  color: #333;
+}
 .title {
   font-size: 16px;
   color: #333;
@@ -210,6 +253,18 @@ export default {
   }
   .el-date-editor--daterange.el-input__inner {
     width: 120px !important;
+  }
+}
+
+.state-tag {
+  &.success {
+    color: rgb(127, 183, 98);
+  }
+  &.warning {
+    color: rgb(231, 90, 22);
+  }
+  &.info {
+    color: #999;
   }
 }
 </style>

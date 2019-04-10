@@ -17,7 +17,10 @@
             :key="index2"
           >
             {{item.name}}
-            <el-badge :value="item.badge" v-if="item.badge"/>
+            <span
+              class="custom-badge"
+              v-if="item.badge"
+            >{{item.badge > 99 ? '99+' : item.badge}}</span>
           </dd>
         </dl>
 
@@ -52,7 +55,7 @@ export default {
             {
               name: "我的消息",
               route: "user_messages",
-              badge: 3
+              badge: 1
             }
           ]
         },
@@ -236,12 +239,40 @@ $theme-color: #e46623;
         vertical-align: middle;
         line-height: 20px;
         position: relative;
-        .el-badge {
+        .custom-badge {
           position: absolute;
-          top: 7px;
-          right: 2px;
+          top: 2px;
+          right: -8px;
+          display: inline-block;
+          padding: 0 6px;
+          height: 18px;
+          line-height: 18px;
+          font-size: 12px;
+          // font-weight: 500;
+          border-radius: 9px;
+          // vertical-align: middle;
+          background: rgb(231, 90, 22);
+          // font-family: "PingFang SC", Arial, Helvetica, sans-serif;
+          color: #fff;
         }
         &.active {
+          color: $theme-color;
+          position: relative;
+          .fa-icon {
+            color: $theme-color;
+          }
+          &::before {
+            content: "";
+            display: block;
+            width: 2px;
+            height: 24px;
+            background: $theme-color;
+            position: absolute;
+            top: 0;
+            left: -20px;
+          }
+        }
+        &:hover {
           color: $theme-color;
           position: relative;
           .fa-icon {

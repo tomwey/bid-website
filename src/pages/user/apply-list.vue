@@ -44,24 +44,29 @@
         <el-table-column prop="date" label="报名时间" width="140"></el-table-column>
         <el-table-column prop="state" label="状态" width="180">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
+            <!-- <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
             <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
             <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
             <span v-if="scope.row.state == '未通过'">
               <el-tag type="danger">审核未通过</el-tag>
               <p>原因：资料不齐全</p>
-            </span>
+            </span>-->
+            <span
+              class="state-tag"
+              :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
+            >{{scope.row.state}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <!-- <el-button type="success" size="small">报名</el-button> -->
             <el-button
-              type="warning"
+              type="primary"
+              plain
               size="small"
               @click="dialogFormVisible2 = true"
               :disabled="scope.row.disabled"
-            >资料补充</el-button>
+            >资料补充</el-button>&nbsp;
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
@@ -279,6 +284,20 @@ export default {
   }
   .el-date-editor--daterange.el-input__inner {
     width: 120px !important;
+  }
+}
+.state-tag {
+  &.success {
+    color: rgb(127, 183, 98);
+  }
+  &.warning {
+    color: rgb(231, 90, 22);
+  }
+  &.info {
+    color: #999;
+  }
+  &.danger {
+    color: rgb(238, 48, 67);
   }
 }
 </style>

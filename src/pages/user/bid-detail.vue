@@ -494,37 +494,37 @@ export default {
       steps: [
         {
           title: "下载招标文件",
-          desc: "2019-04-05截止",
+          desc: "04-05截止",
           step: 1
         },
         {
           title: "答疑",
-          desc: "2019-05-05截止",
+          desc: "05-05截止",
           step: 2
         },
         {
           title: "投标保证金缴纳",
-          desc: "2019-06-05截止",
+          desc: "06-05截止",
           step: 3
         },
         {
           title: "技术标",
-          desc: "2019-08-05截止",
+          desc: "08-05截止",
           step: 4
         },
         {
           title: "商务标",
-          desc: "2019-12-05截止",
+          desc: "12-05截止",
           step: 5
         },
         {
           title: "议标",
-          desc: "2019-12-15截止",
+          desc: "12-15截止",
           step: 6
         },
         {
           title: "定标",
-          desc: "2019-12-25截止",
+          desc: "12-25截止",
           step: 7
         }
       ],
@@ -1078,7 +1078,7 @@ export default {
 
   .step-bar-wrap {
     padding: 30px 20px;
-    margin-bottom: 30px;
+    // margin-bottom: 30px;
     // .el-step {
     //   &.selected {
     //     position: relative;
@@ -1171,7 +1171,7 @@ export default {
   padding: 0 10px;
 }
 .bid-money {
-  padding: 30px 0;
+  // padding: 30px 0;
   padding-right: 60px;
 }
 
@@ -1192,25 +1192,50 @@ export default {
 
 .el-step {
   &:hover {
-    color: rgb(231, 90, 22);
+    // color: rgb(231, 90, 22);
     cursor: pointer;
 
-    .el-step__head,
-    .el-step__title,
-    .el-step__description {
-      color: rgb(231, 90, 22);
-      border-color: rgb(231, 90, 22);
+    // .el-step__head,
+    // .el-step__title,
+    // .el-step__description {
+    //   color: rgb(231, 90, 22);
+    //   border-color: rgb(231, 90, 22);
+    // }
+    .el-step__main {
+      background: #f2f2f2;
+      padding-bottom: 5px;
     }
   }
   &.selected {
-    color: rgb(231, 90, 22);
-    cursor: pointer;
+    // color: rgb(231, 90, 22);
+    // cursor: pointer;
 
-    .el-step__head,
-    .el-step__title,
-    .el-step__description {
-      color: rgb(231, 90, 22);
-      border-color: rgb(231, 90, 22);
+    // .el-step__head,
+    // .el-step__title,
+    // .el-step__description {
+    //   color: rgb(231, 90, 22);
+    //   border-color: rgb(231, 90, 22);
+    // }
+    .el-step__main {
+      background: #f2f2f2;
+      padding-bottom: 5px;
+      position: relative;
+      &::after {
+        content: " ";
+        // color: #f2f2f2;
+        display: block;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAHZ0lEQVR4Xu3dv44jRRSF8ekEIaG1eBRiMgJIIOFJSSCBgIyYR0EeISGSRiPNomHZmWpfV/W/89uEoHx7fb5TH9ezK8z04BcCCLxKYMIGAQReJ0AQtwOBNwgQxPVAgCDuAAI1AjZIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBoBgtS4mQohQJCQosWsESBIjZupEAIECSlazBqBLoLM8/z59Xr9dZqmL2pvwxQC/QjM8/z75XL5apqmP+59ahdBnt4ESe6twnwPAj3leHo/3QQhSY96PeMeAr3l6C4ISe6p1+w9BEbIMUQQktxTs9kKgVFyDBOEJJWazVQIjJRjqCAkqdRt5hYCo+UYLghJbqnba28hsIYcqwhCkltq99olBNaSYzVBSLKkdq9ZQmBNOVYVhCRL6veatwisLcfqgpCEAFUCW8ixiSAkqV6R3Lmt5NhMEJLkXvZbk28px6aCkOTWq5L3+q3l2FwQkuRd+qWJ9yDHLgQhydIrk/O6vcixG0FIknP5W0n3JMeuBCFJ6+qc/3xvcuxOEJKcX4LXEu5Rjl0KQpI8SfYqx24FIUmOJHuWY9eCkOT8kuxdjt0LQpLzSnIEOQ4hCEnOJ8lR5DiMICQ5jyRHkuNQgpDkFJL89u7du297fOPhWjS6fnHcGm/aNziuQXnI7/EkxzfTNP055OmDHno4QWySQTdh7GMPKcfhPmK97NAmGXujOz79sHIcWhCbpOMVHveoQ8txeEHeS/L4+PjTw8PDl+N69uQCgcPLcQpBniX57PHx8WeSFK7xmJFTyHEaQUgy5pYXn3oaOU4lCEmK17nv2KnkOJ0gJOl722982unkOKUgJLnxWvd5+SnlOK0gJOlz6xc+5bRynFoQkiy83ve97NRynF4Qktx3+xvTp5cjQhCSDJEkQo4YQUjSVZIYOaIEIUkXSaLkiBOEJHdJEidHpCAkKUkSKUesICS5SZJYOaIFIckiSaLliBeEJG9KEi8HQZ7vxzzP/nuS/7pCjmceh/zShkUfDm58EUn+BUaOF3eHIC9gkOSBHB/8i5UgHwAJloQcH/nUQZCPQAmUhByvfCQnyCtggiQhxxs/rxLkDTgBkpCj8Yc5BGkAOrEk5FjwJ50EWQDphJKQY0Hv/qJwIaST/Y07OW7o3Qa5AdYJNgk5bujbBrkR1pE3yTzPv1wul++P9v/nKFTUdcQGKeA82iZ5luO7aZr+LsSNHiFIsf6jSEKOYsHPYwS5g9/eJSHHHeUS5H54e/6ZhBx9+rVBOnDc2yYhR4dSbZB+EPe0ScjRt1cbpCPPrTcJOTqWaYP0h7nlJiHHmD5tkAFcnzbJ9Xr9YZqmrwc8/n+PJMc4ygQZxHae50+u1+uPoyUhx6ACfcQaC/b549ZQScgxvkMbZDDjUZuEHIOLs0HWATxik5Bjve5skJVY99ok5FipMBtkXdA9Ngk51u/MBlmZeXWTkGPlomyQbYBXNgk5tuvKBtmI/dJNQo6NCrJBtgW/ZJOQY/uObJCNO3htk5Bj42JskH0U8LFNQo79dGOD7KSL95vk6e1cLhdfsLCTXgiykyKeN8mnT/+cpumvHb2t6LdCkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAgSJrl/4FgGCtAg5jyZAkOj6hW8RIEiLkPNoAv8AFnp19vd60RMAAAAASUVORK5CYII=);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: left top;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        bottom: -13px;
+        left: 50%;
+        margin-left: -10px;
+        // left: 0;
+      }
     }
   }
 }

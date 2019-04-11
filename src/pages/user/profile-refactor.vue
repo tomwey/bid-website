@@ -208,7 +208,7 @@ export default {
           type: 9,
           label: "服务类别",
           // value: null,
-          field: "suptypeid",
+          field: "suptype",
           // required: true,
           options: [],
           rules: [
@@ -1667,8 +1667,13 @@ export default {
         } else {
           val = val || "";
         }
-        // console.log(control.field);
+
+        // if (control.field == "suptype") {
+        //   params[control.field + "id"] = val;
+        // } else {
         params[control.field] = val;
+        // }
+        // console.log(control.field);
       });
     },
     saveDraft() {
@@ -1764,7 +1769,11 @@ export default {
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];
-            obj[key] = element || "";
+            if (key == "suptype") {
+              obj["suptypeid"] = element || "";
+            } else {
+              obj[key] = element || "";
+            }
           }
         }
         temp3.push(obj);

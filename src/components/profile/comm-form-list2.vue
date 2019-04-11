@@ -147,6 +147,8 @@ export default {
           }
         }
 
+        // console.log(this.formModel);
+
         this.formModel = obj;
 
         if (this.model === "man") {
@@ -193,7 +195,7 @@ export default {
       this.dialogFormVisible = true;
     },
     commit(evt) {
-      // console.log(this.formModel);
+      console.log(this.formModel);
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
           // let obj = Object.assign({}, this.formModel);
@@ -215,6 +217,11 @@ export default {
               }
               obj[control.field + "name"] = this.formModel[control.field];
               obj[control.field] = this.formModel[control.field];
+            } else if (control.type == 9) {
+              obj[control.field] = this.formModel[control.field];
+              obj[control.field + "name"] = this.formModel[
+                control.field + "name"
+              ];
             } else {
               // console.log(control.field);
               // console.log("-------------");

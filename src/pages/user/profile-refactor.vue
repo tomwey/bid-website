@@ -128,6 +128,9 @@
       </div>
     </div>
     <!-- <bid-upload></bid-upload> -->
+    <el-dialog title="标杆企业名单" :visible.sync="top100ImgVisible" style="text-align:center;">
+      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%;">
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -151,6 +154,7 @@ export default {
   data() {
     return {
       currentStep: null,
+      top100ImgVisible: false,
       achieveData: this.$store.state.supprofile.yj_data || [],
       commiting: false,
       achieveFields: [
@@ -198,7 +202,11 @@ export default {
           field: "ismodel",
           // required: true,
           label: "是否标杆企业",
-          special_desc: "地产前100强为标杆企业"
+          special_desc: "标杆企业名单",
+          clickCallback: () => {
+            // console.log(123);
+            this.top100ImgVisible = true;
+          }
           // rules: [
           //   { required: true, message: "合作单位名称不能为空", trigger: "blur" }
           // ]

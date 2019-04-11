@@ -82,6 +82,10 @@
           :active-text="control.yesText"
           :inactive-text="control.noText"
         ></el-switch>
+        <span v-if="control.type === 5 && control.special_desc">
+          （
+          <span class="special" @click="showSpecial(control);">{{control.special_desc}}</span>）
+        </span>
 
         <!-- 时间选择器 type = 6 -->
         <el-time-select
@@ -201,6 +205,12 @@ export default {
         }
       );
     },
+    showSpecial(control) {
+      // console.log(ev);
+      if (control.clickCallback) {
+        control.clickCallback();
+      }
+    },
     itemChange(item, ev) {
       if (item.changeFunc) {
         item.changeFunc(ev);
@@ -316,6 +326,13 @@ $theme-color: #e46623;
     margin-top: 5px;
     padding: 0;
     line-height: 18px;
+  }
+
+  .special {
+    color: $theme-color;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
   }
 
   .el-select {

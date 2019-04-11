@@ -195,7 +195,7 @@ export default {
       this.dialogFormVisible = true;
     },
     commit(evt) {
-      console.log(this.formModel);
+      // console.log(this.formModel);
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
           // let obj = Object.assign({}, this.formModel);

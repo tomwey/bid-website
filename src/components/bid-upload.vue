@@ -59,13 +59,15 @@ export default {
     };
   },
   mounted() {
-    if (this.value) {
+    // console.log(this.value);
+    if (this.value && this.value != "0") {
       this.loadAnnexes();
     }
   },
   watch: {
     value(newVal) {
-      if (!newVal) {
+      // console.log(newVal);
+      if (!newVal || newVal == "0") {
         this.fileList = [];
       } else {
         this.loadAnnexes();

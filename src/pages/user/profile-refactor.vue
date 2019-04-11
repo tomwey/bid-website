@@ -208,7 +208,7 @@ export default {
           type: 9,
           label: "服务类别",
           // value: null,
-          field: "suptype",
+          field: "suptypeid",
           // required: true,
           options: [],
           rules: [
@@ -567,7 +567,7 @@ export default {
           //   required: true
         }
       ],
-      otheerInfoFormModel: {},
+      otheerInfoFormModel: { branchinfo: "", relateinfo: "" },
       otherFilesFormModel: {},
       otherFilesFormControls: [
         {
@@ -936,7 +936,7 @@ export default {
 
     this.loadServiceTypeConfigs();
 
-    // this.populateData();
+    this.populateData();
     // console.log(this.$store.state.supprofile);
     // }
   },
@@ -1400,61 +1400,36 @@ export default {
       // 填充主数据表单
       let object = this.$store.state.supprofile;
 
-      // console.log(this.$store.state.supinfo);
-      this.baseFormData[0].readonly = this.baseFormData[2].readonly =
-        object.comname && object.comname.length > 0;
+      console.log(object);
 
-      this.baseFormData.forEach(control => {
-        if (control.field == "comuscc" || control.field == "comname") {
-          control.readonly = object["canmodify"] === "false";
-          // console.log(object);
-          // console.log(11111);
+      this.baseFormControls.forEach(control => {
+        if (control.field == "safeproductionl" && object[control.field] == "") {
+          // this.baseFormModel[control.field] = "";
+          this.$set(this.baseFormModel, control.field, null);
+        } else {
+          this.$set(this.baseFormModel, control.field, object[control.field]);
+          // this.baseFormModel[control.field] = object[control.field];
+        }
+        if (control.field == "comname" || control.field == "comuscc") {
+          control.disabled = true;
         }
 
-        if (control.type === 3) {
-          control.value =
-            object[control.field] && object[control.field].split(",");
-        } else if (control.type === 1 && control.subtype === "date") {
-          control.value =
-            object[control.field] && object[control.field].split(" ")[0];
-        } else if (control.type === 4) {
-          // 文件附件
-          control.value = object[control.field] || "";
-
-          const nameKey = control.field + "name";
-          const urlKey = control.field + "url";
-          if (object[urlKey] && object[nameKey]) {
-            let fileUrl = object[urlKey];
-            let fileName = object[nameKey];
-
-            let file = {
-              _fileurl: fileUrl,
-              _filename: fileName,
-              _isimage:
-                fileName.indexOf(".png") !== -1 ||
-                fileName.indexOf(".gif") !== -1 ||
-                fileName.indexOf(".jpg") !== -1 ||
-                fileName.indexOf(".jpeg") !== -1 ||
-                fileName.indexOf(".webp") !== -1
-            };
-            control[control.field + "_files"] = [file];
-            // control._fileurl = fileUrl;
-            // control._filename = fileName;
-            // control._isimage =
-            //   fileName.indexOf(".png") !== -1 ||
-            //   fileName.indexOf(".gif") !== -1 ||
-            //   fileName.indexOf(".jpg") !== -1 ||
-            //   fileName.indexOf(".jpeg") !== -1 ||
-            //   fileName.indexOf(".webp") !== -1;
-          }
-        } else {
-          control.value =
-            object[control.field + "str"] || object[control.field];
+        if (control.type == 4) {
+          this.$set(
+            this.baseFormModel,
+            control.field,
+            (object[control.field] || "").split(",")
+          );
         }
       });
-      // 填充其它信息
-      this.otherInfoFormData.forEach(control => {
-        control.value = object[control.field];
+
+      this.otherInfoFormControls.forEach(control => {
+        // this.otherInfoFormModel[control.field] = object[control.field];
+        this.$set(
+          this.otherInfoFormModel,
+          control.field,
+          object[control.field]
+        );
       });
 
       // console.log(this.areaFormData);
@@ -1467,36 +1442,14 @@ export default {
       let files = this.$store.state.supprofile.otherfiles || [];
       if (files.length > 0) {
         let object = files[0];
-        // console.log(object);
-        this.otherFilesFormData.forEach(control => {
-          control.value = object[control.field];
-
-          if (control.type === 4) {
-            // 文件附件
-            const nameKey = control.field + "name";
-            const urlKey = control.field + "url";
-            // console.log(nameKey);
-            if (object[urlKey] && object[nameKey]) {
-              let fileUrl = object[urlKey];
-              let fileName = object[nameKey];
-
-              let file = {
-                _fileurl: fileUrl,
-                _filename: fileName,
-                _isimage:
-                  fileName.indexOf(".png") !== -1 ||
-                  fileName.indexOf(".gif") !== -1 ||
-                  fileName.indexOf(".jpg") !== -1 ||
-                  fileName.indexOf(".jpeg") !== -1 ||
-                  fileName.indexOf(".webp") !== -1
-              };
-              control[control.field + "_files"] = [file];
-            }
-          }
+        this.otherFilesFormControls.forEach(control => {
+          this.$set(
+            this.otherFilesFormModel,
+            control.field,
+            object[control.field]
+          );
         });
       }
-
-      // console.log(this.otherFilesFormData);
     },
 
     populateAreaData() {
@@ -1563,7 +1516,7 @@ export default {
                 label: ele.sy_name
               });
             });
-            this.baseFormModel["comtype"] = null;
+            // this.baseFormModel["comtype"] = null;
             this.baseFormControls[1].options = temp;
           }
         }
@@ -1700,18 +1653,15 @@ export default {
     resetClick() {
       const form = this.$refs[`step${this.currentStep.step}`];
       form && form.reset();
-      // if (this.currentStep.step === 3) {
-      //   this.areaFormData[1].options = [];
-      // }
     },
-    _fillData(formData, params) {
+    _fillData(formControls, formModel, params) {
       // console.log(formData);
 
-      formData.forEach(control => {
-        let val = control.value;
+      formControls.forEach(control => {
+        let val = formModel[control.field];
         if (control.type === 5) {
           val = val === true ? "1" : "0";
-        } else if (control.type === 3) {
+        } else if (control.type === 4) {
           val = val || [];
           val = val.join(",");
         } else {
@@ -1725,16 +1675,22 @@ export default {
       let params = { action: "savesupdraft" };
 
       // 填充基础数据
-      this._fillData(this.baseFormData, params);
+      this._fillData(this.baseFormControls, this.baseFormModel, params);
 
-      params["outputvalueyear"] = this.achieveYearData.output || "0";
-      params["turnoveryear"] = this.achieveYearData.sale || "0";
+      params["outputvalueyear"] = (
+        this.achieveYearData.output || "0"
+      ).toString();
+      params["turnoveryear"] = (this.achieveYearData.sale || "0").toString();
 
       // 填充其它信息
-      this._fillData(this.otherInfoFormData, params);
+      this._fillData(
+        this.otherInfoFormControls,
+        this.otherInfoFormModel,
+        params
+      );
 
       // 填充区域信息
-      this._fillData(this.areaFormData, params);
+      this._fillData(this.areaFormControls, this.areaFormModel, params);
 
       params["_loginuid"] = this.$store.state.supinfo.accountid;
 
@@ -1818,13 +1774,15 @@ export default {
 
       // 填充其它附件信息
       let fileObj = {};
-      this.otherFilesFormData.forEach(control => {
-        if (control.value) {
-          fileObj[control.field] = control.value;
+      this.otherFilesFormControls.forEach(control => {
+        if (this.otherFilesFormModel[control.field]) {
+          fileObj[control.field] = this.otherFilesFormModel[control.field];
         }
       });
 
       params["otherfiles"] = [fileObj];
+
+      console.log(params);
 
       if (this.commiting) return;
       this.commiting = true;

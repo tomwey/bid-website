@@ -112,6 +112,8 @@
             :items="achieveData"
             :fields="achieveFields"
             :form-data="achieveFormData"
+            :form-model="achieveFormModel"
+            @openform="openAcheveForm"
           />
         </div>
       </div>
@@ -165,6 +167,7 @@ export default {
           width: 80
         }
       ].concat(tableFields.achieve),
+      achieveFormModel: {},
       achieveFormData: [
         {
           id: "city",
@@ -1109,6 +1112,11 @@ export default {
       // this.manFormData.forEach(control => {});
 
       this.populateFormData(this.manFormData, this.manFormModel, data);
+    },
+    openAcheveForm(value) {
+      value = value || {};
+      const data = value.data || {};
+      this.populateFormData(this.achieveFormData, this.achieveFormModel, data);
     },
     populateFormData(controls, model, data) {
       if (!data) {

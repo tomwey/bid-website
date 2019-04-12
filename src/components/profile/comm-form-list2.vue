@@ -12,6 +12,7 @@
       </b-col>
     </b-row>
     <horizontal-table
+      :key="name + 'list'"
       :items="tableData"
       @actionclick="actionClick"
       :fields="fields"
@@ -44,7 +45,8 @@ export default {
     fields: Array,
     model: String,
     name: String,
-    formData: Array
+    formData: Array,
+    formModel: Object
   },
   components: {
     formFields: function(resolve) {
@@ -56,7 +58,7 @@ export default {
   },
   data() {
     return {
-      formModel: {},
+      // formModel: {},
       dialogFormVisible: false,
       currentEditItem: null,
       tableData: this.items,
@@ -118,53 +120,8 @@ export default {
         });
 
         this.currentEditItem = data;
-        // this.formModel = Object.assign({}, data);
-        let obj = {};
-        for (let i = 0; i < this.formData.length; i++) {
-          const control = this.formData[i];
-          if (control.type === 5) {
-            if (
-              data[control.field] == "true" ||
-              data[control.field] == "是" ||
-              data[control.field] == "1"
-            ) {
-              obj[control.field] = true;
-            } else {
-              obj[control.field] = false;
-            }
-          } else if (control.type === 8) {
-            // 附件
-            obj[control.field + "url"] = data[control.field + "url"];
-            obj[control.field] = data[control.field];
-          } else if (control.type === 9) {
-            obj[control.field + "name"] = data[control.field + "name"];
-            obj[control.field] =
-              (data[control.field + "id"] || data[control.field]) == "0"
-                ? ""
-                : data[control.field + "id"] || data[control.field];
-          } else {
-            obj[control.field] = data[control.field];
-          }
-        }
 
-        // console.log(this.formModel);
-
-        this.formModel = obj;
-
-        if (this.model === "man") {
-          for (let i = 0; i < this.formData.length; i++) {
-            const control = this.formData[i];
-            if (control.field === "contacttype") {
-              if (
-                this.formModel["contacttype"] &&
-                this.formModel["contacttype"].indexOf("第一联系人") !== -1
-              ) {
-                control.changeFunc(this.formModel["contacttype"]);
-              }
-              break;
-            }
-          }
-        }
+        this.$emit("openform", { func: this.model, data: data });
 
         this.dialogFormVisible = true;
       } else if (action.code === "delete") {
@@ -182,15 +139,7 @@ export default {
 
       this.reset();
 
-      let object = {};
-      this.formData.forEach(control => {
-        object[control.field] = "";
-        if (control.type == 5) {
-          object[control.field] = false;
-        }
-      });
-
-      this.formModel = object;
+      this.$emit("openform", { func: this.model });
 
       this.dialogFormVisible = true;
     },
@@ -223,29 +172,35 @@ export default {
                 control.field + "name"
               ];
             } else {
-              // console.log(control.field);
-              // console.log("-------------");
-              // console.log(this.formModel[control.field]);
               obj[control.field] = this.formModel[control.field];
+            }
+
+            // 特殊处理普通联系人的附件
+            if (
+              control.field == "contacttype" &&
+              this.formModel[control.field] &&
+              this.formModel[control.field].indexOf("普通联系人") !== -1
+            ) {
+              obj["sscertificateannex"] = null;
+              obj["authdelegationannex"] = null;
             }
           });
 
           // console.log(obj);
 
-          // this.dialogFormVisible = false;
-
           if (this.currentEditItem) {
             // 编辑
             const index = this.tableData.indexOf(this.currentEditItem);
             if (index !== -1) {
-              // console.log("123----");
               this.tableData.splice(index, 1, obj);
             }
-            // console.log(this.items);
           } else {
             // 新增
             this.tableData.push(obj);
           }
+
+          // console.log(this.tableData);
+
           this.dialogFormVisible = false;
         }
       });

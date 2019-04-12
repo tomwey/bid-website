@@ -19,6 +19,7 @@
                 ref="valueItem"
                 :item="item"
                 :field="field.value"
+                :key="itemKey"
                 v-if="field.value !== 'actions'"
               />
               <div class="actions" v-if="field.value === 'actions'">
@@ -48,18 +49,24 @@ export default {
   },
   data() {
     return {
-      tableData: this.items
+      tableData: this.items,
+      itemKey: "itemkey"
     };
   },
   watch: {
-    tableData() {
-      // console.log(123);
-      // console.log(this.$refs);
-      // console.log(this.items);
+    // tableData() {
+    //   console.log(123);
+    //   // console.log(this.$refs);
+    //   // console.log(this.items);
 
-      this.$refs["valueItem"].forEach(comp => {
-        comp.reloadAnnexesIfNeeded();
-      });
+    //   this.$refs["valueItem"].forEach(comp => {
+    //     comp.reloadAnnexesIfNeeded();
+    //   });
+    // }
+    items(newVal) {
+      this.tableData = Object.assign([], this.items);
+      // console.log(this.tableData);
+      this.itemKey = "itemkey-" + new Date().getTime();
     }
   },
   components: {

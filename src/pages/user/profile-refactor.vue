@@ -52,8 +52,9 @@
           :items="manData"
           ref="manList"
           :fields="manFields"
-          @editform="editManForm"
+          @openform="openManForm"
           :form-data="manFormData"
+          :form-model="manFormModel"
         />
 
         <comm-form-list
@@ -392,6 +393,7 @@ export default {
         }
       ],
       manData: this.$store.state.supprofile.man || [],
+      manFormModel: {},
       manFormData: [
         {
           id: "contact-type",
@@ -410,7 +412,7 @@ export default {
             { required: true, message: "联系人类型不能为空", trigger: "change" }
           ],
           changeFunc: value => {
-            if (value.indexOf("第一联系人") !== -1) {
+            if (value && value.indexOf("第一联系人") !== -1) {
               if (this.manFormData.length === 7) {
                 const fields = [
                   {
@@ -469,7 +471,7 @@ export default {
               }
             }
 
-            this.$refs["manList"].reset();
+            // this.$refs["manList"].reset();
           }
           // changeFunc: this.changeContactType
         },
@@ -1097,68 +1099,127 @@ export default {
         );
       }
     },
+    openManForm(value) {
+      // console.log(value);
+      value = value || {};
+      const data = value.data || {};
+      // console.log(data);
+      // if (data[''])
+      this.manFormData[0].changeFunc(data["contacttype"]);
+      // this.manFormData.forEach(control => {});
+
+      this.populateFormData(this.manFormData, this.manFormModel, data);
+    },
+    populateFormData(controls, model, data) {
+      if (!data) {
+        controls.forEach(control => {
+          this.$set(model, control.field, null);
+        });
+        return;
+      }
+      let obj = {};
+      for (let i = 0; i < controls.length; i++) {
+        const control = controls[i];
+        if (control.type === 5) {
+          if (
+            data[control.field] == "true" ||
+            data[control.field] == "是" ||
+            data[control.field] == "1"
+          ) {
+            obj[control.field] = true;
+          } else {
+            obj[control.field] = false;
+          }
+        } else if (control.type === 8) {
+          // 附件
+          obj[control.field + "url"] = data[control.field + "url"];
+          obj[control.field] = data[control.field];
+        } else if (control.type === 9) {
+          obj[control.field + "name"] = data[control.field + "name"];
+          obj[control.field] =
+            (data[control.field + "id"] || data[control.field]) == "0"
+              ? ""
+              : data[control.field + "id"] || data[control.field];
+        } else {
+          obj[control.field] = data[control.field];
+        }
+      }
+
+      // model = Object.assign({}, obj);
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const element = obj[key];
+          this.$set(model, key, element);
+        }
+      }
+    },
     editManForm(data) {
       // console.log(data);
       data = data || {};
 
-      if (data["contacttype"] == "1" || data["contacttype"] == "第一联系人") {
-        this.controlValueChanged({
-          control: this.manFormData[0],
-          data: `${data["contacttype"]}-${data["contacttype"]}`
-        });
-      }
+      // if (data["contacttype"].indexOf("第一联系人") !== -1) {
+      this.manFormData[0].changeFunc(data["contacttype"]);
+      this.manFormData.forEach(control => {});
+      // }
 
-      this.manFormData.forEach(control => {
-        if (control.type === 2) {
-          // console.log(data);
-          if (data[control.field]) {
-            control.value = `${data[control.field + "name"]}-${
-              data[control.field]
-            }`;
-          } else {
-            control.value = null;
-          }
-          if (control.field == "quaid" && data["quaid"] == "0") {
-            control.value = null;
-          }
-        } else if (control.type === 4) {
-          if (control.field) {
-            // 文件附件
-            const nameKey = control.field + "name";
-            const urlKey = control.field + "url";
-            if (data[control.field + "_files"]) {
-              control[control.field + "_files"] =
-                data[control.field + "_files"];
-              control.value = data[control.field] || null;
-            } else if (data[urlKey] && data[nameKey]) {
-              let fileUrl = data[urlKey];
-              let fileName = data[nameKey];
-              let file = {
-                _fileurl: fileUrl,
-                _filename: fileName,
-                _isimage:
-                  fileName.indexOf(".png") !== -1 ||
-                  fileName.indexOf(".gif") !== -1 ||
-                  fileName.indexOf(".jpg") !== -1 ||
-                  fileName.indexOf(".jpeg") !== -1 ||
-                  fileName.indexOf(".webp") !== -1
-              };
-              control[control.field + "_files"] = [file];
-              control.value = data[control.field] || null;
-              // console.log(control);
-            }
-          }
-        } else if (control.type === 7) {
-          // 树形控件
-          control.value = {
-            value: data[control.field],
-            text: data[control.field + "name"],
-            childcount: 0
-          };
-        } else {
-          control.value = data[control.field];
-        }
-      });
+      // if (data["contacttype"] == "1" || data["contacttype"] == "第一联系人") {
+      //   this.controlValueChanged({
+      //     control: this.manFormData[0],
+      //     data: `${data["contacttype"]}-${data["contacttype"]}`
+      //   });
+      // }
+      //
+      // this.manFormData.forEach(control => {
+      //   if (control.type === 2) {
+      //     // console.log(data);
+      //     if (data[control.field]) {
+      //       control.value = `${data[control.field + "name"]}-${
+      //         data[control.field]
+      //       }`;
+      //     } else {
+      //       control.value = null;
+      //     }
+      //     if (control.field == "quaid" && data["quaid"] == "0") {
+      //       control.value = null;
+      //     }
+      //   } else if (control.type === 4) {
+      //     if (control.field) {
+      //       // 文件附件
+      //       const nameKey = control.field + "name";
+      //       const urlKey = control.field + "url";
+      //       if (data[control.field + "_files"]) {
+      //         control[control.field + "_files"] =
+      //           data[control.field + "_files"];
+      //         control.value = data[control.field] || null;
+      //       } else if (data[urlKey] && data[nameKey]) {
+      //         let fileUrl = data[urlKey];
+      //         let fileName = data[nameKey];
+      //         let file = {
+      //           _fileurl: fileUrl,
+      //           _filename: fileName,
+      //           _isimage:
+      //             fileName.indexOf(".png") !== -1 ||
+      //             fileName.indexOf(".gif") !== -1 ||
+      //             fileName.indexOf(".jpg") !== -1 ||
+      //             fileName.indexOf(".jpeg") !== -1 ||
+      //             fileName.indexOf(".webp") !== -1
+      //         };
+      //         control[control.field + "_files"] = [file];
+      //         control.value = data[control.field] || null;
+      //         // console.log(control);
+      //       }
+      //     }
+      //   } else if (control.type === 7) {
+      //     // 树形控件
+      //     control.value = {
+      //       value: data[control.field],
+      //       text: data[control.field + "name"],
+      //       childcount: 0
+      //     };
+      //   } else {
+      //     control.value = data[control.field];
+      //   }
+      // });
     },
     editServiceForm(data) {
       // console.log(data);
@@ -1368,7 +1429,7 @@ export default {
             ];
             arr.forEach(ele => {
               temp.push({
-                value: `${ele.sy_name}-${ele.sy_value}`,
+                value: `${ele.sy_value}`,
                 label: ele.sy_name
               });
             });
@@ -1395,7 +1456,7 @@ export default {
             ];
             arr.forEach(ele => {
               temp.push({
-                value: `${ele.sy_name}-${ele.sy_value}`,
+                value: `${ele.sy_value}`,
                 label: ele.sy_name
               });
             });

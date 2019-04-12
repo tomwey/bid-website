@@ -24,10 +24,13 @@ export default {
     };
   },
   mounted() {
+    // console.log("ddd");
     this.reloadAnnexesIfNeeded();
   },
   methods: {
     reloadAnnexesIfNeeded() {
+      // this.itemKey = this.field + new Date().getTime();
+      // console.log("dddd");
       if (this.isFile()) {
         this.isfile = true;
         this.loadAnnexes();
@@ -47,6 +50,10 @@ export default {
     loadAnnexes() {
       // console.log(this.item);
       // console.log("loading...");
+      if (!this.item[this.field]) {
+        this.fileList = [];
+        return;
+      }
       this.$post(
         {
           action: "P_SY_GetAnnex",

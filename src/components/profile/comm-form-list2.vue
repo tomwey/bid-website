@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="8">
         共
-        <span class="digit">{{items.length}}</span>
+        <span class="digit">{{tableData.length}}</span>
         条{{this.name}}
       </b-col>
       <b-col cols="4" class="hn-btn-style">
@@ -151,21 +151,30 @@ export default {
 
           let obj = {};
           // console.log(this.formModel);
+          // console.log(this.formData);
+
           this.formData.forEach(control => {
+            // console.log(control);
             if (control.type == 2) {
               if (this.formModel[control.field]) {
-                obj[control.field + "name"] = this.formModel[
-                  control.field
-                ].split("-")[0];
-                obj[control.field] = this.formModel[control.field].split(
-                  "-"
-                )[1];
+                // console.log(this.formModel[control.field]);
+                let arr = this.formModel[control.field].split("-");
+                if (arr.length === 2) {
+                  obj[control.field] = arr[1];
+                  obj[control.field + "name"] = arr[0];
+                } else if (arr.length === 1) {
+                  obj[control.field] = arr[0];
+                  obj[control.field + "name"] = arr[0];
+                } else {
+                  obj[control.field] = "";
+                  obj[control.field + "name"] = "";
+                }
               } else {
                 obj[control.field] = "";
                 obj[control.field + "name"] = "";
               }
-              obj[control.field + "name"] = this.formModel[control.field];
-              obj[control.field] = this.formModel[control.field];
+              // obj[control.field + "name"] = this.formModel[control.field];
+              // obj[control.field] = this.formModel[control.field];
             } else if (control.type == 9) {
               obj[control.field] = this.formModel[control.field];
               obj[control.field + "name"] = this.formModel[
@@ -184,9 +193,13 @@ export default {
               obj["sscertificateannex"] = null;
               obj["authdelegationannex"] = null;
             }
+
+            if (control.field == "servertype") {
+              obj["servertypeid"] = this.formModel[control.field];
+            }
           });
 
-          // console.log(obj);
+          console.log(obj);
 
           if (this.currentEditItem) {
             // 编辑

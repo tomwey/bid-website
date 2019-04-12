@@ -46,6 +46,7 @@
         </div>
 
         <comm-form-list
+          :key="'list-' + currentStep.step"
           v-if="currentStep.step === 2"
           model="man"
           name="联系方式"
@@ -58,11 +59,11 @@
         />
 
         <comm-form-list
+          :key="'list-' + currentStep.step"
           v-if="currentStep.step === 4"
           model="service_type"
           name="服务类别"
           :items="serviceTypeData"
-          @controlvaluechanged="serviceTypeChanged"
           :fields="serviceTypeFields"
           @openform="openServiceForm"
           :form-data="serviceTypeFormData"
@@ -110,6 +111,7 @@
           <comm-form-list
             model="yj_data"
             name="公司业绩"
+            :key="'list-' + currentStep.step"
             :items="achieveData"
             :fields="achieveFields"
             :form-data="achieveFormData"
@@ -331,8 +333,10 @@ export default {
           width: 80
         }
       ].concat(tableFields.serviceType),
-      serviceTypeFormModel: {},
-      serviceTypeFormData: [
+      serviceTypeFormModel: {
+        servertype: null
+      },
+      originalServiceTypeControls: [
         {
           id: "service-type",
           type: 9,
@@ -345,7 +349,58 @@ export default {
           special_text: `<a target="_blank" style="color: #e46623!important; text-decoration:underline" href="http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-03%2F1645596%2F1645596.xlsx">供应商入库标准</a>`,
           rules: [
             { required: true, message: "对口服务类别", trigger: "change" }
-          ]
+          ],
+          changeFunc: val => {
+            // 重置选中的资质名称
+            this.$set(this.serviceTypeFormModel, "quaid", null);
+
+            // 重置选中的资质级别
+            this.$set(this.serviceTypeFormModel, "qualevelid", null);
+
+            // 重置上传的图片
+            this.$set(this.serviceTypeFormModel, "quaannexid", null);
+
+            // 移除多余控件
+            let temp = [];
+            for (let i = 0; i < this.originalServiceTypeControls.length; i++) {
+              let control = this.originalServiceTypeControls[i];
+              if (
+                control.field != "qualevelid" &&
+                control.field != "quaannexid"
+              ) {
+                temp.push(control);
+              }
+            }
+            this.serviceTypeFormData = Object.assign([], temp);
+
+            val = val || {};
+            this.$post(
+              {
+                action: "P_SY_GetAreaOrType",
+                p1: "5",
+                p2: val.value || ""
+              },
+              res => {
+                if (res.code === "0") {
+                  let arr = res.data;
+                  let temp = [{ label: "无", value: null }];
+
+                  arr.forEach(ele => {
+                    if (!!ele.supqualistid && !!ele.supqualistname) {
+                      temp.push({
+                        value: `${ele.supqualistname}-${ele.supqualistid}`,
+                        label: ele.supqualistname
+                      });
+                    }
+                  });
+
+                  // console.log(temp);
+
+                  this.serviceTypeFormData[2].options = temp;
+                }
+              }
+            );
+          }
         },
         {
           id: "is-main-type",
@@ -368,15 +423,102 @@ export default {
           // value: null,
           // required: false,
           field: "quaid",
-          label: "资质名称"
+          label: "资质名称",
+          changeFunc: value => {
+            if (!value) {
+              // 重置选中的资质级别
+              this.$set(this.serviceTypeFormModel, "qualevelid", null);
+
+              // 重置上传的图片
+              this.$set(this.serviceTypeFormModel, "quaannexid", null);
+            }
+
+            let temp = [];
+            for (let i = 0; i < this.originalServiceTypeControls.length; i++) {
+              let control = this.originalServiceTypeControls[i];
+
+              if (!value) {
+                if (
+                  control.field != "qualevelid" &&
+                  control.field != "quaannexid"
+                ) {
+                  temp.push(control);
+                }
+              } else {
+                // if (control.field != "quaannexid") {
+                temp.push(control);
+                // }
+              }
+            }
+
+            this.serviceTypeFormData = Object.assign([], temp);
+
+            let sVals = (value || "").split("-");
+            let id_str = "";
+            if (sVals.length === 2) {
+              id_str = sVals[1];
+            }
+            this.$post(
+              {
+                action: "P_SY_GetAreaOrType",
+                p1: "4",
+                p2: id_str
+              },
+              res => {
+                if (res.code === "0") {
+                  let arr = res.data;
+
+                  let temp = [{ label: "请选择资质级别", value: null }];
+                  arr.forEach(ele => {
+                    temp.push({
+                      value: `${ele.supquagradename}-${ele.supquagradeid}`,
+                      label: ele.supquagradename
+                    });
+                  });
+                  this.serviceTypeFormData[3].options = temp;
+                }
+              }
+            );
+          }
         },
-        // {
-        //   id: "zz-level",
-        //   type: 1,
-        //   subtype: "text",
-        //   field: "qualevel",
-        //   label: "资质级别"
-        // },
+        {
+          id: "zz-level",
+          type: 2,
+          // subtype: "text",
+          options: [
+            {
+              label: "无",
+              value: null
+            }
+          ],
+          // value: null,
+          // required: true,
+          rules: [
+            { required: true, message: "资质级别不能为空", trigger: "change" }
+          ],
+          field: "qualevelid",
+          label: "资质级别",
+          changeFunc: value => {
+            // console.log(value);
+          }
+        },
+        {
+          id: "zz-cert-file",
+          type: 8,
+          // required: true,
+          label: "资质证书扫描件",
+          field: "quaannexid",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Sub_Info",
+          fieldname: "quaannexid",
+          rules: [
+            {
+              required: true,
+              message: "资质证书扫描件不能为空",
+              trigger: "change"
+            }
+          ]
+        },
         {
           id: "zz-approve-date",
           type: 7,
@@ -398,6 +540,7 @@ export default {
           // required: false
         }
       ],
+      serviceTypeFormData: [],
       manData: this.$store.state.supprofile.man || [],
       manFormModel: {},
       manFormData: [
@@ -946,6 +1089,13 @@ export default {
   },
   mounted() {
     // console.log(456);
+
+    this.originalServiceTypeControls.forEach(control => {
+      if (control.field != "qualevelid" && control.field != "quaannexid") {
+        this.serviceTypeFormData.push(control);
+      }
+    });
+
     this.loadBaseConfigData();
 
     this.loadManConfigs();
@@ -1002,109 +1152,6 @@ export default {
         }
       );
     },
-    serviceTypeChanged(val) {
-      // console.log(val);
-      // this.manFormData.length ==
-      const control = val.control;
-      const value = val.data;
-      let idVal = (value || {}).value;
-      if (idVal) {
-        let arr = idVal.split("-");
-        if (arr.length > 1) {
-          idVal = arr[1];
-        }
-      }
-
-      if (control.field == "servertype") {
-        this.$post(
-          {
-            action: "P_SY_GetAreaOrType",
-            p1: "5",
-            p2: idVal || ""
-          },
-          res => {
-            if (res.code === "0") {
-              let arr = res.data;
-              let temp = [{ text: "无", value: null }];
-
-              // console.log(arr);
-
-              arr.forEach(ele => {
-                if (!!ele.supqualistid && !!ele.supqualistname) {
-                  temp.push({
-                    value: `${ele.supqualistname}-${ele.supqualistid}`,
-                    text: ele.supqualistname
-                  });
-                }
-              });
-
-              for (let i = 0; i < this.serviceTypeFormData.length; i++) {
-                const con = this.serviceTypeFormData[i];
-                if (con.id == control.assoc_control_id) {
-                  con.options = temp;
-                  break;
-                }
-              }
-            }
-          }
-        );
-      } else if (control.field == "quaid") {
-        // 资质名称
-        // console.log(value);
-        let sVals = (value || "").split("-");
-        let id_str = "";
-        if (sVals.length === 2) {
-          id_str = sVals[1];
-        }
-        this.$post(
-          {
-            action: "P_SY_GetAreaOrType",
-            p1: "4",
-            p2: id_str
-          },
-          res => {
-            if (res.code === "0") {
-              let arr = res.data;
-
-              if (arr.length === 0) {
-                // 需要删掉添加的资质级别
-                if (this.serviceTypeFormData.length === 6) {
-                  this.serviceTypeFormData.splice(3, 1);
-                }
-              } else {
-                let srcData = val.srcData || {};
-
-                let currVal = null;
-                if (srcData.qualevelidname && srcData.qualevelid) {
-                  currVal = `${srcData.qualevelidname}-${srcData.qualevelid}`;
-                }
-
-                // 需要新增一个资质级别的字段
-                if (this.serviceTypeFormData.length === 5) {
-                  let temp = [{ text: "请选择资质级别", value: null }];
-                  arr.forEach(ele => {
-                    temp.push({
-                      value: `${ele.supquagradename}-${ele.supquagradeid}`,
-                      text: ele.supquagradename
-                    });
-                  });
-                  this.serviceTypeFormData.splice(3, 0, {
-                    id: "zz-level",
-                    type: 2,
-                    // subtype: "text",
-                    options: temp,
-                    value: currVal,
-                    required: true,
-                    field: "qualevelid",
-                    label: "资质级别"
-                  });
-                }
-              }
-            }
-          }
-        );
-      }
-    },
     openManForm(value) {
       // console.log(value);
       value = value || {};
@@ -1122,7 +1169,40 @@ export default {
       this.populateFormData(this.achieveFormData, this.achieveFormModel, data);
     },
     openServiceForm(value) {
-      console.log(value);
+      // console.log(value);
+      value = value || {};
+      const data = value.data || {};
+      // console.log(data);
+
+      let servetypeVal = {
+        value: data["servertypeid"],
+        text: data["servertypename"]
+      };
+      this.serviceTypeFormData[0].changeFunc(servetypeVal);
+
+      let quaid = "";
+      if (data["quaidname"] && data["quaid"]) {
+        quaid = `${data["quaidname"]}-${data["quaid"]}`;
+      }
+      this.serviceTypeFormData[2].changeFunc(quaid);
+
+      let qualevelid = "";
+      if (data["qualevelidname"] && data["qualevelid"]) {
+        quaid = `${data["qualevelidname"]}-${data["qualevelid"]}`;
+      }
+      // console.log(this.serviceTypeFormData);
+      if (qualevelid) {
+        this.serviceTypeFormData[3].changeFunc(qualevelid);
+      }
+
+      // console.log(this.serviceTypeFormData);
+
+      this.populateFormData(
+        this.serviceTypeFormData,
+        this.serviceTypeFormModel,
+        data
+      );
+      // this.serviceTypeFormData[2].changeFunc(data)
     },
     populateFormData(controls, model, data) {
       if (!data) {
@@ -1157,202 +1237,25 @@ export default {
         } else {
           obj[control.field] = data[control.field];
         }
+
+        // 特殊处理
+        if (control.field == "quaid" || control.field == "qualevelid") {
+          if (!data[control.field] || data[control.field] == "0") {
+            obj[control.field] = null;
+          } else {
+            obj[control.field] = `${data[control.field + "name"]}-${
+              data[control.field]
+            }`;
+          }
+        }
       }
 
       // model = Object.assign({}, obj);
+
       for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
           const element = obj[key];
           this.$set(model, key, element);
-        }
-      }
-    },
-    editServiceForm(data) {
-      // console.log(data);
-      data = data || {};
-
-      this.serviceTypeFormData.forEach(control => {
-        if (control.type === 2) {
-          // console.log(data);
-          if (data[control.field]) {
-            control.value = `${data[control.field + "name"]}-${
-              data[control.field]
-            }`;
-          } else {
-            control.value = null;
-          }
-          if (control.field == "quaid" && data["quaid"] == "0") {
-            control.value = null;
-          }
-        } else if (control.type === 4) {
-          if (control.field) {
-            // 文件附件
-            const nameKey = control.field + "name";
-            const urlKey = control.field + "url";
-            if (data[control.field + "_files"]) {
-              control[control.field + "_files"] =
-                data[control.field + "_files"];
-              control.value = data[control.field] || null;
-            } else if (data[urlKey] && data[nameKey]) {
-              let fileUrl = data[urlKey];
-              let fileName = data[nameKey];
-              let file = {
-                _fileurl: fileUrl,
-                _filename: fileName,
-                _isimage:
-                  fileName.indexOf(".png") !== -1 ||
-                  fileName.indexOf(".gif") !== -1 ||
-                  fileName.indexOf(".jpg") !== -1 ||
-                  fileName.indexOf(".jpeg") !== -1 ||
-                  fileName.indexOf(".webp") !== -1
-              };
-              control[control.field + "_files"] = [file];
-              control.value = data[control.field] || null;
-              // console.log(control);
-            }
-          }
-        } else if (control.type === 7) {
-          // 树形控件
-          control.value = {
-            value: data[control.field] || data[control.field + "id"],
-            text: data[control.field + "name"],
-            childcount: 0
-          };
-        } else {
-          control.value = data[control.field];
-        }
-      });
-
-      let typeControl = this.serviceTypeFormData[0];
-      this.serviceTypeChanged({
-        control: typeControl,
-        data: { text: data["servertypename"], value: data["servertypeid"] },
-        srcData: Object.assign({}, data)
-      });
-
-      let quaControl = this.serviceTypeFormData[2];
-      this.serviceTypeChanged({
-        control: quaControl,
-        data: `${data["quaidname"]}-${data["quaid"]}`,
-        srcData: Object.assign({}, data)
-      });
-    },
-    editAchieveForm(data) {
-      // console.log(data);
-
-      data = data || {};
-
-      this.achieveFormData.forEach(control => {
-        if (control.type === 2) {
-          // console.log(data);
-          if (data[control.field]) {
-            control.value = `${data[control.field + "name"]}-${
-              data[control.field]
-            }`;
-          } else {
-            control.value = null;
-          }
-          if (control.field == "quaid" && data["quaid"] == "0") {
-            control.value = null;
-          }
-        } else if (control.type === 4) {
-          if (control.field) {
-            // 文件附件
-            const nameKey = control.field + "name";
-            const urlKey = control.field + "url";
-            if (data[control.field + "_files"]) {
-              control[control.field + "_files"] =
-                data[control.field + "_files"];
-              control.value = data[control.field] || null;
-            } else if (data[urlKey] && data[nameKey]) {
-              let fileUrl = data[urlKey];
-              let fileName = data[nameKey];
-              let file = {
-                _fileurl: fileUrl,
-                _filename: fileName,
-                _isimage:
-                  fileName.indexOf(".png") !== -1 ||
-                  fileName.indexOf(".gif") !== -1 ||
-                  fileName.indexOf(".jpg") !== -1 ||
-                  fileName.indexOf(".jpeg") !== -1 ||
-                  fileName.indexOf(".webp") !== -1
-              };
-              control[control.field + "_files"] = [file];
-              control.value = data[control.field] || null;
-              // console.log(control);
-            }
-          }
-        } else if (control.type === 7) {
-          // 树形控件
-          control.value = {
-            value: data[control.field],
-            text: data[control.field + "name"],
-            childcount: 0
-          };
-        } else {
-          control.value = data[control.field];
-        }
-      });
-    },
-    controlValueChanged(val) {
-      // console.log(val);
-      if (!val) {
-        return;
-      }
-
-      let control = val.control;
-      if (control.id !== "contact-type") return;
-
-      val = val.data;
-
-      if (!val) {
-        return;
-      }
-
-      val = val.split("-");
-      if (val.length !== 2) return;
-      val = val[1];
-
-      if (val === "1" || val === "第一联系人") {
-        if (this.manFormData.length === 7) {
-          const fields = [
-            {
-              id: "shebao",
-              label: "联系人社保证明",
-              required: true,
-              field: "sscertificateannex",
-              type: 4,
-              subtype: 1,
-              domanid: this.$store.state.supinfo.accountid || "0",
-              tablename: "H_Sup_Contact_Info",
-              fieldname: "sscertificateannex"
-            },
-            {
-              id: "entrust",
-              label: "授权委托（附件）",
-              required: true,
-              field: "authdelegationannex",
-              type: 4,
-              subtype: 2, // 普通文件
-              domanid: this.$store.state.supinfo.accountid || "0",
-              tablename: "H_Sup_Contact_Info",
-              fieldname: "authdelegationannex",
-              accept: "*",
-              upload_desc: "请下载授权委托书模板，填写并盖公章后扫描上传",
-              tpl_file: {
-                name: "授权委托书模板",
-                url:
-                  "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-01-08/1246140/合能集团采购平台第一联系人授权函(1).docx"
-              }
-              //   subtype: "text"
-            }
-          ];
-          this.manFormData = this.manFormData.concat(fields);
-        }
-      } else {
-        if (this.manFormData.length === 9) {
-          this.manFormData.splice(this.manFormData.length - 1, 1);
-          this.manFormData.splice(this.manFormData.length - 1, 1);
         }
       }
     },

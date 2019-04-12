@@ -100,6 +100,10 @@ export default {
         return "";
       }
 
+      if (key == "qualevelidname" && value == "0") {
+        return "";
+      }
+
       if (this.field == "ismain" || this.field == "ismodel") {
         if (value === "true" || value === true) {
           return "是";

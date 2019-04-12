@@ -110,11 +110,18 @@
         <bid-upload v-if="control.type === 8" :control="control" v-model="formModel[control.field]"></bid-upload>
 
         <!-- 树形组件 type = 9 -->
-        <div class="tree-data-wrap" @click="toggle(control);" v-if="control.type === 9">
-          {{formModel[control.field] ? formModel[control.field + 'name'] : "请选择" + control.label}}
+        <div class="tree-data-wrap" v-if="control.type === 9">
+          <!-- {{formModel[control.field] ? formModel[control.field + 'name'] : "请选择" + control.label}}
           <span
             class="caret"
-          ></span>
+          ></span>-->
+          <span style="display:inline-block;min-width: 150px;" @click="toggle(control);">
+            {{formModel[control.field] ? formModel[control.field + 'name'] : "请选择" + control.label}}
+            <span
+              class="caret"
+            ></span>
+          </span>
+          <span class="special-text" v-if="!!control.special_text" v-html="control.special_text"></span>
           <tree-data
             @selected="selectedItem"
             v-show="openTreeData"
@@ -292,6 +299,11 @@ $theme-color: #e46623;
   height: 30px;
   line-height: 30px;
   margin-top: 5px;
+  .special-text {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 14px;
+  }
   .caret {
     display: inline-block;
     vertical-align: middle;

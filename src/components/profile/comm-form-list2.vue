@@ -197,9 +197,15 @@ export default {
             if (control.field == "servertype") {
               obj["servertypeid"] = this.formModel[control.field];
             }
+
+            if (control.field == "contractmoney") {
+              obj["contractmoney"] = (
+                this.formModel[control.field] || "0"
+              ).toString();
+            }
           });
 
-          console.log(obj);
+          // console.log(obj);
 
           if (this.currentEditItem) {
             // 编辑

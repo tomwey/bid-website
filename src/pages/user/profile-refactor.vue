@@ -865,7 +865,14 @@ export default {
           fieldname: "ComBI",
           // upload_tips: "只能上传图片格式，大小不超过5MB",
           accept: ".jpg,.jpeg,.png,.gif",
-          fileSize: 5
+          fileSize: 5,
+          rules: [
+            {
+              required: true,
+              message: "营业执照附件不能为空",
+              trigger: "change"
+            }
+          ]
         },
         {
           id: "tax-type",
@@ -890,7 +897,14 @@ export default {
           fieldname: "addtaxapplytable",
           // upload_tips: "只能上传图片格式，大小不超过5MB",
           accept: ".jpg,.jpeg,.png,.gif",
-          fileSize: 5
+          fileSize: 5,
+          rules: [
+            {
+              required: true,
+              message: "增值税一般纳税人申请认定表不能为空",
+              trigger: "change"
+            }
+          ]
         },
         {
           id: "company-reg-date",
@@ -1709,7 +1723,7 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      console.log(params);
+      // console.log(params);
 
       if (this.commiting) return;
       this.commiting = true;
@@ -1736,42 +1750,46 @@ export default {
     commit() {
       let params = { action: "updatesupinfo" };
 
-      for (let i = 0; i < this.baseFormData.length; i++) {
-        const control = this.baseFormData[i];
+      // console.log(this.$refs);
 
-        if (control.subtype === "date") {
-          if (control.value) {
-            let val = control.value
-              .replace("年", "-")
-              .replace("月", "-")
-              .replace("日", "")
-              .replace("/", "-");
-            let reg = new RegExp(/^\d{4}-\d{1,2}-\d{1,2}$/);
-            if (!reg.test(val)) {
-              // alert(control.label + "不正确");
-              this.$message({
-                message: control.label + "不正确",
-                type: "error"
-              });
-              return;
+      for (let i = 0; i < this.baseFormControls.length; i++) {
+        let control = this.baseFormControls[i];
+        let requiredCount = 0;
+        if (control.rules && control.rules.length > 0) {
+          control.rules.forEach(rule => {
+            if (rule.required) {
+              requiredCount++;
             }
-          }
+          });
+        }
+        if (requiredCount > 0 && !this.baseFormModel[control.field]) {
+          this.$message({
+            message: control.label + "不能为空",
+            type: "error"
+          });
+          return;
         }
       }
 
       // 填充基础数据
-      this._fillData(this.baseFormData, params);
+      this._fillData(this.baseFormControls, this.baseFormModel, params);
 
-      // console.log(this.achieveYearData);
+      // // console.log(this.achieveYearData);
 
-      params["outputvalueyear"] = this.achieveYearData.output || "0";
-      params["turnoveryear"] = this.achieveYearData.sale || "0";
+      params["outputvalueyear"] = (
+        this.achieveYearData.output || "0"
+      ).toString();
+      params["turnoveryear"] = (this.achieveYearData.sale || "0").toString();
 
       // 填充其它信息
-      this._fillData(this.otherInfoFormData, params);
+      this._fillData(
+        this.otherInfoFormControls,
+        this.otherInfoFormModel,
+        params
+      );
 
       // 填充区域信息
-      this._fillData(this.areaFormData, params);
+      this._fillData(this.areaFormControls, this.areaFormModel, params);
 
       params["_loginuid"] = this.$store.state.supinfo.accountid;
 
@@ -1880,15 +1898,15 @@ export default {
 
       // 填充其它附件信息
       let fileObj = {};
-      this.otherFilesFormData.forEach(control => {
-        if (control.value) {
-          fileObj[control.field] = control.value;
+      this.otherFilesFormControls.forEach(control => {
+        if (this.otherFilesFormModel[control.field]) {
+          fileObj[control.field] = this.otherFilesFormModel[control.field];
         }
       });
 
       params["otherfiles"] = [fileObj];
 
-      // console.log(params);
+      console.log(params);
 
       if (this.commiting) return;
       this.commiting = true;

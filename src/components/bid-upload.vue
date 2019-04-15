@@ -16,7 +16,7 @@
       :ref="'upload' + control.id"
       :data="{ mid: '0', domanid: control.domanid, tablename: control.tablename, fieldname: control.fieldname }"
     >
-      <el-button size="small" type="primary">点击上传</el-button>
+      <el-button size="small">选择文件</el-button>
       <div slot="tip" class="el-upload__tip">
         {{control.upload_tips || calcUploadTips}}
         <div class="tpl-wrap" v-if="control.tpl_files && control.tpl_files.length > 0">

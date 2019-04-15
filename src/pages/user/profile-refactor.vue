@@ -1635,9 +1635,9 @@ export default {
 
       // 填充联系人信息
       let manData =
-        this.manData.length === 0
+        (this.manData.length === 0
           ? this.$store.state.supprofile.man
-          : this.manData;
+          : this.manData) || [];
       let temp = [];
       manData.forEach(object => {
         let obj = {};
@@ -1665,9 +1665,9 @@ export default {
 
       // 填充服务类别
       let servTypeData =
-        this.serviceTypeData.length === 0
+        (this.serviceTypeData.length === 0
           ? this.$store.state.supprofile.types
-          : this.serviceTypeData;
+          : this.serviceTypeData) || [];
       let temp2 = [];
       servTypeData.forEach(object => {
         let obj = {};
@@ -1687,9 +1687,9 @@ export default {
       params["types"] = temp2;
 
       let achieveData =
-        this.achieveData.length === 0
+        (this.achieveData.length === 0
           ? this.$store.state.supprofile.yj_data
-          : this.achieveData;
+          : this.achieveData) || [];
       let temp3 = [];
 
       achieveData.forEach(object => {
@@ -1801,9 +1801,9 @@ export default {
       //     ? this.$store.state.supprofile.man
       //     : this.manData) || [];
       let manData =
-        this.manData.length === 0
+        (this.manData.length === 0
           ? this.$store.state.supprofile.man
-          : this.manData;
+          : this.manData) || [];
       let temp = [];
       manData.forEach(object => {
         let obj = {};
@@ -1835,9 +1835,9 @@ export default {
       //     ? this.$store.state.supprofile.types
       //     : this.serviceTypeData;
       let servTypeData =
-        this.serviceTypeData.length === 0
+        (this.serviceTypeData.length === 0
           ? this.$store.state.supprofile.types
-          : this.serviceTypeData;
+          : this.serviceTypeData) || [];
       // console.log(servTypeData);
       let temp2 = [];
       servTypeData.forEach(object => {
@@ -1863,9 +1863,9 @@ export default {
       //     ? this.$store.state.supprofile.yj_data
       //     : this.achieveData;
       let achieveData =
-        this.achieveData.length === 0
+        (this.achieveData.length === 0
           ? this.$store.state.supprofile.yj_data
-          : this.achieveData;
+          : this.achieveData) || [];
       let temp3 = [];
 
       achieveData.forEach(object => {

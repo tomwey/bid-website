@@ -24,7 +24,6 @@
       :title="currentEditItem ? '编辑' + name : '新增' + name"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"

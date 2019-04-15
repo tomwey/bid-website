@@ -20,6 +20,7 @@
                 :item="item"
                 :field="field.value"
                 :key="itemKey"
+                @previewimg="previewImage"
                 v-if="field.value !== 'actions'"
               />
               <div class="actions" v-if="field.value === 'actions'">
@@ -37,6 +38,9 @@
         </tbody>
       </table>
     </div>
+    <el-dialog title="图片预览" :visible.sync="dialogPreviewImageVisible" append-to-body>
+      <img :src="currentImageUrl" style="max-width: 100%">
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -50,7 +54,9 @@ export default {
   data() {
     return {
       tableData: this.items,
-      itemKey: "itemkey"
+      itemKey: "itemkey",
+      currentImageUrl: null,
+      dialogPreviewImageVisible: false
     };
   },
   watch: {
@@ -80,6 +86,10 @@ export default {
     },
     click(btn, item) {
       this.$emit("actionclick", { action: btn, data: item });
+    },
+    previewImage(url) {
+      this.currentImageUrl = url;
+      this.dialogPreviewImageVisible = true;
     }
   }
 };

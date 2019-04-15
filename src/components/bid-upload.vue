@@ -84,8 +84,13 @@ export default {
       // console.log(this.fileList);
       if (isAdd) {
         var temp = [];
+        // console.log(this.value);
         if (this.value) {
-          temp = this.value.split(",");
+          if (this.value == 0) {
+            temp = [];
+          } else {
+            temp = this.value.split(",");
+          }
         }
 
         temp.push(id);

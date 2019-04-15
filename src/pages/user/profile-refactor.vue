@@ -1600,6 +1600,10 @@ export default {
           val = val || "";
         }
 
+        if (control.subtype && control.subtype == "number") {
+          val = (val || "").toString();
+        }
+
         // if (control.field == "suptype") {
         //   params[control.field + "id"] = val;
         // } else {

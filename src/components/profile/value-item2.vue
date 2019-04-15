@@ -3,7 +3,7 @@
     <span v-if="!isfile">{{textValue}}</span>
     <div v-if="isfile">
       <div class="files" v-for="(file,index) in fileList" :key="index">
-        <img :src="file.url" v-if="file.isimage">
+        <img :src="file.url" v-if="file.isimage" @click="previewImage(file.url)">
         <a :href="file.url" v-if="!file.isimage">{{file.name}}</a>
       </div>
     </div>
@@ -20,7 +20,8 @@ export default {
     return {
       // isfile: false,
       fileList: [],
-      isfile: false
+      isfile: false,
+      dialogPreviewVisible: false
     };
   },
   mounted() {
@@ -45,6 +46,11 @@ export default {
       let urlVal = this.item[urlKey];
       // console.log(urlVal);
       return !!urlVal || this.field.indexOf("annex") !== -1;
+    },
+
+    previewImage(url) {
+      // this.dialogPreviewVisible = true;
+      this.$emit("previewimg", url);
     },
 
     loadAnnexes() {

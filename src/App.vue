@@ -180,7 +180,7 @@ export default {
 
       if (this.links[index].route === "help") {
         window.open(
-          "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-03%2F1646316%2F1646316.docx"
+          "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-16%2F1721592%2F1721592.docx"
         );
         // this.selectedIndex = -1;
         return;

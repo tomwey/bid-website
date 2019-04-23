@@ -592,7 +592,7 @@ export default {
                     domanid: this.$store.state.supinfo.accountid || "0",
                     tablename: "H_Sup_Contact_Info",
                     fieldname: "authdelegationannex",
-                    accept: ".docx,.doc",
+                    accept: ".docx,.doc,.pdf,.jpg,.png,.jpeg,.gif",
                     upload_tips: "请下载授权委托书模板，填写并盖公章后扫描上传",
                     tpl_files: [
                       {

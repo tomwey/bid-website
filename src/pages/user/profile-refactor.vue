@@ -574,6 +574,7 @@ export default {
                     domanid: this.$store.state.supinfo.accountid || "0",
                     tablename: "H_Sup_Contact_Info",
                     fieldname: "sscertificateannex",
+                    accept: ".jpg,.png,.gif,.jpeg,.pdf,.rar,.zip",
                     rules: [
                       {
                         required: true,
@@ -738,7 +739,8 @@ export default {
           field: "threeyfinancialreports",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
-          fieldname: "threeyfinancialreports"
+          fieldname: "threeyfinancialreports",
+          accept: ".jpg,.png,.gif,.jpeg,.pdf,.rar,.zip"
         },
         {
           id: "auth-license-file",
@@ -749,7 +751,8 @@ export default {
           field: "honorcertificate",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
-          fieldname: "honorcertificate"
+          fieldname: "honorcertificate",
+          accept: ".jpg,.png,.gif,.jpeg,.pdf,.rar,.zip"
         },
         {
           id: "beian-file",
@@ -760,7 +763,8 @@ export default {
           field: "fieldcertificate",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_OtherAnnex_Info",
-          fieldname: "fieldcertificate"
+          fieldname: "fieldcertificate",
+          accept: ".jpg,.png,.gif,.jpeg,.pdf,.rar,.zip"
         }
       ],
       areaFormControls: [

@@ -55,7 +55,7 @@ export default {
       fileList: [],
       limit: this.control.limit || 1,
       accept: this.control.accept || ".jpg,.png,.gif,.webp,.jpeg",
-      fileSize: this.control.fileSize || 5
+      fileSize: this.control.fileSize || 20
     };
   },
   mounted() {

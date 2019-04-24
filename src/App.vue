@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       selectedIndex: 0,
+      helpUrl: "",
       links: [
         {
           id: 1,
@@ -179,10 +180,25 @@ export default {
       }
 
       if (this.links[index].route === "help") {
-        window.open(
-          "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=http%3A%2F%2Ferp20-app.heneng.cn%3A16681%2Ffile%2Ferp20-annex.heneng.cn%2FH_WF_INST_M%2F2019-04-16%2F1721592%2F1721592.docx"
+        this.$post(
+          {
+            action: "P_SY_GetParamInfo",
+            p1: "8",
+            p2: "123"
+          },
+          res => {
+            // console.log(res);
+            if (res.code == 0) {
+              const arr = res["data"];
+              if (arr.length > 0) {
+                window.open(arr[0]["sy_value"]);
+              }
+            } else {
+              alert(res.codemsg);
+            }
+          }
         );
-        // this.selectedIndex = -1;
+
         return;
       }
 

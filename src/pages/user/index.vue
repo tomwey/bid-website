@@ -55,7 +55,7 @@ export default {
             {
               name: "我的消息",
               route: "user_messages",
-              badge: 1
+              badge: parseInt(this.$store.state.supinfo.msgunreadcount)
             }
           ]
         },

@@ -1,68 +1,35 @@
 <template>
   <div class="message-list">
     <div class="messages">
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="title" label="标题">
+      <el-table :data="messages" stripe style="width: 100%">
+        <el-table-column prop="msgtitle" label="标题">
           <template slot-scope="scope">
-            <span class="title" @click="showDetail(scope.row);">{{scope.row.title}}</span>
+            <span class="title" @click="showDetail(scope.row);">{{scope.row.msgtitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="time" label="时间" width="180"></el-table-column>
+        <el-table-column prop="createdate" label="时间" width="180"></el-table-column>
         <el-table-column prop="msgtype" label="消息类型" width="120"></el-table-column>
       </el-table>
     </div>
-    <div class="empty-error-box" v-if="tableData.length === 0">即将上线...</div>
+    <!-- <div class="empty-error-box" v-if="messages.length === 0">暂无消息</div> -->
   </div>
 </template>
 <script>
 export default {
   name: "message-list",
-  props: ["messages"],
+  props: {
+    messages: {
+      type: Array
+    }
+  },
   data() {
     return {
-      tableData: [
-        {
-          id: 153,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        },
-        {
-          id: 152,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        },
-        {
-          id: 151,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        },
-        {
-          id: 15,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        },
-        {
-          id: 12,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        },
-        {
-          id: 8,
-          title: "消息一",
-          time: "2019-01-01 12:34:32",
-          msgtype: "报名通过"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     showDetail(item) {
-      this.$router.push({ path: "/admin/messages/" + item.id });
+      this.$router.push({ path: "/admin/messages/" + item.msgid });
     }
   }
 };

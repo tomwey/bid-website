@@ -1,5 +1,5 @@
 <template>
-  <div class="messages">
+  <div class="messages" v-loading="loading">
     <div class="box">
       <div class="custom-tabs">
         <span class="custom-tab" :class="{active:active === 0}" @click="selectTab(0)">未读消息</span>
@@ -20,13 +20,55 @@ export default {
   data() {
     return {
       active: 0,
+      loading: false,
       messages: []
     };
   },
+  watch: {
+    active() {
+      this.loadData();
+    }
+  },
   mounted() {
-    this.messages = [];
+    // this.messages = [];
+    this.loadData();
   },
   methods: {
+    loadData() {
+      if (this.loading) return;
+
+      this.loading = true;
+
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetMsg",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token
+        },
+        res => {
+          console.log(res);
+          this.loading = false;
+          if (res.code == "0") {
+            const arr = res.data;
+            if (arr && Array.isArray(arr)) {
+              let temp = [];
+              arr.forEach(ele => {
+                if (this.active === 0) {
+                  if (ele["readstate"] == "0") {
+                    temp.push(ele);
+                  }
+                } else {
+                  if (ele["readstate"] == "1") {
+                    temp.push(ele);
+                  }
+                }
+              });
+              this.messages = temp;
+            }
+          }
+        }
+      );
+    },
     selectTab(index) {
       this.active = index;
       if (index === 1) {

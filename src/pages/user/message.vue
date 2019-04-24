@@ -46,7 +46,7 @@ export default {
           p2: this.$store.state.token
         },
         res => {
-          console.log(res);
+          // console.log(res);
           this.loading = false;
           if (res.code == "0") {
             const arr = res.data;

@@ -7,15 +7,46 @@
       </el-breadcrumb>
     </div>
     <div class="detail">
-      <h2 class="title">消息标题</h2>
-      <p class="body">消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容内容消息内容消息内容消息内容消息内容</p>
+      <h2 class="title">{{message.msgtitle}}</h2>
+      <p class="body">{{message.msgcontent}}</p>
       <el-button>点击查看</el-button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "message-detail"
+  name: "message-detail",
+  data() {
+    return {
+      message: {}
+    };
+  },
+  mounted() {
+    this.loadMsg();
+  },
+  methods: {
+    loadMsg() {
+      // console.log(this.$route.params.id);
+      const msgID = this.$route.params.id;
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetMsgDetail",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token,
+          p3: msgID
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            const arr = res["data"];
+            if (arr.length > 0) {
+              this.message = arr[0];
+            }
+          }
+        }
+      );
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

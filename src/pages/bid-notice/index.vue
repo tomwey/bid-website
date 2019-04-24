@@ -1,12 +1,12 @@
 <template>
   <div class="home-main-wrap container">
-    <!-- <div class="search-toolbar">
+    <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
           <span class="label">报名截止时间:</span>
           <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <span class="label">报名状态:</span>
           <el-select v-model="state" placeholder="请选择">
             <el-option
@@ -17,7 +17,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="8">
           <el-input placeholder="输入搜索内容" v-model="keyword">
             <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
           </el-input>
@@ -39,7 +39,11 @@
         <el-table-column prop="expire_date" label="报名截止时间" width="180"></el-table-column>
         <el-table-column label="报名状态" width="120">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag>
+            <!-- <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag> -->
+            <span
+              class="state-tag"
+              :class="{success:scope.row.state == '已报名', info:scope.row.state == '已放弃', warning:scope.row.state == '报名中', danger:scope.row.state == '未通过'}"
+            >{{scope.row.state}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -52,7 +56,7 @@
         :page-size="20"
         :current-page="1"
       ></el-pagination>
-    </div>-->
+    </div>
   </div>
 </template>
 <script>
@@ -229,6 +233,20 @@ export default {
   text-align: center;
   padding: 30px;
   background: #fff;
+}
+.state-tag {
+  &.success {
+    color: rgb(127, 183, 98);
+  }
+  &.warning {
+    color: rgb(231, 90, 22);
+  }
+  &.info {
+    color: #999;
+  }
+  &.danger {
+    color: rgb(238, 48, 67);
+  }
 }
 </style>
 

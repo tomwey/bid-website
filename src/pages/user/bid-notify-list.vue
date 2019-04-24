@@ -1,7 +1,7 @@
 <template>
   <div class="bid-list">
     <!-- 即将上线... -->
-    <h2 class="title">招标事项列表</h2>
+    <h2 class="title">报名通知列表</h2>
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
@@ -33,22 +33,22 @@
             <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="时间" width="140"></el-table-column>
+        <el-table-column prop="date" label="截止时间" width="140"></el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
-            <!-- <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>-->
             <span
               class="state-tag"
-              :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
+              :class="{success:scope.row.state == '已报名', info:scope.row.state == '已查看',warning:scope.row.state == '未查看'}"
             >{{scope.row.state}}</span>
+            <!-- <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
+            <el-tag type="info" v-if="scope.row.state == '已查看'">{{scope.row.state}}</el-tag>
+            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>-->
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="90">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <!-- <el-button type="success" size="small">报名</el-button> -->
-            <el-button type="danger" size="small" @click="abandon">弃标</el-button>
+            <el-button type="primary" plain size="small">报名</el-button>&nbsp;
+            <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -63,7 +63,7 @@
       </div>
     </div>
     <el-dialog
-      title="放弃投标"
+      title="放弃报名"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       center
@@ -86,13 +86,14 @@
 </template>
 <script>
 export default {
-  name: "bid-list",
+  name: "bid-notify-list",
   components: {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
     }
   },
   data() {
+    //业务量饱和、招标业务体量不匹配、支付方式不接受、对我司合作评估不佳、其他
     return {
       dialogFormVisible: false,
       applyControls: [
@@ -141,44 +142,68 @@ export default {
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已放弃",
+          state: "已查看",
           id: 110
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "审核中",
+          state: "未查看",
           id: 111
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已通过",
+          state: "已报名",
           id: 112
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已通过",
-          id: 113
+          state: "已查看",
+          id: 110
         },
         {
           title: "合能集团成都公司总包招投标",
           date: "2019-03-13",
-          state: "已通过",
-          id: 114
+          state: "未查看",
+          id: 111
+        },
+        // {
+        //   title: "合能集团成都公司总包招投标",
+        //   date: "2019-03-13",
+        //   state: "已报名",
+        //   id: 112
+        // },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "已查看",
+          id: 110
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "未查看",
+          id: 111
+        },
+        {
+          title: "合能集团成都公司总包招投标",
+          date: "2019-03-13",
+          state: "已报名",
+          id: 112
         }
       ]
     };
   },
   watch: {
     $route: function(to) {
-      console.log(to);
+      // console.log(to);
     }
   },
   methods: {
     selectItem(item) {
-      this.$router.push({ path: "/admin/bids/" + item.id });
+      this.$router.push({ path: "/admin/apply-bid/" + item.id });
     },
     abandon() {
       this.dialogFormVisible = true;
@@ -188,6 +213,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table {
+  color: #333;
+}
 .title {
   font-size: 16px;
   color: #333;
@@ -211,6 +239,7 @@ export default {
   padding: 30px;
   background: #fff;
 }
+
 .search-toolbar {
   background: #fff;
   padding: 15px;
@@ -226,6 +255,7 @@ export default {
     width: 120px !important;
   }
 }
+
 .state-tag {
   &.success {
     color: rgb(127, 183, 98);
@@ -235,9 +265,6 @@ export default {
   }
   &.info {
     color: #999;
-  }
-  &.danger {
-    color: rgb(238, 48, 67);
   }
 }
 </style>

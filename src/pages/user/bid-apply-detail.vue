@@ -2,8 +2,8 @@
   <div class="project container">
     <div class="breadcrumb-wrapper">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/bid_notice' }">招标公告列表</el-breadcrumb-item>
-        <el-breadcrumb-item>公告详情</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/apply-notify' }">报名通知</el-breadcrumb-item>
+        <el-breadcrumb-item>详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="detail">
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push({ path: "/bid_notice" });
+      this.$router.push({ path: "/admin/apply-notify" });
     },
     apply() {
       this.applyFormVisible = true;
@@ -143,7 +143,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .project {
-  padding-top: 80px;
+  // padding-top: 80px;
   padding-bottom: 20px;
   .breadcrumb-wrapper {
     background: #fff;

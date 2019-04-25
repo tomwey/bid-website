@@ -1,5 +1,5 @@
 <template>
-  <div class="home-main-wrap container">
+  <div class="home-main-wrap container" v-loading="loading">
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
@@ -7,7 +7,7 @@
           <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
         </el-col>
         <el-col :span="8">
-          <span class="label">报名状态:</span>
+          <span class="label">状态:</span>
           <el-select v-model="state" placeholder="请选择">
             <el-option
               v-for="item in stateOptions"
@@ -26,24 +26,24 @@
     </div>
     <div class="notices">
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="name" label="标题">
+        <el-table-column prop="noticetitle" label="标题">
           <template slot-scope="scope">
             <span class="name" @click="selectItem(scope.row);">
               <span class="unread dot" v-if="scope.row.unread"></span>
               <span class="read dot" v-if="!scope.row.unread"></span>
-              {{scope.row.name}}
+              {{scope.row.noticetitle}}
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="publish_date" label="发布时间" width="120"></el-table-column>
-        <el-table-column prop="expire_date" label="报名截止时间" width="180"></el-table-column>
-        <el-table-column label="报名状态" width="120">
+        <el-table-column prop="publishdate" label="发布时间" width="180"></el-table-column>
+        <el-table-column prop="signenddate" label="报名截止时间" width="180"></el-table-column>
+        <el-table-column label="状态" width="120">
           <template slot-scope="scope">
             <!-- <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag> -->
             <span
               class="state-tag"
-              :class="{success:scope.row.state == '已报名', info:scope.row.state == '已放弃', warning:scope.row.state == '报名中', danger:scope.row.state == '未通过'}"
-            >{{scope.row.state}}</span>
+              :class="{success:scope.row.readstate == '1', warning:scope.row.readstate == '0'}"
+            >{{scope.row.readstate == '0' ? '未查看' : '已查看'}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -52,9 +52,11 @@
       <el-pagination
         background
         layout="prev, pager, next"
-        :total="50"
-        :page-size="20"
-        :current-page="1"
+        :total="totalSize"
+        :page-size="pageSize"
+        :current-page="page"
+        v-if="totalSize >= pageSize"
+        @current-change="pageChange"
       ></el-pagination>
     </div>
   </div>
@@ -65,116 +67,79 @@ export default {
   data() {
     return {
       end_date: null,
+      loading: false,
       stateOptions: [
         { label: "全部", value: "-1" },
-        { label: "报名中", value: "0" },
-        { label: "已过期", value: "1" },
-        { label: "已放弃", value: "2" }
+        { label: "未查看", value: "0" },
+        { label: "已查看", value: "1" }
+        // { label: "已放弃", value: "2" }
       ],
       state: null,
       keyword: null,
-      tableData: [
-        {
-          id: 111,
-          name:
-            "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "已报名",
-          type: "success",
-          unread: true
-        },
-        {
-          id: 114,
-          name:
-            "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告合能地产集团成都公司枫丹西悦二期渠道",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "已放弃",
-          type: "danger",
-          unread: true
-        },
-        {
-          id: 115,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "已过期",
-          type: "info",
-          unread: true
-        },
-        {
-          id: 116,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 117,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 118,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 119,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 120,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 121,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 122,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        },
-        {
-          id: 123,
-          name: "合能地产集团成都公司枫丹西悦二期渠道合作公司招标公告",
-          publish_date: "2019-01-01",
-          expire_date: "2019-01-05 18:30",
-          state: "报名中",
-          type: "warning"
-        }
-      ]
+      totalSize: 0,
+      pageSize: 20,
+      page: 1,
+      tableData: []
     };
   },
+  mounted() {
+    this.loadNotices();
+  },
   methods: {
-    search() {},
+    search() {
+      this.page = 1;
+      this.loadNotices();
+    },
+    loadNotices() {
+      this.loading = true;
+
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetNotice",
+          p1: (this.$store.state.supinfo || {}).accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.page,
+          p4: this.pageSize,
+          p5: this.end_date || "",
+          p6: this.state || "",
+          p7: this.keyword || ""
+        },
+        res => {
+          // console.log(res);
+          this.loading = false;
+          if (res.code == 0) {
+            this.tableData = res["data"];
+            if (this.tableData.length > 0) {
+              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
+            }
+          }
+          // condition: "很多条件"
+          // delaysigndate: ""
+          // erptenderunitid: "34"
+          // noticeannexs: "123"
+          // noticeexplain: "说明页很多"
+          // noticeid: "1"
+          // noticetitle: "标题"
+          // publishdate: "2019-04-25 09:43:11"
+          // purchasematterid: "1"
+          // readstate: "0"
+          // readtime: ""
+          // scannum: "0"
+          // signenddate: "2019-04-16 09:43:18"
+          // tenderingunitid: "343"
+          // tenderingunitname: "合能的一个大子公司"
+        }
+      );
+    },
+    pageChange(val) {
+      this.page = val;
+      this.loadNotices();
+    },
     selectItem(item) {
       // console.log(item);
-      this.$router.push({ path: "/bid_notice/" + item.id });
+      this.$router.push({
+        path: "/bid_notice/" + `${item.noticeid}-${item.purchasematterid}`
+      });
     }
   }
 };

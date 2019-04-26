@@ -14,11 +14,12 @@
         <span class="view-count">浏览次数: {{notice.scannum}}</span>
       </div>
       <div class="apply-wrapper">
-        <p class="end-date-tip">
-          距离报名截止日期还剩
-          <span class="countdown">15天12小时32分20秒</span>
-        </p>
-        <!-- <el-button type="primary">立即报名</el-button> -->
+        <count-down
+          prefix="距离报名截止还剩"
+          :time="notice.delaysigndate || notice.signenddate"
+          no-time-left="报名已截止"
+          :key="notice.noticeid"
+        ></count-down>
       </div>
       <div class="other-info">
         <table class="table">
@@ -73,6 +74,9 @@ export default {
   components: {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
+    },
+    countDown: resolve => {
+      require(["@/components/count-down"], resolve);
     }
   },
   data() {
@@ -249,15 +253,6 @@ export default {
     }
     .apply-wrapper {
       text-align: center;
-      .end-date-tip {
-        font-size: 16px;
-        text-align: center;
-        color: #333;
-        padding: 0 20px;
-      }
-      .countdown {
-        color: rgb(231, 90, 22);
-      }
     }
 
     .other-info {

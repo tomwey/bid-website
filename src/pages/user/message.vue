@@ -6,6 +6,17 @@
         <span class="custom-tab" :class="{active:active === 1}" @click="selectTab(1)">已读消息</span>
       </div>
       <message-list :messages="messages"/>
+      <div class="page-container">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="totalSize"
+          :page-size="pageSize"
+          :current-page="page"
+          v-if="totalSize >= pageSize"
+          @current-change="pageChange"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -20,12 +31,16 @@ export default {
   data() {
     return {
       active: 0,
+      page: 1,
+      pageSize: 20,
+      totalSize: 0,
       loading: false,
       messages: []
     };
   },
   watch: {
     active() {
+      this.page = 1;
       this.loadData();
     }
   },
@@ -34,6 +49,10 @@ export default {
     this.loadData();
   },
   methods: {
+    pageChange(val) {
+      this.page = val;
+      this.loadData();
+    },
     loadData() {
       if (this.loading) return;
 
@@ -43,7 +62,9 @@ export default {
         {
           action: "P_SUP_Bid_GetMsg",
           p1: this.$store.state.supinfo.accountid,
-          p2: this.$store.state.token
+          p2: this.$store.state.token,
+          p3: this.page,
+          p4: this.pageSize
         },
         res => {
           // console.log(res);
@@ -64,6 +85,9 @@ export default {
                 }
               });
               this.messages = temp;
+              if (this.messages.length > 0) {
+                this.totalSize = parseInt(this.messages[0]["totalcount"]);
+              }
             }
           }
         }
@@ -107,6 +131,12 @@ $theme-color: #e46623;
       }
     }
   }
+}
+
+.page-container {
+  text-align: center;
+  padding: 30px;
+  background: #fff;
 }
 </style>
 

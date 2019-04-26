@@ -29,8 +29,8 @@
         <el-table-column prop="noticetitle" label="标题">
           <template slot-scope="scope">
             <span class="name" @click="selectItem(scope.row);">
-              <span class="unread dot" v-if="scope.row.unread"></span>
-              <span class="read dot" v-if="!scope.row.unread"></span>
+              <span class="unread dot" v-if="scope.row.readstate == '0'"></span>
+              <span class="read dot" v-if="scope.row.readstate != '0'"></span>
               {{scope.row.noticetitle}}
             </span>
           </template>

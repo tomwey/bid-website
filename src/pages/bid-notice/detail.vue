@@ -54,6 +54,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      v-loading="loading"
     >
       <form-fields
         form-ref="form"
@@ -82,6 +83,7 @@ export default {
   data() {
     return {
       applyFormVisible: false,
+      loading: false,
       notice: {},
       applyControls: [
         {
@@ -89,8 +91,11 @@ export default {
           type: 8,
           // subtype: "number",
           label: "委托书附件",
-          field: "agencyfiles",
+          field: "signupannex",
           // unit: "万",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "signupannex",
           rules: [
             { required: true, message: "委托书附件不能为空", trigger: "blur" }
           ]
@@ -98,9 +103,13 @@ export default {
         {
           id: "other-file",
           label: "其它附件",
-          field: "otherfile",
+          field: "otherannex",
           // required: true,
-          type: 8
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "otherannex",
+          type: 8,
+          limit: 5
         }
       ],
       applyFormModel: {},
@@ -219,9 +228,57 @@ export default {
       this.$router.push({ path: "/bid_notice" });
     },
     apply() {
+      if (!this.$store.state.token) {
+        this.$message({
+          type: "warning",
+          message: "您需要先登录，才能报名"
+        });
+        this.$router.push({ path: "/" });
+        return;
+      }
       this.applyFormVisible = true;
     },
-    commit() {}
+    commit() {
+      // console.log(this.applyForm);
+
+      this.$refs.applyForm.validateFields(flag => {
+        if (flag) {
+          let id = this.$route.params.id;
+          let arr = id.split("-");
+          if (arr.length !== 2) {
+            this.$message({
+              type: "error",
+              message: "不正确的参数"
+            });
+            return;
+          }
+
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_SignUp",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.applyFormModel["otherannex"],
+              p4: this.applyFormModel["signupannex"],
+              p5: arr[0],
+              p6: arr[1]
+            },
+            res => {
+              this.loading = false;
+              if (res.code == 0) {
+                this.applyFormVisible = false;
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    }
   }
 };
 </script>

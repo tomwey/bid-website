@@ -18,7 +18,7 @@
     >
       <el-button size="small">选择文件</el-button>
       <div slot="tip" class="el-upload__tip">
-        {{control.upload_tips || calcUploadTips}}
+        <span v-html="control.upload_tips || calcUploadTips"></span>
         <div class="tpl-wrap" v-if="control.tpl_files && control.tpl_files.length > 0">
           <a
             :href="file.url"
@@ -54,12 +54,17 @@ export default {
       dialogPreviewVisible: false,
       fileList: [],
       limit: this.control.limit || 1,
-      accept: this.control.accept || ".jpg,.png,.gif,.webp,.jpeg",
+      leftCount: 0,
+      accept:
+        this.control.accept ||
+        ".jpg,.png,.gif,.jpeg,.pdf,.docx,.doc,.ppt,.pptx,.xls,.xlsx,.zip,.rar",
       fileSize: this.control.fileSize || 10
     };
   },
   mounted() {
     // console.log(this.value);
+    this.leftCount = 0;
+
     if (this.value && this.value != "0") {
       this.loadAnnexes();
     }
@@ -76,10 +81,15 @@ export default {
   },
   computed: {
     calcUploadTips() {
-      return `附件格式为：${this.accept}，大小不超过${this.fileSize}MB`;
+      return `${
+        this.limit > 1 ? "可上传最多" + this.limit + "个附件<br>" : ""
+      }附件格式为：${this.accept}，大小不超过${this.fileSize}MB`;
     }
   },
   methods: {
+    // changeFiles(file, fileList) {
+    //   console.log(fileList);
+    // },
     changeValues(id, isAdd) {
       // console.log(this.fileList);
       if (isAdd) {
@@ -110,11 +120,15 @@ export default {
         }
       }
     },
-    handleSuccess(res, file) {
+    handleSuccess(res, file, fileList) {
+      this.leftCount--;
+
       this.changeValues(res.IDS, true);
-      // console.log(this.fileList);
     },
     loadAnnexes() {
+      if (this.leftCount > 0) {
+        return;
+      }
       this.$post(
         {
           action: "P_SY_GetAnnex",
@@ -132,6 +146,7 @@ export default {
                 name: file.filename,
                 url: file.url,
                 annexid: file.annexid,
+                status: "success",
                 isimage:
                   fileName.indexOf(".png") !== -1 ||
                   fileName.indexOf(".gif") !== -1 ||
@@ -164,7 +179,17 @@ export default {
         );
       }
 
-      return isLt2M && isRightFile;
+      let yesOrNo = isLt2M && isRightFile;
+
+      if (yesOrNo) {
+        if (this.leftCount < 0) {
+          this.leftCount = 0;
+        }
+
+        this.leftCount++;
+      }
+
+      return yesOrNo;
     },
     handlePreview(file) {
       // console.log(file);
@@ -192,6 +217,7 @@ export default {
     handleExceed(files, fileList) {
       const limit = this.control.limit || 1;
       this.$message.warning(`${this.control.label}最多只能上传${limit}个文件`);
+      return false;
     }
   }
 };

@@ -402,7 +402,7 @@ export default {
       this.loadApplyingBids();
     },
     selectItem(item) {
-      this.$router.push({ path: "/admin/my-bids/" + item.id });
+      this.$router.push({ path: "/admin/my-bids/" + item.signupid });
     },
     abandon() {
       this.dialogFormVisible = true;

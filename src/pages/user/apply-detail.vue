@@ -7,11 +7,11 @@
       </el-breadcrumb>
     </div>
     <div class="detail">
-      <h2 class="title">合能地产成都公司68亩沉降观测合同招标公告</h2>
+      <h2 class="title">{{applyData.noticetitle}}</h2>
       <div class="summary">
-        <span class="date">发布日期: 2019-01-01</span>&emsp;
-        <span class="company">招标单位: 成都兴露合能地产开发有限公司</span>&emsp;
-        <span class="view-count">浏览次数: 135</span>
+        <span class="date">发布日期: {{applyData.publishdate}}</span>&emsp;
+        <span class="company">招标单位: {{applyData.tenderingunitname}}</span>&emsp;
+        <span class="view-count">浏览次数: {{applyData.scannum}}</span>
       </div>
       <!-- <div class="apply-wrapper">
         <p class="end-date-tip">
@@ -24,7 +24,16 @@
           <tr v-for="(item,index) in tableData" :key="index">
             <td class="label">{{item.label}}</td>
             <td class="value">
-              <div class="content" v-html="item.value"></div>
+              <div class="content" v-html="item.value" v-if="item.type !== 12"></div>
+              <div class="file-list" v-if="item.type === 12">
+                <a
+                  v-for="file in item.fileList"
+                  target="_blank"
+                  :href="file.url"
+                  :key="file.url"
+                  class="file-item"
+                >{{file.name}}</a>
+              </div>
             </td>
           </tr>
         </table>
@@ -89,52 +98,117 @@ export default {
         }
       ],
       applyFormModel: {},
-      tableData: [
-        {
-          label: "招标事项",
-          value: "合能地产成都公司68亩沉降观测合同招标公告"
-        },
-        {
-          label: "报名附件",
-          value: `<a href="#" style="color: rgb(231,90,22);text-decoration:underline;">1、附件一</a><br><a style="color: rgb(231,90,22);text-decoration:underline;">2、附件2</a><br><a href="#" style="color: rgb(231,90,22);text-decoration:underline;">3、附件3</a>`
-        },
-        {
-          label: "审核状态",
-          value: "审核通过"
-        },
-        // {
-        //   label: "招标基本条件要求",
-        //   value: `1、<strong>服务类别</strong>：类别一<br>
-        //      2、<strong>服务区域</strong>：成都、西安<br>
-        //      3、<strong>注册资本</strong>：1000万<br>
-        //      4、<strong>评估分级</strong>：三级<br>
-        //      5、<strong>档次分档</strong>：1档<br>
-        //      6、<strong>资质要求</strong>：甲级<br>
-        //      7、<strong>是否具备标杆企业业绩</strong>：否<br>
-        //      8、<strong>是否要求展示区类单位</strong>：是`
-        // },
-        {
-          label: "审核说明",
-          value: "这是审核说明"
-        },
-        {
-          label: "退回原因",
-          value: "这是退回原因"
-        }
-
-        // {
-        //   label: "延迟后报名时间",
-        //   value: "2019-05-23 19:30"
-        // }
-      ]
+      applyData: {},
+      tableData: []
     };
   },
+  mounted() {
+    this.loadApplyDetail();
+  },
   methods: {
+    loadApplyDetail() {
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetSignUp_Detail",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.$route.params.id
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            const arr = res["data"];
+            if (arr.length > 0) {
+              this.applyData = arr[0];
+              this.populateData();
+            }
+          }
+        }
+      );
+    },
     back() {
       this.$router.push({ path: "/bid_notice" });
     },
     apply() {
       this.applyFormVisible = true;
+    },
+    populateData() {
+      // console.log(121);
+      let temp = [];
+      temp.push({
+        label: "招标事项",
+        value: this.applyData.noticetitle
+      });
+
+      let item1 = {
+        label: "委托附件",
+        value: this.applyData.signupannex,
+        type: 12
+      };
+
+      temp.push(item1);
+
+      let item2 = {
+        label: "其它附件",
+        value: this.applyData.otherannex,
+        type: 12
+      };
+
+      temp.push(item2);
+
+      temp.push({
+        label: "审核状态",
+        value: this.applyData.statenumname
+      });
+
+      temp.push({
+        label: "审核说明",
+        value: this.applyData.explain,
+        type: 5
+      });
+
+      temp.push({
+        label: "退回原因",
+        value: this.applyData.reason,
+        type: 5
+      });
+
+      this.loadAnnexes(item1);
+      this.loadAnnexes(item2);
+
+      this.tableData = temp;
+    },
+    loadAnnexes(item) {
+      if (!item || !item.value || item.value == 0) return;
+      this.$post(
+        {
+          action: "P_SY_GetAnnex",
+          p1: item.value
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            let arr = res.data;
+            let temp = [];
+            arr.forEach(file => {
+              // console.log(file);
+              let fileName = file.filename || "";
+              temp.push({
+                name: file.filename,
+                url: file.url,
+                annexid: file.annexid,
+                isimage:
+                  fileName.indexOf(".png") !== -1 ||
+                  fileName.indexOf(".gif") !== -1 ||
+                  fileName.indexOf(".jpg") !== -1 ||
+                  fileName.indexOf(".jpeg") !== -1 ||
+                  fileName.indexOf(".webp") !== -1
+              });
+            });
+            this.$set(item, "fileList", temp);
+          }
+        }
+      );
     },
     commit() {}
   }
@@ -206,6 +280,18 @@ export default {
       text-align: center;
       margin-top: 60px;
     }
+  }
+}
+
+.file-list {
+  .file-item {
+    display: block;
+    // padding: 10px 0;
+    font-size: 14px;
+    color: rgb(231, 90, 22);
+    // margin-bottom: 5px;
+    padding: 5px 0;
+    text-decoration: underline;
   }
 }
 </style>

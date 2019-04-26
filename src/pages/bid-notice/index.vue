@@ -48,14 +48,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="page-container">
+    <div class="page-container" v-if="totalSize >= pageSize">
       <el-pagination
         background
         layout="prev, pager, next"
         :total="totalSize"
         :page-size="pageSize"
         :current-page="page"
-        v-if="totalSize >= pageSize"
         @current-change="pageChange"
       ></el-pagination>
     </div>
@@ -84,6 +83,14 @@ export default {
   },
   mounted() {
     this.loadNotices();
+  },
+  watch: {
+    end_date() {
+      this.search();
+    },
+    state() {
+      this.search();
+    }
   },
   methods: {
     search() {

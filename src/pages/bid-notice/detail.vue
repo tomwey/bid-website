@@ -42,7 +42,7 @@
       </div>
       <div class="buttons">
         <el-button plain @click="back">返回</el-button>&emsp;
-        <el-button type="primary" @click="apply">立即报名</el-button>
+        <el-button type="primary" @click="apply" :disabled="notice.issignup == '1'">立即报名</el-button>
       </div>
     </div>
 
@@ -259,15 +259,21 @@ export default {
               action: "P_SUP_Bid_SignUp",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.applyFormModel["otherannex"],
-              p4: this.applyFormModel["signupannex"],
+              p3: this.applyFormModel["otherannex"] || "",
+              p4: this.applyFormModel["signupannex"] || "",
               p5: arr[0],
               p6: arr[1]
             },
             res => {
               this.loading = false;
               if (res.code == 0) {
+                this.notice.issignup = "1";
                 this.applyFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "报名成功"
+                });
+                this.$router.push({ path: "/admin/applying-bids" });
               } else {
                 this.$message({
                   type: "error",

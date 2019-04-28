@@ -1797,6 +1797,19 @@ export default {
       );
 
       // 填充区域信息
+      for (let i = 0; i < this.areaFormControls.length; i++) {
+        let control = this.areaFormControls[i];
+        if (
+          !this.areaFormModel[control.field] ||
+          this.areaFormModel[control.field] == "0"
+        ) {
+          this.$message({
+            message: control.label + "不能为空",
+            type: "error"
+          });
+          return;
+        }
+      }
       this._fillData(this.areaFormControls, this.areaFormModel, params);
 
       params["_loginuid"] = this.$store.state.supinfo.accountid;
@@ -1914,7 +1927,7 @@ export default {
 
       params["otherfiles"] = [fileObj];
 
-      console.log(params);
+      // console.log(params);
 
       if (this.commiting) return;
       this.commiting = true;

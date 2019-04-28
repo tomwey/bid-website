@@ -1,6 +1,6 @@
 <template>
-  <div class="bid-list">
-    <!-- 即将上线... -->
+  <div class="bid-list"></div>
+  <!-- <div class="bid-list">
     <h2 class="title">报名通知列表</h2>
     <div class="search-toolbar">
       <el-row>
@@ -40,9 +40,6 @@
               class="state-tag"
               :class="{success:scope.row.state == '已报名', info:scope.row.state == '已查看',warning:scope.row.state == '未查看'}"
             >{{scope.row.state}}</span>
-            <!-- <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已查看'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>-->
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -82,7 +79,7 @@
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
-  </div>
+  </div>-->
 </template>
 <script>
 export default {

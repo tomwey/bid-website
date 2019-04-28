@@ -1,5 +1,6 @@
 <template>
-  <div class="bid-list">
+  <div class="bid-list"></div>
+  <!-- <div class="bid-list">
     <h2 class="title">我的报名</h2>
     <div class="search-toolbar">
       <el-row>
@@ -44,13 +45,6 @@
         <el-table-column prop="date" label="报名时间" width="140"></el-table-column>
         <el-table-column prop="state" label="状态" width="180">
           <template slot-scope="scope">
-            <!-- <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
-            <span v-if="scope.row.state == '未通过'">
-              <el-tag type="danger">审核未通过</el-tag>
-              <p>原因：资料不齐全</p>
-            </span>-->
             <span
               class="state-tag"
               :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
@@ -59,7 +53,6 @@
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <!-- <el-button type="success" size="small">报名</el-button> -->
             <el-button
               type="primary"
               plain
@@ -122,7 +115,7 @@
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
-  </div>
+  </div>-->
 </template>
 <script>
 export default {

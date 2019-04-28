@@ -1,6 +1,6 @@
 <template>
   <div class="home-main-wrap container">
-    <div class="search-toolbar">
+    <!-- <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
           <span class="label">报名截止时间:</span>
@@ -39,7 +39,6 @@
         <el-table-column prop="expire_date" label="报名截止时间" width="180"></el-table-column>
         <el-table-column label="报名状态" width="120">
           <template slot-scope="scope">
-            <!-- <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag> -->
             <span
               class="state-tag"
               :class="{success:scope.row.state == '已报名', info:scope.row.state == '已放弃', warning:scope.row.state == '报名中', danger:scope.row.state == '未通过'}"
@@ -56,7 +55,7 @@
         :page-size="20"
         :current-page="1"
       ></el-pagination>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>

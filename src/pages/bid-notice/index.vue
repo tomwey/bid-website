@@ -120,21 +120,6 @@ export default {
               this.totalSize = parseInt(this.tableData[0]["totalcount"]);
             }
           }
-          // condition: "很多条件"
-          // delaysigndate: ""
-          // erptenderunitid: "34"
-          // noticeannexs: "123"
-          // noticeexplain: "说明页很多"
-          // noticeid: "1"
-          // noticetitle: "标题"
-          // publishdate: "2019-04-25 09:43:11"
-          // purchasematterid: "1"
-          // readstate: "0"
-          // readtime: ""
-          // scannum: "0"
-          // signenddate: "2019-04-16 09:43:18"
-          // tenderingunitid: "343"
-          // tenderingunitname: "合能的一个大子公司"
         }
       );
     },

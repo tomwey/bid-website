@@ -5,8 +5,13 @@
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
-          <span class="label">截止时间:</span>
-          <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
+          <span class="label">时间:</span>
+          <el-date-picker
+            v-model="end_date"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-col>
         <el-col :span="8">
           <span class="label">状态:</span>
@@ -30,15 +35,14 @@
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="title" label="招标事项">
           <template slot-scope="scope">
-            <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
+            <span class="name" @click="selectItem(scope.row)">{{scope.row.noticetitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="时间" width="140"></el-table-column>
+        <el-table-column :label="dateTableHeader" width="180">
+          <template slot-scope="scope">{{calcDateVal(scope.row)}}</template>
+        </el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
-            <!-- <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>-->
             <span
               class="state-tag"
               :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
@@ -47,18 +51,18 @@
         </el-table-column>
         <el-table-column label="操作" width="90">
           <template slot-scope="scope">
-            <!-- <el-button type="success" size="small">报名</el-button> -->
             <el-button type="danger" size="small" @click="abandon">弃标</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-container">
+      <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="50"
-          :page-size="20"
-          :current-page="1"
+          :total="totalSize"
+          :page-size="pageSize"
+          :current-page="page"
+          @current-change="pageChange"
         ></el-pagination>
       </div>
     </div>
@@ -95,6 +99,13 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
+      end_date: null,
+      state: null,
+      stateOptions: [],
+      keyword: null,
+      page: 1,
+      totalSize: 0,
+      pageSize: 20,
       applyControls: [
         {
           field: "reason",
@@ -137,48 +148,94 @@ export default {
         }
       ],
       applyFormModel: {},
-      tableData: [
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已放弃",
-          id: 110
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "审核中",
-          id: 111
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 112
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 113
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已通过",
-          id: 114
-        }
-      ]
+      tableData: []
     };
   },
   watch: {
     $route: function(to) {
-      console.log(to);
+      // console.log(to);
+      this.search();
+    },
+    end_date() {
+      this.search();
+    },
+    state() {
+      this.search();
+    }
+  },
+  mounted() {
+    // console.log(this.$route);
+    this.loadData();
+  },
+  computed: {
+    dateTableHeader() {
+      switch (this.$route.name) {
+        case "user_bid_faq":
+          return "截止时间";
+        case "user_applied":
+          return "入围时间";
+        default:
+          return "时间";
+      }
+    },
+    currentStep() {
+      switch (this.$route.name) {
+        case "user_bid_faq":
+          return 2;
+        case "user_applied":
+          return 1;
+        default:
+          return 0;
+      }
     }
   },
   methods: {
+    calcDateVal(item) {
+      // enddate
+      switch (this.$route.name) {
+        case "user_bid_faq":
+          return item.enddate;
+        case "user_applied":
+          return item.selecteddate;
+        default:
+          return "";
+      }
+    },
+    loadData() {
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetShortList",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.end_date || "",
+          p4: this.state || "",
+          p5: this.keyword || "",
+          p6: this.page.toString(),
+          p7: this.pageSize.toString()
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            this.tableData = res["data"];
+            if (this.tableData.length > 0) {
+              this.totalSize = this.tableData[0]["totalcount"];
+            }
+          }
+        }
+      );
+    },
+    search() {
+      this.page = 1;
+      this.loadData();
+    },
+    pageChange(val) {
+      this.page = val;
+      this.loadData();
+    },
     selectItem(item) {
-      this.$router.push({ path: "/admin/bids/" + item.id });
+      this.$router.push({
+        path: "/admin/bids/" + `${item.noticeid}-${currentStep}`
+      });
     },
     abandon() {
       this.dialogFormVisible = true;

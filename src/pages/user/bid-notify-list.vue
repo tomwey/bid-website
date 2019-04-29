@@ -1,12 +1,17 @@
 <template>
-  <div class="bid-list">
+  <div class="bid-list" v-loading="loading">
     <!-- 即将上线... -->
     <h2 class="title">报名通知列表</h2>
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
           <span class="label">截止时间:</span>
-          <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            v-model="end_date"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-col>
         <el-col :span="8">
           <span class="label">状态:</span>
@@ -28,37 +33,41 @@
     </div>
     <div class="list">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="title" label="招标事项">
+        <el-table-column prop="noticetitle" label="招标事项">
           <template slot-scope="scope">
-            <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
+            <span class="name" @click="selectItem(scope.row)">{{scope.row.noticetitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="截止时间" width="140"></el-table-column>
+        <el-table-column prop="signenddate" label="截止时间" width="180"></el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
             <span
               class="state-tag"
-              :class="{success:scope.row.state == '已报名', info:scope.row.state == '已查看',warning:scope.row.state == '未查看'}"
-            >{{scope.row.state}}</span>
-            <!-- <el-tag type="success" v-if="scope.row.state == '已报名'">{{scope.row.state}}</el-tag>
-            <el-tag type="info" v-if="scope.row.state == '已查看'">{{scope.row.state}}</el-tag>
-            <el-tag type="warning" v-if="scope.row.state == '未查看'">{{scope.row.state}}</el-tag>-->
+              :class="{success:scope.row.issignup == '1',warning:scope.row.issignup == '0'}"
+            >{{scope.row.issignup == '0' ? '未报名' : '已报名'}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button type="primary" plain size="small">报名</el-button>&nbsp;
+            <el-button
+              type="primary"
+              plain
+              size="small"
+              :disabled="scope.row.issignup == '1'"
+              @click="apply(scope.row);"
+            >报名</el-button>&nbsp;
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-container">
+      <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="50"
-          :page-size="20"
-          :current-page="1"
+          :total="totalSize"
+          :page-size="pageSize"
+          :current-page="page"
+          @current-change="pageChange"
         ></el-pagination>
       </div>
     </div>
@@ -82,6 +91,27 @@
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="报名"
+      :visible.sync="applyFormVisible"
+      :append-to-body="true"
+      center
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      v-loading="loading"
+    >
+      <form-fields
+        form-ref="form"
+        ref="applyForm"
+        :controls="applyControls2"
+        :form-model="applyFormModel2"
+      ></form-fields>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="applyFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="commit2">提 交</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -96,6 +126,16 @@ export default {
     //业务量饱和、招标业务体量不匹配、支付方式不接受、对我司合作评估不佳、其他
     return {
       dialogFormVisible: false,
+      loading: false,
+      end_date: null,
+      keyword: null,
+      state: null,
+      stateOptions: [],
+      page: 1,
+      currentApply: {},
+      totalSize: 0,
+      pageSize: 20,
+      applyFormVisible: false,
       applyControls: [
         {
           field: "reason",
@@ -138,62 +178,35 @@ export default {
         }
       ],
       applyFormModel: {},
-      tableData: [
+      applyControls2: [
         {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已查看",
-          id: 110
+          id: "agency-file",
+          type: 8,
+          // subtype: "number",
+          label: "委托书附件",
+          field: "signupannex",
+          // unit: "万",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "signupannex",
+          rules: [
+            { required: true, message: "委托书附件不能为空", trigger: "blur" }
+          ]
         },
         {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "未查看",
-          id: 111
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已报名",
-          id: 112
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已查看",
-          id: 110
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "未查看",
-          id: 111
-        },
-        // {
-        //   title: "合能集团成都公司总包招投标",
-        //   date: "2019-03-13",
-        //   state: "已报名",
-        //   id: 112
-        // },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已查看",
-          id: 110
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "未查看",
-          id: 111
-        },
-        {
-          title: "合能集团成都公司总包招投标",
-          date: "2019-03-13",
-          state: "已报名",
-          id: 112
+          id: "other-file",
+          label: "其它附件",
+          field: "otherannex",
+          // required: true,
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "otherannex",
+          type: 8,
+          limit: 5
         }
-      ]
+      ],
+      applyFormModel2: {},
+      tableData: []
     };
   },
   watch: {
@@ -201,14 +214,93 @@ export default {
       // console.log(to);
     }
   },
+  mounted() {
+    this.loadData();
+  },
   methods: {
+    pageChange(val) {
+      this.page = val;
+      this.loadData();
+    },
+    loadData() {
+      this.loading = true;
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetSignUpNotice",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.end_date || "",
+          p4: this.keyword || "",
+          p5: this.state || "",
+          p6: this.page,
+          p7: this.pageSize
+        },
+        res => {
+          this.loading = false;
+          // console.log(res);
+          if (res.code == 0) {
+            this.tableData = res["data"];
+            if (this.tableData.length > 0) {
+              this.totalSize = this.tableData[0]["totalcount"];
+            }
+          }
+        }
+      );
+    },
     selectItem(item) {
-      this.$router.push({ path: "/admin/apply-bid/" + item.id });
+      this.$router.push({
+        path: "/admin/apply-bid/" + `${item.noticeid}-${item.purchasematterid}`
+      });
     },
     abandon() {
       this.dialogFormVisible = true;
     },
-    commit() {}
+    apply(item) {
+      this.currentApply = Object.assign({}, item);
+      this.applyFormVisible = true;
+    },
+    search() {
+      this.page = 1;
+      this.loadData();
+    },
+    commit() {},
+    commit2() {
+      this.$refs.applyFormModel2.validateFields(flag => {
+        if (flag) {
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_SignUp",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.applyFormModel2["otherannex"] || "",
+              p4: this.applyFormModel2["signupannex"] || "",
+              p5: this.currentApply.noticeid || "",
+              p6: this.currentApply.purchasematterid || ""
+            },
+            res => {
+              this.loading = false;
+              if (res.code == 0) {
+                this.notice.issignup = "1";
+                this.applyFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "报名成功"
+                });
+                this.page = 1;
+                this.loadData();
+                // this.$router.push({ path: "/admin/applying-bids" });
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    }
   }
 };
 </script>

@@ -167,7 +167,7 @@ export default {
       this.menus.forEach(menu => {
         menu.menu_items.forEach(item => {
           const name = this.$router.currentRoute.name;
-          console.log(item);
+          // console.log(item);
           if (item.route === name) {
             this.currentMenuItem = item;
           }

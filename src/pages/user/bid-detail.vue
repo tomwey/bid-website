@@ -34,145 +34,8 @@
         </el-steps>
       </div>
       <div class="step-content">
-        <div v-if="step === 1" class="download-files">
-          <el-tabs key="filesTab">
-            <el-tab-pane label="标书附件">
-              <table class="table">
-                <tr v-for="(item,index) in downloadFiles" :key="index">
-                  <td class="label">{{item.label}}</td>
-                  <td class="value">
-                    <div class="files">
-                      <div class="file" v-for="(file,index2) in item.files" :key="index2">
-                        <a :href="file.url" class="file-link">{{file.name}}</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </el-tab-pane>
-            <el-tab-pane label="补充材料附件">
-              <el-table :data="attachmentData" key="faqTable135" stripe style="width: 100%">
-                <el-table-column prop="title" label="上传描述"></el-table-column>
-                <el-table-column label="附件">
-                  <template slot-scope="scope">
-                    <a
-                      style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                      :href="scope.row.url"
-                      target="_blank"
-                    >附件1</a>
-                    <br>
-                    <a
-                      style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                      :href="scope.row.url"
-                      target="_blank"
-                    >附件2</a>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="上传时间" width="180"></el-table-column>
-                <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
-              </el-table>
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-        <div v-if="step === 2" class="faq-list">
-          <el-tabs key="faqTab">
-            <el-tab-pane label="提问">
-              <div class="stat-newbar">
-                <el-row>
-                  <el-col :span="16">
-                    <span class="stat">共10条</span>
-                  </el-col>
-                  <el-col :span="8" style="text-align:right;">
-                    <el-button type="primary" @click="faqDialogFormVisible = true">新增提疑</el-button>
-                  </el-col>
-                </el-row>
-              </div>
-              <div class="list">
-                <el-table :data="faqData" key="faqTable1" stripe style="width: 100%">
-                  <el-table-column prop="title" label="提问内容">
-                    <template slot-scope="scope">
-                      <span class="name" @click="selectItem(scope.row)">{{scope.row.title}}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="提问附件" width="120">
-                    <template slot-scope="scope">
-                      <a
-                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                        :href="scope.row.url"
-                        target="_blank"
-                      >附件</a>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="time" label="提问时间" width="180"></el-table-column>
-                  <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
-                </el-table>
-                <div class="page-container">
-                  <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="50"
-                    :page-size="20"
-                    :current-page="1"
-                  ></el-pagination>
-                </div>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="回复">
-              <div class="stat-newbar">
-                <el-row>
-                  <el-col :span="16">
-                    <span class="stat">共10条</span>
-                  </el-col>
-                </el-row>
-              </div>
-              <div class="list">
-                <el-table :data="faqData2" key="faqTable2" stripe style="width: 100%">
-                  <el-table-column prop="title" label="提问内容"></el-table-column>
-                  <el-table-column label="答疑附件" width="120">
-                    <template slot-scope="scope">
-                      <a
-                        style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                        :href="scope.row.url"
-                        target="_blank"
-                      >附件</a>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="time" label="回复时间" width="180"></el-table-column>
-                </el-table>
-                <div class="page-container">
-                  <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="50"
-                    :page-size="20"
-                    :current-page="1"
-                  ></el-pagination>
-                </div>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
-
-          <el-dialog
-            title="新增提疑"
-            :visible.sync="faqDialogFormVisible"
-            :append-to-body="true"
-            center
-            :close-on-click-modal="false"
-            :close-on-press-escape="false"
-            :show-close="false"
-          >
-            <form-fields
-              form-ref="form"
-              ref="faqForm"
-              :controls="faqFormControls"
-              :form-model="faqFormModel"
-            ></form-fields>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
-            </div>
-          </el-dialog>
-        </div>
+        <files-download v-if="step === 1"></files-download>
+        <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
         <div v-if="step === 3" class="bid-money">
           <div class="stat-newbar">
             <el-row>
@@ -180,7 +43,7 @@
                 <span class="stat">共10条</span>
               </el-col>
               <el-col :span="8" style="text-align:right;">
-                <el-button type="primary" @click="faqDialogFormVisible = true">新增投标保证金</el-button>
+                <el-button type="primary" @click="bonusDialogFormVisible = true">新增投标保证金</el-button>
               </el-col>
             </el-row>
           </div>
@@ -484,6 +347,12 @@ export default {
   components: {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
+    },
+    filesDownload: function(resolve) {
+      require(["@/components/bid/files-download"], resolve);
+    },
+    faqList: function(resolve) {
+      require(["@/components/bid/faq-list"], resolve);
     }
   },
   data() {
@@ -537,215 +406,6 @@ export default {
           status: false
         }
       ],
-      faqData: [
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        }
-      ],
-      attachmentData: [
-        {
-          title: "第一次上传",
-          time: "2019-02-03 13:30:12"
-        },
-        {
-          title: "第二次上传",
-          time: "2019-03-03 13:30:12"
-        },
-        {
-          title: "第三次上传",
-          time: "2019-04-03 13:30:12"
-        }
-      ],
-      faqData2: [
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        },
-        {
-          title: "这是疑问，这是疑问，这是问题",
-          time: "2019-01-01 12:32:39"
-        }
-      ],
-      downloadFiles2: [
-        {
-          label: "补充材料一",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "补充材料二",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        }
-      ],
-      downloadFiles: [
-        {
-          label: "招标文件正文",
-          files: [
-            {
-              name: "附件一",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "合同模板及附件",
-          files: [
-            {
-              name: "模板一",
-              url: "#"
-            },
-            {
-              name: "附件一",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "招标图纸",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "招标清单",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "技术要求",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "施工及材料界面",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        },
-        {
-          label: "其他文件",
-          files: [
-            {
-              name: "文件一",
-              url: "#"
-            },
-            {
-              name: "文件2",
-              url: "#"
-            }
-          ]
-        }
-      ],
-      faqDialogFormVisible: false,
-      faqFormControls: [
-        {
-          id: "faq-content",
-          type: 1,
-          subtype: "textarea",
-          label: "疑问内容",
-          field: "content",
-          // unit: "万",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
-        },
-        {
-          id: "faq-file",
-          type: 8,
-          //   subtype: "file",
-          label: "答疑附件",
-          field: "faqannex",
-          domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Sub_Info",
-          fieldname: "faqannex",
-          // upload_tips: "只能上传图片格式，大小不超过5MB",
-          accept: ".pdf",
-          fileSize: 5
-        },
-        {
-          id: "is-reconnaissance",
-          type: 5,
-          label: "是否踏勘",
-          field: "isreconnaissance"
-        }
-      ],
-      faqFormModel: {},
       bidMoneyData: [
         {
           time: "2019-02-03 12:30:30",
@@ -1023,6 +683,26 @@ export default {
       bidPrice2FormModel: {}
     };
   },
+  computed: {
+    noticeID() {
+      const id = this.$route.params.id;
+      const arr = id.split("-");
+      if (arr.length > 0) {
+        return arr[0];
+      }
+
+      return "";
+    },
+    purchasematterID() {
+      const id = this.$route.params.id;
+      const arr = id.split("-");
+      if (arr.length > 1) {
+        return arr[1];
+      }
+
+      return "";
+    }
+  },
   methods: {
     selectStep(step) {
       this.step = step;
@@ -1081,32 +761,14 @@ export default {
       }
     }
   }
-
-  .download-files {
-    padding: 0 30px 30px;
-    .table {
-      width: 100%;
-      font-size: 14px;
-      color: #333;
-      border: 1px solid #f2f2f2;
-      tr,
-      td {
-        border: 1px solid #f2f2f2;
-      }
-      .label {
-        color: #888;
-        width: 180px;
-      }
-      // .value {
-      .file-link {
-        color: rgb(231, 90, 22) !important;
-        text-decoration: underline;
-      }
-      // }
-    }
-  }
 }
 
+.bid-money {
+  // padding: 30px 0;
+  padding-right: 60px;
+}
+</style>
+<style lang="scss">
 .page-container {
   text-align: center;
   padding: 30px;
@@ -1126,16 +788,7 @@ export default {
 .list {
   padding: 0 10px;
 }
-.bid-money {
-  // padding: 30px 0;
-  padding-right: 60px;
-}
 
-.faq-list {
-  padding: 0 30px 30px;
-}
-</style>
-<style lang="scss">
 .el-step__head.is-process {
   color: rgb(231, 90, 22);
   border-color: rgb(231, 90, 22);

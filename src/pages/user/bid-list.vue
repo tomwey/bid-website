@@ -218,7 +218,7 @@ export default {
           if (res.code == 0) {
             this.tableData = res["data"];
             if (this.tableData.length > 0) {
-              this.totalSize = this.tableData[0]["totalcount"];
+              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
             }
           }
         }
@@ -234,7 +234,9 @@ export default {
     },
     selectItem(item) {
       this.$router.push({
-        path: "/admin/bids/" + `${item.noticeid}-${currentStep}`
+        path:
+          "/admin/bids/" +
+          `${item.noticeid}-${item.purchasematterid}-${this.currentStep}`
       });
     },
     abandon() {

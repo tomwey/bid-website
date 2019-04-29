@@ -42,7 +42,11 @@
       </div>
       <div class="buttons">
         <el-button plain @click="back">返回</el-button>&emsp;
-        <el-button type="primary" @click="apply" :disabled="notice.issignup == '1'">立即报名</el-button>
+        <el-button
+          type="primary"
+          @click="apply"
+          :disabled="notice.isoverdue == '1' || notice.issignup == '1'"
+        >立即报名</el-button>
       </div>
     </div>
 

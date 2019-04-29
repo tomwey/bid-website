@@ -53,7 +53,7 @@
               type="primary"
               plain
               size="small"
-              :disabled="scope.row.issignup == '1'"
+              :disabled="scope.row.issignup == '1' || scope.row.isoverdue == '1'"
               @click="apply(scope.row);"
             >报名</el-button>&nbsp;
             <el-button type="danger" size="small" @click="abandon">放弃</el-button>

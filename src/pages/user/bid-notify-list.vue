@@ -56,7 +56,7 @@
               :disabled="scope.row.issignup == '1' || scope.row.isoverdue == '1'"
               @click="apply(scope.row);"
             >报名</el-button>&nbsp;
-            <el-button type="danger" size="small" @click="abandon">放弃</el-button>
+            <el-button type="danger" size="small" @click="abandon(scope.row);">放弃</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -121,6 +121,9 @@ export default {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
     }
+    // abandon: function(resolve) {
+    //   require(["@/components/bid/abandon"], resolve);
+    // }
   },
   data() {
     //业务量饱和、招标业务体量不匹配、支付方式不接受、对我司合作评估不佳、其他
@@ -141,33 +144,18 @@ export default {
           field: "reason",
           type: 2,
           label: "放弃原因",
-          options: [
-            {
-              label: "业务量饱和",
-              value: "业务量饱和"
-            },
-            {
-              label: "招标业务体量不匹配",
-              value: "招标业务体量不匹配"
-            },
-            {
-              label: "支付方式不接受",
-              value: "支付方式不接受"
-            },
-            {
-              label: "对我司合作评估不佳",
-              value: "对我司合作评估不佳"
-            },
-            {
-              label: "其他",
-              value: "其他"
-            }
+          options: [],
+          rules: [
+            { required: true, message: "放弃原因不能为空", trigger: "change" }
           ]
         },
         {
           field: "file",
           type: 8,
-          label: "放弃函件"
+          label: "放弃函件",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_GiveUp",
+          fieldname: "giveupannex"
           // subtype: "textarea"
         },
         {
@@ -252,20 +240,77 @@ export default {
         path: "/admin/apply-bid/" + `${item.noticeid}-${item.purchasematterid}`
       });
     },
-    abandon() {
+    abandon(item) {
+      this.currentApply = Object.assign({}, item);
+      this.applyFormModel = {};
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "10"
+        },
+        res => {
+          if (res.code == 0) {
+            let arr = res.data;
+            let temp = [];
+            if (Array.isArray(arr)) {
+              arr.forEach(ele => {
+                temp.push({ label: ele.sy_name, value: ele.sy_value });
+              });
+            }
+            this.applyControls[0].options = temp;
+          }
+        }
+      );
       this.dialogFormVisible = true;
     },
     apply(item) {
       this.currentApply = Object.assign({}, item);
+      this.applyFormModel2 = {};
       this.applyFormVisible = true;
     },
     search() {
       this.page = 1;
       this.loadData();
     },
-    commit() {},
+    commit() {
+      this.$refs.dialogForm.validateFields(flag => {
+        if (flag) {
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_GiveUp",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.currentApply.noticeid || "",
+              p4: this.currentApply.purchasematterid || "",
+              p5: "",
+              p6: "1",
+              p7: this.applyFormModel["reason"] || "",
+              p8: this.applyFormModel["file"] || "",
+              p9: this.applyFormModel["memo"] || ""
+            },
+            res => {
+              this.loading = false;
+              if (res.code == "0") {
+                this.dialogFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+                this.loadData();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    },
     commit2() {
-      this.$refs.applyFormModel2.validateFields(flag => {
+      this.$refs.applyForm.validateFields(flag => {
         if (flag) {
           this.loading = true;
           this.$post(

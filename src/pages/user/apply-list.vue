@@ -74,7 +74,7 @@
               @click="addInfo(scope.row)"
               :disabled="scope.row.disabled"
             >资料补充</el-button>&nbsp;
-            <el-button type="danger" size="small" @click="abandon">放弃</el-button>
+            <el-button type="danger" size="small" @click="abandon(scope.row);">放弃</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -147,6 +147,7 @@ export default {
     return {
       loading: false,
       currSignID: null,
+      currApply: null,
       dialogFormVisible: false,
       signupDate: "",
       state: "",
@@ -167,33 +168,18 @@ export default {
           field: "reason",
           type: 2,
           label: "放弃原因",
-          options: [
-            {
-              label: "业务量饱和",
-              value: "业务量饱和"
-            },
-            {
-              label: "招标业务体量不匹配",
-              value: "招标业务体量不匹配"
-            },
-            {
-              label: "支付方式不接受",
-              value: "支付方式不接受"
-            },
-            {
-              label: "对我司合作评估不佳",
-              value: "对我司合作评估不佳"
-            },
-            {
-              label: "其他",
-              value: "其他"
-            }
+          options: [],
+          rules: [
+            { required: true, message: "放弃原因不能为空", trigger: "change" }
           ]
         },
         {
           field: "file",
           type: 8,
-          label: "放弃函件"
+          label: "放弃函件",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_GiveUp",
+          fieldname: "giveupannex"
           // subtype: "textarea"
         },
         {
@@ -404,10 +390,66 @@ export default {
     selectItem(item) {
       this.$router.push({ path: "/admin/my-bids/" + item.signupid });
     },
-    abandon() {
+    abandon(item) {
+      this.currApply = Object.assign({}, item);
+      this.applyFormModel = {};
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "10"
+        },
+        res => {
+          if (res.code == 0) {
+            let arr = res.data;
+            let temp = [];
+            if (Array.isArray(arr)) {
+              arr.forEach(ele => {
+                temp.push({ label: ele.sy_name, value: ele.sy_value });
+              });
+            }
+            this.applyControls[0].options = temp;
+          }
+        }
+      );
       this.dialogFormVisible = true;
     },
-    commit() {}
+    commit() {
+      this.$refs.dialogForm.validateFields(flag => {
+        if (flag) {
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_GiveUp",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.currApply.noticeid || "",
+              p4: this.currApply.purchasematterid || "",
+              p5: "",
+              p6: "2",
+              p7: this.applyFormModel["reason"] || "",
+              p8: this.applyFormModel["file"] || "",
+              p9: this.applyFormModel["memo"] || ""
+            },
+            res => {
+              this.loading = false;
+              if (res.code == "0") {
+                this.dialogFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+                this.loadApplyingBids();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    }
   }
 };
 </script>

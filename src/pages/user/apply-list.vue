@@ -235,6 +235,8 @@ export default {
   methods: {
     addInfo(item) {
       this.currSignID = item.signupid;
+      this.$refs.dialogForm2.$refs["form"] &&
+        this.$refs.dialogForm2.$refs["form"].resetFields();
       this.dialogFormVisible2 = true;
     },
     commit2() {
@@ -393,6 +395,8 @@ export default {
     abandon(item) {
       this.currApply = Object.assign({}, item);
       this.applyFormModel = {};
+      this.$refs.dialogForm.$refs["form"] &&
+        this.$refs.dialogForm.$refs["form"].resetFields();
       this.$post(
         {
           action: "P_SY_GetParamInfo",

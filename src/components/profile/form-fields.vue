@@ -248,8 +248,6 @@ export default {
       this.formModel.forEach(item => {
         item[control.field] = null;
       });
-
-      // this.$emit("reset");
     },
     validateFields(callback) {
       // console.log(124);

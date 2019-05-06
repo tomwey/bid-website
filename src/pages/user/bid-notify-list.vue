@@ -243,6 +243,8 @@ export default {
     abandon(item) {
       this.currentApply = Object.assign({}, item);
       this.applyFormModel = {};
+      this.$refs.dialogForm.$refs["form"] &&
+        this.$refs.dialogForm.$refs["form"].resetFields();
       this.$post(
         {
           action: "P_SY_GetParamInfo",
@@ -265,6 +267,9 @@ export default {
     },
     apply(item) {
       this.currentApply = Object.assign({}, item);
+      this.$refs.applyForm.$refs["form"] &&
+        this.$refs.applyForm.$refs["form"].resetFields();
+
       this.applyFormModel2 = {};
       this.applyFormVisible = true;
     },

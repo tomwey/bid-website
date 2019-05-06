@@ -36,69 +36,7 @@
       <div class="step-content">
         <files-download v-if="step === 1"></files-download>
         <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
-        <div v-if="step === 3" class="bid-money">
-          <div class="stat-newbar">
-            <el-row>
-              <el-col :span="16">
-                <span class="stat">共10条</span>
-              </el-col>
-              <el-col :span="8" style="text-align:right;">
-                <el-button type="primary" @click="bonusDialogFormVisible = true">新增投标保证金</el-button>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="list">
-            <el-table key="bidMoneyDataTable" :data="bidMoneyData" stripe style="width: 100%">
-              <el-table-column label="缴纳凭证附件" width="180">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column prop="opinion" label="审批意见"></el-table-column>
-              <el-table-column prop="time" label="时间" width="180"></el-table-column>
-              <el-table-column prop="state" label="状态" width="120">
-                <template slot-scope="scope">
-                  <el-tag type="success" v-if="scope.row.state == '已通过'">{{scope.row.state}}</el-tag>
-                  <el-tag type="info" v-if="scope.row.state == '已放弃'">{{scope.row.state}}</el-tag>
-                  <el-tag type="primary" v-if="scope.row.state == '审核中'">{{scope.row.state}}</el-tag>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="page-container">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="50"
-                :page-size="20"
-                :current-page="1"
-              ></el-pagination>
-            </div>
-          </div>
-          <el-dialog
-            title="新增保证金缴纳凭证"
-            :visible.sync="faqDialogFormVisible"
-            :append-to-body="true"
-            center
-            :close-on-click-modal="false"
-            :close-on-press-escape="false"
-            :show-close="false"
-          >
-            <form-fields
-              form-ref="form"
-              ref="bidMoneyForm"
-              :controls="bidMoneyFormControls"
-              :form-model="bidMoneyFormModel"
-            ></form-fields>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
-            </div>
-          </el-dialog>
-        </div>
+        <bonds-list v-if="step === 3" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
         <div v-if="step === 4" class="bid-func">
           <div class="stat-newbar">
             <el-row>
@@ -353,6 +291,9 @@ export default {
     },
     faqList: function(resolve) {
       require(["@/components/bid/faq-list"], resolve);
+    },
+    bondsList: function(resolve) {
+      require(["@/components/bid/bonds-list"], resolve);
     }
   },
   data() {

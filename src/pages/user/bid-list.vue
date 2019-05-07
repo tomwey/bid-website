@@ -32,16 +32,16 @@
       </el-row>
     </div>
     <div class="list">
-      <el-table :data="tableData" stripe style="width: 100%">
+      <el-table :data="tableData" stripe style="width: 100%" :key="$route.name">
         <el-table-column prop="title" label="招标事项">
           <template slot-scope="scope">
             <span class="name" @click="selectItem(scope.row)">{{scope.row.noticetitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="dateTableHeader" width="180">
+        <el-table-column :label="dateTableHeader" width="200">
           <template slot-scope="scope">{{calcDateVal(scope.row)}}</template>
         </el-table-column>
-        <el-table-column prop="state" label="状态" width="120">
+        <el-table-column prop="state" label="状态" width="120" v-if="$route.name != 'user_bid_faq'">
           <template slot-scope="scope">
             <span
               class="state-tag"

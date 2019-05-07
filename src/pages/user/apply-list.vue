@@ -250,8 +250,6 @@ export default {
     },
     addInfo(item) {
       this.currSignID = item.signupid;
-      this.$refs.dialogForm2.$refs["form"] &&
-        this.$refs.dialogForm2.$refs["form"].resetFields();
       this.dialogFormVisible2 = true;
     },
     commit2() {
@@ -273,6 +271,9 @@ export default {
             },
             res => {
               this.loading = false;
+              this.$refs.dialogForm2.$refs["form"] &&
+                this.$refs.dialogForm2.$refs["form"].resetFields();
+
               if (res.code == 0) {
                 this.dialogFormVisible2 = false;
                 this.$message({
@@ -307,7 +308,7 @@ export default {
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.token || "",
           p3: this.signupDate || "",
-          p4: this.state || "",
+          p4: this.state || "-1",
           p5: this.keyword || "",
           p6: this.page.toString(),
           p7: this.pageSize.toString()
@@ -410,8 +411,6 @@ export default {
     abandon(item) {
       this.currApply = Object.assign({}, item);
       this.applyFormModel = {};
-      this.$refs.dialogForm.$refs["form"] &&
-        this.$refs.dialogForm.$refs["form"].resetFields();
       this.$post(
         {
           action: "P_SY_GetParamInfo",
@@ -451,6 +450,9 @@ export default {
             },
             res => {
               this.loading = false;
+              this.$refs.dialogForm.$refs["form"] &&
+                this.$refs.dialogForm.$refs["form"].resetFields();
+
               if (res.code == "0") {
                 this.dialogFormVisible = false;
                 this.$message({

@@ -82,7 +82,7 @@
     >
       <form-fields
         form-ref="form"
-        ref="dialogForm"
+        ref="dialogForm2"
         :controls="applyControls"
         :form-model="applyFormModel"
       ></form-fields>
@@ -121,9 +121,6 @@ export default {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
     }
-    // abandon: function(resolve) {
-    //   require(["@/components/bid/abandon"], resolve);
-    // }
   },
   data() {
     //业务量饱和、招标业务体量不匹配、支付方式不接受、对我司合作评估不佳、其他
@@ -245,7 +242,7 @@ export default {
           p2: this.$store.state.token || "",
           p3: this.end_date || "",
           p4: this.keyword || "",
-          p5: this.state || "",
+          p5: this.state || "-1",
           p6: this.page,
           p7: this.pageSize
         },
@@ -269,8 +266,6 @@ export default {
     abandon(item) {
       this.currentApply = Object.assign({}, item);
       this.applyFormModel = {};
-      this.$refs.dialogForm.$refs["form"] &&
-        this.$refs.dialogForm.$refs["form"].resetFields();
       this.$post(
         {
           action: "P_SY_GetParamInfo",
@@ -304,7 +299,7 @@ export default {
       this.loadData();
     },
     commit() {
-      this.$refs.dialogForm.validateFields(flag => {
+      this.$refs.dialogForm2.validateFields(flag => {
         if (flag) {
           this.loading = true;
           this.$post(
@@ -322,6 +317,11 @@ export default {
             },
             res => {
               this.loading = false;
+              // console.log(this.$refs);
+
+              this.$refs["dialogForm2"].$refs["form"] &&
+                this.$refs["dialogForm2"].$refs["form"].resetFields();
+
               if (res.code == "0") {
                 this.dialogFormVisible = false;
                 this.$message({

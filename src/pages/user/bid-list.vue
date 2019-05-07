@@ -245,8 +245,6 @@ export default {
       this.currApply = item;
       this.applyFormModel = {};
       this.dialogFormVisible = true;
-      this.$refs.dialogForm.$refs["form"] &&
-        this.$refs.dialogForm.$refs["form"].resetFields();
 
       this.$post(
         {
@@ -286,6 +284,9 @@ export default {
             },
             res => {
               this.loading = false;
+              this.$refs.dialogForm.$refs["form"] &&
+                this.$refs.dialogForm.$refs["form"].resetFields();
+
               if (res.code == "0") {
                 this.dialogFormVisible = false;
                 this.$message({

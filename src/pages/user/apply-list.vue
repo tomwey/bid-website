@@ -61,8 +61,8 @@
           <template slot-scope="scope">
             <span
               class="state-tag"
-              :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
-            >{{scope.row.state}}</span>
+              :class="{success:scope.row.statenumname == '已通过', info:scope.row.statenumname == '已放弃', warning:scope.row.statenumname == '审核中', danger:scope.row.statenumname == '审核未通过'}"
+            >{{scope.row.statenumname}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -74,7 +74,12 @@
               @click="addInfo(scope.row)"
               :disabled="scope.row.disabled"
             >资料补充</el-button>&nbsp;
-            <el-button type="danger" size="small" @click="abandon(scope.row);">放弃</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              :disabled="scope.row.isgiveup == '1'"
+              @click="abandon(scope.row);"
+            >放弃</el-button>
           </template>
         </el-table-column>
       </el-table>

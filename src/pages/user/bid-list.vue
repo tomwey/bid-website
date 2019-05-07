@@ -56,7 +56,12 @@
         </el-table-column>
         <el-table-column label="操作" width="90">
           <template slot-scope="scope">
-            <el-button type="danger" size="small" @click="abandon(scope.row);">弃标</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              :disabled="scope.row.isgiveup == '1'"
+              @click="abandon(scope.row);"
+            >弃标</el-button>
           </template>
         </el-table-column>
       </el-table>

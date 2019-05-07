@@ -67,12 +67,7 @@ export default {
     return {
       end_date: null,
       loading: false,
-      stateOptions: [
-        { label: "全部", value: "-1" },
-        { label: "未查看", value: "0" },
-        { label: "已查看", value: "1" }
-        // { label: "已放弃", value: "2" }
-      ],
+      stateOptions: [],
       state: null,
       keyword: null,
       totalSize: 0,
@@ -83,6 +78,7 @@ export default {
   },
   mounted() {
     this.loadNotices();
+    this.loadStateOptions();
   },
   watch: {
     end_date() {
@@ -93,6 +89,25 @@ export default {
     }
   },
   methods: {
+    loadStateOptions() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "12"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data || [];
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({ label: ele.sy_name, value: ele.sy_value });
+            });
+            this.stateOptions = temp;
+          }
+        }
+      );
+    },
     search() {
       this.page = 1;
       this.loadNotices();
@@ -108,7 +123,7 @@ export default {
           p3: this.page,
           p4: this.pageSize,
           p5: this.end_date || "",
-          p6: this.state || "",
+          p6: this.state || "-1",
           p7: this.keyword || ""
         },
         res => {

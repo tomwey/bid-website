@@ -200,12 +200,38 @@ export default {
   watch: {
     $route: function(to) {
       // console.log(to);
+    },
+    end_date() {
+      this.search();
+    },
+    state() {
+      this.search();
     }
   },
   mounted() {
     this.loadData();
+    this.loadStateOptions();
   },
   methods: {
+    loadStateOptions() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "13"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data || [];
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({ label: ele.sy_name, value: ele.sy_value });
+            });
+            this.stateOptions = temp;
+          }
+        }
+      );
+    },
     pageChange(val) {
       this.page = val;
       this.loadData();

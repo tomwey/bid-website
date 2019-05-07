@@ -157,12 +157,7 @@ export default {
       totalSize: 0,
       previewImage: null,
       dialogPreviewVisible: false,
-      stateOptions: [
-        {
-          label: "全部",
-          value: ""
-        }
-      ],
+      stateOptions: [],
       applyControls: [
         {
           field: "reason",
@@ -223,6 +218,7 @@ export default {
   },
   mounted() {
     this.loadApplyingBids();
+    this.loadStateOptions();
   },
   watch: {
     signupDate() {
@@ -233,6 +229,25 @@ export default {
     }
   },
   methods: {
+    loadStateOptions() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "14"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data || [];
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({ label: ele.sy_name, value: ele.sy_value });
+            });
+            this.stateOptions = temp;
+          }
+        }
+      );
+    },
     addInfo(item) {
       this.currSignID = item.signupid;
       this.$refs.dialogForm2.$refs["form"] &&

@@ -13,7 +13,7 @@
             placeholder="选择日期"
           ></el-date-picker>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="$route.name != 'user_bid_faq' && $route.name != 'user_applied'">
           <span class="label">状态:</span>
           <el-select v-model="state" placeholder="请选择">
             <el-option
@@ -24,7 +24,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="$route.name != 'user_bid_faq' && $route.name != 'user_applied' ? 8 : 16">
           <el-input placeholder="输入搜索内容" v-model="keyword">
             <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
           </el-input>
@@ -41,7 +41,12 @@
         <el-table-column :label="dateTableHeader" width="200">
           <template slot-scope="scope">{{calcDateVal(scope.row)}}</template>
         </el-table-column>
-        <el-table-column prop="state" label="状态" width="120" v-if="$route.name != 'user_bid_faq'">
+        <el-table-column
+          prop="state"
+          label="状态"
+          width="120"
+          v-if="$route.name != 'user_bid_faq' && $route.name != 'user_applied'"
+        >
           <template slot-scope="scope">
             <span
               class="state-tag"

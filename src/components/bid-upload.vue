@@ -14,7 +14,7 @@
       :on-exceed="handleExceed"
       :file-list="fileList"
       :ref="'upload' + control.id"
-      :data="{ mid: '0', domanid: control.domanid, tablename: control.tablename, fieldname: control.fieldname }"
+      :data="uploadData"
     >
       <el-button size="small">选择文件</el-button>
       <div slot="tip" class="el-upload__tip">
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import BMF from "browser-md5-file";
+
 export default {
   name: "bid-upload",
   props: {
@@ -55,6 +57,7 @@ export default {
       fileList: [],
       limit: this.control.limit || 1,
       leftCount: 0,
+      uploadData: {},
       accept:
         this.control.accept ||
         ".jpg,.png,.gif,.jpeg,.pdf,.docx,.doc,.ppt,.pptx,.xls,.xlsx,.zip,.rar",
@@ -68,6 +71,13 @@ export default {
     if (this.value && this.value != "0") {
       this.loadAnnexes();
     }
+
+    this.uploadData = {
+      mid: "0",
+      domanid: this.control.domanid,
+      tablename: this.control.tablename,
+      fieldname: this.control.fieldname
+    };
   },
   watch: {
     value(newVal) {
@@ -181,6 +191,8 @@ export default {
 
       let yesOrNo = isLt2M && isRightFile;
 
+      this.calcFileMD5(file);
+
       if (yesOrNo) {
         if (this.leftCount < 0) {
           this.leftCount = 0;
@@ -190,6 +202,19 @@ export default {
       }
 
       return yesOrNo;
+    },
+    calcFileMD5(file) {
+      let bmf = new BMF();
+      bmf.md5(
+        file,
+        (err, md5) => {
+          this.$set(this.uploadData, "file_md5", md5);
+          // console.log(this.control);
+        },
+        progress => {
+          // console.log("progress number:", progress);
+        }
+      );
     },
     handlePreview(file) {
       // console.log(file);

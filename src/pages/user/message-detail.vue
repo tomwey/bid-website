@@ -9,7 +9,7 @@
     <div class="detail">
       <h2 class="title">{{message.msgtitle}}</h2>
       <p class="body">{{message.msgcontent}}</p>
-      <el-button>点击查看</el-button>
+      <el-button v-if="hasDetail">点击查看</el-button>
     </div>
   </div>
 </template>
@@ -23,6 +23,12 @@ export default {
   },
   mounted() {
     this.loadMsg();
+  },
+  computed: {
+    hasDetail() {
+      const arr = ["1", "2", "3", "5", "9"];
+      return arr.indexOf((this.message.msgtype || "0").toString()) === -1;
+    }
   },
   methods: {
     loadMsg() {

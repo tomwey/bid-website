@@ -8,7 +8,14 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdate" label="时间" width="180"></el-table-column>
-        <el-table-column prop="msgtype" label="消息类型" width="120"></el-table-column>
+        <el-table-column prop="msgtypename" label="消息类型" width="120">
+          <template slot-scope="scope">
+            <span
+              class="message-type"
+              :class="'type-' + scope.row.msgtype"
+            >{{scope.row.msgtypename}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <!-- <div class="empty-error-box" v-if="messages.length === 0">暂无消息</div> -->
@@ -84,6 +91,64 @@ export default {
       text-align: right;
       color: #999;
     }
+  }
+}
+
+.message-type {
+  &.type-1 {
+    color: #333;
+  }
+
+  &.type-2 {
+    color: rgb(231, 90, 22);
+  }
+
+  &.type-3 {
+    color: cornflowerblue;
+  }
+
+  &.type-4 {
+    color: brown;
+  }
+
+  &.type-5 {
+    color: darkolivegreen;
+  }
+
+  &.type-6 {
+    color: fuchsia;
+  }
+
+  &.type-7 {
+    color: goldenrod;
+  }
+
+  &.type-8 {
+    color: green;
+  }
+
+  &.type-9 {
+    color: khaki;
+  }
+
+  &.type-10 {
+    color: lightblue;
+  }
+
+  &.type-11 {
+    color: maroon;
+  }
+
+  &.type-12 {
+    color: teal;
+  }
+
+  &.type-13 {
+    color: saddlebrown;
+  }
+
+  &.type-14 {
+    color: rosybrown;
   }
 }
 </style>

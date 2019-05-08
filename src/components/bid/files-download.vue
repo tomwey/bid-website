@@ -39,7 +39,13 @@
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
-      <img :src="previewImage" style="max-width: 100%">
+      <img
+        :src="previewImage"
+        style="max-width: 100%"
+        @load="imgLoaded = true"
+        class="preview-image"
+        :class="{loaded:imgLoaded, loading: !imgLoaded}"
+      >
     </el-dialog>
   </div>
 </template>
@@ -60,7 +66,8 @@ export default {
       dialogPreviewVisible: false,
       previewImage: null,
       attachmentData: [],
-      downloadFiles: []
+      downloadFiles: [],
+      imgLoaded: false
     };
   },
   mounted() {
@@ -165,12 +172,17 @@ export default {
       }
     },
     previewFile(file) {
+      this.imgLoaded = false;
       if (file.isimage) {
         this.previewImage = file.url;
         this.dialogPreviewVisible = true;
       } else {
         window.open(file.url);
       }
+    },
+    loaded() {
+      // console.log(123);
+      // this.dialogPreviewVisible = true;
     }
   }
 };
@@ -212,6 +224,15 @@ export default {
     &:last-child {
       border-bottom: 0;
     }
+  }
+}
+
+.preview-image {
+  &.loaded {
+    opacity: 1;
+  }
+  &.loading {
+    opacity: 0;
   }
 }
 </style>

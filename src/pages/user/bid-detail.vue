@@ -34,7 +34,7 @@
         </el-steps>
       </div>
       <div class="step-content">
-        <files-download v-if="step === 1"></files-download>
+        <files-download v-if="step === 1" :noticeid="noticeID" :purchasematterid="purchasematterID"></files-download>
         <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
         <bonds-list v-if="step === 3" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
         <div v-if="step === 4" class="bid-func">

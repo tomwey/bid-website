@@ -32,9 +32,18 @@ export default {
     this.countdown();
     this.createTimer();
   },
+  watch: {
+    time() {
+      if (this.time) {
+        this.countdown();
+        this.createTimer();
+      }
+    }
+  },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer);
+      this.timer = null;
     }
   },
   computed: {
@@ -87,7 +96,7 @@ export default {
           h = "0" + h;
         }
       } else {
-        this.hasLeftTime = false;
+        // this.hasLeftTime = false;
       }
 
       this.countDownText = `${d}天${h}小时${m}分${s}秒`;

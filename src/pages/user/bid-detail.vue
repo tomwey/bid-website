@@ -16,7 +16,7 @@
         </div>
         <div class="apply-wrapper">
           <p class="end-date-tip">
-            <count-down prefix="距离投标截止日期还剩" :time="notice.signenddate" no-time-left="已截止"></count-down>
+            <count-down prefix="距离投标截止日期还剩" :time="notice.signenddate" no-time-left="投标已截止"></count-down>
           </p>
         </div>
       </div>
@@ -630,14 +630,6 @@ export default {
           p5: this.shortlistID || "0"
         },
         res => {
-          // console.log(res);
-          // delaysigndate: "2019-05-05 11:17:59.54";
-          // noticetitle: "标题";
-          // publishdate: "2019-04-25 09:43:11";
-          // scannum: "68";
-          // signenddate: "2019-06-20 18:18:58";
-          // tenderingunitid: "343";
-          // tenderingunitname: "合能的一个大子公司";
           if (res.code == "0") {
             if (res.data.length > 0) {
               this.notice = Object.assign({}, res.data[0]);

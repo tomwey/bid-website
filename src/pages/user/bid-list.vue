@@ -112,6 +112,7 @@ export default {
       currApply: null,
       end_date: null,
       state: null,
+      // dsType: "1",
       stateOptions: [],
       keyword: null,
       page: 1,
@@ -183,6 +184,18 @@ export default {
         default:
           return 0;
       }
+    },
+    dsType() {
+      switch (this.$route.name) {
+        case "user_bid_faq":
+          return "1";
+        case "user_applied":
+          return "1";
+        case "user_bids":
+          return "2";
+        default:
+          return 0;
+      }
     }
   },
   methods: {
@@ -190,6 +203,7 @@ export default {
       // enddate
       switch (this.$route.name) {
         case "user_bid_faq":
+        case "user_bids":
           return item.enddate;
         case "user_applied":
           return item.selecteddate;
@@ -218,7 +232,8 @@ export default {
           p4: this.state || "",
           p5: this.keyword || "",
           p6: this.page.toString(),
-          p7: this.pageSize.toString()
+          p7: this.pageSize.toString(),
+          p8: this.dsType
         },
         res => {
           // console.log(res);
@@ -240,10 +255,16 @@ export default {
       this.loadData();
     },
     selectItem(item) {
+      // console.log(item);
+      // console.log(this.$route);
+      localStorage.setItem("from", this.$route.path);
+
       this.$router.push({
         path:
           "/admin/bids/" +
-          `${item.noticeid}-${item.purchasematterid}-${this.currentStep}`
+          `${item.noticeid}-${item.purchasematterid}-${
+            this.currentStep
+          }-${item.shortlistid || "0"}`
       });
     },
     abandon(item) {

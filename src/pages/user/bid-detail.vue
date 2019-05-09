@@ -2,22 +2,21 @@
   <div class="bid-detail">
     <div class="breadcrumb-wrapper">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/applying-bids' }">招标事项列表</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: fromPath }">招标事项列表</el-breadcrumb-item>
         <el-breadcrumb-item>详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="maincontent">
       <div class="bid-info">
-        <h2 class="title">合能地产成都公司68亩沉降观测合同招标公告</h2>
+        <h2 class="title">{{notice.noticetitle}}</h2>
         <div class="summary">
-          <span class="date">发布日期: 2019-01-01</span>&emsp;
-          <span class="company">招标单位: 成都兴露合能地产开发有限公司</span>&emsp;
-          <span class="view-count">浏览次数: 135</span>
+          <span class="date">发布日期: {{notice.publishdate}}</span>&emsp;
+          <span class="company">招标单位: {{notice.tenderingunitname}}</span>&emsp;
+          <span class="view-count">浏览次数: {{notice.scannum}}</span>
         </div>
         <div class="apply-wrapper">
           <p class="end-date-tip">
-            距离截止日期还剩
-            <span class="countdown">15天12小时32分20秒</span>
+            <count-down prefix="距离投标截止日期还剩" :time="notice.signenddate" no-time-left="已截止"></count-down>
           </p>
         </div>
       </div>
@@ -286,6 +285,9 @@ export default {
     formFields: function(resolve) {
       require(["@/components/profile/form-fields"], resolve);
     },
+    countDown: function(resolve) {
+      require(["@/components/count-down"], resolve);
+    },
     filesDownload: function(resolve) {
       require(["@/components/bid/files-download"], resolve);
     },
@@ -300,6 +302,7 @@ export default {
     return {
       active: 2,
       step: 1,
+      notice: {},
       steps: [
         {
           title: "下载招标文件",
@@ -345,50 +348,6 @@ export default {
         {
           title: "《合能.深圳中央花园商业及住宅维修整改工程招标",
           status: false
-        }
-      ],
-      bidMoneyData: [
-        {
-          time: "2019-02-03 12:30:30",
-          opinion: "无",
-          state: "审核中"
-        },
-        {
-          time: "2019-02-03 12:30:30",
-          opinion: "无",
-          state: "已通过"
-        },
-        {
-          time: "2019-02-03 12:30:30",
-          opinion: "这是审核意见，这是审核意见",
-          state: "已放弃"
-        }
-      ],
-      bidMoneyFormModel: {},
-      bidMoneyFormControls: [
-        {
-          id: "money-content",
-          type: 1,
-          subtype: "textarea",
-          label: "备注说明",
-          field: "content",
-          // unit: "万",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
-        },
-        {
-          id: "money-file",
-          type: 8,
-          //   subtype: "file",
-          label: "缴纳附件",
-          field: "moneyannex",
-          domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Sub_Info",
-          fieldname: "faqannex",
-          // upload_tips: "只能上传图片格式，大小不超过5MB",
-          accept: ".pdf",
-          fileSize: 5
         }
       ],
       bidFuncData: [
@@ -625,6 +584,9 @@ export default {
     };
   },
   computed: {
+    fromPath() {
+      return localStorage.getItem("from");
+    },
     noticeID() {
       const id = this.$route.params.id;
       const arr = id.split("-");
@@ -642,9 +604,48 @@ export default {
       }
 
       return "";
+    },
+    shortlistID() {
+      const id = this.$route.params.id;
+      const arr = id.split("-");
+      if (arr.length == 4) {
+        return arr[3];
+      }
+
+      return "0";
     }
   },
+  mounted() {
+    this.loadBidDetail();
+  },
   methods: {
+    loadBidDetail() {
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetBidDetail",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.noticeID || "",
+          p4: this.purchasematterID || "",
+          p5: this.shortlistID || "0"
+        },
+        res => {
+          // console.log(res);
+          // delaysigndate: "2019-05-05 11:17:59.54";
+          // noticetitle: "标题";
+          // publishdate: "2019-04-25 09:43:11";
+          // scannum: "68";
+          // signenddate: "2019-06-20 18:18:58";
+          // tenderingunitid: "343";
+          // tenderingunitname: "合能的一个大子公司";
+          if (res.code == "0") {
+            if (res.data.length > 0) {
+              this.notice = Object.assign({}, res.data[0]);
+            }
+          }
+        }
+      );
+    },
     selectStep(step) {
       this.step = step;
     },

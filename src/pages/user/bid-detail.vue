@@ -304,41 +304,41 @@ export default {
       step: 1,
       notice: {},
       steps: [
-        {
-          title: "下载招标文件",
-          desc: "04-05截止",
-          step: 1
-        },
-        {
-          title: "答疑",
-          desc: "05-05截止",
-          step: 2
-        },
-        {
-          title: "投标保证金缴纳",
-          desc: "06-05截止",
-          step: 3
-        },
-        {
-          title: "技术标",
-          desc: "08-05截止",
-          step: 4
-        },
-        {
-          title: "商务标",
-          desc: "12-05截止",
-          step: 5
-        },
-        {
-          title: "议标",
-          desc: "12-15截止",
-          step: 6
-        },
-        {
-          title: "定标",
-          desc: "12-25截止",
-          step: 7
-        }
+        // {
+        //   title: "下载招标文件",
+        //   desc: "04-05截止",
+        //   step: 1
+        // },
+        // {
+        //   title: "答疑",
+        //   desc: "05-05截止",
+        //   step: 2
+        // },
+        // {
+        //   title: "投标保证金缴纳",
+        //   desc: "06-05截止",
+        //   step: 3
+        // },
+        // {
+        //   title: "技术标",
+        //   desc: "08-05截止",
+        //   step: 4
+        // },
+        // {
+        //   title: "商务标",
+        //   desc: "12-05截止",
+        //   step: 5
+        // },
+        // {
+        //   title: "议标",
+        //   desc: "12-15截止",
+        //   step: 6
+        // },
+        // {
+        //   title: "定标",
+        //   desc: "12-25截止",
+        //   step: 7
+        // }
       ],
       bidResultData: [
         {
@@ -617,8 +617,43 @@ export default {
   },
   mounted() {
     this.loadBidDetail();
+    this.loadBidPlan();
   },
   methods: {
+    loadBidPlan() {
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetBidPlan",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.noticeID || "",
+          p4: this.purchasematterID || ""
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data;
+            let temp = [];
+            let index = 0;
+            arr.forEach(ele => {
+              let time = ele.factenddate || ele.enddate;
+              if (time.indexOf(" ") !== -1) {
+                let arr = time.split(" ");
+                if (arr.length > 0) {
+                  time = arr[0];
+                }
+              }
+              temp.push({
+                title: ele.stagename,
+                desc: `${time}截止`,
+                step: ++index
+              });
+            });
+            this.steps = temp;
+          }
+        }
+      );
+    },
     loadBidDetail() {
       this.$post(
         {
@@ -731,6 +766,10 @@ export default {
 .el-step__title.is-process,
 .el-step__description.is-process {
   color: rgb(231, 90, 22);
+}
+
+.el-step__description {
+  padding: 0 10px !important;
 }
 
 .el-step {

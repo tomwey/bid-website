@@ -1898,7 +1898,12 @@ export default {
             key.indexOf("_isfile") === -1
           ) {
             const element = object[key];
-            obj[key] = element || "";
+            // obj[key] = element || "";
+            if (key == "suptype") {
+              obj["suptypeid"] = element || "";
+            } else {
+              obj[key] = element || "";
+            }
           }
         }
         temp3.push(obj);

@@ -1,18 +1,18 @@
 <template>
-  <div class="bonds-list">
+  <div class="tech-bid" v-loading="loading">
     <div class="stat-newbar">
       <el-row>
         <el-col :span="16">
           <span class="stat">共{{totalSize}}条</span>
         </el-col>
         <el-col :span="8" style="text-align:right;">
-          <el-button type="primary" @click="newBonds">新增投标保证金</el-button>
+          <el-button type="primary" @click="newBid">新增技术回标</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="list">
-      <el-table key="bidMoneyDataTable" :data="tableData" stripe style="width: 100%">
-        <el-table-column label="缴纳凭证附件">
+      <el-table key="bidFuncTable" :data="tableData" stripe style="width: 100%">
+        <el-table-column label="技术附件" width="240">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -24,19 +24,8 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="bondexplain" label="审批意见" width="280">
-          <template slot-scope="scope">{{scope.row.bondexplain || "无"}}</template>
-        </el-table-column>
-        <el-table-column prop="bonddate" label="时间" width="180"></el-table-column>
-        <el-table-column prop="bondstate" label="状态" width="120">
-          <template slot-scope="scope">
-            <span
-              type="primary"
-              class="state-tag"
-              :class="{pending:scope.row.bondstatename == '审核中',approved:scope.row.bondstatename == '已通过',rejected:scope.row.bondstatename == '未通过',danger:scope.row.bondstatename == '已放弃'}"
-            >{{scope.row.bondstatename}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="bidexplain" label="投标说明"></el-table-column>
+        <el-table-column prop="biddate" label="投标时间" width="180"></el-table-column>
       </el-table>
       <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
@@ -49,12 +38,9 @@
         ></el-pagination>
       </div>
     </div>
-    <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
-      <img :src="previewImage" style="max-width: 100%">
-    </el-dialog>
     <el-dialog
-      title="新增保证金缴纳凭证"
-      :visible.sync="bonusDialogFormVisible"
+      title="新增技术回标"
+      :visible.sync="dialogFormVisible"
       :append-to-body="true"
       center
       :close-on-click-modal="false"
@@ -63,20 +49,23 @@
     >
       <form-fields
         form-ref="form"
-        ref="bidMoneyForm"
-        :controls="bidMoneyFormControls"
-        :form-model="bidMoneyFormModel"
+        ref="bidFuncForm"
+        :controls="bidFuncFormControls"
+        :form-model="bidFuncFormModel"
       ></form-fields>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="bonusDialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
+    </el-dialog>
+    <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
+      <img :src="previewImage" style="max-width: 100%">
     </el-dialog>
   </div>
 </template>
 <script>
 export default {
-  name: "bonds-list",
+  name: "tech-bid",
   props: {
     noticeid: {
       type: String
@@ -92,58 +81,95 @@ export default {
   },
   data() {
     return {
-      tableData: [],
       page: 1,
       totalSize: 0,
       pageSize: 20,
+      tableData: [],
       previewImage: null,
       dialogPreviewVisible: false,
-      bonusDialogFormVisible: false,
-      bidMoneyFormModel: {},
-      bidMoneyFormControls: [
+      loading: false,
+      dialogFormVisible: false,
+      bidFuncData: [],
+      bidFuncFormControls: [
         {
-          id: "money-file",
-          type: 8,
-          //   subtype: "file",
-          label: "缴纳附件",
-          field: "file",
-          domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_Bond",
-          fieldname: "bondannex",
+          id: "faq-content",
+          type: 1,
+          subtype: "textarea",
+          label: "投标说明",
+          field: "content",
           rules: [
-            { required: true, message: "缴纳附件不能为空", trigger: "blur" }
+            { required: true, message: "投标说明不能为空", trigger: "blur" }
           ]
         },
         {
-          id: "money-content",
-          type: 1,
-          subtype: "textarea",
-          label: "备注说明",
-          field: "content"
+          id: "faq-file",
+          type: 8,
+          label: "技术标附件",
+          field: "file",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_Sup_Bid_Return_Doc",
+          fieldname: "annexids",
+          rules: [
+            { required: true, message: "技术标附件不能为空", trigger: "change" }
+          ]
         }
-      ]
+      ],
+      bidFuncFormModel: {}
     };
   },
   mounted() {
     this.loadData();
   },
   methods: {
+    newBid() {
+      this.bidFuncFormModel = {};
+      this.dialogFormVisible = true;
+    },
     pageChange(val) {
       this.page = val;
       this.loadData();
     },
-    newBonds() {
-      //   console.log(this.$refs);
+    previewFile(file) {
+      if (file.isimage) {
+        this.previewImage = file.url;
+        this.dialogPreviewVisible = true;
+      } else {
+        window.open(file.url);
+      }
+    },
+    loadData() {
+      this.loading = true;
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetBidTech",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.purchasematterid || "",
+          p4: this.page,
+          p5: this.pageSize
+        },
+        res => {
+          this.loading = false;
+          //   console.log(res);
+          if (res.code == "0") {
+            this.tableData = res.data;
+            if (this.tableData.length > 0) {
+              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
+            }
 
-      this.bidMoneyFormModel = {};
-      this.bonusDialogFormVisible = true;
+            this.tableData.forEach(item => {
+              this.loadAnnex(item);
+            });
+          }
+        }
+      );
     },
     loadAnnex(item) {
-      if (item.bondannex && item.bondannex != "0") {
+      if (item.annexids && item.annexids != "0") {
         this.$post(
           {
             action: "P_SY_GetAnnex",
-            p1: item.bondannex
+            p1: item.annexids
           },
           res => {
             // console.log(res);
@@ -171,36 +197,30 @@ export default {
         );
       }
     },
-    previewFile(file) {
-      if (file.isimage) {
-        this.previewImage = file.url;
-        this.dialogPreviewVisible = true;
-      } else {
-        window.open(file.url);
-      }
-    },
     commit() {
-      this.$refs.bidMoneyForm.validateFields(flag => {
+      this.$refs.bidFuncForm.validateFields(flag => {
         if (flag) {
+          this.loading = true;
           this.$post(
             {
-              action: "P_SUP_Bid_Bond",
+              action: "P_SUP_Bid_CreateTechBid",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.noticeid || "",
-              p4: this.purchasematterid || "",
-              p5: this.bidMoneyFormModel["content"] || "",
-              p6: this.bidMoneyFormModel["file"] || ""
+              p3: this.purchasematterid || "",
+              p4: this.bidFuncFormModel["file"] || "",
+              p5: this.bidFuncFormModel["content"] || ""
             },
             res => {
+              //   console.log(res);
+              this.loading = false;
               if (res.code == "0") {
-                this.$refs["bidMoneyForm"].$refs["form"] &&
-                  this.$refs["bidMoneyForm"].$refs["form"].resetFields();
+                this.$refs.bidFuncForm.$refs.form &&
+                  this.$refs.bidFuncForm.$refs.form.resetFields();
                 this.$message({
                   type: "success",
-                  message: "提交成功"
+                  message: "提交成功！"
                 });
-                this.bonusDialogFormVisible = false;
+                this.dialogFormVisible = false;
                 this.loadData();
               } else {
                 this.$message({
@@ -212,32 +232,6 @@ export default {
           );
         }
       });
-    },
-    loadData() {
-      this.$post(
-        {
-          action: "P_SUP_Bid_GetBondList",
-          p1: this.$store.state.supinfo.accountid || "",
-          p2: this.$store.state.token || "",
-          p3: this.noticeid || "",
-          p4: this.purchasematterid || "",
-          p5: this.page,
-          p6: this.pageSize
-        },
-        res => {
-          if (res.code == 0) {
-            // console.log(res);
-            this.tableData = res["data"];
-            if (this.tableData.length > 0) {
-              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
-            }
-
-            this.tableData.forEach(item => {
-              this.loadAnnex(item);
-            });
-          }
-        }
-      );
     }
   }
 };
@@ -256,20 +250,6 @@ export default {
     &:last-child {
       border-bottom: 0;
     }
-  }
-}
-.state-tag {
-  &.approved {
-    color: rgb(127, 183, 98);
-  }
-  &.pending {
-    color: rgb(231, 90, 22);
-  }
-  &.rejected {
-    color: #999;
-  }
-  &.danger {
-    color: rgb(238, 48, 67);
   }
 }
 </style>

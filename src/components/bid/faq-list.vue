@@ -199,6 +199,8 @@ export default {
             },
             res => {
               if (res.code == 0) {
+                this.$refs["faqForm"].$refs["form"] &&
+                  this.$refs["faqForm"].$refs["form"].resetFields();
                 this.faqDialogFormVisible = false;
                 this.loadData();
               } else {

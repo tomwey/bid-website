@@ -36,63 +36,7 @@
         <files-download v-if="step === 1" :noticeid="noticeID" :purchasematterid="purchasematterID"></files-download>
         <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
         <bonds-list v-if="step === 3" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
-        <div v-if="step === 4" class="bid-func">
-          <div class="stat-newbar">
-            <el-row>
-              <el-col :span="16">
-                <span class="stat">共10条</span>
-              </el-col>
-              <el-col :span="8" style="text-align:right;">
-                <el-button type="primary" @click="faqDialogFormVisible = true">新增技术回标</el-button>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="list">
-            <el-table key="bidFuncTable" :data="bidFuncData" stripe style="width: 100%">
-              <el-table-column label="技术附件" width="180">
-                <template slot-scope="scope">
-                  <a
-                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                    :href="scope.row.url"
-                    target="_blank"
-                  >技术附件</a>
-                </template>
-              </el-table-column>
-              <el-table-column prop="memo" label="投标说明"></el-table-column>
-              <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
-              <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
-            </el-table>
-            <div class="page-container">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="50"
-                :page-size="20"
-                :current-page="1"
-              ></el-pagination>
-            </div>
-          </div>
-          <el-dialog
-            title="新增技术回标"
-            :visible.sync="faqDialogFormVisible"
-            :append-to-body="true"
-            center
-            :close-on-click-modal="false"
-            :close-on-press-escape="false"
-            :show-close="false"
-          >
-            <form-fields
-              form-ref="form"
-              ref="bidFuncForm"
-              :controls="bidFuncFormControls"
-              :form-model="bidFuncFormModel"
-            ></form-fields>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="faqDialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="faqDialogFormVisible = false">提 交</el-button>
-            </div>
-          </el-dialog>
-        </div>
+        <tech-bid v-if="step === 4" :noticeid="noticeID" :purchasematterid="purchasematterID"></tech-bid>
         <div v-if="step === 5" class="bid-price">
           <div class="stat-newbar">
             <el-row>
@@ -296,6 +240,9 @@ export default {
     },
     bondsList: function(resolve) {
       require(["@/components/bid/bonds-list"], resolve);
+    },
+    techBid: function(resolve) {
+      require(["@/components/bid/tech-bid"], resolve);
     }
   },
   data() {
@@ -303,43 +250,7 @@ export default {
       active: 2,
       step: 1,
       notice: {},
-      steps: [
-        // {
-        //   title: "下载招标文件",
-        //   desc: "04-05截止",
-        //   step: 1
-        // },
-        // {
-        //   title: "答疑",
-        //   desc: "05-05截止",
-        //   step: 2
-        // },
-        // {
-        //   title: "投标保证金缴纳",
-        //   desc: "06-05截止",
-        //   step: 3
-        // },
-        // {
-        //   title: "技术标",
-        //   desc: "08-05截止",
-        //   step: 4
-        // },
-        // {
-        //   title: "商务标",
-        //   desc: "12-05截止",
-        //   step: 5
-        // },
-        // {
-        //   title: "议标",
-        //   desc: "12-15截止",
-        //   step: 6
-        // },
-        // {
-        //   title: "定标",
-        //   desc: "12-25截止",
-        //   step: 7
-        // }
-      ],
+      steps: [],
       bidResultData: [
         {
           title: "《合能.深圳中央花园商业及住宅维修整改工程招标",
@@ -350,60 +261,6 @@ export default {
           status: false
         }
       ],
-      bidFuncData: [
-        {
-          time: "2019-01-01 12:30:03",
-          memo:
-            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
-        },
-        {
-          time: "2019-01-01 12:30:03",
-          memo:
-            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
-        },
-        {
-          time: "2019-01-01 12:30:03",
-          memo:
-            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
-        },
-        {
-          time: "2019-01-01 12:30:03",
-          memo:
-            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
-        },
-        {
-          time: "2019-01-01 12:30:03",
-          memo:
-            "这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，这是投标说明，"
-        }
-      ],
-      bidFuncFormControls: [
-        {
-          id: "faq-content",
-          type: 1,
-          subtype: "textarea",
-          label: "投标说明",
-          field: "content",
-          // unit: "万",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
-        },
-        {
-          id: "faq-file",
-          type: 8,
-          //   subtype: "file",
-          label: "技术标附件",
-          field: "faqannex",
-          domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Sub_Info",
-          fieldname: "faqannex",
-          // upload_tips: "只能上传图片格式，大小不超过5MB",
-          accept: ".pdf",
-          fileSize: 5
-        }
-      ],
-      bidFuncFormModel: {},
       bidPriceData: [
         {
           money: "2394483",

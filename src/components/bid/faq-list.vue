@@ -93,10 +93,11 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.refForm.$refs.form && $refs.refForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
-        ref="faqForm"
+        ref="refForm"
         :controls="faqFormControls"
         :form-model="faqFormModel"
       ></form-fields>
@@ -184,7 +185,7 @@ export default {
       this.loadData();
     },
     commit() {
-      this.$refs.faqForm.validateFields(flag => {
+      this.$refs.refForm.validateFields(flag => {
         if (flag) {
           this.$post(
             {
@@ -199,8 +200,6 @@ export default {
             },
             res => {
               if (res.code == 0) {
-                this.$refs["faqForm"].$refs["form"] &&
-                  this.$refs["faqForm"].$refs["form"].resetFields();
                 this.faqDialogFormVisible = false;
                 this.loadData();
               } else {

@@ -60,10 +60,11 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.refForm.$refs.form && $refs.refForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
-        ref="bidMoneyForm"
+        ref="refForm"
         :controls="bidMoneyFormControls"
         :form-model="bidMoneyFormModel"
       ></form-fields>
@@ -180,7 +181,7 @@ export default {
       }
     },
     commit() {
-      this.$refs.bidMoneyForm.validateFields(flag => {
+      this.$refs.refForm.validateFields(flag => {
         if (flag) {
           this.$post(
             {
@@ -194,8 +195,6 @@ export default {
             },
             res => {
               if (res.code == "0") {
-                this.$refs["bidMoneyForm"].$refs["form"] &&
-                  this.$refs["bidMoneyForm"].$refs["form"].resetFields();
                 this.$message({
                   type: "success",
                   message: "提交成功"

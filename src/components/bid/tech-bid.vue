@@ -46,10 +46,11 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.refForm.$refs.form && $refs.refForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
-        ref="bidFuncForm"
+        ref="refForm"
         :controls="bidFuncFormControls"
         :form-model="bidFuncFormModel"
       ></form-fields>
@@ -198,7 +199,7 @@ export default {
       }
     },
     commit() {
-      this.$refs.bidFuncForm.validateFields(flag => {
+      this.$refs.refForm.validateFields(flag => {
         if (flag) {
           this.loading = true;
           this.$post(
@@ -214,8 +215,6 @@ export default {
               //   console.log(res);
               this.loading = false;
               if (res.code == "0") {
-                this.$refs.bidFuncForm.$refs.form &&
-                  this.$refs.bidFuncForm.$refs.form.resetFields();
                 this.$message({
                   type: "success",
                   message: "提交成功！"

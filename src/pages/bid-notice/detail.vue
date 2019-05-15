@@ -24,7 +24,9 @@
       <div class="other-info">
         <table class="table">
           <tr v-for="(item,index) in tableData" :key="index">
-            <td class="label">{{item.label}}</td>
+            <td class="label">
+              <div class="label-box">{{item.label}}</div>
+            </td>
             <td class="value">
               <div class="content" v-html="item.value" v-if="item.type !== 12"></div>
               <div class="file-list" v-if="item.type === 12">
@@ -176,7 +178,10 @@ export default {
 
       temp.push({
         label: "公告说明",
-        value: this.notice.noticeexplain
+        value: (this.notice.noticeexplain || "").replace(
+          "TABLE-LAYOUT: fixed;",
+          ""
+        )
       });
 
       temp.push({
@@ -325,10 +330,11 @@ export default {
     .other-info {
       padding: 0 30px;
       margin-top: 30px;
+      width: 100%;
       .table {
         width: 100%;
-        font-size: 14px;
-        color: #333;
+        font-size: 14px !important;
+        color: #333 !important;
         border: 1px solid #f2f2f2;
         tr,
         td {
@@ -337,6 +343,27 @@ export default {
         .label {
           color: #888;
           width: 180px;
+          .label-box {
+            width: 180px;
+          }
+        }
+        .value {
+          width: calc(100% - 180px);
+          .content {
+            width: 100%;
+            overflow: auto;
+          }
+
+          .content table {
+            table-layout: auto !important;
+          }
+          // width: 30% !important;
+          img {
+            max-width: 100%;
+          }
+          p {
+            font-size: 14px !important;
+          }
         }
         // .value {
         .file-link {

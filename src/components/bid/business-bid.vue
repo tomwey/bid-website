@@ -115,20 +115,26 @@
         <el-table-column label="税率(%)" prop="taxrate" width="120"></el-table-column>
         <el-table-column label="商务标附件">
           <template slot-scope="scope">
-            <a
-              style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-              :href="scope.row.url"
-              target="_blank"
-            >附件</a>
+            <div class="file-list">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in scope.row['annexids_fileList']"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="其它标书附件">
           <template slot-scope="scope">
-            <a
-              style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-              :href="scope.row.url"
-              target="_blank"
-            >附件</a>
+            <div class="file-list">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in scope.row['otherannexids_fileList']"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="biddate" label="投标时间" width="180"></el-table-column>
@@ -137,6 +143,15 @@
         <el-button type="primary" @click="dialogTableVisible = false">关 闭</el-button>
         <!-- <el-button type="primary" @click="commit">提 交</el-button> -->
       </div>
+    </el-dialog>
+    <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
+      <img
+        :src="previewImage"
+        style="max-width: 100%"
+        @load="imgLoaded = true"
+        class="preview-image"
+        :class="{loaded:imgLoaded, loading: !imgLoaded}"
+      >
     </el-dialog>
   </div>
 </template>
@@ -160,10 +175,13 @@ export default {
     return {
       loading: false,
       commiting: false,
+      dialogPreviewVisible: false,
+      previewImage: null,
       currPurchaseMatterSubID: null,
       tableData: [],
       totalSize: 0,
       pageSize: 20,
+      imgLoaded: false,
       page: 1,
       dialogFormVisible: false,
       dialogTableVisible: false,
@@ -223,6 +241,15 @@ export default {
       this.page = val;
       this.loadData();
     },
+    previewFile(file) {
+      this.imgLoaded = false;
+      if (file.isimage) {
+        this.previewImage = file.url;
+        this.dialogPreviewVisible = true;
+      } else {
+        window.open(file.url);
+      }
+    },
     expandChange(row, expandedRows) {
       let index = expandedRows.indexOf(row);
       if (index !== -1) {
@@ -256,10 +283,47 @@ export default {
         res => {
           if (res.code == "0") {
             this.subTableData = res.data;
+            this.subTableData.forEach(item => {
+              this.loadAnnex(item, "annexids");
+              this.loadAnnex(item, "otherannexids");
+            });
             // this.$set(item, "bidList", res.data || []);
           }
         }
       );
+    },
+    loadAnnex(item, fieldName) {
+      if (item[fieldName] && item[fieldName] != "0") {
+        this.$post(
+          {
+            action: "P_SY_GetAnnex",
+            p1: item[fieldName]
+          },
+          res => {
+            // console.log(res);
+            if (res.code === "0") {
+              let arr = res.data;
+              let temp = [];
+              arr.forEach(file => {
+                // console.log(file);
+                let fileName = file.filename || "";
+                temp.push({
+                  name: file.filename,
+                  url: file.url,
+                  annexid: file.annexid,
+                  isimage:
+                    fileName.indexOf(".png") !== -1 ||
+                    fileName.indexOf(".gif") !== -1 ||
+                    fileName.indexOf(".jpg") !== -1 ||
+                    fileName.indexOf(".jpeg") !== -1 ||
+                    fileName.indexOf(".webp") !== -1
+                });
+              });
+              this.$set(item, fieldName + "_fileList", temp);
+            }
+          }
+        );
+      }
     },
     loadData() {
       this.loading = true;
@@ -329,7 +393,31 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.file-list {
+  .file-item {
+    display: block;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 10px 0;
+    color: rgb(231, 90, 22);
+    text-decoration: underline;
+    cursor: pointer;
+    // border-bottom: 1px dashed #ccc;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.preview-image {
+  &.loaded {
+    opacity: 1;
+  }
+  &.loading {
+    opacity: 0;
+  }
+}
 </style>
 
 

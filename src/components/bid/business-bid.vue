@@ -12,43 +12,51 @@
     </div>
     <div class="list">
       <el-table key="bidPriceTableParent" :data="tableData" stripe style="width: 100%">
-        <el-table-column type="expand">
-          <el-table key="bidPriceTable" :data="bidPriceData" stripe style="width: 100%">
-            <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280">
-              <template slot-scope="scope">
-                <span
-                  @click="showMoney(scope.row);"
-                >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
-            <el-table-column label="商务标附件">
-              <template slot-scope="scope">
-                <a
-                  style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                  :href="scope.row.url"
-                  target="_blank"
-                >附件</a>
-              </template>
-            </el-table-column>
-            <el-table-column label="其它标书附件">
-              <template slot-scope="scope">
-                <a
-                  style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
-                  :href="scope.row.url"
-                  target="_blank"
-                >附件</a>
-              </template>
-            </el-table-column>
-            <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
-          </el-table>
-        </el-table-column>
-        <el-table-column label="事项名称" prop="title"></el-table-column>
-        <el-table-column label="项目" prop="project" width="120"></el-table-column>
-        <el-table-column label="楼栋/标段" prop="room" width="120"></el-table-column>
-        <el-table-column label="投标截止时间" prop="time" width="120"></el-table-column>
-        <el-table-column label="操作" width="120">
+        <!-- <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-table
+              key="bidPriceTable"
+              :data="props.row.bidList || []"
+              stripe
+              style="width: 100%"
+            >
+              <el-table-column label="回标报价总金额（含税总价，单位元）" prop="money" width="280">
+                <template slot-scope="scope">
+                  <span
+                    @click="showMoney(scope.row);"
+                  >{{scope.row.showmoney ? scope.row.money : "********"}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="税率(%)" prop="rate" width="120"></el-table-column>
+              <el-table-column label="商务标附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column label="其它标书附件">
+                <template slot-scope="scope">
+                  <a
+                    style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+                    :href="scope.row.url"
+                    target="_blank"
+                  >附件</a>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="投标时间" width="180"></el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="事项名称" prop="mattersubname"></el-table-column>
+        <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
+        <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
+        <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
+            <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
             <el-button type="primary" size="small" @click="newPriceBid(scope.row)">投标</el-button>
           </template>
         </el-table-column>
@@ -87,6 +95,49 @@
         <el-button type="primary" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="投标历史"
+      :visible.sync="dialogTableVisible"
+      :append-to-body="true"
+      center
+      width="80%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-table key="bidPriceTable" :data="subTableData" stripe style="width: 100%">
+        <el-table-column label="回标报价总金额（含税总价，单位元）" prop="totalamount" width="280">
+          <template slot-scope="scope">
+            <span
+              @click="showMoney(scope.row);"
+            >{{scope.row.showmoney ? scope.row.totalamount : "********"}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="税率(%)" prop="taxrate" width="120"></el-table-column>
+        <el-table-column label="商务标附件">
+          <template slot-scope="scope">
+            <a
+              style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+              :href="scope.row.url"
+              target="_blank"
+            >附件</a>
+          </template>
+        </el-table-column>
+        <el-table-column label="其它标书附件">
+          <template slot-scope="scope">
+            <a
+              style="color: rgb(231,90,22); text-decoration: underline;cursor:pointer;"
+              :href="scope.row.url"
+              target="_blank"
+            >附件</a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="biddate" label="投标时间" width="180"></el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogTableVisible = false">关 闭</el-button>
+        <!-- <el-button type="primary" @click="commit">提 交</el-button> -->
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -109,23 +160,15 @@ export default {
     return {
       loading: false,
       commiting: false,
+      currPurchaseMatterSubID: null,
       tableData: [],
       totalSize: 0,
       pageSize: 20,
       page: 1,
       dialogFormVisible: false,
-      bidPriceData: [
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        },
-        {
-          money: "2394483",
-          rate: "0.03",
-          time: "2019-01-01 12:30:03"
-        }
-      ],
+      dialogTableVisible: false,
+      subTableData: [],
+      //   bidPriceData: [],
       bidPriceFormControls: [
         {
           id: "price-money",
@@ -154,19 +197,19 @@ export default {
           type: 8,
           //   subtype: "file",
           label: "商务标附件",
-          field: "faqannex",
+          field: "file1",
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Sub_Info",
-          fieldname: "faqannex"
+          tablename: "H_SUP_Bid_Return_doc",
+          fieldname: "annexids"
         },
         {
           id: "other-file",
           type: 8,
           label: "其它标书附件",
-          field: "faqannex1",
+          field: "file2",
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Sub_Info",
-          fieldname: "faqannex"
+          tablename: "H_SUP_Bid_Return_doc",
+          fieldname: "otherannexids"
         }
       ],
       bidPriceFormModel: {}
@@ -179,6 +222,44 @@ export default {
     pageChange(val) {
       this.page = val;
       this.loadData();
+    },
+    expandChange(row, expandedRows) {
+      let index = expandedRows.indexOf(row);
+      if (index !== -1) {
+        this.loadSubData(row);
+      }
+    },
+    loadSubData(item) {
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetSubBidList",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: item.purchasemattersubid || ""
+        },
+        res => {
+          if (res.code == "0") {
+            this.$set(item, "bidList", res.data || []);
+          }
+        }
+      );
+    },
+    viewBids(item) {
+      this.dialogTableVisible = true;
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetSubBidList",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: item.purchasemattersubid || ""
+        },
+        res => {
+          if (res.code == "0") {
+            this.subTableData = res.data;
+            // this.$set(item, "bidList", res.data || []);
+          }
+        }
+      );
     },
     loadData() {
       this.loading = true;
@@ -193,7 +274,6 @@ export default {
         },
         res => {
           this.loading = false;
-          //   console.log(res);
           this.tableData = res["data"];
           if (this.tableData.length > 0) {
             this.totalSize = parseInt(this.tableData[0]["totalcount"]);
@@ -205,9 +285,47 @@ export default {
       this.$set(item, "showmoney", true);
     },
     newPriceBid(item) {
+      this.currPurchaseMatterSubID = item.purchasemattersubid;
+      this.bidPriceFormModel = {};
       this.dialogFormVisible = true;
     },
-    commit() {}
+    commit() {
+      this.commiting = true;
+      this.$refs.refForm.validateFields(flag => {
+        if (flag) {
+          this.$post(
+            {
+              action: "P_SUP_Bid_CreateBusinessBid",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.purchasematterid || "",
+              p4: this.currPurchaseMatterSubID || "",
+              p5: this.bidPriceFormModel["money"] || "",
+              p6: this.bidPriceFormModel["rate"] || "",
+              p7: this.bidPriceFormModel["file1"] || "",
+              p8: this.bidPriceFormModel["file2"] || ""
+            },
+            res => {
+              this.commiting = false;
+              if (res.code == "0") {
+                this.dialogFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        } else {
+          this.commiting = false;
+        }
+      });
+    }
   }
 };
 </script>

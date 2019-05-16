@@ -256,21 +256,21 @@ export default {
         this.loadSubData(row);
       }
     },
-    loadSubData(item) {
-      this.$post(
-        {
-          action: "P_SUP_Bid_GetSubBidList",
-          p1: this.$store.state.supinfo.accountid || "",
-          p2: this.$store.state.token || "",
-          p3: item.purchasemattersubid || ""
-        },
-        res => {
-          if (res.code == "0") {
-            this.$set(item, "bidList", res.data || []);
-          }
-        }
-      );
-    },
+    // loadSubData(item) {
+    //   this.$post(
+    //     {
+    //       action: "P_SUP_Bid_GetSubBidList",
+    //       p1: this.$store.state.supinfo.accountid || "",
+    //       p2: this.$store.state.token || "",
+    //       p3: item.purchasemattersubid || ""
+    //     },
+    //     res => {
+    //       if (res.code == "0") {
+    //         this.$set(item, "bidList", res.data || []);
+    //       }
+    //     }
+    //   );
+    // },
     viewBids(item) {
       this.dialogTableVisible = true;
       this.$post(
@@ -278,7 +278,8 @@ export default {
           action: "P_SUP_Bid_GetSubBidList",
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.token || "",
-          p3: item.purchasemattersubid || ""
+          p3: item.purchasemattersubid || "",
+          p4: "20"
         },
         res => {
           if (res.code == "0") {

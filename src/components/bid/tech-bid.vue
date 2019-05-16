@@ -73,6 +73,9 @@ export default {
     },
     purchasematterid: {
       type: String
+    },
+    bidreid: {
+      type: String
     }
   },
   components: {
@@ -207,9 +210,10 @@ export default {
               action: "P_SUP_Bid_CreateTechBid",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.purchasematterid || "",
-              p4: this.bidFuncFormModel["file"] || "",
-              p5: this.bidFuncFormModel["content"] || ""
+              p3: this.bidreid || "",
+              p4: this.purchasematterid || "",
+              p5: this.bidFuncFormModel["file"] || "",
+              p6: this.bidFuncFormModel["content"] || ""
             },
             res => {
               //   console.log(res);

@@ -176,6 +176,9 @@ export default {
     },
     purchasematterid: {
       type: String
+    },
+    bidreid: {
+      type: String
     }
   },
   components: {
@@ -379,12 +382,13 @@ export default {
               action: "P_SUP_Bid_CreateBusinessBid",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.purchasematterid || "",
-              p4: this.currPurchaseMatterSubID || "",
-              p5: this.bidPriceFormModel["money"] || "",
-              p6: this.bidPriceFormModel["rate"] || "",
-              p7: this.bidPriceFormModel["file1"] || "",
-              p8: this.bidPriceFormModel["file2"] || ""
+              p3: this.bidreid || "",
+              p4: this.purchasematterid || "",
+              p5: this.currPurchaseMatterSubID || "",
+              p6: this.bidPriceFormModel["money"] || "",
+              p7: this.bidPriceFormModel["rate"] || "",
+              p8: this.bidPriceFormModel["file1"] || "",
+              p9: this.bidPriceFormModel["file2"] || ""
             },
             res => {
               this.commiting = false;

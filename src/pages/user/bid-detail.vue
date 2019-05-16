@@ -36,8 +36,18 @@
         <files-download v-if="step === 1" :noticeid="noticeID" :purchasematterid="purchasematterID"></files-download>
         <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
         <bonds-list v-if="step === 3" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
-        <tech-bid v-if="step === 4" :noticeid="noticeID" :purchasematterid="purchasematterID"></tech-bid>
-        <business-bid v-if="step === 5" :noticeid="noticeID" :purchasematterid="purchasematterID"></business-bid>
+        <tech-bid
+          v-if="step === 4"
+          :bidreid="notice.bidreid"
+          :noticeid="noticeID"
+          :purchasematterid="purchasematterID"
+        ></tech-bid>
+        <business-bid
+          v-if="step === 5"
+          :bidreid="notice.bidreid"
+          :noticeid="noticeID"
+          :purchasematterid="purchasematterID"
+        ></business-bid>
 
         <div v-if="step === 6" class="bid-discuss">
           <div class="stat-newbar">
@@ -180,6 +190,7 @@ export default {
       step: 1,
       notice: {},
       steps: [],
+      // bidreid: null,
       bidResultData: [
         {
           title: "《合能.深圳中央花园商业及住宅维修整改工程招标",

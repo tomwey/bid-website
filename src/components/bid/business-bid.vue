@@ -54,6 +54,18 @@
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
         <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
+        <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
+          <template slot-scope="scope">
+            <div class="file-list">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in scope.row['bidnoticeannexs_fileList']"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
@@ -343,6 +355,10 @@ export default {
           if (this.tableData.length > 0) {
             this.totalSize = parseInt(this.tableData[0]["totalcount"]);
           }
+
+          this.tableData.forEach(item => {
+            this.loadAnnex(item, "bidnoticeannexs");
+          });
         }
       );
     },

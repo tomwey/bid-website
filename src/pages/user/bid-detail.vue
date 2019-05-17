@@ -56,7 +56,9 @@
           :purchasematterid="purchasematterID"
         ></discuss-bid>
 
-        <div v-if="step === 7" class="bid-result" style="padding: 30px;">
+        <results-bid v-if="step === 7" :noticeid="noticeID" :purchasematterid="purchasematterID"></results-bid>
+
+        <!-- <div v-if="step === 7" class="bid-result" style="padding: 30px;">
           <el-table key="bidResultTable" :data="bidResultData" stripe style="width: 100%">
             <el-table-column label="投标事项名称" prop="title"></el-table-column>
             <el-table-column label="通知书附件" width="160">
@@ -75,7 +77,7 @@
               </template>
             </el-table-column>
           </el-table>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -107,6 +109,9 @@ export default {
     },
     discussBid: function(resolve) {
       require(["@/components/bid/discuss-bid"], resolve);
+    },
+    resultsBid: function(resolve) {
+      require(["@/components/bid/results-bid"], resolve);
     }
   },
   data() {

@@ -8,8 +8,11 @@
     </div>
     <div class="detail">
       <h2 class="title">{{message.msgtitle}}</h2>
+      <p class="time">{{message.createdate}}</p>
       <p class="body">{{message.msgcontent}}</p>
-      <el-button v-if="hasDetail">点击查看</el-button>
+      <div class="btn-wrap">
+        <el-button v-if="hasDetail">点击查看</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -65,12 +68,23 @@ export default {
 .detail {
   .title {
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     color: #333;
+    font-weight: 700 !important;
+    margin-bottom: 20px;
+  }
+  .time {
+    font-size: 14px;
+    color: #999;
+    text-align: center;
   }
   .body {
     font-size: 14px;
     color: #333;
+  }
+  .btn-wrap {
+    margin-top: 60px;
+    text-align: center;
   }
   background: #fff;
   padding: 30px;

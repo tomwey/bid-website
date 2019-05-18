@@ -251,6 +251,11 @@ export default {
   mounted() {
     this.loadData();
   },
+  watch: {
+    purchasematterid() {
+      this.loadData();
+    }
+  },
   methods: {
     pageChange(val) {
       this.page = val;

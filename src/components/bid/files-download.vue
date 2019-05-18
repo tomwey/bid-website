@@ -76,6 +76,9 @@ export default {
   watch: {
     tabName() {
       this.loadData();
+    },
+    purchasematterid() {
+      this.loadData();
     }
   },
   methods: {

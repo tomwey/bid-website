@@ -69,16 +69,30 @@ export default {
         case "1006":
         case "1007": {
           // 我的投标—下载招标文件
-          this.$router.push({ name: "user_apply" });
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-2`
+          });
           return;
         }
         case "1008": {
           // 我的投标—答疑—回复
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-2-0-2`
+          });
           return;
         }
         case "1311":
         case "1321": {
           // 我的投标—中标通知
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-100-0-2`
+          });
           return;
         }
         default:

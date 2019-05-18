@@ -91,6 +91,11 @@ export default {
       require(["@/components/profile/form-fields"], resolve);
     }
   },
+  watch: {
+    purchasematterid() {
+      this.loadData();
+    }
+  },
   data() {
     return {
       tableData: [],

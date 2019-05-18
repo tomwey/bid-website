@@ -266,7 +266,7 @@ export default {
     },
     selectItem(item) {
       // console.log(item);
-      // console.log(this.$route);
+      // console.log(this.$route.path);
       localStorage.setItem("from", this.$route.path);
 
       this.$router.push({

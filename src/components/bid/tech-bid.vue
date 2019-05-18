@@ -124,6 +124,11 @@ export default {
   mounted() {
     this.loadData();
   },
+  watch: {
+    purchasematterid() {
+      this.loadData();
+    }
+  },
   methods: {
     newBid() {
       this.bidFuncFormModel = {};

@@ -71,6 +71,11 @@ export default {
       dialogFormVisible: false
     };
   },
+  watch: {
+    purchasematterid() {
+      this.loadData();
+    }
+  },
   mounted() {
     this.loadData();
   },

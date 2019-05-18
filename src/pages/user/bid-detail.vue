@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-detail">
+  <div class="bid-detail" v-loading="loading">
     <div class="breadcrumb-wrapper">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: fromPath }">招标事项列表</el-breadcrumb-item>
@@ -120,6 +120,7 @@ export default {
       step: 1,
       notice: {},
       steps: [],
+      loading: false,
       // bidreid: null,
       bidResultData: [
         {
@@ -147,13 +148,7 @@ export default {
       return "";
     },
     purchasematterID() {
-      const id = this.$route.params.id;
-      const arr = id.split("-");
-      if (arr.length > 1) {
-        return arr[1];
-      }
-
-      return "";
+      return this.notice.purchasematterid || "0";
     },
     shortlistID() {
       const id = this.$route.params.id;
@@ -176,9 +171,18 @@ export default {
   },
   mounted() {
     this.loadBidDetail();
-    this.loadBidPlan();
+    // this.loadBidPlan();
   },
   methods: {
+    getCurrentStep() {
+      let id = this.$route.params.id;
+      let arr = id.split("-");
+      // let currentStep = 1;
+      if (arr.length >= 3) {
+        return parseInt(arr[2]);
+      }
+      return 1;
+    },
     loadBidPlan() {
       this.$post(
         {
@@ -190,6 +194,7 @@ export default {
         },
         res => {
           // console.log(res);
+          this.loading = false;
           if (res.code == "0") {
             let arr = res.data;
             let temp = [];
@@ -209,11 +214,20 @@ export default {
               });
             });
             this.steps = temp;
+            let currStep = this.getCurrentStep();
+            if (currStep > this.steps.length) {
+              currStep = this.steps.length;
+            } else if (currStep < 1) {
+              currStep = 1;
+            }
+            this.step = currStep;
+            // console.log(this.step);
           }
         }
       );
     },
     loadBidDetail() {
+      this.loading = true;
       this.$post(
         {
           action: "P_SUP_Bid_GetBidDetail",
@@ -230,11 +244,13 @@ export default {
               this.notice = Object.assign({}, res.data[0]);
             }
           }
+          this.loadBidPlan();
         }
       );
     },
     selectStep(step) {
       this.step = step;
+      // this.active = step;
     },
     showMoney(item) {
       this.$set(item, "showmoney", true);

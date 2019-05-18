@@ -163,6 +163,15 @@ export default {
       }
 
       return "0";
+    },
+    specialTypeID() {
+      const id = this.$route.params.id;
+      const arr = id.split("-");
+      if (arr.length == 5) {
+        return arr[4];
+      }
+
+      return "0";
     }
   },
   mounted() {
@@ -212,7 +221,8 @@ export default {
           p2: this.$store.state.token || "",
           p3: this.noticeID || "",
           p4: this.purchasematterID || "",
-          p5: this.shortlistID || "0"
+          p5: this.shortlistID || "0",
+          p6: this.specialTypeID
         },
         res => {
           if (res.code == "0") {

@@ -196,6 +196,16 @@ export default {
         default:
           return 0;
       }
+    },
+    specialTypeID() {
+      switch (this.$route.name) {
+        case "user_applied":
+          return "1";
+        case "user_bids":
+          return "2";
+        default:
+          return "1";
+      }
     }
   },
   methods: {
@@ -264,7 +274,7 @@ export default {
           "/admin/bids/" +
           `${item.noticeid}-${item.purchasematterid}-${
             this.currentStep
-          }-${item.shortlistid || "0"}`
+          }-${item.shortlistid || "0"}-${this.specialTypeID}`
       });
     },
     abandon(item) {

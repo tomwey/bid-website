@@ -11,7 +11,7 @@
       <p class="time">{{message.createdate}}</p>
       <p class="body">{{message.msgcontent}}</p>
       <div class="btn-wrap">
-        <el-button v-if="hasDetail">点击查看</el-button>
+        <el-button v-if="hasDetail" @click="jumpTo">点击查看</el-button>
       </div>
     </div>
   </div>
@@ -29,11 +29,62 @@ export default {
   },
   computed: {
     hasDetail() {
-      const arr = ["1", "2", "3", "5", "9"];
+      const arr = [
+        "1011",
+        "1021",
+        "1012",
+        "1022",
+        "1015",
+        "1025",
+        "1019",
+        "1029",
+        "1101",
+        "1201",
+        "1202",
+        "1203",
+        "1204",
+        "1205",
+        "1206",
+        "1401"
+      ];
       return arr.indexOf((this.message.msgtype || "0").toString()) === -1;
     }
   },
   methods: {
+    jumpTo() {
+      switch (this.message.msgtype) {
+        case "1003": {
+          // 招标公告
+          this.$router.push({
+            path: "/admin/apply-bid/" + `${this.message.jumpid}-0`
+          });
+          return;
+        }
+        case "1014":
+        case "1024": {
+          // 我的报名
+          this.$router.push({ name: "user_apply" });
+          return;
+        }
+        case "1006":
+        case "1007": {
+          // 我的投标—下载招标文件
+          this.$router.push({ name: "user_apply" });
+          return;
+        }
+        case "1008": {
+          // 我的投标—答疑—回复
+          return;
+        }
+        case "1311":
+        case "1321": {
+          // 我的投标—中标通知
+          return;
+        }
+        default:
+          return;
+      }
+    },
     loadMsg() {
       // console.log(this.$route.params.id);
       const msgID = this.$route.params.id;

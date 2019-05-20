@@ -112,7 +112,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" @click="commit" :loading="commiting">提 交</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -124,6 +124,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      v-loading="commiting"
       @close="$refs.dialogForm2.$refs.form && $refs.dialogForm2.$refs.form.resetFields()"
     >
       <form-fields
@@ -164,6 +165,7 @@ export default {
       totalSize: 0,
       previewImage: null,
       dialogPreviewVisible: false,
+      commiting: false,
       stateOptions: [],
       applyControls: [
         {
@@ -266,7 +268,7 @@ export default {
 
       this.$refs.dialogForm2.validateFields(flag => {
         if (flag) {
-          this.loading = true;
+          this.commiting = true;
           this.$post(
             {
               action: "P_SUP_Bid_SignUp_Add",
@@ -277,7 +279,7 @@ export default {
               p5: this.applyFormModel["signupannex"] || ""
             },
             res => {
-              this.loading = false;
+              this.commiting = false;
               // this.$refs.dialogForm2.$refs["form"] &&
               //   this.$refs.dialogForm2.$refs["form"].resetFields();
 
@@ -441,7 +443,7 @@ export default {
     commit() {
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
-          this.loading = true;
+          this.commiting = true;
           this.$post(
             {
               action: "P_SUP_Bid_GiveUp",
@@ -456,7 +458,7 @@ export default {
               p9: this.applyFormModel["memo"] || ""
             },
             res => {
-              this.loading = false;
+              this.commiting = false;
               // this.$refs.dialogForm.$refs["form"] &&
               //   this.$refs.dialogForm.$refs["form"].resetFields();
 

@@ -84,6 +84,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.dialogForm2.$refs.form && $refs.dialogForm2.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
@@ -105,6 +106,7 @@
       :close-on-press-escape="false"
       :show-close="false"
       v-loading="loading"
+      @close="$refs.applyForm.$refs.form && $refs.applyForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
@@ -293,8 +295,8 @@ export default {
     },
     apply(item) {
       this.currentApply = Object.assign({}, item);
-      this.$refs.applyForm.$refs["form"] &&
-        this.$refs.applyForm.$refs["form"].resetFields();
+      // this.$refs.applyForm.$refs["form"] &&
+      //   this.$refs.applyForm.$refs["form"].resetFields();
 
       this.applyFormModel2 = {};
       this.applyFormVisible = true;
@@ -324,8 +326,8 @@ export default {
               this.loading = false;
               // console.log(this.$refs);
 
-              this.$refs["dialogForm2"].$refs["form"] &&
-                this.$refs["dialogForm2"].$refs["form"].resetFields();
+              // this.$refs["dialogForm2"].$refs["form"] &&
+              //   this.$refs["dialogForm2"].$refs["form"].resetFields();
 
               if (res.code == "0") {
                 this.dialogFormVisible = false;

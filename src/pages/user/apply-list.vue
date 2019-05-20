@@ -102,6 +102,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.dialogForm.$refs.form && $refs.dialogForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
@@ -115,7 +116,7 @@
       </div>
     </el-dialog>
     <el-dialog
-      title="资料补充"
+      title="再次报名"
       key="addForm"
       :visible.sync="dialogFormVisible2"
       :append-to-body="true"
@@ -123,6 +124,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.dialogForm2.$refs.form && $refs.dialogForm2.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
@@ -276,8 +278,8 @@ export default {
             },
             res => {
               this.loading = false;
-              this.$refs.dialogForm2.$refs["form"] &&
-                this.$refs.dialogForm2.$refs["form"].resetFields();
+              // this.$refs.dialogForm2.$refs["form"] &&
+              //   this.$refs.dialogForm2.$refs["form"].resetFields();
 
               if (res.code == 0) {
                 this.dialogFormVisible2 = false;
@@ -455,8 +457,8 @@ export default {
             },
             res => {
               this.loading = false;
-              this.$refs.dialogForm.$refs["form"] &&
-                this.$refs.dialogForm.$refs["form"].resetFields();
+              // this.$refs.dialogForm.$refs["form"] &&
+              //   this.$refs.dialogForm.$refs["form"].resetFields();
 
               if (res.code == "0") {
                 this.dialogFormVisible = false;

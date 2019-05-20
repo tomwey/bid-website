@@ -1,5 +1,5 @@
 <template>
-  <div class="project container">
+  <div class="project container" v-loading="loading">
     <div class="breadcrumb-wrapper">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/admin/applying-bids' }">我的报名</el-breadcrumb-item>
@@ -39,19 +39,42 @@
         </table>
       </div>
       <div class="buttons">
-        <el-button type="danger">放弃</el-button>&emsp;
+        <el-button type="danger" @click="abandon" :disabled="applyData.isgiveup == '1'">放弃</el-button>&emsp;
         <el-button type="primary" @click="apply">资料补充</el-button>
       </div>
     </div>
 
     <el-dialog
-      title="报名"
+      title="放弃报名"
+      :visible.sync="dialogFormVisible"
+      :append-to-body="true"
+      center
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      @close="$refs.dialogForm.$refs.form && $refs.dialogForm.$refs.form.resetFields()"
+    >
+      <form-fields
+        form-ref="form"
+        ref="dialogForm"
+        :controls="applyControls2"
+        :form-model="applyFormModel"
+      ></form-fields>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="commit2">提 交</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      title="再次报名"
       :visible.sync="applyFormVisible"
       :append-to-body="true"
       center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      @close="$refs.applyForm.$refs.form && $refs.applyForm.$refs.form.resetFields()"
     >
       <form-fields
         form-ref="form"
@@ -77,6 +100,35 @@ export default {
   data() {
     return {
       applyFormVisible: false,
+      dialogFormVisible: false,
+      loading: false,
+      stateOptions: [],
+      applyControls2: [
+        {
+          field: "reason",
+          type: 2,
+          label: "放弃原因",
+          options: [],
+          rules: [
+            { required: true, message: "放弃原因不能为空", trigger: "change" }
+          ]
+        },
+        {
+          field: "file",
+          type: 8,
+          label: "放弃函件",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_GiveUp",
+          fieldname: "giveupannex"
+          // subtype: "textarea"
+        },
+        {
+          field: "memo",
+          type: 1,
+          label: "备注信息",
+          subtype: "textarea"
+        }
+      ],
       applyControls: [
         {
           id: "agency-file",
@@ -84,6 +136,9 @@ export default {
           // subtype: "number",
           label: "委托书附件",
           field: "agencyfiles",
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "signupannex",
           // unit: "万",
           rules: [
             { required: true, message: "委托书附件不能为空", trigger: "blur" }
@@ -94,7 +149,11 @@ export default {
           label: "其它附件",
           field: "otherfile",
           // required: true,
-          type: 8
+          type: 8,
+          domanid: this.$store.state.supinfo.accountid || "0",
+          tablename: "H_SUP_Bid_SIgnUP",
+          fieldname: "otherannex",
+          limit: 5
         }
       ],
       applyFormModel: {},
@@ -104,8 +163,28 @@ export default {
   },
   mounted() {
     this.loadApplyDetail();
+    this.loadStateOptions();
   },
   methods: {
+    loadStateOptions() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "14"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data || [];
+            let temp = [];
+            arr.forEach(ele => {
+              temp.push({ label: ele.sy_name, value: ele.sy_value });
+            });
+            this.stateOptions = temp;
+          }
+        }
+      );
+    },
     loadApplyDetail() {
       this.$post(
         {
@@ -130,7 +209,30 @@ export default {
       this.$router.push({ path: "/bid_notice" });
     },
     apply() {
+      this.applyFormModel = {};
       this.applyFormVisible = true;
+    },
+    abandon() {
+      this.applyFormModel = {};
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "10"
+        },
+        res => {
+          if (res.code == 0) {
+            let arr = res.data;
+            let temp = [];
+            if (Array.isArray(arr)) {
+              arr.forEach(ele => {
+                temp.push({ label: ele.sy_name, value: ele.sy_value });
+              });
+            }
+            this.applyControls2[0].options = temp;
+          }
+        }
+      );
+      this.dialogFormVisible = true;
     },
     populateData() {
       // console.log(121);
@@ -210,7 +312,81 @@ export default {
         }
       );
     },
-    commit() {}
+    commit2() {
+      console.log(123);
+      this.$refs.dialogForm.validateFields(flag => {
+        console.log(flag);
+        if (flag) {
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_GiveUp",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.applyData.noticeid || "",
+              p4: this.applyData.purchasematterid || "",
+              p5: "",
+              p6: "2",
+              p7: this.applyFormModel["reason"] || "",
+              p8: this.applyFormModel["file"] || "",
+              p9: this.applyFormModel["memo"] || ""
+            },
+            res => {
+              this.loading = false;
+
+              if (res.code == "0") {
+                this.dialogFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+                // this.loadApplyingBids();
+                this.loadApplyDetail();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    },
+    commit() {
+      this.$refs.applyForm.validateFields(flag => {
+        if (flag) {
+          this.loading = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_SignUp_Add",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.applyData.signupid || "",
+              p4: this.applyFormModel["otherfile"] || "",
+              p5: this.applyFormModel["agencyfiles"] || ""
+            },
+            res => {
+              this.loading = false;
+
+              if (res.code == 0) {
+                this.applyFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "补充资料录入成功"
+                });
+                this.loadApplyDetail();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.codemsg
+                });
+              }
+            }
+          );
+        }
+      });
+    }
   }
 };
 </script>

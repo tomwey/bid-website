@@ -313,9 +313,9 @@ export default {
       );
     },
     commit2() {
-      console.log(123);
+      // console.log(123);
       this.$refs.dialogForm.validateFields(flag => {
-        console.log(flag);
+        // console.log(flag);
         if (flag) {
           this.loading = true;
           this.$post(

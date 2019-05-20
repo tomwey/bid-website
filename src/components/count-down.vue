@@ -50,7 +50,7 @@ export default {
     hasLeftTime() {
       let date = new Date();
       let now = date.getTime();
-      let endDate = new Date(this.time); //设置截止时间
+      let endDate = new Date(this.time && this.time.replace(/-/g, "/")); //设置截止时间
       let end = endDate.getTime();
       let leftTime = end - now; //时间差
       return leftTime >= 0;
@@ -72,7 +72,7 @@ export default {
 
       let date = new Date();
       let now = date.getTime();
-      let endDate = new Date(this.time); //设置截止时间
+      let endDate = new Date(this.time && this.time.replace(/-/g, "/")); //设置截止时间
       let end = endDate.getTime();
       let leftTime = end - now; //时间差
       let d, h, m, s, ms;

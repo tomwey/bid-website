@@ -28,19 +28,19 @@
         <b-row>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">0</p>
+              <p class="value">{{$store.state.supinfo.bidcount || 0}}</p>
               <p class="label">已投标</p>
             </div>
           </b-col>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">0</p>
+              <p class="value">{{$store.state.supinfo.bidwincount || 0}}</p>
               <p class="label">已中标</p>
             </div>
           </b-col>
           <b-col cols="4">
             <div class="stat">
-              <p class="value">0</p>
+              <p class="value">{{$store.state.supinfo.msgunreadcount || 0}}</p>
               <p class="label">未读消息</p>
             </div>
           </b-col>
@@ -48,7 +48,8 @@
       </div>
     </div>
     <div class="box">
-      <h2>未读消息
+      <h2>
+        未读消息
         <b-badge
           class="float-right"
           pill

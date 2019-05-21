@@ -77,8 +77,8 @@
               plain
               size="small"
               @click="addInfo(scope.row)"
-              :disabled="scope.row.disabled"
-            >资料补充</el-button>&nbsp;
+              :disabled="scope.row.statenum != '50'"
+            >再次报名</el-button>&nbsp;
             <el-button
               type="danger"
               size="small"
@@ -263,25 +263,34 @@ export default {
       );
     },
     addInfo(item) {
-      this.currSignID = item.signupid;
+      // this.currSignID = item.signupid;
+      this.currApply = Object.assign({}, item);
       this.dialogFormVisible2 = true;
     },
     commit2() {
       // console.log(this.applyForm);
 
       // console.log(123);
+      // p1: this.$store.state.supinfo.accountid || "",
+      //         p2: this.$store.state.token || "",
+      //         p3: this.applyFormModel2["otherannex"] || "",
+      //         p4: this.applyFormModel2["signupannex"] || "",
+      //         p5: this.currentApply.noticeid || "",
+      //         p6: this.currentApply.purchasematterid || ""
 
       this.$refs.dialogForm2.validateFields(flag => {
         if (flag) {
           this.commiting = true;
           this.$post(
             {
-              action: "P_SUP_Bid_SignUp_Add",
+              action: "P_SUP_Bid_SignUp",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.currSignID || "",
-              p4: this.applyFormModel["otherannex"] || "",
-              p5: this.applyFormModel["signupannex"] || ""
+              // p3: this.currSignID || "",
+              p3: this.applyFormModel["otherannex"] || "",
+              p4: this.applyFormModel["signupannex"] || "",
+              p5: this.currApply.noticeid || "",
+              p6: this.currApply.purchasematterid || ""
             },
             res => {
               this.commiting = false;

@@ -40,7 +40,7 @@
       </div>
       <div class="buttons">
         <el-button type="danger" @click="abandon" :disabled="applyData.isgiveup == '1'">放弃</el-button>&emsp;
-        <el-button type="primary" @click="apply">资料补充</el-button>
+        <el-button type="primary" @click="apply" :disabled="applyData.statenum != '50'">再次报名</el-button>
       </div>
     </div>
 

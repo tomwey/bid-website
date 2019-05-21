@@ -157,7 +157,8 @@ export default {
     shortlistID() {
       const id = this.$route.params.id;
       const arr = id.split("-");
-      if (arr.length == 4) {
+      // console.log(arr);
+      if (arr.length >= 4) {
         return arr[3];
       }
 
@@ -166,7 +167,7 @@ export default {
     specialTypeID() {
       const id = this.$route.params.id;
       const arr = id.split("-");
-      if (arr.length == 5) {
+      if (arr.length >= 5) {
         return arr[4];
       }
 

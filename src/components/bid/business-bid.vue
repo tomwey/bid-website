@@ -168,6 +168,7 @@
   </div>
 </template>
 <script>
+import { MessageBox } from "element-ui";
 export default {
   name: "business-bid",
   props: {
@@ -193,6 +194,7 @@ export default {
       dialogPreviewVisible: false,
       previewImage: null,
       currPurchaseMatterSubID: null,
+      currBidReid: null,
       tableData: [],
       totalSize: 0,
       pageSize: 20,
@@ -353,7 +355,7 @@ export default {
           action: "P_SUP_Bid_GetMatterSubList",
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.token || "",
-          p3: this.purchasematterid || "",
+          p3: this.purchasematterid || "0",
           p4: this.page,
           p5: this.pageSize
         },
@@ -375,42 +377,54 @@ export default {
     },
     newPriceBid(item) {
       this.currPurchaseMatterSubID = item.purchasemattersubid;
+      this.currBidReid = item.bidreid;
       this.bidPriceFormModel = {};
       this.dialogFormVisible = true;
     },
     commit() {
-      this.commiting = true;
       this.$refs.refForm.validateFields(flag => {
         if (flag) {
-          this.$post(
-            {
-              action: "P_SUP_Bid_CreateBusinessBid",
-              p1: this.$store.state.supinfo.accountid || "",
-              p2: this.$store.state.token || "",
-              p3: this.bidreid || "",
-              p4: this.purchasematterid || "",
-              p5: this.currPurchaseMatterSubID || "",
-              p6: this.bidPriceFormModel["money"] || "",
-              p7: this.bidPriceFormModel["rate"] || "",
-              p8: this.bidPriceFormModel["file1"] || "",
-              p9: this.bidPriceFormModel["file2"] || ""
-            },
-            res => {
-              this.commiting = false;
-              if (res.code == "0") {
-                this.dialogFormVisible = false;
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-              } else {
-                this.$message({
-                  type: "error",
-                  message: res.codemsg
-                });
-              }
-            }
-          );
+          MessageBox({
+            title: "提示",
+            message: "您确定要提交吗？",
+            confirmButtonText: "确定",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.commiting = true;
+              this.$post(
+                {
+                  action: "P_SUP_Bid_CreateBusinessBid",
+                  p1: this.$store.state.supinfo.accountid || "",
+                  p2: this.$store.state.token || "",
+                  p3: this.currBidReid || "0",
+                  p4: this.purchasematterid || "0",
+                  p5: this.currPurchaseMatterSubID || "0",
+                  p6: (this.bidPriceFormModel["money"] || "").toString(),
+                  p7: (this.bidPriceFormModel["rate"] || "").toString(),
+                  p8: this.bidPriceFormModel["file1"] || "",
+                  p9: this.bidPriceFormModel["file2"] || ""
+                },
+                res => {
+                  this.commiting = false;
+                  if (res.code == "0") {
+                    this.dialogFormVisible = false;
+                    this.$message({
+                      type: "success",
+                      message: "提交成功"
+                    });
+                  } else {
+                    this.$message({
+                      type: "error",
+                      message: res.codemsg
+                    });
+                  }
+                }
+              );
+            })
+            .catch(() => {});
         } else {
           this.commiting = false;
         }

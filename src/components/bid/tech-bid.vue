@@ -65,6 +65,7 @@
   </div>
 </template>
 <script>
+import { MessageBox } from "element-ui";
 export default {
   name: "tech-bid",
   props: {
@@ -209,37 +210,51 @@ export default {
     commit() {
       this.$refs.refForm.validateFields(flag => {
         if (flag) {
-          this.loading = true;
-          this.$post(
-            {
-              action: "P_SUP_Bid_CreateTechBid",
-              p1: this.$store.state.supinfo.accountid || "",
-              p2: this.$store.state.token || "",
-              p3: this.bidreid || "",
-              p4: this.purchasematterid || "",
-              p5: this.bidFuncFormModel["file"] || "",
-              p6: this.bidFuncFormModel["content"] || ""
-            },
-            res => {
-              //   console.log(res);
-              this.loading = false;
-              if (res.code == "0") {
-                this.$message({
-                  type: "success",
-                  message: "提交成功！"
-                });
-                this.dialogFormVisible = false;
-                this.loadData();
-              } else {
-                this.$message({
-                  type: "error",
-                  message: res.codemsg
-                });
-              }
-            }
-          );
+          MessageBox({
+            title: "提示",
+            message: "您确定要提交吗？",
+            confirmButtonText: "确定",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.doSend();
+            })
+            .catch(() => {});
         }
       });
+    },
+    doSend() {
+      this.loading = true;
+      this.$post(
+        {
+          action: "P_SUP_Bid_CreateTechBid",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: this.bidreid || "0",
+          p4: this.purchasematterid || "0",
+          p5: this.bidFuncFormModel["file"] || "",
+          p6: this.bidFuncFormModel["content"] || ""
+        },
+        res => {
+          //   console.log(res);
+          this.loading = false;
+          if (res.code == "0") {
+            this.$message({
+              type: "success",
+              message: "提交成功！"
+            });
+            this.dialogFormVisible = false;
+            this.loadData();
+          } else {
+            this.$message({
+              type: "error",
+              message: res.codemsg
+            });
+          }
+        }
+      );
     }
   }
 };

@@ -4,7 +4,12 @@
       <el-row>
         <el-col :span="8">
           <span class="label">报名截止时间:</span>
-          <el-date-picker v-model="end_date" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            v-model="end_date"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-col>
         <el-col :span="8">
           <span class="label">状态:</span>

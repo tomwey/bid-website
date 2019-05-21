@@ -5,7 +5,12 @@
       <el-row>
         <el-col :span="8">
           <span class="label">截止时间:</span>
-          <el-date-picker v-model="signupDate" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            v-model="signupDate"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-col>
         <el-col :span="8">
           <span class="label">状态:</span>

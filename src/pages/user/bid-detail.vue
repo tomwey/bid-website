@@ -203,6 +203,8 @@ export default {
             let arr = res.data;
             let temp = [];
             let index = 0;
+            let activeIndex = 0;
+            // let stepIndex = 0;
             arr.forEach(ele => {
               let time = ele.factenddate || ele.enddate;
               if (time.indexOf(" ") !== -1) {
@@ -216,16 +218,17 @@ export default {
                 desc: `${time}截止`,
                 step: ele.bidstage
               });
+              if (ele.factstatenum == "40") {
+                // 已完成
+                activeIndex++;
+              }
             });
             this.steps = temp;
-            // let currStep = this.getCurrentStep();
-            // if (currStep > this.steps.length) {
-            //   currStep = this.steps.length;
-            // } else if (currStep < 1) {
-            //   currStep = 1;
-            // }
-            // this.step = currStep;
-            // console.log(this.step);
+
+            this.active = activeIndex;
+            if (this.active < this.steps.length) {
+              this.step = this.steps[this.active].step;
+            }
           }
         }
       );
@@ -253,6 +256,18 @@ export default {
       );
     },
     selectStep(step) {
+      let index = 0;
+      for (let i = 0; i < this.steps.length; i++) {
+        if (step == this.steps[i].step) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index > this.active) {
+        return;
+      }
+
       this.step = step;
       // this.active = step;
     },

@@ -5,7 +5,7 @@
         <span class="custom-tab" :class="{active:active === 0}" @click="selectTab(0)">未读消息</span>
         <span class="custom-tab" :class="{active:active === 1}" @click="selectTab(1)">已读消息</span>
       </div>
-      <message-list :messages="messages"/>
+      <message-list :messages="messages" :msgtype="active"/>
       <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
           background

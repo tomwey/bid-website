@@ -27,6 +27,9 @@ export default {
   props: {
     messages: {
       type: Array
+    },
+    msgtype: {
+      type: Number
     }
   },
   data() {
@@ -36,6 +39,12 @@ export default {
   },
   methods: {
     showDetail(item) {
+      if (this.msgtype === 0) {
+        let count = parseInt(this.$store.state.supinfo.msgunreadcount || 0);
+        if (count > 0) {
+          this.$store.state.supinfo.msgunreadcount = parseInt(count - 1);
+        }
+      }
       this.$router.push({ path: "/admin/messages/" + item.msgid });
     }
   }

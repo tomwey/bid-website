@@ -34,8 +34,8 @@
         <el-table-column prop="noticetitle" label="标题">
           <template slot-scope="scope">
             <span class="name" @click="selectItem(scope.row);">
-              <span class="unread dot" v-if="scope.row.readstate == '0'"></span>
-              <span class="read dot" v-if="scope.row.readstate != '0'"></span>
+              <span class="unread dot" v-if="scope.row.statename == '未查看'"></span>
+              <span class="read dot" v-if="scope.row.statename == '已查看'"></span>
               {{scope.row.noticetitle}}
             </span>
           </template>
@@ -45,10 +45,12 @@
         <el-table-column label="状态" width="120">
           <template slot-scope="scope">
             <!-- <el-tag :type="scope.row.type">{{scope.row.state}}</el-tag> -->
-            <span
+            <!-- <span
               class="state-tag"
-              :class="{success:scope.row.readstate == '1', warning:scope.row.readstate == '0'}"
-            >{{scope.row.readstate == '0' ? '未查看' : '已查看'}}</span>
+              v-if="scope.row.statename == '未查看' || scope.row.statename == '已查看'"
+              :class="{success:scope.row.statename == '已查看', warning:scope.row.statename == '未查看'}"
+            >{{scope.row.statename}}</span>-->
+            <span class="state-tag">{{scope.row.statename}}</span>
           </template>
         </el-table-column>
       </el-table>

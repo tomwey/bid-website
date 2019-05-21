@@ -33,30 +33,34 @@
         </el-steps>
       </div>
       <div class="step-content">
-        <files-download v-if="step === 1" :noticeid="noticeID" :purchasematterid="purchasematterID"></files-download>
-        <faq-list v-if="step === 2" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
-        <bonds-list v-if="step === 3" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
+        <files-download
+          v-if="step == '5'"
+          :noticeid="noticeID"
+          :purchasematterid="purchasematterID"
+        ></files-download>
+        <faq-list v-if="step == '510'" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
+        <bonds-list v-if="step == '90'" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
         <tech-bid
-          v-if="step === 4"
+          v-if="step == '520'"
           :bidreid="notice.bidreid"
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
         ></tech-bid>
         <business-bid
-          v-if="step === 5"
+          v-if="step == '525'"
           :bidreid="notice.bidreid"
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
         ></business-bid>
 
         <discuss-bid
-          v-if="step === 6"
+          v-if="step == '530' || step == '535'"
           :bidreid="notice.bidreid"
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
         ></discuss-bid>
 
-        <results-bid v-if="step === 7" :noticeid="noticeID" :purchasematterid="purchasematterID"></results-bid>
+        <results-bid v-if="step == '10'" :noticeid="noticeID" :purchasematterid="purchasematterID"></results-bid>
 
         <!-- <div v-if="step === 7" class="bid-result" style="padding: 30px;">
           <el-table key="bidResultTable" :data="bidResultData" stripe style="width: 100%">
@@ -116,8 +120,8 @@ export default {
   },
   data() {
     return {
-      active: 2,
-      step: 1,
+      active: 1,
+      step: "5",
       notice: {},
       steps: [],
       loading: false,
@@ -210,17 +214,17 @@ export default {
               temp.push({
                 title: ele.stagename,
                 desc: `${time}截止`,
-                step: ++index
+                step: ele.bidstage
               });
             });
             this.steps = temp;
-            let currStep = this.getCurrentStep();
-            if (currStep > this.steps.length) {
-              currStep = this.steps.length;
-            } else if (currStep < 1) {
-              currStep = 1;
-            }
-            this.step = currStep;
+            // let currStep = this.getCurrentStep();
+            // if (currStep > this.steps.length) {
+            //   currStep = this.steps.length;
+            // } else if (currStep < 1) {
+            //   currStep = 1;
+            // }
+            // this.step = currStep;
             // console.log(this.step);
           }
         }

@@ -34,7 +34,7 @@ export default {
         "1021",
         "1012",
         "1022",
-        "1015",
+        // "1015",
         "1025",
         "1019",
         "1029",
@@ -67,6 +67,7 @@ export default {
           return;
         }
         case "1006":
+        case "1015":
         case "1007": {
           // 我的投标—下载招标文件
           localStorage.setItem("from", "/admin/bids");

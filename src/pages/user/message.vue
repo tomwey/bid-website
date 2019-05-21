@@ -6,7 +6,7 @@
         <span class="custom-tab" :class="{active:active === 1}" @click="selectTab(1)">已读消息</span>
       </div>
       <message-list :messages="messages"/>
-      <div class="page-container">
+      <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
           background
           layout="prev, pager, next"

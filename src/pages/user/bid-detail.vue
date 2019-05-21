@@ -256,17 +256,17 @@ export default {
       );
     },
     selectStep(step) {
-      let index = 0;
-      for (let i = 0; i < this.steps.length; i++) {
-        if (step == this.steps[i].step) {
-          index = i;
-          break;
-        }
-      }
+      // let index = 0;
+      // for (let i = 0; i < this.steps.length; i++) {
+      //   if (step == this.steps[i].step) {
+      //     index = i;
+      //     break;
+      //   }
+      // }
 
-      if (index > this.active) {
-        return;
-      }
+      // if (index > this.active) {
+      //   return;
+      // }
 
       this.step = step;
       // this.active = step;

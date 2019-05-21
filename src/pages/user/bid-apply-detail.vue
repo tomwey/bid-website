@@ -266,8 +266,8 @@ export default {
               p2: this.$store.state.token || "",
               p3: this.applyFormModel["otherannex"] || "",
               p4: this.applyFormModel["signupannex"] || "",
-              p5: arr[0],
-              p6: arr[1]
+              p5: this.notice.noticeid || "0", //arr[0],
+              p6: this.notice.purchasematterid || "0"
             },
             res => {
               this.loading = false;

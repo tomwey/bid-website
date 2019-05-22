@@ -435,7 +435,7 @@ export default {
       this.$refs.dialogForm2.validateFields(flag => {
         if (flag) {
           let index = parseInt(this.applyFormModel["matterindexes"]);
-          console.log(this.applyFormModel);
+          // console.log(this.applyFormModel);
           let item = null;
           if (index >= 0 && index < this.abandonMatters.length) {
             item = this.abandonMatters[index];

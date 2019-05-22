@@ -39,7 +39,7 @@
         </table>
       </div>
       <div class="buttons">
-        <el-button type="danger" @click="abandon" :disabled="applyData.isgiveup == '1'">放弃</el-button>&emsp;
+        <el-button type="danger" @click="abandon">放弃</el-button>&emsp;
         <el-button type="primary" @click="apply" :disabled="applyData.statenum != '50'">再次报名</el-button>
       </div>
     </div>
@@ -103,6 +103,7 @@ export default {
       dialogFormVisible: false,
       loading: false,
       stateOptions: [],
+      abandonMatters: [],
       applyControls2: [
         {
           field: "reason",
@@ -214,24 +215,169 @@ export default {
     },
     abandon() {
       this.applyFormModel = {};
+
       this.$post(
         {
-          action: "P_SY_GetParamInfo",
-          p1: "10"
+          action: "P_SUP_Bid_GiveUp_GetMatterList",
+          p1: this.applyData.purchasematterid || "0",
+          p2: this.$store.state.supinfo.accountid || ""
         },
         res => {
-          if (res.code == 0) {
+          // console.log(res);
+          if (res.code == "0") {
             let arr = res.data;
             let temp = [];
-            if (Array.isArray(arr)) {
-              arr.forEach(ele => {
-                temp.push({ label: ele.sy_name, value: ele.sy_value });
+            let index = 0;
+            arr.forEach(ele => {
+              temp.push({
+                label: ele.mattersubname || ele.mattername,
+                value: index++
               });
+            });
+
+            this.abandonMatters = arr;
+
+            if (temp.length > 0) {
+              this.applyControls2 = [
+                {
+                  field: "reason",
+                  type: 2,
+                  label: "放弃原因",
+                  options: [],
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃原因不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+                {
+                  id: "matterindexes",
+                  type: 3,
+                  label: "投标事项",
+                  field: "matterindexes",
+                  options: temp,
+                  rules: [
+                    {
+                      required: true,
+                      message: "投标事项不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+                {
+                  field: "file",
+                  type: 8,
+                  label: "放弃函件",
+                  domanid: this.$store.state.supinfo.accountid || "0",
+                  tablename: "H_SUP_Bid_GiveUp",
+                  fieldname: "giveupannex",
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃函件不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                  // subtype: "textarea"
+                },
+                {
+                  field: "memo",
+                  type: 1,
+                  label: "备注信息",
+                  subtype: "textarea"
+                }
+              ];
+
+              if (temp.length === 1) {
+                this.applyFormModel = { matterindexes: 0 };
+              } else {
+                this.applyFormModel = {};
+              }
+            } else {
+              this.applyControls2 = [
+                {
+                  field: "reason",
+                  type: 2,
+                  label: "放弃原因",
+                  options: [],
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃原因不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+
+                {
+                  field: "file",
+                  type: 8,
+                  label: "放弃函件",
+                  domanid: this.$store.state.supinfo.accountid || "0",
+                  tablename: "H_SUP_Bid_GiveUp",
+                  fieldname: "giveupannex",
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃函件不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                  // subtype: "textarea"
+                },
+                {
+                  field: "memo",
+                  type: 1,
+                  label: "备注信息",
+                  subtype: "textarea"
+                }
+              ];
             }
-            this.applyControls2[0].options = temp;
           }
+
+          this.$post(
+            {
+              action: "P_SY_GetParamInfo",
+              p1: "10"
+            },
+            res => {
+              if (res.code == 0) {
+                let arr = res.data;
+                let temp = [];
+                if (Array.isArray(arr)) {
+                  arr.forEach(ele => {
+                    temp.push({ label: ele.sy_name, value: ele.sy_value });
+                  });
+                }
+                this.applyControls2[0].options = temp;
+              }
+
+              this.abandonLoading = false;
+            }
+          );
         }
       );
+
+      // this.$post(
+      //   {
+      //     action: "P_SY_GetParamInfo",
+      //     p1: "10"
+      //   },
+      //   res => {
+      //     if (res.code == 0) {
+      //       let arr = res.data;
+      //       let temp = [];
+      //       if (Array.isArray(arr)) {
+      //         arr.forEach(ele => {
+      //           temp.push({ label: ele.sy_name, value: ele.sy_value });
+      //         });
+      //       }
+      //       this.applyControls2[0].options = temp;
+      //     }
+      //   }
+      // );
       this.dialogFormVisible = true;
     },
     populateData() {
@@ -317,6 +463,21 @@ export default {
       this.$refs.dialogForm.validateFields(flag => {
         // console.log(flag);
         if (flag) {
+          let index = parseInt(this.applyFormModel["matterindexes"]);
+          // console.log(this.applyFormModel);
+          let item = null;
+          if (index >= 0 && index < this.abandonMatters.length) {
+            item = this.abandonMatters[index];
+          }
+
+          if (!item) {
+            this.$message({
+              type: "error",
+              message: "未选择弃标事项"
+            });
+            return;
+          }
+
           this.loading = true;
           this.$post(
             {
@@ -324,9 +485,12 @@ export default {
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
               p3: this.applyData.noticeid || "",
-              p4: this.applyData.purchasematterid || "",
-              p5: "",
-              p6: "2",
+              p4: item.purchasematterid || "",
+              p5: item.purchasemattersubid || "",
+              p6: item.stageid || "",
+              // p4: this.applyData.purchasematterid || "",
+              // p5: "",
+              // p6: "2",
               p7: this.applyFormModel["reason"] || "",
               p8: this.applyFormModel["file"] || "",
               p9: this.applyFormModel["memo"] || ""

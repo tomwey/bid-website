@@ -56,12 +56,7 @@
         </el-table-column>
         <el-table-column label="操作" width="90">
           <template slot-scope="scope">
-            <el-button
-              type="danger"
-              size="small"
-              :disabled="scope.row.isgiveup == '1'"
-              @click="abandon(scope.row);"
-            >弃标</el-button>
+            <el-button type="danger" size="small" @click="abandon(scope.row);">弃标</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -117,6 +112,7 @@ export default {
       keyword: null,
       page: 1,
       totalSize: 0,
+      abandonMatters: [],
       pageSize: 20,
       applyControls: [
         {
@@ -284,36 +280,195 @@ export default {
 
       this.$post(
         {
-          action: "P_SY_GetParamInfo",
-          p1: "10"
-        },
-        res => {
-          if (res.code == 0) {
-            let arr = res.data;
-            let temp = [];
-            if (Array.isArray(arr)) {
-              arr.forEach(ele => {
-                temp.push({ label: ele.sy_name, value: ele.sy_value });
-              });
-            }
-            this.applyControls[0].options = temp;
-          }
-        }
-      );
-      this.$post(
-        {
           action: "P_SUP_Bid_GiveUp_GetMatterList",
           p1: item.purchasematterid || "0",
           p2: this.$store.state.supinfo.accountid || ""
         },
         res => {
-          console.log(res);
+          // console.log(res);
+          if (res.code == "0") {
+            let arr = res.data;
+            let temp = [];
+            let index = 0;
+            arr.forEach(ele => {
+              temp.push({
+                label: ele.mattersubname || ele.mattername,
+                value: index++
+              });
+            });
+
+            this.abandonMatters = arr;
+
+            if (temp.length > 0) {
+              this.applyControls = [
+                {
+                  field: "reason",
+                  type: 2,
+                  label: "放弃原因",
+                  options: [],
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃原因不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+                {
+                  id: "matterindexes",
+                  type: 3,
+                  label: "投标事项",
+                  field: "matterindexes",
+                  options: temp,
+                  rules: [
+                    {
+                      required: true,
+                      message: "投标事项不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+                {
+                  field: "file",
+                  type: 8,
+                  label: "放弃函件",
+                  domanid: this.$store.state.supinfo.accountid || "0",
+                  tablename: "H_SUP_Bid_GiveUp",
+                  fieldname: "giveupannex",
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃函件不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                  // subtype: "textarea"
+                },
+                {
+                  field: "memo",
+                  type: 1,
+                  label: "备注信息",
+                  subtype: "textarea"
+                }
+              ];
+
+              if (temp.length === 1) {
+                this.applyFormModel = { matterindexes: 0 };
+              } else {
+                this.applyFormModel = {};
+              }
+            } else {
+              this.applyControls = [
+                {
+                  field: "reason",
+                  type: 2,
+                  label: "放弃原因",
+                  options: [],
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃原因不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                },
+
+                {
+                  field: "file",
+                  type: 8,
+                  label: "放弃函件",
+                  domanid: this.$store.state.supinfo.accountid || "0",
+                  tablename: "H_SUP_Bid_GiveUp",
+                  fieldname: "giveupannex",
+                  rules: [
+                    {
+                      required: true,
+                      message: "放弃函件不能为空",
+                      trigger: "change"
+                    }
+                  ]
+                  // subtype: "textarea"
+                },
+                {
+                  field: "memo",
+                  type: 1,
+                  label: "备注信息",
+                  subtype: "textarea"
+                }
+              ];
+            }
+          }
+
+          this.$post(
+            {
+              action: "P_SY_GetParamInfo",
+              p1: "10"
+            },
+            res => {
+              if (res.code == 0) {
+                let arr = res.data;
+                let temp = [];
+                if (Array.isArray(arr)) {
+                  arr.forEach(ele => {
+                    temp.push({ label: ele.sy_name, value: ele.sy_value });
+                  });
+                }
+                this.applyControls[0].options = temp;
+              }
+
+              this.abandonLoading = false;
+            }
+          );
         }
       );
+
+      // this.$post(
+      //   {
+      //     action: "P_SY_GetParamInfo",
+      //     p1: "10"
+      //   },
+      //   res => {
+      //     if (res.code == 0) {
+      //       let arr = res.data;
+      //       let temp = [];
+      //       if (Array.isArray(arr)) {
+      //         arr.forEach(ele => {
+      //           temp.push({ label: ele.sy_name, value: ele.sy_value });
+      //         });
+      //       }
+      //       this.applyControls[0].options = temp;
+      //     }
+      //   }
+      // );
+      // this.$post(
+      //   {
+      //     action: "P_SUP_Bid_GiveUp_GetMatterList",
+      //     p1: item.purchasematterid || "0",
+      //     p2: this.$store.state.supinfo.accountid || ""
+      //   },
+      //   res => {
+      //     console.log(res);
+      //   }
+      // );
     },
     commit() {
       this.$refs.dialogForm.validateFields(flag => {
         if (flag) {
+          let index = parseInt(this.applyFormModel["matterindexes"]);
+          // console.log(this.applyFormModel);
+          let item = null;
+          if (index >= 0 && index < this.abandonMatters.length) {
+            item = this.abandonMatters[index];
+          }
+
+          if (!item) {
+            this.$message({
+              type: "error",
+              message: "未选择弃标事项"
+            });
+            return;
+          }
+
           this.loading = true;
           this.$post(
             {
@@ -321,9 +476,12 @@ export default {
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
               p3: this.currApply.noticeid || "",
-              p4: this.currApply.purchasematterid || "",
-              p5: "",
-              p6: this.currentStage(),
+              // p4: this.currApply.purchasematterid || "",
+              // p5: "",
+              // p6: this.currentStage(),
+              p4: item.purchasematterid || "",
+              p5: item.purchasemattersubid || "",
+              p6: item.stageid || "",
               p7: this.applyFormModel["reason"] || "",
               p8: this.applyFormModel["file"] || "",
               p9: this.applyFormModel["memo"] || ""

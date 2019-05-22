@@ -1,19 +1,19 @@
 <template>
   <div class="messages" v-loading="loading">
     <div class="box">
-      <div class="custom-tabs">
+      <h2 class="title">消息列表</h2>
+      <!-- <div class="custom-tabs">
         <span class="custom-tab" :class="{active:active === 0}" @click="selectTab(0)">未读消息</span>
         <span class="custom-tab" :class="{active:active === 1}" @click="selectTab(1)">已读消息</span>
-      </div>
-      <message-list :messages="messages" :msgtype="active"/>
-      <div class="page-container" v-if="totalSize >= pageSize">
+      </div>-->
+      <message-list :messages="messages"/>
+      <div class="page-container" v-if="totalSize > pageSize">
         <el-pagination
           background
           layout="prev, pager, next"
           :total="totalSize"
           :page-size="pageSize"
           :current-page="page"
-          v-if="totalSize >= pageSize"
           @current-change="pageChange"
         ></el-pagination>
       </div>
@@ -73,18 +73,18 @@ export default {
             const arr = res.data;
             if (arr && Array.isArray(arr)) {
               let temp = [];
-              arr.forEach(ele => {
-                if (this.active === 0) {
-                  if (ele["readstate"] == "0") {
-                    temp.push(ele);
-                  }
-                } else {
-                  if (ele["readstate"] == "1") {
-                    temp.push(ele);
-                  }
-                }
-              });
-              this.messages = temp;
+              // arr.forEach(ele => {
+              // if (this.active === 0) {
+              //   if (ele["readstate"] == "0") {
+              //     temp.push(ele);
+              //   }
+              // } else {
+              //   if (ele["readstate"] == "1") {
+              //     temp.push(ele);
+              //   }
+              // }
+              // });
+              this.messages = arr;
               if (this.messages.length > 0) {
                 this.totalSize = parseInt(this.messages[0]["totalcount"]);
               }

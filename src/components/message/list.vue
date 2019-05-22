@@ -4,7 +4,11 @@
       <el-table :data="messages" stripe style="width: 100%">
         <el-table-column prop="msgtitle" label="标题">
           <template slot-scope="scope">
-            <span class="title" @click="showDetail(scope.row);">{{scope.row.msgtitle}}</span>
+            <span
+              class="title"
+              :class="{unread:scope.row.readstate == '0', read:scope.row.readstate == '1'}"
+              @click="showDetail(scope.row);"
+            >{{scope.row.msgtitle}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="createdate" label="时间" width="180"></el-table-column>
@@ -60,11 +64,30 @@ export default {
     color: #333;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 10px;
     white-space: nowrap;
     &:hover {
       text-decoration: underline;
       cursor: pointer;
       color: rgb(231, 90, 22);
+    }
+    &.unread {
+      position: relative;
+      &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: block;
+        background: rgb(231, 90, 22);
+        position: absolute;
+        top: 50%;
+        margin-top: -3px;
+        left: 0px;
+      }
+    }
+    &.read {
+      color: #999 !important;
     }
     // display: inline-block;
     // height: 100%;

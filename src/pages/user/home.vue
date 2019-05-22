@@ -72,25 +72,11 @@ export default {
   },
   data() {
     return {
-      messages: [
-        // {
-        //   title: "未读消息一",
-        //   time: "2018-12-21 13:23:30"
-        // },
-        // {
-        //   title: "未读消息二",
-        //   time: "2018-12-21 13:23:30"
-        // },
-        // {
-        //   title: "招标文件资料不完整，请速度补充",
-        //   time: "2018-12-21 13:23:30"
-        // },
-        // {
-        //   title: "招标文件资料不完整，请速度补充",
-        //   time: "2018-12-21 13:23:30"
-        // }
-      ]
+      messages: []
     };
+  },
+  mounted() {
+    this.loadUnreadMessage();
   },
   computed: {
     variant() {
@@ -111,6 +97,35 @@ export default {
     }
   },
   methods: {
+    loadUnreadMessage() {
+      this.loading = true;
+
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetMsg",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token,
+          p3: 1,
+          p4: 5000
+        },
+        res => {
+          // console.log(res);
+          this.loading = false;
+          if (res.code == "0") {
+            const arr = res.data;
+            if (arr && Array.isArray(arr)) {
+              let temp = [];
+              arr.forEach(ele => {
+                if (ele["readstate"] == "0") {
+                  temp.push(ele);
+                }
+              });
+              this.messages = temp;
+            }
+          }
+        }
+      );
+    },
     editProfile() {
       // this.$router.push({ name: "profile" });
       this.$post(

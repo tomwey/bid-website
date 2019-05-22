@@ -359,12 +359,14 @@ export default {
           this.loading = true;
           this.$post(
             {
-              action: "P_SUP_Bid_SignUp_Add",
+              action: "P_SUP_Bid_SignUp",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.applyData.signupid || "",
-              p4: this.applyFormModel["otherfile"] || "",
-              p5: this.applyFormModel["agencyfiles"] || ""
+              // p3: this.applyData.signupid || "",
+              p3: this.applyFormModel["otherfile"] || "",
+              p4: this.applyFormModel["agencyfiles"] || "",
+              p5: this.applyData.noticeid || "0",
+              p6: this.applyData.purchasematterid || "0"
             },
             res => {
               this.loading = false;

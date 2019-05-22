@@ -275,7 +275,7 @@ export default {
             },
             res => {
               this.loading = false;
-              if (res.code == 0) {
+              if (res.code == "0") {
                 this.notice.issignup = "1";
                 this.applyFormVisible = false;
                 this.$message({

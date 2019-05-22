@@ -66,8 +66,16 @@ export default {
           this.$router.push({ name: "user_apply" });
           return;
         }
+        case "1015": {
+          // 我的入围
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-1`
+          });
+          return;
+        }
         case "1006":
-        case "1015":
         case "1007": {
           // 我的投标—下载招标文件
           localStorage.setItem("from", "/admin/bids");

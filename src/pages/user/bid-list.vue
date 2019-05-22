@@ -300,6 +300,16 @@ export default {
           }
         }
       );
+      this.$post(
+        {
+          action: "P_SUP_Bid_GiveUp_GetMatterList",
+          p1: item.purchasematterid || "0",
+          p2: this.$store.state.supinfo.accountid || ""
+        },
+        res => {
+          console.log(res);
+        }
+      );
     },
     commit() {
       this.$refs.dialogForm.validateFields(flag => {

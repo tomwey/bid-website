@@ -301,7 +301,7 @@ export default {
                 this.dialogFormVisible2 = false;
                 this.$message({
                   type: "success",
-                  message: "补充资料录入成功"
+                  message: "报名成功"
                 });
                 this.loadApplyingBids();
               } else {
@@ -450,6 +450,16 @@ export default {
             }
             this.applyControls[0].options = temp;
           }
+        }
+      );
+      this.$post(
+        {
+          action: "P_SUP_Bid_GiveUp_GetMatterList",
+          p1: item.purchasematterid || "0",
+          p2: this.$store.state.supinfo.accountid || ""
+        },
+        res => {
+          console.log(res);
         }
       );
       this.dialogFormVisible = true;

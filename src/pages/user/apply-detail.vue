@@ -371,11 +371,11 @@ export default {
             res => {
               this.loading = false;
 
-              if (res.code == 0) {
+              if (res.code == "0") {
                 this.applyFormVisible = false;
                 this.$message({
                   type: "success",
-                  message: "补充资料录入成功"
+                  message: "报名成功"
                 });
                 this.loadApplyDetail();
               } else {

@@ -43,14 +43,14 @@ export default {
   },
   methods: {
     showDetail(item) {
-      if (this.msgtype === 0) {
-        let obj = Object.assign({}, this.$store.state.supinfo);
-        let count = parseInt(obj.msgunreadcount || 0);
-        if (count > 0) {
-          obj.msgunreadcount = count - 1;
-          this.$store.commit("updatesupinfo", obj);
-        }
+      // if (this.msgtype === 0) {
+      let obj = Object.assign({}, this.$store.state.supinfo);
+      let count = parseInt(obj.msgunreadcount || 0);
+      if (count > 0) {
+        obj.msgunreadcount = count - 1;
+        this.$store.commit("updatesupinfo", obj);
       }
+      // }
       this.$router.push({ path: "/admin/messages/" + item.msgid });
     }
   }
@@ -87,7 +87,7 @@ export default {
       }
     }
     &.read {
-      color: #999 !important;
+      color: #888 !important;
     }
     // display: inline-block;
     // height: 100%;

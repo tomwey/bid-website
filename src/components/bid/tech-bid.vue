@@ -1,11 +1,15 @@
 <template>
   <div class="tech-bid" v-loading="loading">
     <div class="stat-newbar">
-      <el-row>
-        <el-col :span="16">
+      <el-alert title="若多次投标，我们将以最新一次为准。" effect="dark" type="warning"></el-alert>
+      <el-row style="margin-top: 20px">
+        <el-col :span="6">
           <span class="stat">共{{totalSize}}条</span>
         </el-col>
-        <el-col :span="8" style="text-align:right;">
+        <el-col :span="12">
+          <p class="enddate-tip">技术标投标截止时间: {{enddate}}</p>
+        </el-col>
+        <el-col :span="6" style="text-align:right;">
           <el-button type="primary" @click="newBid">新增技术回标</el-button>
         </el-col>
       </el-row>
@@ -76,6 +80,9 @@ export default {
       type: String
     },
     bidreid: {
+      type: String
+    },
+    enddate: {
       type: String
     }
   },
@@ -274,6 +281,13 @@ export default {
       border-bottom: 0;
     }
   }
+}
+.enddate-tip {
+  font-size: 14px;
+  color: rgb(231, 90, 22);
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
 }
 </style>
 

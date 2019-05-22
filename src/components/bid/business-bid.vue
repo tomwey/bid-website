@@ -1,7 +1,8 @@
 <template>
   <div class="business-bid" v-loading="loading">
     <div class="stat-newbar">
-      <el-row>
+      <el-alert title="若多次投标，我们将以最新一次为准。" effect="dark" type="warning"></el-alert>
+      <el-row style="margin-top: 20px">
         <el-col :span="16">
           <span class="stat">共{{totalSize}}条</span>
         </el-col>

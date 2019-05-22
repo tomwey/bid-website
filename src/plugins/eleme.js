@@ -3,7 +3,7 @@ import {
     DatePicker, Loading, Message, MessageBox, Table, TableColumn, Button, Form, FormItem,
     Input, Select, Option, RadioGroup, Radio, CheckboxGroup, Checkbox, Switch, TimeSelect,
     Upload, Progress, Dialog, Row, Col, Tag, Pagination, Breadcrumb, BreadcrumbItem, Steps, Step,
-    Badge, Tabs, TabPane
+    Badge, Tabs, TabPane, Alert
 } from 'element-ui';
 
 Vue.use(DatePicker);
@@ -37,6 +37,7 @@ Vue.use(Step);
 Vue.use(Badge);
 Vue.use(Tabs);
 Vue.use(TabPane);
+Vue.use(Alert);
 // Vue.use(Popover);
 // Vue.use(DatePicker);
 // Vue.use(Message);

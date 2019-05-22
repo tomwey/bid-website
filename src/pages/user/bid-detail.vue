@@ -28,7 +28,7 @@
             :description="item.desc"
             :key="item.step"
             :class="{selected:step === item.step}"
-            @click.native="selectStep(item.step)"
+            @click.native="selectStep(item)"
           ></el-step>
         </el-steps>
       </div>
@@ -38,12 +38,18 @@
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
         ></files-download>
-        <faq-list v-if="step == '510'" :noticeid="noticeID" :purchasematterid="purchasematterID"></faq-list>
+        <faq-list
+          v-if="step == '510'"
+          :enddate="currEndDate"
+          :noticeid="noticeID"
+          :purchasematterid="purchasematterID"
+        ></faq-list>
         <bonds-list v-if="step == '90'" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
         <tech-bid
           v-if="step == '520'"
           :bidreid="notice.bidreid"
           :noticeid="noticeID"
+          :enddate="currEndDate"
           :purchasematterid="purchasematterID"
         ></tech-bid>
         <business-bid
@@ -125,6 +131,7 @@ export default {
       notice: {},
       steps: [],
       minEndDate: null,
+      currEndDate: null,
       loading: false,
       // bidreid: null,
       bidResultData: [
@@ -220,7 +227,8 @@ export default {
               temp.push({
                 title: ele.stagename,
                 desc: `${time}截止`,
-                step: ele.bidstage
+                step: ele.bidstage,
+                enddate: ele.enddate
               });
               if (ele.factstatenum == "40") {
                 // 已完成
@@ -272,21 +280,10 @@ export default {
         }
       );
     },
-    selectStep(step) {
-      // let index = 0;
-      // for (let i = 0; i < this.steps.length; i++) {
-      //   if (step == this.steps[i].step) {
-      //     index = i;
-      //     break;
-      //   }
-      // }
-
-      // if (index > this.active) {
-      //   return;
-      // }
-
-      this.step = step;
-      // this.active = step;
+    selectStep(item) {
+      this.step = item.step;
+      this.currEndDate = item.enddate;
+      // console.log(item);
     },
     showMoney(item) {
       this.$set(item, "showmoney", true);

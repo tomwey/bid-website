@@ -1,5 +1,6 @@
 <template>
   <div class="faq-list">
+    <p class="enddate-tip">提疑截止时间: {{enddate}}</p>
     <el-tabs key="faqTab" v-model="tabName" @tab-click="handleClick">
       <el-tab-pane label="提问" name="faq">
         <div class="stat-newbar">
@@ -120,6 +121,9 @@ export default {
       type: String
     },
     purchasematterid: {
+      type: String
+    },
+    enddate: {
       type: String
     }
   },
@@ -316,6 +320,13 @@ export default {
       border-bottom: 0;
     }
   }
+}
+.enddate-tip {
+  font-size: 14px;
+  color: rgb(231, 90, 22);
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
 }
 </style>
 

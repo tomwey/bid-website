@@ -16,7 +16,7 @@
         </div>
         <div class="apply-wrapper">
           <p class="end-date-tip">
-            <count-down prefix="距离投标截止日期还剩" :time="notice.signenddate" no-time-left="投标已截止"></count-down>
+            <count-down prefix="距离投标截止日期还剩" :time="minEndDate" no-time-left="投标已截止"></count-down>
           </p>
         </div>
       </div>
@@ -124,6 +124,7 @@ export default {
       step: "5",
       notice: {},
       steps: [],
+      minEndDate: null,
       loading: false,
       // bidreid: null,
       bidResultData: [
@@ -205,6 +206,8 @@ export default {
             let temp = [];
             let index = 0;
             let activeIndex = 0;
+
+            let compareDates = [];
             // let stepIndex = 0;
             arr.forEach(ele => {
               let time = ele.factenddate || ele.enddate;
@@ -223,8 +226,21 @@ export default {
                 // 已完成
                 activeIndex++;
               }
+
+              if (
+                ele.bidstage == "520" ||
+                ele.bidstage == "525" ||
+                ele.bidstage == "535"
+              ) {
+                compareDates.push(ele.enddate);
+              }
             });
             this.steps = temp;
+
+            compareDates = compareDates.sort();
+            if (compareDates.length > 0) {
+              this.minEndDate = compareDates[0];
+            }
 
             this.active = activeIndex;
             if (this.active < this.steps.length) {

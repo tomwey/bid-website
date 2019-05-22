@@ -46,7 +46,7 @@ export default {
       // if (this.msgtype === 0) {
       let obj = Object.assign({}, this.$store.state.supinfo);
       let count = parseInt(obj.msgunreadcount || 0);
-      if (count > 0) {
+      if (count > 0 && item.readstate == "0") {
         obj.msgunreadcount = count - 1;
         this.$store.commit("updatesupinfo", obj);
       }

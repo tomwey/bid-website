@@ -224,9 +224,7 @@ export default {
           label: "税率",
           field: "rate",
           unit: "%",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "税率不能为空", trigger: "blur" }]
         },
         {
           id: "price-file",
@@ -236,7 +234,10 @@ export default {
           field: "file1",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",
-          fieldname: "annexids"
+          fieldname: "annexids",
+          rules: [
+            { required: true, message: "商务标附件不能为空", trigger: "blur" }
+          ]
         },
         {
           id: "other-file",

@@ -214,7 +214,8 @@ export default {
             let index = 0;
             let activeIndex = 0;
 
-            let compareDates = [];
+            let undoneDates = [];
+            let doneDates = [];
             // let stepIndex = 0;
             arr.forEach(ele => {
               let time = ele.factenddate || ele.enddate;
@@ -240,19 +241,42 @@ export default {
                 ele.bidstage == "525" ||
                 ele.bidstage == "535"
               ) {
-                compareDates.push(ele.enddate);
+                // compareDates.push(ele.enddate);
+                if (ele.factstatenum == "40") {
+                  doneDates.push(ele.enddate);
+                } else {
+                  undoneDates.push(ele.enddate);
+                }
               }
             });
             this.steps = temp;
 
-            compareDates = compareDates.sort();
-            if (compareDates.length > 0) {
-              this.minEndDate = compareDates[0];
+            if (undoneDates.length === 0) {
+              // 表示全部已完成
+              doneDates = doneDates.sort();
+              if (doneDates.length > 0) {
+                // 完成的节点取最大时间，业务要求
+                this.minEndDate = doneDates[doneDates.length - 1];
+              }
+            } else {
+              // 有未完成的节点
+              undoneDates = undoneDates.sort();
+              if (undoneDates.length > 0) {
+                // 未完成的节点取最小时间，业务要求
+                this.minEndDate = undoneDates[0];
+              }
             }
+
+            // compareDates = compareDates.sort();
+            // if (compareDates.length > 0) {
+            //   this.minEndDate = compareDates[0];
+            // }
 
             this.active = activeIndex;
             if (this.active < this.steps.length) {
               this.step = this.steps[this.active].step;
+              console.log(this.steps[this.active]);
+              this.currEndDate = this.steps[this.active].enddate;
             }
           }
         }
@@ -367,6 +391,11 @@ export default {
   padding: 0 10px;
 }
 
+.el-step__head.is-wait {
+  color: #333;
+  border-color: #333;
+}
+
 .el-step__head.is-process {
   color: rgb(231, 90, 22);
   border-color: rgb(231, 90, 22);
@@ -375,6 +404,11 @@ export default {
 .el-step__title.is-process,
 .el-step__description.is-process {
   color: rgb(231, 90, 22);
+}
+
+.el-step__title.is-wait,
+.el-step__description.is-wait {
+  color: #333;
 }
 
 .el-step__description {
@@ -390,10 +424,19 @@ export default {
     }
   }
   &.selected {
+    .el-step__head {
+      color: rgb(231, 90, 22) !important;
+      border-color: rgb(231, 90, 22) !important;
+    }
+    .el-step__title,
+    .el-step__description {
+      color: rgb(231, 90, 22) !important;
+    }
     .el-step__main {
       background: #f2f2f2;
       padding-bottom: 5px;
       position: relative;
+
       &::after {
         content: " ";
         display: block;

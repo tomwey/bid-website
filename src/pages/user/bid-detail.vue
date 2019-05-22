@@ -423,6 +423,15 @@ export default {
       padding-bottom: 5px;
     }
   }
+  .el-step__title.is-process,
+  .el-step__description.is-process {
+    font-weight: normal !important;
+    color: #333 !important;
+  }
+  .el-step__head.is-process {
+    border-color: #333;
+    color: #333;
+  }
   &.selected {
     .el-step__head {
       color: rgb(231, 90, 22) !important;
@@ -432,6 +441,10 @@ export default {
     .el-step__description {
       color: rgb(231, 90, 22) !important;
     }
+    .el-step__title {
+      font-weight: bold !important;
+    }
+
     .el-step__main {
       background: #f2f2f2;
       padding-bottom: 5px;

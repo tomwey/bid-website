@@ -115,30 +115,30 @@ export default {
       abandonMatters: [],
       pageSize: 20,
       applyControls: [
-        {
-          field: "reason",
-          type: 2,
-          label: "放弃原因",
-          options: [],
-          rules: [
-            { required: true, message: "放弃原因不能为空", trigger: "change" }
-          ]
-        },
-        {
-          field: "file",
-          type: 8,
-          label: "放弃函件",
-          domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_GiveUp",
-          fieldname: "giveupannex"
-          // subtype: "textarea"
-        },
-        {
-          field: "memo",
-          type: 1,
-          label: "备注信息",
-          subtype: "textarea"
-        }
+        // {
+        //   field: "reason",
+        //   type: 2,
+        //   label: "放弃原因",
+        //   options: [],
+        //   rules: [
+        //     { required: true, message: "放弃原因不能为空", trigger: "change" }
+        //   ]
+        // },
+        // {
+        //   field: "file",
+        //   type: 8,
+        //   label: "放弃函件",
+        //   domanid: this.$store.state.supinfo.accountid || "0",
+        //   tablename: "H_SUP_Bid_GiveUp",
+        //   fieldname: "giveupannex"
+        //   // subtype: "textarea"
+        // },
+        // {
+        //   field: "memo",
+        //   type: 1,
+        //   label: "备注信息",
+        //   subtype: "textarea"
+        // }
       ],
       applyFormModel: {},
       tableData: []

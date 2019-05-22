@@ -40,9 +40,11 @@ export default {
   methods: {
     showDetail(item) {
       if (this.msgtype === 0) {
-        let count = parseInt(this.$store.state.supinfo.msgunreadcount || 0);
+        let obj = Object.assign({}, this.$store.state.supinfo);
+        let count = parseInt(obj.msgunreadcount || 0);
         if (count > 0) {
-          this.$store.state.supinfo.msgunreadcount = parseInt(count - 1);
+          obj.msgunreadcount = count - 1;
+          this.$store.commit("updatesupinfo", obj);
         }
       }
       this.$router.push({ path: "/admin/messages/" + item.msgid });

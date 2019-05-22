@@ -19,8 +19,8 @@
             {{item.name}}
             <span
               class="custom-badge"
-              v-if="item.badge"
-            >{{item.badge > 99 ? '99+' : item.badge}}</span>
+              v-if="item.hasBadge && msgunreadCount > 0"
+            >{{msgunreadCount > 99 ? '99+' : msgunreadCount}}</span>
           </dd>
         </dl>
 
@@ -55,7 +55,7 @@ export default {
             {
               name: "我的消息",
               route: "user_messages",
-              badge: parseInt(this.$store.state.supinfo.msgunreadcount)
+              hasBadge: true
             }
           ]
         },
@@ -178,6 +178,11 @@ export default {
       if (route.name === "user_home") {
         this.currentMenu = this.menus[0];
       }
+    }
+  },
+  computed: {
+    msgunreadCount() {
+      return parseInt(this.$store.state.supinfo.msgunreadcount);
     }
   },
   methods: {

@@ -24,7 +24,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
-      <el-table key="notifyTable" :data="notifyTableData" stripe style="width: 100%">
+      <!-- <el-table key="notifyTable" :data="notifyTableData" stripe style="width: 100%">
         <el-table-column label="商务议标要点" prop="biddisscuspoints" width="280"></el-table-column>
         <el-table-column label="其他议标要点" prop="otherbidpoints" width="280"></el-table-column>
         <el-table-column label="议标约谈时间" prop="biddiscussdate" width="120"></el-table-column>
@@ -41,7 +41,26 @@
             </div>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table>-->
+      <div style="text-align:center" v-if="notifyTableData.length === 0">暂无数据</div>
+      <table class="table">
+        <tr v-for="(item,index) in notifyTableData" :key="index">
+          <td class="label">
+            <div class="label-box">{{item.label}}</div>
+          </td>
+          <td class="value">
+            <div class="content" v-html="item.value" v-if="item.type === 1"></div>
+            <div class="file-list" v-if="item.type === 2">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in item.value_fileList"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
+          </td>
+        </tr>
+      </table>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="notifyTableVisible = false">关 闭</el-button>
       </div>
@@ -159,12 +178,54 @@ export default {
             },
             res => {
               // console.log(res);
+              // if (res.code == "0") {
+              //   this.notifyTableData = res.data;
+              //   this.notifyTableData.forEach(item => {
+              //     this.loadAnnex(item, "biddiscussnotice");
+              //     // this.loadAnnex(item, "otherannexids");
+              //   });
+              //   // this.$set(item, "bidList", res.data || []);
+              // }
               if (res.code == "0") {
-                this.notifyTableData = res.data;
-                this.notifyTableData.forEach(item => {
-                  this.loadAnnex(item, "biddiscussnotice");
-                  // this.loadAnnex(item, "otherannexids");
-                });
+                if (res.data.length > 0) {
+                  let item = res.data[0];
+                  let temp = [];
+                  temp.push({
+                    label: "商务议标要点",
+                    value: item.biddisscuspoints,
+                    type: 1
+                  });
+                  temp.push({
+                    label: "其他议标要点",
+                    value: item.otherbidpoints,
+                    type: 1
+                  });
+                  temp.push({
+                    label: "议标约谈时间",
+                    value: item.biddiscussdate,
+                    type: 1
+                  });
+                  temp.push({
+                    label: "议标通知综述",
+                    value: item.bidnoticesummary,
+                    type: 1
+                  });
+                  let obj = {
+                    label: "议标通知",
+                    value: item.biddiscussnotice,
+                    type: 2
+                  };
+                  temp.push(obj);
+
+                  this.loadAnnex(obj, "value");
+
+                  this.notifyTableData = temp;
+                }
+                // this.notifyTableData = res.data;
+                // this.notifyTableData.forEach(item => {
+                // this.loadAnnex(item, "biddiscussnotice");
+                // this.loadAnnex(item, "otherannexids");
+                // });
                 // this.$set(item, "bidList", res.data || []);
               }
             }
@@ -274,6 +335,47 @@ export default {
   background: #fff;
   padding: 30px;
   min-height: 688px;
+}
+
+.table {
+  width: 100%;
+  font-size: 14px !important;
+  color: #333 !important;
+  border: 1px solid #f2f2f2;
+  tr,
+  td {
+    border: 1px solid #f2f2f2;
+  }
+  .label {
+    color: #888;
+    width: 180px;
+    .label-box {
+      width: 180px;
+    }
+  }
+  .value {
+    width: calc(100% - 180px);
+    .content {
+      width: 100%;
+      overflow: auto;
+    }
+
+    .content table {
+      table-layout: auto !important;
+    }
+    // width: 30% !important;
+    img {
+      max-width: 100%;
+    }
+    p {
+      font-size: 14px !important;
+    }
+  }
+  // .value {
+  .file-link {
+    color: rgb(231, 90, 22) !important;
+  }
+  // }
 }
 </style>
 

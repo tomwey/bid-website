@@ -168,17 +168,17 @@
       :close-on-press-escape="false"
     >
       <el-table key="notifyTable" :data="notifyTableData" stripe style="width: 100%">
-        <el-table-column label="商务议标要点" prop="totalamount" width="280"></el-table-column>
-        <el-table-column label="其他议标要点" prop="totalamount" width="280"></el-table-column>
-        <el-table-column label="议标约谈时间" prop="taxrate" width="120"></el-table-column>
-        <el-table-column label="议标通知综述" prop="taxrate" width="120"></el-table-column>
+        <el-table-column label="商务议标要点" prop="biddisscuspoints" width="280"></el-table-column>
+        <el-table-column label="其他议标要点" prop="otherbidpoints" width="280"></el-table-column>
+        <el-table-column label="议标约谈时间" prop="biddiscussdate" width="120"></el-table-column>
+        <el-table-column label="议标通知综述" prop="bidnoticesummary" width="120"></el-table-column>
         <el-table-column label="议标通知">
           <template slot-scope="scope">
             <div class="file-list">
               <span
                 @click="previewFile(file)"
                 class="file-item"
-                v-for="file in scope.row['annexids_fileList']"
+                v-for="file in scope.row['biddiscussnotice_fileList']"
                 :key="file.url"
               >{{file.name}}</span>
             </div>
@@ -330,6 +330,25 @@ export default {
     // },
     viewNotifies(item) {
       this.notifyTableVisible = true;
+      this.$post(
+        {
+          action: "P_SUP_Bid_GetBidDdiscussNoticeDetail",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: item.bidreid || ""
+        },
+        res => {
+          // console.log(res);
+          if (res.code == "0") {
+            this.notifyTableData = res.data;
+            this.notifyTableData.forEach(item => {
+              this.loadAnnex(item, "biddiscussnotice");
+              // this.loadAnnex(item, "otherannexids");
+            });
+            // this.$set(item, "bidList", res.data || []);
+          }
+        }
+      );
     },
     viewBids(item) {
       this.dialogTableVisible = true;

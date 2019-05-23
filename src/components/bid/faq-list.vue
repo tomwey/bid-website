@@ -56,7 +56,7 @@
         </div>
         <div class="list">
           <el-table :data="tableData" key="faqTable2" stripe style="width: 100%">
-            <el-table-column prop="bidsummary" label="提问内容"></el-table-column>
+            <el-table-column prop="bidsummary" label="答疑内容"></el-table-column>
             <el-table-column label="答疑附件" width="180">
               <template slot-scope="scope">
                 <div class="file-list">

@@ -53,8 +53,11 @@
         </el-table-column>-->
         <el-table-column label="事项名称" prop="mattersubname"></el-table-column>
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
-        <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
-        <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
+        <el-table-column label="楼栋/标段" prop="section" width="100"></el-table-column>
+        <el-table-column label="投标截止时间" prop="enddate" width="150"></el-table-column>
+        <el-table-column label="议标轮次" width="80">
+          <template slot-scope="scope">{{(parseInt(scope.row.bidturn) + 1)}}轮</template>
+        </el-table-column>
         <!-- <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
           <template slot-scope="scope">
             <div class="file-list">
@@ -414,8 +417,9 @@ export default {
           action: "P_SUP_Bid_GetSubBidList",
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.token || "",
-          p3: item.bidreid || "",
-          p4: "30"
+          p3: item.purchasemattersubid || "0",
+          p4: "30",
+          p5: item.bidturn || "0"
         },
         res => {
           if (res.code == "0") {
@@ -483,9 +487,9 @@ export default {
             }
           }
 
-          this.tableData.forEach(item => {
-            this.loadAnnex(item, "bidnoticeannexs");
-          });
+          // this.tableData.forEach(item => {
+          //   this.loadAnnex(item, "bidnoticeannexs");
+          // });
         }
       );
     },

@@ -363,9 +363,11 @@ export default {
         },
         res => {
           this.loading = false;
-          this.tableData = res["data"];
-          if (this.tableData.length > 0) {
-            this.totalSize = parseInt(this.tableData[0]["totalcount"]);
+          if (res.code == "0") {
+            this.tableData = res["data"];
+            if (this.tableData.length > 0) {
+              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
+            }
           }
 
           this.tableData.forEach(item => {

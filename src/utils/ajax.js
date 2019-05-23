@@ -7,12 +7,32 @@ import router from '../router';
 Vue.prototype.$axios = axios;
 // axios.defaults.withCredentials = true;
 
+function printParams(param) {
+    let temp = [];
+    for (const key in param) {
+        if (param.hasOwnProperty(key)) {
+            if (key != 'action') {
+                temp.push(key);
+            }
+        }
+    }
+    temp = temp.sort();
+    let values = [];
+    temp.forEach(ele => {
+        values.push(`'${param[ele]}'`);
+    });
+    console.log(`exec ${param.action} ${values.join(',')}`);
+}
+
 function post(param, callback) {
     let payload = JSON.stringify(param);
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
 
     // 10.19.0.162 vendor.heneng.cn
+    // console.log(param);
+    printParams(param);
+
     axios.post("http://vendor.heneng.cn:16791/api/gwc", {
         ak: ak,
         i: i,

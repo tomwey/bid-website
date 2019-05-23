@@ -55,7 +55,7 @@
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
         <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
-        <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
+        <!-- <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -66,9 +66,10 @@
               >{{file.name}}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="操作" width="180">
+        </el-table-column>-->
+        <el-table-column label="操作" width="280" header-align="center">
           <template slot-scope="scope">
+            <el-button size="small" @click="viewNotifies(scope.row)">通知详情</el-button>
             <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
             <el-button type="primary" size="small" @click="newPriceBid(scope.row)">投标</el-button>
           </template>
@@ -157,6 +158,37 @@
         <!-- <el-button type="primary" @click="commit">提 交</el-button> -->
       </div>
     </el-dialog>
+    <el-dialog
+      title="通知详情"
+      :visible.sync="notifyTableVisible"
+      :append-to-body="true"
+      center
+      width="80%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-table key="notifyTable" :data="notifyTableData" stripe style="width: 100%">
+        <el-table-column label="商务议标要点" prop="totalamount" width="280"></el-table-column>
+        <el-table-column label="其他议标要点" prop="totalamount" width="280"></el-table-column>
+        <el-table-column label="议标约谈时间" prop="taxrate" width="120"></el-table-column>
+        <el-table-column label="议标通知综述" prop="taxrate" width="120"></el-table-column>
+        <el-table-column label="议标通知">
+          <template slot-scope="scope">
+            <div class="file-list">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in scope.row['annexids_fileList']"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="notifyTableVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
       <img
         :src="previewImage"
@@ -192,8 +224,11 @@ export default {
       loading: false,
       commiting: false,
       dialogPreviewVisible: false,
+      notifyTableVisible: false,
+      notifyTableData: [],
       previewImage: null,
       currPurchaseMatterSubID: null,
+      currBidItem: null,
       tableData: [],
       totalSize: 0,
       pageSize: 20,
@@ -222,9 +257,7 @@ export default {
           label: "税率",
           field: "rate",
           unit: "%",
-          rules: [
-            // { required: true, message: "注册资本不能为空", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "税率不能为空", trigger: "blur" }]
         },
         {
           id: "price-file",
@@ -234,7 +267,10 @@ export default {
           field: "file1",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",
-          fieldname: "annexids"
+          fieldname: "annexids",
+          rules: [
+            { required: true, message: "商务标附件不能为空", trigger: "change" }
+          ]
         },
         {
           id: "other-file",
@@ -292,6 +328,9 @@ export default {
     //     }
     //   );
     // },
+    viewNotifies(item) {
+      this.notifyTableVisible = true;
+    },
     viewBids(item) {
       this.dialogTableVisible = true;
       this.$post(
@@ -356,7 +395,8 @@ export default {
           p2: this.$store.state.token || "",
           p3: this.purchasematterid || "",
           p4: this.page,
-          p5: this.pageSize
+          p5: this.pageSize,
+          p6: "30"
         },
         res => {
           this.loading = false;
@@ -375,7 +415,8 @@ export default {
       this.$set(item, "showmoney", true);
     },
     newPriceBid(item) {
-      this.currPurchaseMatterSubID = item.purchasemattersubid;
+      this.currBidItem = Object.assign({}, item);
+      // this.currPurchaseMatterSubID = item.purchasemattersubid;
       this.bidPriceFormModel = {};
       this.dialogFormVisible = true;
     },
@@ -388,9 +429,9 @@ export default {
               action: "P_SUP_Bid_CreateBusinessBid",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.bidreid || "",
-              p4: this.purchasematterid || "",
-              p5: this.currPurchaseMatterSubID || "",
+              p3: this.currBidItem.bidreid || "",
+              p4: this.currBidItem.purchasematterid || "",
+              p5: this.currBidItem.purchasemattersubid || "",
               p6: this.bidPriceFormModel["money"] || "",
               p7: this.bidPriceFormModel["rate"] || "",
               p8: this.bidPriceFormModel["file1"] || "",
@@ -420,6 +461,18 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.el-table__header-wrapper {
+  thead {
+    tr th:last-child {
+      .cell {
+        text-align: center;
+      }
+    }
+  }
+}
+</style>
+
 
 
 

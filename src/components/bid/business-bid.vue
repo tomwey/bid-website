@@ -55,7 +55,7 @@
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
         <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
-        <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
+        <!-- <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -66,8 +66,8 @@
               >{{file.name}}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="操作" width="180">
+        </el-table-column>-->
+        <el-table-column label="操作" width="180" header-align="center">
           <template slot-scope="scope">
             <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
             <el-button type="primary" size="small" @click="newPriceBid(scope.row)">投标</el-button>

@@ -275,7 +275,7 @@ export default {
             this.active = activeIndex;
             if (this.active < this.steps.length) {
               this.step = this.steps[this.active].step;
-              console.log(this.steps[this.active]);
+              // console.log(this.steps[this.active]);
               this.currEndDate = this.steps[this.active].enddate;
             }
           }

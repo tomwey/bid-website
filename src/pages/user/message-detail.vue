@@ -14,6 +14,47 @@
         <el-button v-if="hasDetail" @click="jumpTo">点击查看</el-button>
       </div>
     </div>
+
+    <el-dialog
+      title="通知详情"
+      :visible.sync="notifyTableVisible"
+      :append-to-body="true"
+      center
+      width="80%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-table key="notifyTable" :data="notifyTableData" stripe style="width: 100%">
+        <el-table-column label="商务议标要点" prop="biddisscuspoints" width="280"></el-table-column>
+        <el-table-column label="其他议标要点" prop="otherbidpoints" width="280"></el-table-column>
+        <el-table-column label="议标约谈时间" prop="biddiscussdate" width="120"></el-table-column>
+        <el-table-column label="议标通知综述" prop="bidnoticesummary" width="120"></el-table-column>
+        <el-table-column label="议标通知">
+          <template slot-scope="scope">
+            <div class="file-list">
+              <span
+                @click="previewFile(file)"
+                class="file-item"
+                v-for="file in scope.row['biddiscussnotice_fileList']"
+                :key="file.url"
+              >{{file.name}}</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="notifyTableVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
+      <img
+        :src="previewImage"
+        style="max-width: 100%"
+        @load="imgLoaded = true"
+        class="preview-image"
+        :class="{loaded:imgLoaded, loading: !imgLoaded}"
+      >
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -21,7 +62,12 @@ export default {
   name: "message-detail",
   data() {
     return {
-      message: {}
+      message: {},
+      notifyTableVisible: false,
+      dialogPreviewVisible: false,
+      previewImage: null,
+      imgLoaded: false,
+      notifyTableData: []
     };
   },
   mounted() {
@@ -36,9 +82,9 @@ export default {
         "1022",
         // "1015",
         "1025",
+        // "1101",
         "1019",
         "1029",
-        "1101",
         "1201",
         "1202",
         "1203",
@@ -51,6 +97,48 @@ export default {
     }
   },
   methods: {
+    loadAnnex(item, fieldName) {
+      if (item[fieldName] && item[fieldName] != "0") {
+        this.$post(
+          {
+            action: "P_SY_GetAnnex",
+            p1: item[fieldName]
+          },
+          res => {
+            // console.log(res);
+            if (res.code === "0") {
+              let arr = res.data;
+              let temp = [];
+              arr.forEach(file => {
+                // console.log(file);
+                let fileName = file.filename || "";
+                temp.push({
+                  name: file.filename,
+                  url: file.url,
+                  annexid: file.annexid,
+                  isimage:
+                    fileName.indexOf(".png") !== -1 ||
+                    fileName.indexOf(".gif") !== -1 ||
+                    fileName.indexOf(".jpg") !== -1 ||
+                    fileName.indexOf(".jpeg") !== -1 ||
+                    fileName.indexOf(".webp") !== -1
+                });
+              });
+              this.$set(item, fieldName + "_fileList", temp);
+            }
+          }
+        );
+      }
+    },
+    previewFile(file) {
+      this.imgLoaded = false;
+      if (file.isimage) {
+        this.previewImage = file.url;
+        this.dialogPreviewVisible = true;
+      } else {
+        window.open(file.url);
+      }
+    },
     jumpTo() {
       switch (this.message.msgtype) {
         case "1003": {
@@ -58,6 +146,29 @@ export default {
           this.$router.push({
             path: "/admin/apply-bid/" + `${this.message.jumpid}-0`
           });
+          return;
+        }
+        case "1101": {
+          this.notifyTableVisible = true;
+          this.$post(
+            {
+              action: "P_SUP_Bid_GetBidDdiscussNoticeDetail",
+              p1: this.$store.state.supinfo.accountid || "",
+              p2: this.$store.state.token || "",
+              p3: this.message.bidreid || ""
+            },
+            res => {
+              // console.log(res);
+              if (res.code == "0") {
+                this.notifyTableData = res.data;
+                this.notifyTableData.forEach(item => {
+                  this.loadAnnex(item, "biddiscussnotice");
+                  // this.loadAnnex(item, "otherannexids");
+                });
+                // this.$set(item, "bidList", res.data || []);
+              }
+            }
+          );
           return;
         }
         case "1014":

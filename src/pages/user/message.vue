@@ -92,6 +92,25 @@ export default {
           }
         }
       );
+
+      // 获取一次未读消息
+      this.$post(
+        {
+          action: "P_SUP_GetAccountSupInfo",
+          p1: this.$store.state.supinfo.accountid,
+          p2: this.$store.state.token
+        },
+        res => {
+          // console.log(res);
+          if (res.code === "0") {
+            // store.state.supinfo =
+            let arr = res.data;
+            if (arr.length > 0) {
+              this.$store.commit("updatesupinfo", arr[0]);
+            }
+          }
+        }
+      );
     },
     selectTab(index) {
       this.active = index;

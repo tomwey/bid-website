@@ -55,9 +55,10 @@
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="100"></el-table-column>
         <el-table-column label="投标截止时间" prop="enddate" width="150"></el-table-column>
-        <el-table-column label="议标轮次" width="80">
+        <el-table-column label="议标状态" prop="statename" width="80"></el-table-column>
+        <!-- <el-table-column label="议标轮次" width="80">
           <template slot-scope="scope">{{(parseInt(scope.row.bidturn) + 1)}}轮</template>
-        </el-table-column>
+        </el-table-column>-->
         <!-- <el-table-column label="通知附件" prop="bidnoticeannexs" width="180">
           <template slot-scope="scope">
             <div class="file-list">

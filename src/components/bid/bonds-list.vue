@@ -28,7 +28,7 @@
           <template slot-scope="scope">{{scope.row.bondexplain || "无"}}</template>
         </el-table-column>
         <el-table-column prop="bonddate" label="时间" width="180"></el-table-column>
-        <el-table-column prop="bondstate" label="状态" width="120">
+        <!-- <el-table-column prop="bondstate" label="状态" width="120">
           <template slot-scope="scope">
             <span
               type="primary"
@@ -36,7 +36,7 @@
               :class="{pending:scope.row.bondstatename == '审核中',approved:scope.row.bondstatename == '已通过',rejected:scope.row.bondstatename == '未通过',danger:scope.row.bondstatename == '已放弃'}"
             >{{scope.row.bondstatename}}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination

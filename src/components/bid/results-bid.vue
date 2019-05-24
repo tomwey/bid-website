@@ -24,7 +24,7 @@
         </el-table-column>
         <el-table-column label="是否中标" width="120">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="!scope.row.bidstate == '20'">未中标</el-tag>
+            <el-tag type="danger" v-if="scope.row.bidstate == '20'">未中标</el-tag>
             <el-tag type="success" v-if="scope.row.bidstate == '10'">已中标</el-tag>
           </template>
         </el-table-column>

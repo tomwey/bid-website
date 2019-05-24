@@ -46,11 +46,10 @@
         <el-button
           type="primary"
           @click="apply"
-          :disabled="notice.isoverdue == '1' || notice.issignup == '1'"
+          :disabled="notice.isoverdue == '1' || notice.issignup == '1'|| notice.isgiveup == '1'"
         >立即报名</el-button>
       </div>
     </div>
-
     <el-dialog
       title="报名"
       :visible.sync="applyFormVisible"

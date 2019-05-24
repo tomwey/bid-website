@@ -56,7 +56,12 @@
               :disabled="scope.row.issignup == '1' || scope.row.isoverdue == '1' || scope.row.isgiveup == '1'"
               @click="apply(scope.row);"
             >报名</el-button>&nbsp;
-            <el-button type="danger" size="small" @click="abandon(scope.row);">放弃</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              :disabled="scope.row.isgiveup == '1'"
+              @click="abandon(scope.row);"
+            >放弃</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -504,8 +509,9 @@ export default {
             },
             res => {
               this.loading = false;
-              if (res.code == 0) {
-                this.notice.issignup = "1";
+              console.log(res);
+              if (res.code == "0") {
+                // this.notice.issignup = "1";
                 this.applyFormVisible = false;
                 this.$message({
                   type: "success",

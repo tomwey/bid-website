@@ -49,7 +49,7 @@
           @click="apply"
           :disabled="notice.isoverdue == '1' || notice.issignup == '1'|| notice.isgiveup == '1'"
         >立即报名</el-button>&emsp;
-        <el-button type="danger" size="small" @click="abandon">放弃</el-button>
+        <el-button type="danger" size="small" @click="abandon" :disabled="notice.isgiveup == '1'">放弃</el-button>
       </div>
     </div>
 

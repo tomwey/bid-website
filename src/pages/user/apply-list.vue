@@ -79,7 +79,12 @@
               @click="addInfo(scope.row)"
               :disabled="scope.row.statenum != '50'"
             >再次报名</el-button>&nbsp;
-            <el-button type="danger" size="small" @click="abandon(scope.row);">放弃</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              :disabled="scope.row.isgiveup == '1'"
+              @click="abandon(scope.row);"
+            >放弃</el-button>
           </template>
         </el-table-column>
       </el-table>

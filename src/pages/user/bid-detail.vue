@@ -272,6 +272,8 @@ export default {
             //   this.minEndDate = compareDates[0];
             // }
 
+            console.log(activeIndex);
+
             this.active = activeIndex;
             if (this.active < this.steps.length) {
               this.step = this.steps[this.active].step;

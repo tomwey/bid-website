@@ -174,7 +174,7 @@ export default {
               action: "P_SUP_Bid_GetBidDdiscussNoticeDetail",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.message.bidreid || ""
+              p3: this.message.jumpid || "0"
             },
             res => {
               // console.log(res);

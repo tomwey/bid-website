@@ -53,7 +53,7 @@ export default {
       let endDate = new Date(this.time && this.time.replace(/-/g, "/")); //设置截止时间
       let end = endDate.getTime();
       let leftTime = end - now; //时间差
-      return leftTime >= 0;
+      return leftTime > 0;
     }
   },
   methods: {
@@ -95,11 +95,11 @@ export default {
         if (h < 10) {
           h = "0" + h;
         }
-
-        this.countDownText = `${d}天${h}小时${m}分${s}秒`;
       } else {
         // this.hasLeftTime = false;
       }
+
+      this.countDownText = `${d}天${h}小时${m}分${s}秒`;
     }
   }
 };

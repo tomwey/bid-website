@@ -105,7 +105,7 @@ export default {
         },
         res => {
           this.loading = false;
-          console.log(res);
+          // console.log(res);
           if (res.code == "0") {
             this.tableData = res.data;
             if (this.tableData.length > 0) {

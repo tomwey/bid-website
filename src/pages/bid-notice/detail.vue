@@ -31,13 +31,19 @@
             <td class="value">
               <div class="content" v-html="item.value" v-if="item.type !== 12"></div>
               <div class="file-list" v-if="item.type === 12">
-                <a
+                <!-- <a
                   v-for="file in item.fileList"
                   target="_blank"
                   :href="file.url"
                   :key="file.url"
                   class="file-item"
-                >{{file.name}}</a>
+                >{{file.name}}</a>-->
+                <span
+                  @click="previewFile(file)"
+                  class="file-item"
+                  v-for="file in item.fileList"
+                  :key="file.url"
+                >{{file.name}}</span>
               </div>
             </td>
           </tr>
@@ -441,6 +447,16 @@ export default {
       }
       this.applyFormVisible = true;
     },
+    previewFile(file) {
+      if (this.notice.isgiveup == "1") {
+        this.$message({
+          type: "error",
+          message: "您已经放弃，不能下载附件"
+        });
+        return;
+      }
+      window.open(file.url);
+    },
     commit2() {
       // console.log(123);
       this.$refs.dialogForm.validateFields(flag => {
@@ -635,6 +651,7 @@ export default {
 .file-list {
   .file-item {
     display: block;
+    cursor: pointer;
     // padding: 10px 0;
     font-size: 14px;
     color: rgb(231, 90, 22);

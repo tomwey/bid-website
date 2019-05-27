@@ -30,13 +30,19 @@
             <td class="value">
               <div class="content" v-html="item.value" v-if="item.type !== 12"></div>
               <div class="file-list" v-if="item.type === 12">
-                <a
+                <!-- <a
                   v-for="file in item.fileList"
                   target="_blank"
                   :href="file.url"
                   :key="file.url"
                   class="file-item"
-                >{{file.name}}</a>
+                >{{file.name}}</a>-->
+                <span
+                  @click="previewFile(file)"
+                  class="file-item"
+                  v-for="file in item.fileList"
+                  :key="file.url"
+                >{{file.name}}</span>
               </div>
             </td>
           </tr>
@@ -196,6 +202,16 @@ export default {
       this.loadAnnexes(item);
 
       this.tableData = temp;
+    },
+    previewFile(file) {
+      if (this.notice.isgiveup == "1") {
+        this.$message({
+          type: "error",
+          message: "您已经放弃，不能下载附件"
+        });
+        return;
+      }
+      window.open(file.url);
     },
     loadAnnexes(item) {
       if (!item || !item.value || item.value == 0) return;
@@ -366,29 +382,11 @@ export default {
     display: block;
     // padding: 10px 0;
     font-size: 14px;
+    cursor: pointer;
     color: rgb(231, 90, 22);
     // margin-bottom: 5px;
     padding: 5px 0;
     text-decoration: underline;
-  }
-}
-</style>
-<style lang="scss">
-.abandon-wrap {
-  position: relative;
-  .abandon {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 120px;
-    height: 120px;
-    line-height: 120px;
-    border-radius: 50%;
-    border: 2px dashed rgb(208, 2, 27);
-    text-align: center;
-    font-size: 20px;
-    transform: rotate(-30deg);
-    color: rgb(208, 2, 27);
   }
 }
 </style>

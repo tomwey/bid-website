@@ -6,7 +6,8 @@
         <el-breadcrumb-item>公告详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="detail">
+    <div class="detail abandon-wrap">
+      <div class="abandon" v-if="notice.isgiveup == '1'">已放弃</div>
       <h2 class="title">{{notice.noticetitle}}</h2>
       <div class="summary">
         <span class="date">发布日期: {{notice.publishdate}}</span>&emsp;

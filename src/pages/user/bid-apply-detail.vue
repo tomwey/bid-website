@@ -7,7 +7,8 @@
       </el-breadcrumb>
     </div>
 
-    <div class="detail">
+    <div class="detail abandon-wrap">
+      <div class="abandon" v-if="notice.isgiveup == '1'">已放弃</div>
       <h2 class="title">{{notice.noticetitle}}</h2>
       <div class="summary">
         <span class="date">发布日期: {{notice.publishdate}}</span>&emsp;
@@ -372,5 +373,25 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.abandon-wrap {
+  position: relative;
+  .abandon {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    border-radius: 50%;
+    border: 2px dashed rgb(208, 2, 27);
+    text-align: center;
+    font-size: 20px;
+    transform: rotate(-30deg);
+    color: rgb(208, 2, 27);
+  }
+}
+</style>
+
 
 

@@ -6,7 +6,8 @@
         <el-breadcrumb-item>详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="maincontent">
+    <div class="maincontent abandon-wrap">
+      <div class="abandon" v-if="notice.isgiveup == '1'">已弃标</div>
       <div class="bid-info">
         <h2 class="title">{{notice.noticetitle}}</h2>
         <div class="summary">

@@ -177,15 +177,6 @@ export default {
               p3: this.message.jumpid || "0"
             },
             res => {
-              // console.log(res);
-              // if (res.code == "0") {
-              //   this.notifyTableData = res.data;
-              //   this.notifyTableData.forEach(item => {
-              //     this.loadAnnex(item, "biddiscussnotice");
-              //     // this.loadAnnex(item, "otherannexids");
-              //   });
-              //   // this.$set(item, "bidList", res.data || []);
-              // }
               if (res.code == "0") {
                 if (res.data.length > 0) {
                   let item = res.data[0];
@@ -221,12 +212,6 @@ export default {
 
                   this.notifyTableData = temp;
                 }
-                // this.notifyTableData = res.data;
-                // this.notifyTableData.forEach(item => {
-                // this.loadAnnex(item, "biddiscussnotice");
-                // this.loadAnnex(item, "otherannexids");
-                // });
-                // this.$set(item, "bidList", res.data || []);
               }
             }
           );

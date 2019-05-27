@@ -95,11 +95,11 @@ export default {
         if (h < 10) {
           h = "0" + h;
         }
+
+        this.countDownText = `${d}天${h}小时${m}分${s}秒`;
       } else {
         // this.hasLeftTime = false;
       }
-
-      this.countDownText = `${d}天${h}小时${m}分${s}秒`;
     }
   }
 };

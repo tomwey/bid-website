@@ -102,8 +102,8 @@ export default {
         // "1015",
         "1025",
         // "1101",
-        "1019",
-        "1029",
+        // "1019",
+        // "1029",
         "1201",
         "1202",
         "1203",
@@ -254,6 +254,16 @@ export default {
 
           this.$router.push({
             path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-2`
+          });
+          return;
+        }
+        case "1019":
+        case "1029": {
+          // 我的投标-投标保证金
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-1`
           });
           return;
         }

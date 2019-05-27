@@ -20,7 +20,7 @@
       </el-tab-pane>
       <el-tab-pane label="补充材料附件" name="1">
         <el-table :data="attachmentData" key="faqTable135" stripe style="width: 100%">
-          <el-table-column prop="uploaddesc" label="上传描述"></el-table-column>
+          <el-table-column prop="uploaddesc" label="补充招标文件说明"></el-table-column>
           <el-table-column label="附件">
             <template slot-scope="scope">
               <div class="file-list">

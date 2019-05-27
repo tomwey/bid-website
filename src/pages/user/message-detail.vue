@@ -269,11 +269,19 @@ export default {
         case "1311":
         case "1321": {
           // 我的投标—中标通知
-          localStorage.setItem("from", "/admin/bids");
+          // localStorage.setItem("from", "/admin/bids");
 
-          this.$router.push({
-            path: "/admin/bids/" + `${this.message.jumpid}-0-100-0-2`
-          });
+          // this.$router.push({
+          //   path: "/admin/bids/" + `${this.message.jumpid}-0-100-0-2`
+          // });
+          if (!this.message.bidnoticeannex) {
+            this.$message({
+              type: "error",
+              message: "中标结果附件不存在"
+            });
+            return;
+          }
+          this.$PreviewFile(this.message.bidnoticeannex);
           return;
         }
         default:

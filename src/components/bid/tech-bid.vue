@@ -10,7 +10,7 @@
           <p class="enddate-tip">技术标投标截止时间: {{enddate}}</p>
         </el-col>
         <el-col :span="6" style="text-align:right;">
-          <el-button type="primary" @click="newBid">新增技术回标</el-button>
+          <el-button type="primary" @click="newBid" :disabled="cantech == '0'">新增技术回标</el-button>
         </el-col>
       </el-row>
     </div>
@@ -83,6 +83,9 @@ export default {
       type: String
     },
     enddate: {
+      type: String
+    },
+    cantech: {
       type: String
     }
   },

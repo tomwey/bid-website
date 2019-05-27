@@ -6,7 +6,7 @@
           <span class="stat">共{{totalSize}}条</span>
         </el-col>
         <el-col :span="8" style="text-align:right;">
-          <el-button type="primary" @click="newBonds">新增投标保证金</el-button>
+          <el-button type="primary" @click="newBonds" :disabled="canbond == '0'">新增投标保证金</el-button>
         </el-col>
       </el-row>
     </div>
@@ -83,6 +83,9 @@ export default {
       type: String
     },
     purchasematterid: {
+      type: String
+    },
+    canbond: {
       type: String
     }
   },

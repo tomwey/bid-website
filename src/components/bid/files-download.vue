@@ -58,6 +58,9 @@ export default {
     },
     purchasematterid: {
       type: String
+    },
+    candownload: {
+      type: String
     }
   },
   data() {
@@ -175,6 +178,13 @@ export default {
       }
     },
     previewFile(file) {
+      if (this.candownload == "0") {
+        this.$message({
+          type: "error",
+          message: "您已弃标，不能下载招标附件"
+        });
+        return;
+      }
       this.imgLoaded = false;
       if (file.isimage) {
         this.previewImage = file.url;

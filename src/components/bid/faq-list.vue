@@ -9,7 +9,11 @@
               <span class="stat">共{{totalSize}}条</span>
             </el-col>
             <el-col :span="8" style="text-align:right;">
-              <el-button type="primary" @click="faqDialogFormVisible = true">新增提疑</el-button>
+              <el-button
+                type="primary"
+                @click="faqDialogFormVisible = true"
+                :disabled="canfaq == '0'"
+              >新增提疑</el-button>
             </el-col>
           </el-row>
         </div>
@@ -124,6 +128,9 @@ export default {
       type: String
     },
     enddate: {
+      type: String
+    },
+    canfaq: {
       type: String
     }
   },

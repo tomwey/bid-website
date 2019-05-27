@@ -75,7 +75,12 @@
           <template slot-scope="scope">
             <el-button size="small" @click="viewNotifies(scope.row)">通知详情</el-button>
             <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
-            <el-button type="primary" size="small" @click="newPriceBid(scope.row)">投标</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              :disabled="scope.row.canbid == '0'"
+              @click="newPriceBid(scope.row)"
+            >投标</el-button>
           </template>
         </el-table-column>
       </el-table>

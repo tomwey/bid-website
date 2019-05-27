@@ -38,19 +38,27 @@
           v-if="step == '5'"
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
+          :candownload="notice.candownload"
         ></files-download>
         <faq-list
           v-if="step == '510'"
           :enddate="currEndDate"
           :noticeid="noticeID"
+          :canfaq="notice.canque"
           :purchasematterid="purchasematterID"
         ></faq-list>
-        <bonds-list v-if="step == '90'" :noticeid="noticeID" :purchasematterid="purchasematterID"></bonds-list>
+        <bonds-list
+          v-if="step == '90'"
+          :canbond="notice.canbond"
+          :noticeid="noticeID"
+          :purchasematterid="purchasematterID"
+        ></bonds-list>
         <tech-bid
           v-if="step == '520'"
           :bidreid="notice.bidreid"
           :noticeid="noticeID"
           :enddate="currEndDate"
+          :cantech="notice.cantech"
           :purchasematterid="purchasematterID"
         ></tech-bid>
         <business-bid

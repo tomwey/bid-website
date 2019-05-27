@@ -135,7 +135,7 @@ export default {
   },
   data() {
     return {
-      active: 1,
+      active: -1,
       step: "5",
       notice: {},
       steps: [],
@@ -281,7 +281,7 @@ export default {
             //   this.minEndDate = compareDates[0];
             // }
 
-            console.log(activeIndex);
+            // console.log(activeIndex);
 
             this.active = activeIndex;
             if (this.active < this.steps.length) {

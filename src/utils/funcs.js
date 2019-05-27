@@ -52,6 +52,56 @@ export default {
             return token;
         }
 
+        Vue.prototype.$PreviewFile = function(fileUrl) {
+            let div = document.createElement("div");
+            div.style.position = "fixed";
+            div.style.zIndex = "2005";
+            div.style.left = "0";
+            div.style.top = "0";
+            div.style.bottom = "0";
+            div.style.right = "0";
+            div.style.margin = "0";
+            div.style.width = "100%";
+            div.style.height = "100%";
+            div.style.background = "#fff";
+            // div.style.minHeight = "100%";
+            document.body.appendChild(div);
+
+            let span = document.createElement("span");
+            span.style.display = "inline-block";
+            span.style.position = "absolute";
+            span.style.zIndex = "100";
+            div.appendChild(span);
+            span.style.width = "68px";
+            span.style.height = "40px";
+            span.textContent = "关闭";
+            span.style.top = "20px";
+            span.style.right = "30px";
+            span.style.border = "1px solid rgb(231,90,22)";
+            span.style.textAlign = "center";
+            span.style.lineHeight = "40px";
+            span.style.verticalAlign = "middle";
+            span.style.cursor = "pointer";
+            span.style.color = "#fff";
+            span.style.borderRadius = "20px";
+            span.style.background = "rgb(231,90,22)";
+            span.style.fontSize = "14px";
+            span.onclick = () => {
+                document.body.style.overflow = "auto";
+                document.body.removeChild(div);
+            };
+
+            document.body.style.overflow = "hidden";
+
+            let iframe = document.createElement("iframe");
+            iframe.src =
+                "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=" + fileUrl;
+            iframe.width = "100%";
+            iframe.height = "100%";
+            iframe.frameBorder = "0";
+            div.appendChild(iframe);
+        }
+
         function _date1SmallerDate2(d1, d2) {
             const y1 = d1.getFullYear();
             const m1 = d1.getMonth();

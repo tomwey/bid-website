@@ -40,7 +40,13 @@
         ></el-pagination>
       </div>
     </div>
-    <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
+    <el-dialog
+      title="图片预览"
+      :fullscreen="true"
+      :visible.sync="dialogPreviewVisible"
+      width="100%"
+      append-to-body
+    >
       <img :src="previewImage" style="max-width: 100%">
     </el-dialog>
   </div>
@@ -89,7 +95,8 @@ export default {
         this.previewImage = file.url;
         this.dialogPreviewVisible = true;
       } else {
-        window.open(file.url);
+        // this.$PreviewFile(file.url);
+        this.$PreviewFile("http://www.xdocin.com/demo/demo.docx");
       }
     },
     loadData() {

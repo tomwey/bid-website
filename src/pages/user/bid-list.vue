@@ -273,9 +273,8 @@ export default {
       this.$router.push({
         path:
           "/admin/bids/" +
-          `${item.noticeid}-${item.purchasematterid}-${
-            this.currentStep
-          }-${item.shortlistid || "0"}-${this.specialTypeID}`
+          `${item.noticeid}-${item.purchasematterid}-0-${item.shortlistid ||
+            "0"}-${this.specialTypeID}`
       });
     },
     abandon(item) {

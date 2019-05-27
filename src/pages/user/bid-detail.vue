@@ -203,7 +203,7 @@ export default {
       if (arr.length >= 3) {
         return parseInt(arr[2]);
       }
-      return 1;
+      return 0;
     },
     loadBidPlan() {
       this.$post(
@@ -284,10 +284,21 @@ export default {
             // console.log(activeIndex);
 
             this.active = activeIndex;
-            if (this.active < this.steps.length) {
-              this.step = this.steps[this.active].step;
-              // console.log(this.steps[this.active]);
-              this.currEndDate = this.steps[this.active].enddate;
+
+            // 消息通知里面跳转，定位到指定位置
+            let iIndex = this.getCurrentStep();
+            console.log(iIndex);
+            if (iIndex !== 0) {
+              if (iIndex - 1 < this.steps.length) {
+                this.step = this.steps[iIndex - 1].step;
+                this.currEndDate = this.steps[iIndex - 1].enddate;
+              }
+            } else {
+              if (this.active < this.steps.length) {
+                this.step = this.steps[this.active].step;
+                // console.log(this.steps[this.active]);
+                this.currEndDate = this.steps[this.active].enddate;
+              }
             }
           }
         }

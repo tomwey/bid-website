@@ -248,7 +248,7 @@ export default {
           localStorage.setItem("from", "/admin/bids");
 
           this.$router.push({
-            path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-1`
+            path: "/admin/bids/" + `${this.message.jumpid}-0-3-0-2`
           });
           return;
         }

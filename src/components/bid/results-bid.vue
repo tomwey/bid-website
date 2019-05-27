@@ -95,8 +95,8 @@ export default {
         this.previewImage = file.url;
         this.dialogPreviewVisible = true;
       } else {
-        // this.$PreviewFile(file.url);
-        this.$PreviewFile("http://www.xdocin.com/demo/demo.docx");
+        this.$PreviewFile(file.url);
+        // this.$PreviewFile("http://www.xdocin.com/demo/demo.docx");
       }
     },
     loadData() {

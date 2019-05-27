@@ -287,7 +287,7 @@ export default {
 
             // 消息通知里面跳转，定位到指定位置
             let iIndex = this.getCurrentStep();
-            console.log(iIndex);
+            // console.log(iIndex);
             if (iIndex !== 0) {
               if (iIndex - 1 < this.steps.length) {
                 this.step = this.steps[iIndex - 1].step;

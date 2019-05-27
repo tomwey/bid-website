@@ -70,7 +70,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="bonusDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" @click="commit" :loading="commiting">提 交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -106,6 +106,7 @@ export default {
       totalSize: 0,
       pageSize: 20,
       previewImage: null,
+      commiting: false,
       dialogPreviewVisible: false,
       bonusDialogFormVisible: false,
       bidMoneyFormModel: {},
@@ -191,6 +192,7 @@ export default {
     commit() {
       this.$refs.refForm.validateFields(flag => {
         if (flag) {
+          this.commiting = true;
           this.$post(
             {
               action: "P_SUP_Bid_Bond",
@@ -202,6 +204,7 @@ export default {
               p6: this.bidMoneyFormModel["file"] || ""
             },
             res => {
+              this.commiting = false;
               if (res.code == "0") {
                 this.$message({
                   type: "success",

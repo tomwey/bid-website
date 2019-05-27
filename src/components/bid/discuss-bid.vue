@@ -101,7 +101,6 @@
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       center
-      v-loading="commiting"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
@@ -115,7 +114,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" @click="commit" :loading="commiting">提 交</el-button>
       </div>
     </el-dialog>
     <el-dialog

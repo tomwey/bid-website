@@ -108,7 +108,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="faqDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" @click="commit" :loading="commiting">提 交</el-button>
       </div>
     </el-dialog>
 
@@ -154,6 +154,7 @@ export default {
       previewImage: null,
       dialogPreviewVisible: false,
       faqDialogFormVisible: false,
+      commiting: false,
       faqFormControls: [
         {
           id: "faq-content",
@@ -203,6 +204,7 @@ export default {
     commit() {
       this.$refs.refForm.validateFields(flag => {
         if (flag) {
+          this.commiting = true;
           this.$post(
             {
               action: "P_SUP_Bid_Question",
@@ -215,6 +217,7 @@ export default {
               p7: this.faqFormModel["isreconnaissance"] ? "1" : "0"
             },
             res => {
+              this.commiting = false;
               if (res.code == 0) {
                 this.faqDialogFormVisible = false;
                 this.loadData();

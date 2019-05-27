@@ -60,7 +60,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" @click="commit" :loading="loading">提 交</el-button>
       </div>
     </el-dialog>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
@@ -105,6 +105,7 @@ export default {
       loading: false,
       dialogFormVisible: false,
       bidFuncData: [],
+      commiting: false,
       bidFuncFormControls: [
         {
           id: "faq-content",

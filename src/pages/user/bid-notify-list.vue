@@ -41,10 +41,23 @@
         <el-table-column prop="signenddate" label="截止时间" width="180"></el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
-            <span
+            <!-- <span
               class="state-tag"
               :class="{success:scope.row.issignup == '1',warning:scope.row.issignup == '0'}"
-            >{{scope.row.issignup == '0' ? '未报名' : '已报名'}}</span>
+            >{{scope.row.issignup == '0' ? '未报名' : '已报名'}}</span>-->
+            <span class="state-tag danger" v-if="scope.row.isgiveup == '1'">已放弃</span>
+            <span
+              class="state-tag success"
+              v-if="scope.row.isgiveup == '0' && scope.row.issignup == '1'"
+            >已报名</span>
+            <span
+              class="state-tag info"
+              v-if="scope.row.isgiveup == '0' && scope.row.issignup == '0' && scope.row.isoverdue == '1'"
+            >已过期</span>
+            <span
+              class="state-tag warning"
+              v-if="scope.row.isgiveup == '0' && scope.row.issignup == '0' && scope.row.isoverdue == '0'"
+            >未报名</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -587,6 +600,9 @@ export default {
   }
   &.info {
     color: #999;
+  }
+  &.danger {
+    color: rgb(187, 83, 79);
   }
 }
 </style>

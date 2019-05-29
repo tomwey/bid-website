@@ -95,21 +95,21 @@ export default {
   computed: {
     hasDetail() {
       const arr = [
-        "1011",
-        "1021",
-        "1012",
-        "1022",
+        // "1011",
+        // "1021",
+        // "1012",
+        // "1022",
         // "1015",
         "1025",
         // "1101",
         // "1019",
         // "1029",
-        "1201",
-        "1202",
-        "1203",
-        "1204",
-        "1205",
-        "1206",
+        // "1201",
+        // "1202",
+        // "1203",
+        // "1204",
+        // "1205",
+        // "1206",
         "1401"
       ];
       return arr.indexOf((this.message.msgtype || "0").toString()) === -1;
@@ -160,6 +160,14 @@ export default {
     },
     jumpTo() {
       switch (this.message.msgtype) {
+        case "1011":
+        case "1021":
+        case "1012":
+        case "1022": {
+          // 注册审核通知，跳转基本信息
+          this.$router.push({ name: "user_company" });
+          return;
+        }
         case "1003": {
           // 招标公告
           this.$router.push({
@@ -229,6 +237,20 @@ export default {
 
           this.$router.push({
             path: "/admin/bids/" + `${this.message.jumpid}-0-1-0-1`
+          });
+          return;
+        }
+        case "1201":
+        case "1202":
+        case "1203":
+        case "1204":
+        case "1205":
+        case "1206": {
+          // 招标时间调整通知，跳转招标详情
+          localStorage.setItem("from", "/admin/bids");
+
+          this.$router.push({
+            path: "/admin/bids/" + `${this.message.jumpid}-0-0-0-2`
           });
           return;
         }

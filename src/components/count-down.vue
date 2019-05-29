@@ -1,6 +1,6 @@
 <template>
   <div class="count-down">
-    <p class="end-date-tip" v-if="hasLeftTime">
+    <p class="end-date-tip" v-if="hasLeftTime && countDownText">
       {{prefix}}
       <span class="countdown">{{countDownText}}</span>
     </p>
@@ -41,10 +41,7 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
+    this.clearTimer();
   },
   computed: {
     hasLeftTime() {
@@ -57,6 +54,12 @@ export default {
     }
   },
   methods: {
+    clearTimer() {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    },
     createTimer() {
       if (!this.hasLeftTime) return;
 
@@ -95,11 +98,13 @@ export default {
         if (h < 10) {
           h = "0" + h;
         }
+        this.countDownText = `${d}天${h}小时${m}分${s}秒`;
       } else {
+        this.countDownText = null;
+        this.clearTimer();
+        console.log(leftTime);
         // this.hasLeftTime = false;
       }
-
-      this.countDownText = `${d}天${h}小时${m}分${s}秒`;
     }
   }
 };

@@ -274,7 +274,7 @@ export default {
           if (res.code == 0) {
             this.tableData = res["data"];
             if (this.tableData.length > 0) {
-              this.totalSize = this.tableData[0]["totalcount"];
+              this.totalSize = parseInt(this.tableData[0]["totalcount"]);
             }
           }
         }

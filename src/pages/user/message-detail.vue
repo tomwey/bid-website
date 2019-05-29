@@ -9,7 +9,7 @@
     <div class="detail">
       <h2 class="title">{{message.msgtitle}}</h2>
       <p class="time">{{message.createdate}}</p>
-      <p class="body">{{message.msgcontent}}</p>
+      <div class="body" v-html="message.msgcontent"></div>
       <div class="btn-wrap">
         <el-button v-if="hasDetail" @click="jumpTo">点击查看</el-button>
       </div>

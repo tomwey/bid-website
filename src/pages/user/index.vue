@@ -225,7 +225,7 @@ $theme-color: #e46623;
     flex: 0 0 150px;
     width: 150px;
     // height: 688px;
-    max-height: 880px;
+    max-height: 800px;
     background: #fff;
     margin-right: 20px;
     // padding: 20px;

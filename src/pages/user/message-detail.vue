@@ -10,6 +10,14 @@
       <h2 class="title">{{message.msgtitle}}</h2>
       <p class="time">{{message.createdate}}</p>
       <div class="body" v-html="message.msgcontent"></div>
+      <div class="file-list">
+        <span
+          @click="previewFile(file)"
+          class="file-item"
+          v-for="file in message['biddiscussannexs_fileList']"
+          :key="file.url"
+        >{{file.name}}</span>
+      </div>
       <div class="btn-wrap">
         <el-button v-if="hasDetail" @click="jumpTo">点击查看</el-button>
       </div>
@@ -321,6 +329,8 @@ export default {
             const arr = res["data"];
             if (arr.length > 0) {
               this.message = arr[0];
+
+              this.loadAnnex(this.message, "biddiscussannexs");
             }
           }
         }
@@ -401,6 +411,22 @@ export default {
     color: rgb(231, 90, 22) !important;
   }
   // }
+}
+
+.file-list {
+  .file-item {
+    display: block;
+    font-size: 11px;
+    line-height: 14px;
+    padding: 10px 0;
+    color: rgb(231, 90, 22);
+    text-decoration: underline;
+    cursor: pointer;
+    // border-bottom: 1px dashed #ccc;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
 }
 </style>
 

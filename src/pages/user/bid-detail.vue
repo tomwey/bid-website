@@ -234,9 +234,13 @@ export default {
                   time = arr[0];
                 }
               }
+              let suffix = "截止";
+              if (ele.bidstage == "90" || ele.bidstage == "510") {
+                suffix = "";
+              }
               temp.push({
                 title: ele.stagename,
-                desc: `${time}截止`,
+                desc: `${time}${suffix}`,
                 step: ele.bidstage,
                 enddate: ele.enddate
               });

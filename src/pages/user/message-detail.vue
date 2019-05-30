@@ -163,7 +163,8 @@ export default {
         this.previewImage = file.url;
         this.dialogPreviewVisible = true;
       } else {
-        window.open(file.url);
+        // window.open(file.url);
+        this.$PreviewFile(file.url);
       }
     },
     jumpTo() {

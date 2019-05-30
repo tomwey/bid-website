@@ -145,7 +145,7 @@ export default {
           label: "委托书附件",
           field: "agencyfiles",
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_SIgnUP",
+          tablename: "H_Sup_Bid_SignUp",
           fieldname: "signupannex",
           // unit: "万",
           rules: [
@@ -159,7 +159,7 @@ export default {
           // required: true,
           type: 8,
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_SIgnUP",
+          tablename: "H_Sup_Bid_SignUp",
           fieldname: "otherannex",
           limit: 5
         }

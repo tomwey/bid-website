@@ -105,7 +105,7 @@ export default {
           field: "signupannex",
           // unit: "万",
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_SIgnUP",
+          tablename: "H_Sup_Bid_SignUp",
           fieldname: "signupannex",
           rules: [
             { required: true, message: "委托书附件不能为空", trigger: "blur" }
@@ -117,7 +117,7 @@ export default {
           field: "otherannex",
           // required: true,
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_SUP_Bid_SIgnUP",
+          tablename: "H_Sup_Bid_SignUp",
           fieldname: "otherannex",
           type: 8,
           limit: 5

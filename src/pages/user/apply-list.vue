@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-list" v-loading="loading">
+  <div class="bid-list box" v-loading="loading">
     <h2 class="title">我的报名</h2>
     <div class="search-toolbar">
       <el-row>

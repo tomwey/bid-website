@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="box">
-      <h2>
+      <h2 class="title">
         未读消息
         <b-badge
           class="float-right"

@@ -2,7 +2,7 @@
   <div class="message-list">
     <div class="messages">
       <el-table :data="messages" stripe style="width: 100%">
-        <el-table-column prop="msgtitle" label="标题">
+        <el-table-column prop="msgtitle" label="消息主题">
           <template slot-scope="scope">
             <span
               class="title"
@@ -11,7 +11,6 @@
             >{{scope.row.msgtitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createdate" label="时间" width="180"></el-table-column>
         <el-table-column prop="msgtypename" label="消息类型" width="120">
           <template slot-scope="scope">
             <span
@@ -20,6 +19,7 @@
             >{{scope.row.msgtypename}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="createdate" label="通知时间" width="180"></el-table-column>
       </el-table>
     </div>
     <!-- <div class="empty-error-box" v-if="messages.length === 0">暂无消息</div> -->

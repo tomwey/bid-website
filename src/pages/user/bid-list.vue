@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-list">
+  <div class="bid-list box">
     <!-- 即将上线... -->
     <h2 class="title">招标事项列表</h2>
     <div class="search-toolbar">

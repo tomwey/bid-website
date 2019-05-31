@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-list" v-loading="loading">
+  <div class="bid-list box" v-loading="loading">
     <!-- 即将上线... -->
     <h2 class="title">报名通知列表</h2>
     <div class="search-toolbar">

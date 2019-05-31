@@ -176,6 +176,14 @@ export default {
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Question",
           fieldname: "queannex",
+          upload_tips: "请下载提疑模板，填写并盖公章后扫描上传",
+          tpl_files: [
+            {
+              name: "提疑模板下载",
+              url:
+                "http://erp20-app.heneng.cn:16681/file/erp20-annex.heneng.cn/H_WF_INST_M/2019-05-31/2000093/提疑模板.docx"
+            }
+          ],
           rules: [
             { required: true, message: "提疑附件不能为空", trigger: "blur" }
           ]

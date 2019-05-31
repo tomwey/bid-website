@@ -46,6 +46,7 @@
         </table>
       </div>
       <div class="buttons">
+        <el-button plain @click="back">返回</el-button>&emsp;
         <el-button type="danger" @click="abandon" :disabled="applyData.isgiveup == '1'">放弃</el-button>&emsp;
         <el-button type="primary" @click="apply" :disabled="applyData.cansignup == '0'">再次报名</el-button>
       </div>
@@ -172,6 +173,9 @@ export default {
     this.loadStateOptions();
   },
   methods: {
+    back() {
+      this.$router.push({ path: "/admin/applying-bids" });
+    },
     previewFile(file) {
       if (this.applyData.isgiveup == "1") {
         this.$message({
@@ -221,9 +225,9 @@ export default {
         }
       );
     },
-    back() {
-      this.$router.push({ path: "/bid_notice" });
-    },
+    // back() {
+    //   this.$router.push({ path: "/bid_notice" });
+    // },
     apply() {
       this.applyFormModel = {};
       this.applyFormVisible = true;

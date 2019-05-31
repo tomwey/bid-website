@@ -5,7 +5,7 @@
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
-          <span class="label">时间:</span>
+          <span class="label">{{prefixDesc}}时间:</span>
           <el-date-picker
             v-model="end_date"
             value-format="yyyy-MM-dd"
@@ -165,6 +165,16 @@ export default {
     this.loadData();
   },
   computed: {
+    prefixDesc() {
+      switch (this.$route.name) {
+        case "user_bid_faq":
+          return "";
+        case "user_applied":
+          return "入围";
+        default:
+          return "";
+      }
+    },
     dateTableHeader() {
       switch (this.$route.name) {
         case "user_bid_faq":

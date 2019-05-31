@@ -1,7 +1,7 @@
 <template>
   <div class="files-download">
     <el-tabs key="filesTab" v-model="tabName">
-      <el-tab-pane label="标书附件" name="0">
+      <el-tab-pane label="标书下载" name="0">
         <table class="table">
           <tr v-for="(item,index) in downloadFiles" :key="index">
             <td class="label">{{item.label}}</td>
@@ -18,10 +18,10 @@
           </tr>
         </table>
       </el-tab-pane>
-      <el-tab-pane label="补充材料附件" name="1">
+      <el-tab-pane label="标书补充资料下载" name="1">
         <el-table :data="attachmentData" key="faqTable135" stripe style="width: 100%">
-          <el-table-column prop="uploaddesc" label="补充招标文件说明"></el-table-column>
-          <el-table-column label="附件">
+          <el-table-column prop="uploaddesc" label="标书补充说明"></el-table-column>
+          <el-table-column label="补充资料附件">
             <template slot-scope="scope">
               <div class="file-list">
                 <span
@@ -33,7 +33,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="uploaddate" label="上传时间" width="180"></el-table-column>
+          <el-table-column prop="uploaddate" label="发布时间" width="180"></el-table-column>
           <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
         </el-table>
       </el-tab-pane>

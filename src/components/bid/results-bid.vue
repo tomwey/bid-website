@@ -9,7 +9,7 @@
     </div>
     <div class="list">
       <el-table key="bidResultTable" :data="tableData" stripe style="width: 100%">
-        <el-table-column label="投标事项名称" prop="mattersubname"></el-table-column>
+        <el-table-column label="招标事项名称" prop="mattersubname"></el-table-column>
         <el-table-column label="通知书附件" width="280">
           <template slot-scope="scope">
             <div class="file-list">

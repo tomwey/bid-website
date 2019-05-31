@@ -6,7 +6,7 @@
           <span class="stat">共{{totalSize}}条</span>
         </el-col>
         <el-col :span="8" style="text-align:right;">
-          <el-button type="primary" @click="newBonds" :disabled="canbond == '0'">新增投标保证金</el-button>
+          <el-button type="primary" @click="newBonds" :disabled="canbond == '0'">上传缴纳凭证</el-button>
         </el-col>
       </el-row>
     </div>
@@ -24,10 +24,10 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="bondexplain" label="审批意见" width="280">
+        <el-table-column prop="bondexplain" label="审核意见" width="280">
           <template slot-scope="scope">{{scope.row.bondexplain || "无"}}</template>
         </el-table-column>
-        <el-table-column prop="bonddate" label="时间" width="180"></el-table-column>
+        <el-table-column prop="bonddate" label="上传时间" width="180"></el-table-column>
         <!-- <el-table-column prop="bondstate" label="状态" width="120">
           <template slot-scope="scope">
             <span
@@ -53,7 +53,7 @@
       <img :src="previewImage" style="max-width: 100%">
     </el-dialog>
     <el-dialog
-      title="新增保证金缴纳凭证"
+      title="上传保证金缴纳凭证"
       :visible.sync="bonusDialogFormVisible"
       :append-to-body="true"
       :close-on-click-modal="false"
@@ -114,7 +114,7 @@ export default {
           id: "money-file",
           type: 8,
           //   subtype: "file",
-          label: "缴纳附件",
+          label: "投标保证金缴纳凭证",
           field: "file",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Bond",
@@ -127,7 +127,7 @@ export default {
           id: "money-content",
           type: 1,
           subtype: "textarea",
-          label: "备注说明",
+          label: "投标保证金缴纳说明",
           field: "content"
         }
       ]

@@ -4,7 +4,7 @@
     <div class="search-toolbar">
       <el-row>
         <el-col :span="8">
-          <span class="label">截止时间:</span>
+          <span class="label">报名时间:</span>
           <el-date-picker
             v-model="signupDate"
             value-format="yyyy-MM-dd"

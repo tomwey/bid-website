@@ -10,13 +10,13 @@
           <p class="enddate-tip">技术标投标截止时间: {{enddate}}</p>
         </el-col>
         <el-col :span="6" style="text-align:right;">
-          <el-button type="primary" @click="newBid" :disabled="cantech == '0'">新增技术回标</el-button>
+          <el-button type="primary" @click="newBid" :disabled="cantech == '0'">我要投标</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="list">
       <el-table key="bidFuncTable" :data="tableData" stripe style="width: 100%">
-        <el-table-column label="技术附件" width="240">
+        <el-table-column label="技术标投标附件" width="240">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -43,7 +43,7 @@
       </div>
     </div>
     <el-dialog
-      title="新增技术回标"
+      title="投技术标"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       :close-on-click-modal="false"

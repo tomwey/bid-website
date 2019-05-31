@@ -2,7 +2,7 @@
   <div class="faq-list">
     <p class="enddate-tip">提疑截止时间: {{enddate}}</p>
     <el-tabs key="faqTab" v-model="tabName" @tab-click="handleClick">
-      <el-tab-pane label="提问" name="faq">
+      <el-tab-pane label="招标提疑" name="faq">
         <div class="stat-newbar">
           <el-row>
             <el-col :span="16">
@@ -13,18 +13,18 @@
                 type="primary"
                 @click="faqDialogFormVisible = true"
                 :disabled="canfaq == '0'"
-              >新增提疑</el-button>
+              >我要提疑</el-button>
             </el-col>
           </el-row>
         </div>
         <div class="list">
           <el-table :data="tableData" key="faqTable1" stripe style="width: 100%">
-            <el-table-column prop="queexplain" label="提问内容">
+            <el-table-column prop="queexplain" label="提疑内容">
               <template slot-scope="scope">
                 <span class="name" @click="selectItem(scope.row)">{{scope.row.queexplain}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="提问附件" width="180">
+            <el-table-column label="提疑附件" width="180">
               <template slot-scope="scope">
                 <div class="file-list">
                   <span
@@ -36,7 +36,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="quedate" label="提问时间" width="180"></el-table-column>
+            <el-table-column prop="quedate" label="提疑时间" width="180"></el-table-column>
             <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
           </el-table>
           <!-- <div class="page-container">
@@ -50,7 +50,7 @@
           </div>-->
         </div>
       </el-tab-pane>
-      <el-tab-pane label="回复" name="answer">
+      <el-tab-pane label="提疑回复" name="answer">
         <div class="stat-newbar">
           <el-row>
             <el-col :span="16">
@@ -60,8 +60,8 @@
         </div>
         <div class="list">
           <el-table :data="tableData" key="faqTable2" stripe style="width: 100%">
-            <el-table-column prop="bidsummary" label="答疑内容"></el-table-column>
-            <el-table-column label="答疑附件" width="180">
+            <el-table-column prop="bidsummary" label="回复内容"></el-table-column>
+            <el-table-column label="回复附件" width="180">
               <template slot-scope="scope">
                 <div class="file-list">
                   <span
@@ -159,11 +159,11 @@ export default {
           id: "faq-content",
           type: 1,
           subtype: "textarea",
-          label: "疑问内容",
+          label: "提疑概述",
           field: "content",
           // unit: "万",
           rules: [
-            { required: true, message: "提疑内容不能为空", trigger: "blur" }
+            { required: true, message: "提疑概述不能为空", trigger: "blur" }
           ]
         },
         {

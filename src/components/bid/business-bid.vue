@@ -51,7 +51,7 @@
             </el-table>
           </template>
         </el-table-column>-->
-        <el-table-column label="事项名称" prop="mattersubname"></el-table-column>
+        <el-table-column label="采购事项名称" prop="mattersubname"></el-table-column>
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="120"></el-table-column>
         <el-table-column label="投标截止时间" prop="enddate" width="180"></el-table-column>
@@ -67,15 +67,15 @@
             </div>
           </template>
         </el-table-column>-->
-        <el-table-column label="操作" width="180" header-align="center">
+        <el-table-column label="操作" width="220" header-align="center">
           <template slot-scope="scope">
-            <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
+            <el-button size="small" @click="viewBids(scope.row)">投标记录</el-button>
             <el-button
               type="primary"
               size="small"
               :disabled="scope.row.canbid == '0'"
               @click="newPriceBid(scope.row)"
-            >投标</el-button>
+            >我要投标</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +92,7 @@
     </div>
 
     <el-dialog
-      title="新增商务回标"
+      title="投商务标"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       :close-on-click-modal="false"
@@ -112,7 +112,7 @@
       </div>
     </el-dialog>
     <el-dialog
-      title="投标历史"
+      title="投标记录"
       :visible.sync="dialogTableVisible"
       :append-to-body="true"
       center
@@ -121,7 +121,7 @@
       :close-on-press-escape="false"
     >
       <el-table key="bidPriceTable" :data="subTableData" stripe style="width: 100%">
-        <el-table-column label="回标报价总金额（含税总价，单位元）" prop="totalamount" width="280">
+        <el-table-column label="投标报价（含税总价，单位元）" prop="totalamount" width="280">
           <template slot-scope="scope">
             <span
               @click="showMoney(scope.row);"
@@ -141,7 +141,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="其它标书附件">
+        <el-table-column label="其它附件">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -213,7 +213,7 @@ export default {
           id: "price-money",
           type: 1,
           subtype: "number",
-          label: "回标总金额",
+          label: "投标报价 (含税总价)",
           field: "money",
           unit: "元",
           rules: [
@@ -245,7 +245,7 @@ export default {
         {
           id: "other-file",
           type: 8,
-          label: "其它标书附件",
+          label: "其它附件",
           field: "file2",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",

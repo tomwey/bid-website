@@ -4,8 +4,8 @@
     <h2 class="title">报名通知列表</h2>
     <div class="search-toolbar">
       <el-row>
-        <el-col :span="8">
-          <span class="label">截止时间:</span>
+        <el-col :span="10">
+          <span class="label">报名截止时间:</span>
           <el-date-picker
             v-model="end_date"
             type="date"
@@ -24,7 +24,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-input placeholder="输入搜索内容" v-model="keyword">
             <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
           </el-input>
@@ -38,7 +38,7 @@
             <span class="name" @click="selectItem(scope.row)">{{scope.row.noticetitle}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="signenddate" label="截止时间" width="180"></el-table-column>
+        <el-table-column prop="signenddate" label="报名截止时间" width="180"></el-table-column>
         <el-table-column prop="state" label="状态" width="120">
           <template slot-scope="scope">
             <!-- <span

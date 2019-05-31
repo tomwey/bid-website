@@ -51,10 +51,10 @@
             </el-table>
           </template>
         </el-table-column>-->
-        <el-table-column label="事项名称" prop="mattersubname"></el-table-column>
+        <el-table-column label="采购事项名称" prop="mattersubname"></el-table-column>
         <el-table-column label="所属项目" prop="project_name" width="120"></el-table-column>
         <el-table-column label="楼栋/标段" prop="section" width="100"></el-table-column>
-        <el-table-column label="投标截止时间" prop="enddate" width="150"></el-table-column>
+        <el-table-column label="议标报价截止时间" prop="enddate" width="150"></el-table-column>
         <el-table-column label="议标状态" prop="statename" width="80"></el-table-column>
         <!-- <el-table-column label="议标轮次" width="80">
           <template slot-scope="scope">{{(parseInt(scope.row.bidturn) + 1)}}轮</template>
@@ -71,16 +71,16 @@
             </div>
           </template>
         </el-table-column>-->
-        <el-table-column label="操作" width="280" header-align="center">
+        <el-table-column label="操作" width="300" header-align="center">
           <template slot-scope="scope">
-            <el-button size="small" @click="viewNotifies(scope.row)">通知详情</el-button>
-            <el-button size="small" @click="viewBids(scope.row)">投标历史</el-button>
+            <el-button size="small" @click="viewNotifies(scope.row)">议标通知</el-button>
+            <el-button size="small" @click="viewBids(scope.row)">报价记录</el-button>
             <el-button
               type="primary"
               size="small"
               :disabled="scope.row.canbid == '0'"
               @click="newPriceBid(scope.row)"
-            >投标</el-button>
+            >我要报价</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,7 +97,7 @@
     </div>
 
     <el-dialog
-      title="新增议标"
+      title="议标报价"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       :close-on-click-modal="false"
@@ -117,16 +117,16 @@
       </div>
     </el-dialog>
     <el-dialog
-      title="投标历史"
+      title="报价记录"
       :visible.sync="dialogTableVisible"
       :append-to-body="true"
       center
-      width="80%"
+      width="65%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
       <el-table key="bidPriceTable" :data="subTableData" stripe style="width: 100%">
-        <el-table-column label="议标报价总金额（含税总价，单位元）" prop="totalamount" width="280">
+        <el-table-column label="议标报价 (含税总价，单位元)" prop="totalamount" width="280">
           <template slot-scope="scope">
             <span
               @click="showMoney(scope.row);"
@@ -134,7 +134,7 @@
           </template>
         </el-table-column>
         <el-table-column label="税率(%)" prop="taxrate" width="120"></el-table-column>
-        <el-table-column label="议标商务标附件">
+        <el-table-column label="报价附件">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -146,7 +146,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="其它标书附件">
+        <el-table-column label="其它附件">
           <template slot-scope="scope">
             <div class="file-list">
               <span
@@ -158,7 +158,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="biddate" label="投标时间" width="180"></el-table-column>
+        <el-table-column prop="biddate" label="报价时间" width="180"></el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogTableVisible = false">关 闭</el-button>
@@ -166,11 +166,11 @@
       </div>
     </el-dialog>
     <el-dialog
-      title="通知详情"
+      title="议标通知详情"
       :visible.sync="notifyTableVisible"
       :append-to-body="true"
       center
-      width="80%"
+      width="50%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
@@ -268,11 +268,11 @@ export default {
           id: "price-money",
           type: 1,
           subtype: "number",
-          label: "回标总金额",
+          label: "议标报价 (含税总价，单位元)",
           field: "money",
           unit: "元",
           rules: [
-            { required: true, message: "回标总金额不能为空", trigger: "blur" }
+            { required: true, message: "议标报价不能为空", trigger: "blur" }
           ]
         },
         {
@@ -288,19 +288,19 @@ export default {
           id: "price-file",
           type: 8,
           //   subtype: "file",
-          label: "商务标附件",
+          label: "报价附件",
           field: "file1",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",
           fieldname: "annexids",
           rules: [
-            { required: true, message: "商务标附件不能为空", trigger: "change" }
+            { required: true, message: "报价附件不能为空", trigger: "change" }
           ]
         },
         {
           id: "other-file",
           type: 8,
-          label: "其它标书附件",
+          label: "其它附件",
           field: "file2",
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",
@@ -394,7 +394,7 @@ export default {
                 type: 1
               });
               let obj = {
-                label: "议标通知",
+                label: "议标通知单",
                 value: item.biddiscussnotice,
                 type: 2
               };
@@ -562,6 +562,7 @@ export default {
     width: 180px;
     .label-box {
       width: 180px;
+      text-align: center;
     }
   }
   .value {

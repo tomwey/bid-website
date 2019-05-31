@@ -18,7 +18,7 @@
       <div class="apply-wrapper">
         <count-down
           prefix="距离报名截止还剩"
-          :time="notice.delaysigndate || notice.signenddate"
+          :time="notice.signenddate"
           no-time-left="报名已截止"
           :key="notice.noticeid"
         ></count-down>
@@ -188,7 +188,7 @@ export default {
 
       temp.push({
         label: "报名截止时间",
-        value: this.notice.delaysigndate || this.notice.signenddate
+        value: this.notice.signenddate
       });
 
       let item = {

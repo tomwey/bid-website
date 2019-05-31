@@ -249,7 +249,12 @@ export default {
           });
           return;
         }
-        case "1201":
+        case "1201": {
+          this.$router.push({
+            path: "/admin/apply-bid/" + `${this.message.jumpid}-0`
+          });
+          return;
+        }
         case "1202":
         case "1203":
         case "1204":

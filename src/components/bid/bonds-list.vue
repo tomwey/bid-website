@@ -56,7 +56,6 @@
       title="新增保证金缴纳凭证"
       :visible.sync="bonusDialogFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"

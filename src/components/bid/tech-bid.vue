@@ -46,7 +46,6 @@
       title="新增技术回标"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"

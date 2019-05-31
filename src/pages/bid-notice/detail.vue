@@ -64,7 +64,6 @@
       title="放弃报名"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
@@ -86,7 +85,6 @@
       title="报名"
       :visible.sync="applyFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"

@@ -94,7 +94,6 @@
       title="新增提疑"
       :visible.sync="faqDialogFormVisible"
       :append-to-body="true"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"

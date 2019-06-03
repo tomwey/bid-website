@@ -72,7 +72,7 @@
             <el-button
               type="danger"
               size="small"
-              :disabled="scope.row.isgiveup == '1'"
+              :disabled="scope.row.cangiveup == '0'"
               @click="abandon(scope.row);"
             >放弃</el-button>
           </template>

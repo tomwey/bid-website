@@ -1,11 +1,11 @@
 <template>
   <div class="messages" v-loading="loading">
     <div class="box">
-      <h2 class="title">消息列表</h2>
-      <!-- <div class="custom-tabs">
+      <!-- <h2 class="title">消息列表</h2> -->
+      <div class="custom-tabs">
         <span class="custom-tab" :class="{active:active === 0}" @click="selectTab(0)">未读消息</span>
         <span class="custom-tab" :class="{active:active === 1}" @click="selectTab(1)">已读消息</span>
-      </div>-->
+      </div>
       <message-list :messages="messages"/>
       <div class="page-container" v-if="totalSize > pageSize">
         <el-pagination
@@ -46,6 +46,8 @@ export default {
   },
   mounted() {
     // this.messages = [];
+    // this.loadData();
+    this.active = parseInt(localStorage.getItem("msgTabIndex") || 0);
     this.loadData();
   },
   methods: {
@@ -63,8 +65,9 @@ export default {
           action: "P_SUP_Bid_GetMsg",
           p1: this.$store.state.supinfo.accountid,
           p2: this.$store.state.token,
-          p3: this.page,
-          p4: this.pageSize
+          p3: this.active.toString(),
+          p4: this.page,
+          p5: this.pageSize
         },
         res => {
           // console.log(res);
@@ -85,10 +88,16 @@ export default {
               // }
               // });
               this.messages = arr;
+              // console.log(this.messages);
               if (this.messages.length > 0) {
                 this.totalSize = parseInt(this.messages[0]["totalcount"]);
               }
             }
+          } else {
+            this.$message({
+              type: "error",
+              message: res.codemsg
+            });
           }
         }
       );
@@ -114,11 +123,14 @@ export default {
     },
     selectTab(index) {
       this.active = index;
-      if (index === 1) {
-        this.messages = [];
-      } else {
-        this.messages = [];
-      }
+
+      localStorage.setItem("msgTabIndex", index);
+
+      // if (index === 1) {
+      //   this.messages = [];
+      // } else {
+      //   this.messages = [];
+      // }
     }
   }
 };

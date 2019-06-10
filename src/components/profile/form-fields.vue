@@ -8,6 +8,7 @@
         :key="control.id"
         :validate-on-rule-change="false"
       >
+        <span v-if="control.type === 999" class="text-value">{{formModel[control.field]}}</span>
         <el-input
           v-model="formModel[control.field]"
           v-if="control.type === 1 && control.subtype !== 'number'"
@@ -336,6 +337,19 @@ $theme-color: #e46623;
     margin-top: 5px;
     padding: 0;
     line-height: 18px;
+  }
+
+  .text-value {
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    padding: 0 15px;
+    border: 1px dashed #dcdfe6;
+    border-radius: 4px;
+    color: #606266;
+    background-color: #fff;
   }
 
   .special {

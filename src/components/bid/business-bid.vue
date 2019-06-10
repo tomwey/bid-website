@@ -73,7 +73,7 @@
             <el-button
               type="primary"
               size="small"
-              :disabled="scope.row.canbid == '0'"
+              :disabled="scope.row.canbid == '1'"
               @click="newPriceBid(scope.row)"
             >我要投标</el-button>
           </template>
@@ -209,6 +209,12 @@ export default {
       subTableData: [],
       //   bidPriceData: [],
       bidPriceFormControls: [
+        {
+          id: "mattersubname",
+          type: 999,
+          label: "采购事项名称",
+          field: "mattersubname"
+        },
         {
           id: "price-money",
           type: 1,
@@ -385,7 +391,7 @@ export default {
     newPriceBid(item) {
       this.currPurchaseMatterSubID = item.purchasemattersubid;
       this.currBidReid = item.bidreid;
-      this.bidPriceFormModel = {};
+      this.bidPriceFormModel = { mattersubname: item.mattersubname };
       this.dialogFormVisible = true;
     },
     commit() {

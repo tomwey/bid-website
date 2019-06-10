@@ -73,7 +73,7 @@
             <el-button
               type="primary"
               size="small"
-              :disabled="scope.row.canbid == '1'"
+              :disabled="scope.row.canbid == '0'"
               @click="newPriceBid(scope.row)"
             >我要投标</el-button>
           </template>

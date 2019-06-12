@@ -8,6 +8,8 @@ import '@/assets/styles/main.scss';
 import 'vue-awesome/icons';
 import "@/utils/ajax";
 import "@/utils/funcs";
+import "@/utils/page-visible";
+
 import store from "@/store/index";
 
 import './plugins/eleme';

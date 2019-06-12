@@ -51,7 +51,7 @@
             <span
               class="state-tag"
               :class="{success:scope.row.state == '已通过', info:scope.row.state == '已放弃', warning:scope.row.state == '审核中', danger:scope.row.state == '未通过'}"
-            >{{scope.row.state}}</span>
+            >{{scope.row.statename}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="90">

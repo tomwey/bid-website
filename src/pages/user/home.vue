@@ -123,8 +123,9 @@ export default {
           action: "P_SUP_Bid_GetMsg",
           p1: this.$store.state.supinfo.accountid,
           p2: this.$store.state.token,
-          p3: 1,
-          p4: 5000
+          p3: "0",
+          p4: 1,
+          p5: 5000
         },
         res => {
           // console.log(res);
@@ -134,9 +135,9 @@ export default {
             if (arr && Array.isArray(arr)) {
               let temp = [];
               arr.forEach(ele => {
-                if (ele["readstate"] == "0") {
-                  temp.push(ele);
-                }
+                // if (ele["readstate"] == "0") {
+                temp.push(ele);
+                // }
               });
               this.messages = temp;
             }

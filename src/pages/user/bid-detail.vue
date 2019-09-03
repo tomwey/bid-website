@@ -38,6 +38,7 @@
           v-if="step == '5'"
           :noticeid="noticeID"
           :purchasematterid="purchasematterID"
+          :notdownloadmsg="notice.downloadmsg"
           :candownload="notice.candownload"
         ></files-download>
         <faq-list

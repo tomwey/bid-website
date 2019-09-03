@@ -52,7 +52,7 @@ export default {
             return token;
         }
 
-        Vue.prototype.$PreviewFile = function(fileUrl) {
+        Vue.prototype.$PreviewFile = function (fileUrl) {
             let div = document.createElement("div");
             div.style.position = "fixed";
             div.style.zIndex = "2005";
@@ -95,7 +95,7 @@ export default {
 
             let iframe = document.createElement("iframe");
             iframe.src =
-                "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=" + fileUrl;
+                "http://erp20-mobiledoc.heneng.cn:16660/view/url?url=" + encodeURI(fileUrl);
             iframe.width = "100%";
             iframe.height = "100%";
             iframe.frameBorder = "0";

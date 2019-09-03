@@ -33,7 +33,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="uploaddate" label="发布时间" width="180"></el-table-column>
+          <el-table-column prop="uploaddate" label="发布时间" width="200"></el-table-column>
           <!-- <el-table-column prop="owner" label="提疑单位" width="120"></el-table-column> -->
         </el-table>
       </el-tab-pane>
@@ -45,7 +45,7 @@
         @load="imgLoaded = true"
         class="preview-image"
         :class="{loaded:imgLoaded, loading: !imgLoaded}"
-      >
+      />
     </el-dialog>
   </div>
 </template>
@@ -60,6 +60,9 @@ export default {
       type: String
     },
     candownload: {
+      type: String
+    },
+    notdownloadmsg: {
       type: String
     }
   },
@@ -178,10 +181,10 @@ export default {
       }
     },
     previewFile(file) {
-      if (this.candownload == "0") {
+      if (this.notdownloadmsg.length > 0) {
         this.$message({
           type: "error",
-          message: "您已弃标，不能下载招标附件"
+          message: this.notdownloadmsg
         });
         return;
       }

@@ -3,7 +3,7 @@
     <b-navbar toggleable="md" type="light" variant="white" fixed="top">
       <div class="container">
         <b-navbar-brand @click="gotoHome">
-          <img src="./assets/images/logo.png" class="logo">
+          <img src="./assets/images/logo.png" class="logo" />
         </b-navbar-brand>
         <b-navbar-nav class="ml-auto">
           <b-nav-item
@@ -14,7 +14,12 @@
             :href="item.href"
           >{{item.name}}</b-nav-item>
         </b-navbar-nav>
+
         <b-navbar-nav>
+          <b-nav-item-dropdown text="操作手册">
+            <b-dropdown-item href="#" @click="openHelp1();">供方注册操作手册</b-dropdown-item>
+            <b-dropdown-item href="#" @click="openHelp2();">招投标操作手册</b-dropdown-item>
+          </b-nav-item-dropdown>
           <!-- <b-nav-item href="#" disabled> -->
           <span class="custom-btn" @click="gotoUserHome">用户中心</span>
           <!-- </b-nav-item> -->
@@ -49,7 +54,7 @@
           </div>
           <div class="qrcode">
             <div class="qrcode-inner">
-              <img src="@/assets/images/icon_qrcode.jpg" class="img-fluid">
+              <img src="@/assets/images/icon_qrcode.jpg" class="img-fluid" />
               <p>供应商APP客户端</p>
             </div>
           </div>
@@ -99,12 +104,12 @@ export default {
           id: 6,
           name: "合能官网",
           route: "hn"
-        },
-        {
-          id: 7,
-          name: "操作手册",
-          route: "help"
         }
+        // {
+        //   id: 7,
+        //   name: "操作手册",
+        //   route: "help"
+        // }
         // {
         //   id: 8,
         //   name: "用户中心",
@@ -163,6 +168,46 @@ export default {
     },
     gotoHome() {
       this.$router.push({ name: "home" });
+    },
+    openHelp1() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "8",
+          p2: "123"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            const arr = res["data"];
+            if (arr.length > 0) {
+              window.open(arr[0]["sy_value"]);
+            }
+          } else {
+            alert(res.codemsg);
+          }
+        }
+      );
+    },
+    openHelp2() {
+      this.$post(
+        {
+          action: "P_SY_GetParamInfo",
+          p1: "17",
+          p2: "123"
+        },
+        res => {
+          // console.log(res);
+          if (res.code == 0) {
+            const arr = res["data"];
+            if (arr.length > 0) {
+              window.open(arr[0]["sy_value"]);
+            }
+          } else {
+            alert(res.codemsg);
+          }
+        }
+      );
     },
     selectLink(index) {
       // this.selectedIndex = index;

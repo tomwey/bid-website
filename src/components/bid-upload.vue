@@ -30,13 +30,13 @@
       </div>
     </el-upload>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
-      <img :src="previewImage" style="max-width: 100%">
+      <img :src="previewImage" style="max-width: 100%" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import BMF from "browser-md5-file";
+// import BMF from "browser-md5-file";
 
 export default {
   name: "bid-upload",
@@ -204,17 +204,17 @@ export default {
       return yesOrNo;
     },
     calcFileMD5(file) {
-      let bmf = new BMF();
-      bmf.md5(
-        file,
-        (err, md5) => {
-          this.$set(this.uploadData, "file_md5", md5);
-          // console.log(this.control);
-        },
-        progress => {
-          // console.log("progress number:", progress);
-        }
-      );
+      // let bmf = new BMF();
+      // bmf.md5(
+      //   file,
+      //   (err, md5) => {
+      //     this.$set(this.uploadData, "file_md5", md5);
+      //     // console.log(this.control);
+      //   },
+      //   progress => {
+      //     // console.log("progress number:", progress);
+      //   }
+      // );
     },
     handlePreview(file) {
       // console.log(file);

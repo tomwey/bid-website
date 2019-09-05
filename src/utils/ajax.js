@@ -7,6 +7,13 @@ import router from '../router';
 Vue.prototype.$axios = axios;
 // axios.defaults.withCredentials = true;
 
+const HN_HOST = "http://vendor.heneng.cn:16791";
+const HT_HOST = "http://ht.heneng.cn:16791";
+
+const isHN = false;
+
+const API_HOST = isHN ? HN_HOST : HT_HOST;
+
 function printParams(param) {
     let temp = [];
     for (const key in param) {
@@ -29,11 +36,9 @@ function post(param, callback) {
     let i = new Date().getTime().toString();
     let ak = md5(payload + i + "HNSUP.2018._.123");
 
-    // 10.19.0.162 vendor.heneng.cn
-    // console.log(param);
     printParams(param);
 
-    axios.post("http://vendor.heneng.cn:16791/api/gwc", {
+    axios.post(API_HOST + "/api/gwc", {
         ak: ak,
         i: i,
         payload: payload

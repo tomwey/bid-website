@@ -115,6 +115,12 @@ html {
   > .title {
     font-size: 16px!important;
     color: rgb(231,90,22)!important;
+    position: relative;
+    .right-btn {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+    }
   }
 }
 

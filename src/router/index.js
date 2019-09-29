@@ -296,6 +296,22 @@ const router = new Router({
                     component: () => import('@/pages/user/login-log'),
                 },
                 {
+                    path: 'feedback',
+                    name: 'user_report',
+                    meta: {
+                        requireAuth: true
+                    },
+                    component: () => import('@/pages/user/feedback'),
+                },
+                {
+                    path: 'survey',
+                    name: 'user_survey',
+                    meta: {
+                        requireAuth: true
+                    },
+                    component: () => import('@/pages/user/survey'),
+                },
+                {
                     path: 'other_info',
                     name: 'user_other_info',
                     meta: {

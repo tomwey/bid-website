@@ -7,7 +7,7 @@
             :class="{tappable:(!menu.menu_items ||menu.menu_items.length === 0), active:currentMenu == menu}"
             @click="selectTopMenu(menu)"
           >
-            <v-icon :name="menu.icon"/>
+            <v-icon :name="menu.icon" />
             {{menu.name}}
           </dt>
           <dd
@@ -124,7 +124,7 @@ export default {
           ]
         },
         {
-          name: "账号安全",
+          name: "我的账号", // "账号安全"
           icon: "user",
           menu_items: [
             {
@@ -138,6 +138,14 @@ export default {
             {
               name: "登录日志",
               route: "user_login_log"
+            },
+            {
+              name: "投诉建议",
+              route: "user_report"
+            },
+            {
+              name: "问卷调查",
+              route: "user_survey"
             }
           ]
         }

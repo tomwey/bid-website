@@ -10,7 +10,7 @@ Vue.prototype.$axios = axios;
 const HN_HOST = "http://vendor.heneng.cn:16791";
 const HT_HOST = "http://ht.heneng.cn:16791";
 
-const isHN = false;
+const isHN = true;
 
 const API_HOST = isHN ? HN_HOST : HT_HOST;
 

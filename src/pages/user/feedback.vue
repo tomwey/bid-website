@@ -3,7 +3,7 @@
     <!-- 即将上线... -->
     <h2 class="title">
       投诉建议列表
-      <el-button @click="newFeedback()" class="right-btn" type="primary" size="small">发起投诉建议</el-button>
+      <el-button @click="newFeedback()" class="right-btn" type="primary" size="small">投诉建议</el-button>
     </h2>
     <div class="search-toolbar">
       <el-row>
@@ -36,18 +36,20 @@
     </div>
     <div class="list">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="typename" label="类型"></el-table-column>
-        <el-table-column prop="subject" label="主题"></el-table-column>
-        <el-table-column prop="project_name" label="项目"></el-table-column>
-        <el-table-column prop="create_date" label="提交时间" width="180"></el-table-column>
-        <el-table-column prop="state" label="状态" width="120">
+        <el-table-column prop="typename" label="类型" width="80"></el-table-column>
+        <el-table-column prop="theme" label="主题" width="120"></el-table-column>
+        <el-table-column prop="contentdesc" label="内容说明"></el-table-column>
+        <el-table-column prop="contractname" label="项目/合同">
           <template slot-scope="scope">
-            <!-- <span
-              class="state-tag"
-              :class="{success:scope.row.issignup == '1',warning:scope.row.issignup == '0'}"
-            >{{scope.row.issignup == '0' ? '未报名' : '已报名'}}</span>-->
+            {{
+            scope.row.project_name
+            }}
+            <br />
+            {{scope.row.contractname}}
           </template>
         </el-table-column>
+        <el-table-column prop="create_date" label="提交时间" width="110"></el-table-column>
+        <el-table-column prop="state_desc" label="状态" width="120"></el-table-column>
       </el-table>
       <div class="page-container" v-if="totalSize >= pageSize">
         <el-pagination
@@ -104,7 +106,11 @@ export default {
       end_date: null,
       keyword: null,
       state: null,
+      event_types1: [],
+      event_types2: [],
       stateOptions: [],
+      projects: [],
+      contracts: {},
       page: 1,
       currentApply: {},
       totalSize: 0,
@@ -115,6 +121,16 @@ export default {
           type: 3,
           label: "类型",
           field: "type",
+          changeFunc: val => {
+            // console.log(val);
+            console.log(this.event_types1);
+            if (val == "1") {
+              this.feedbackControls[1].options = this.event_types1;
+            } else if (val == "2") {
+              console.log(this.event_types2);
+              this.feedbackControls[1].options = this.event_types2;
+            }
+          },
           options: [
             {
               label: "投诉",
@@ -137,21 +153,12 @@ export default {
           id: "problem-type",
           type: 2,
           label: "事项类型",
-          field: "problem_type",
-          options: [
-            {
-              label: "类型1",
-              value: "1"
-            },
-            {
-              label: "类型2",
-              value: "2"
-            }
-          ],
+          field: "event_type",
+          options: [],
           rules: [
             {
               required: true,
-              message: "类型不能为空",
+              message: "事项类型不能为空",
               trigger: "change"
             }
           ]
@@ -161,16 +168,17 @@ export default {
           type: 2,
           label: "项目名称",
           field: "project",
-          options: [
-            {
-              label: "类型1",
-              value: "1"
-            },
-            {
-              label: "类型2",
-              value: "2"
-            }
-          ],
+          options: [],
+          changeFunc: val => {
+            // this.feedbackFormModel["contract"] = "";
+            this.$set(this.feedbackFormModel, "contract", null);
+            let temp = [];
+            val = "p" + val;
+            (this.contracts[val] || []).forEach(ele => {
+              temp.push({ label: ele.contractname, value: ele.contractid });
+            });
+            this.feedbackControls[3].options = temp;
+          },
           rules: [
             {
               required: true,
@@ -184,16 +192,7 @@ export default {
           type: 2,
           label: "相关合同",
           field: "contract",
-          options: [
-            {
-              label: "类型1",
-              value: "1"
-            },
-            {
-              label: "类型2",
-              value: "2"
-            }
-          ],
+          options: [],
           rules: []
         },
         {
@@ -259,11 +258,11 @@ export default {
         {
           id: "annex",
           label: "附件",
-          field: "annex",
+          field: "annexes",
           // required: true,
           domanid: this.$store.state.supinfo.accountid || "0",
-          tablename: "H_Sup_Bid_SignUp",
-          fieldname: "otherannex",
+          tablename: "H_SY_Complain_Suggest_Annex",
+          fieldname: "AnnexID",
           type: 8,
           limit: 5,
           accept: ".jpg,.gif,.png,.jpeg"
@@ -290,7 +289,99 @@ export default {
   },
   methods: {
     newFeedback() {
+      this.loadOptions();
       this.newFormVisible = true;
+    },
+    loadOptions() {
+      this.loadContracts();
+      this.loadTypeOptions();
+    },
+    loadContracts() {
+      this.$post(
+        {
+          action: "P_SUP_SE_Query_Main",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.token || "",
+          p3: "0"
+        },
+        res => {
+          console.log("合同：" + res);
+
+          if (res.code == 0 && res.data) {
+            let temp = [];
+            res.data.forEach(ele => {
+              const project = `p${ele.project_id}`;
+              if (temp.indexOf(project) == -1) {
+                temp.push(project);
+                this.projects.push({
+                  label: ele.project_name,
+                  value: ele.project_id
+                });
+              }
+
+              let arr = this.contracts[project] || [];
+              arr.push(ele);
+              this.contracts[project] = arr;
+            });
+
+            this.feedbackControls[2].options = this.projects;
+          }
+        }
+      );
+    },
+    loadTypeOptions() {
+      this.$post(
+        {
+          action: "P_SY_SE_Query_ComboList",
+          p1: "投诉建议类型"
+        },
+        res => {
+          //   console.log(res);
+          if (res.code == 0 && res.data) {
+            let temp = [];
+            res.data.forEach(ele => {
+              temp.push({ label: ele.dic_name, value: ele.dic_value });
+            });
+            this.feedbackControls[0].options = temp;
+          }
+        }
+      );
+
+      this.$post(
+        {
+          action: "P_SY_SE_Query_ComboList",
+          p1: "投诉事项类型"
+        },
+        res => {
+          console.log(res);
+          if (res.code == "0" && res.data) {
+            let temp = [];
+            res.data.forEach(ele => {
+              temp.push({ label: ele.dic_name, value: ele.dic_value });
+            });
+            this.event_types1 = temp;
+            console.log(this.event_types1);
+          }
+        }
+      );
+
+      this.$post(
+        {
+          action: "P_SY_SE_Query_ComboList",
+          p1: "建议事项类型"
+        },
+        res => {
+          console.log(res);
+          if (res.code == "0" && res.data) {
+            let temp = [];
+            res.data.forEach(ele => {
+              temp.push({ label: ele.dic_name, value: ele.dic_value });
+            });
+            console.log(temp);
+            this.event_types2 = temp;
+          }
+        }
+      );
     },
     loadStateOptions() {
       //   this.$post(
@@ -325,20 +416,21 @@ export default {
       this.loading = true;
       this.$post(
         {
-          action: "P_SUP_Bid_GetSignUpNotice",
+          action: "P_SUP_Query_Complain_Suggest_List",
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.token || "",
-          p3: this.end_date || "",
-          p4: this.keyword || "",
-          p5: this.state || "-1",
-          p6: this.page,
-          p7: this.pageSize
+          p3: "0"
+          //   p3: this.end_date || "",
+          //   p4: this.keyword || "",
+          //   p5: this.state || "-1",
+          //   p6: this.page,
+          //   p7: this.pageSize
         },
         res => {
           this.loading = false;
-          // console.log(res);
+          console.log(res);
           if (res.code == 0) {
-            this.tableData = []; //res["data"];
+            this.tableData = res["data"];
             if (this.tableData.length > 0) {
               this.totalSize = parseInt(this.tableData[0]["totalcount"]);
             }
@@ -357,36 +449,27 @@ export default {
     },
     commit() {
       // let matters = this.applyFormModel["matterindexes"] || [];
-      this.$refs.dialogForm2.validateFields(flag => {
+      console.log(this.feedbackFormModel);
+      //   return;
+      this.$refs.feedbackForm.validateFields(flag => {
         if (flag) {
-          let index = parseInt(this.applyFormModel["matterindexes"]);
-          // console.log(this.applyFormModel);
-          let item = null;
-          if (index >= 0 && index < this.abandonMatters.length) {
-            item = this.abandonMatters[index];
-          }
-
-          if (!item) {
-            this.$message({
-              type: "error",
-              message: "未选择弃标事项"
-            });
-            return;
-          }
-
           this.loading = true;
           this.$post(
             {
-              action: "P_SUP_Bid_GiveUp",
+              action: "P_SUP_Create_Complain_Suggest",
               p1: this.$store.state.supinfo.accountid || "",
               p2: this.$store.state.token || "",
-              p3: this.currentApply.noticeid || "",
-              p4: item.purchasematterid || "",
-              p5: item.purchasemattersubid || "",
-              p6: item.stageid || "",
-              p7: this.applyFormModel["reason"] || "",
-              p8: this.applyFormModel["file"] || "",
-              p9: this.applyFormModel["memo"] || ""
+              p3: "0",
+              p4: this.feedbackFormModel.type || "",
+              p5: this.feedbackFormModel.event_type || "",
+              p6: this.feedbackFormModel.project || "",
+              p7: this.feedbackFormModel.contract || "",
+              p8: this.feedbackFormModel.subject || "",
+              p9: this.feedbackFormModel.contact_name || "",
+              p10: this.feedbackFormModel.contact_name2 || "",
+              p11: this.feedbackFormModel.contact_mobile || "",
+              p12: this.feedbackFormModel.body || "",
+              p13: this.feedbackFormModel.annexes || ""
             },
             res => {
               this.loading = false;

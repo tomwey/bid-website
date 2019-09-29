@@ -52,6 +52,7 @@
         <el-radio-group
           :disabled="control.disabled"
           v-if="control.type === 3"
+          @change="valueChanged(control);"
           v-model="formModel[control.field]"
         >
           <el-radio
@@ -183,6 +184,11 @@ export default {
     // console.log("@@@@@@@@");
   },
   methods: {
+    valueChanged(control) {
+      if (control.changeFunc) {
+        control.changeFunc(this.formModel[control.field]);
+      }
+    },
     inputBlur(item) {
       let type = null;
       if (item.field == "comname") {

@@ -135,7 +135,7 @@
     </div>
     <!-- <bid-upload></bid-upload> -->
     <el-dialog title="标杆企业名单" :visible.sync="top100ImgVisible" style="text-align:center;">
-      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%;">
+      <img :src="require('@/assets/images/top-100.jpg')" style="max-height: 100%;" />
     </el-dialog>
   </div>
 </template>
@@ -887,6 +887,13 @@ export default {
             {
               value: "null",
               label: "请选择纳税人状态"
+            }
+          ],
+          rules: [
+            {
+              required: true,
+              message: "纳税人状态不能为空",
+              trigger: "change"
             }
           ],
           placeholder: "请选择纳税人状态"

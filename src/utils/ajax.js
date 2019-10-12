@@ -7,7 +7,7 @@ import router from '../router';
 Vue.prototype.$axios = axios;
 // axios.defaults.withCredentials = true;
 
-const HN_HOST = "http://vendor.heneng.cn:16791";
+const HN_HOST = "http://10.19.1.27:16791"//"http://vendor.heneng.cn:16791";
 const HT_HOST = "http://ht.heneng.cn:16791";
 
 const isHN = true;

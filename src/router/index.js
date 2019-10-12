@@ -299,7 +299,8 @@ const router = new Router({
                     path: 'feedback',
                     name: 'user_report',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/feedback'),
                 },
@@ -307,7 +308,8 @@ const router = new Router({
                     path: 'survey',
                     name: 'user_survey',
                     meta: {
-                        requireAuth: true
+                        requireAuth: true,
+                        requireApprove: true
                     },
                     component: () => import('@/pages/user/survey'),
                 },

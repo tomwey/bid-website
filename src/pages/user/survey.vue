@@ -61,17 +61,26 @@
       :append-to-body="true"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :show-close="false"
+      :show-close="true"
       v-loading="loading"
       @close="$refs.surveyForm && $refs.surveyForm.resetFields()"
     >
-      <!-- <form-fields
-        form-ref="form"
-        ref="surveyForm"
-        :controls="surveyControls"
-        :form-model="surveyFormModel"
-      ></form-fields>-->
-
+      <div class="survey-memo" v-if="!!currItem">
+        <!-- <div class="memo">调查说明: {{currItem.researchmemo}}</div>
+        <div class="target">调查对象: {{currItem.researchroot}}</div>-->
+        <table class="custom-table">
+          <tr>
+            <td class="label">调查对象</td>
+            <td class="value">{{currItem.researchroot}}</td>
+          </tr>
+          <tr>
+            <td class="label">调查说明</td>
+            <td class="value">
+              <div v-html="formatMemo()"></div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <el-form
         ref="surveyForm"
         :rules="rules"
@@ -195,6 +204,13 @@ export default {
     this.loadData();
   },
   methods: {
+    formatMemo() {
+      if (!this.currItem.researchmemo) {
+        return null;
+      }
+      // console.log(this.currItem.researchmemo.replace(/([.\n\r]+)/g, "<br>"));
+      return this.currItem.researchmemo.replace(/([.\n\r]+)/g, "<br>");
+    },
     getLabel(que, index) {
       let suffix = "";
       if (que.ismust === "1") {
@@ -477,6 +493,20 @@ export default {
 .option-box {
   .preview-image {
     margin-left: 25px;
+  }
+}
+.survey-memo {
+  margin-bottom: 20px;
+  .custom-table {
+    border: 1px solid #eee;
+    .label {
+      width: 80px;
+    }
+    td {
+      vertical-align: top;
+      border: 1px solid #eee;
+      padding: 10px;
+    }
   }
 }
 </style>

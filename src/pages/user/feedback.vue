@@ -69,7 +69,6 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
-      v-loading="loading"
       @close="$refs.feedbackForm.$refs.form && $refs.feedbackForm.$refs.form.resetFields()"
     >
       <form-fields
@@ -80,7 +79,7 @@
       ></form-fields>
       <div slot="footer" class="dialog-footer">
         <el-button @click="newFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit">提 交</el-button>
+        <el-button type="primary" v-loading="commiting" @click="commit">提 交</el-button>
       </div>
     </el-dialog>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
@@ -103,6 +102,7 @@ export default {
       previewImage: null,
       newFormVisible: false,
       loading: false,
+      commiting: false,
       end_date: null,
       keyword: null,
       state: null,
@@ -453,7 +453,7 @@ export default {
       //   return;
       this.$refs.feedbackForm.validateFields(flag => {
         if (flag) {
-          this.loading = true;
+          this.commiting = true;
           this.$post(
             {
               action: "P_SUP_Create_Complain_Suggest",
@@ -472,19 +472,36 @@ export default {
               p13: this.feedbackFormModel.annexes || ""
             },
             res => {
-              this.loading = false;
+              // this.loading = false;
+              this.commiting = false;
+
               // console.log(this.$refs);
 
               // this.$refs["dialogForm2"].$refs["form"] &&
               //   this.$refs["dialogForm2"].$refs["form"].resetFields();
 
               if (res.code == "0") {
-                this.dialogFormVisible = false;
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                this.loadData();
+                if (res.data && res.data.length > 0) {
+                  const item = res.data[0];
+                  if (item.hinttype == "0") {
+                    this.$message({
+                      type: "error",
+                      message: item.hint
+                    });
+                  } else {
+                    this.newFormVisible = false;
+                    this.$message({
+                      type: "success",
+                      message: "提交成功"
+                    });
+                    this.loadData();
+                  }
+                } else {
+                  this.$message({
+                    type: "error",
+                    message: "非法错误"
+                  });
+                }
               } else {
                 this.$message({
                   type: "error",

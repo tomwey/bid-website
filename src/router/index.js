@@ -378,6 +378,10 @@ router.beforeEach((to, from, next) => {
                                 path: '/',
                                 query: { redirect: to.fullPath }
                             });
+                            Message({
+                                message: res.codemsg,
+                                type: "error"
+                            });
                         }
 
                         if (!store.state.supinfo.supid) {

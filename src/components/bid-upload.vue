@@ -2,7 +2,7 @@
   <div class="upload-wrapper">
     <el-upload
       class="upload-demo"
-      action="http://erp20-app.heneng.cn:16681/upload"
+      action="http://erp20-annex.heneng.cn:20021/up"
       :on-preview="handlePreview"
       :before-remove="beforeRemove"
       :on-remove="handleRemove"

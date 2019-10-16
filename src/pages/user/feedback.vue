@@ -323,7 +323,7 @@ export default {
               arr.push(ele);
               this.contracts[project] = arr;
             });
-
+            console.log(this.projects);
             this.feedbackControls[2].options = this.projects;
           }
         }

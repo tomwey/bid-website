@@ -128,8 +128,16 @@ export default {
           icon: "user",
           menu_items: [
             {
+              name: "合同列表",
+              route: "contract_list"
+            },
+            {
               name: "账号管理",
               route: "user_account"
+            },
+            {
+              name: "账号设置",
+              route: "user_account_settings"
             },
             {
               name: "修改密码",
@@ -233,7 +241,7 @@ $theme-color: #e46623;
     flex: 0 0 150px;
     width: 150px;
     // height: 688px;
-    max-height: 800px;
+    max-height: 990px;
     background: #fff;
     margin-right: 20px;
     // padding: 20px;

@@ -237,6 +237,16 @@ export default {
       this.openTreeData = !this.openTreeData;
       this.currentItem = item;
     },
+    clearValidates(fields = null) {
+      // this.$refs.dataForm.clearValidates();
+      this.$nextTick(() => {
+        if (fields) {
+          this.$refs[this.formRef].clearValidate(fields);
+        } else {
+          this.$refs[this.formRef].clearValidate();
+        }
+      });
+    },
     selectedItem(val) {
       // console.log(val);
       if (this.currentItem) {

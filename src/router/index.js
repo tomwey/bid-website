@@ -270,6 +270,26 @@ const router = new Router({
                     component: () => import('@/pages/user/account'),
                 },
                 {
+                    path: 'accounts/contracts',
+                    name: 'contract_list',
+                    meta: {
+                        requireAuth: true,
+                        // requireApprove: true
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/account-contracts'),
+                },
+                {
+                    path: 'accounts/settings',
+                    name: 'user_account_settings',
+                    meta: {
+                        requireAuth: true,
+                        // requireApprove: true
+                        requireApprove: true
+                    },
+                    component: () => import('@/pages/user/account-settings'),
+                },
+                {
                     path: 'edit_pwd',
                     name: 'user_change_pwd',
                     meta: {

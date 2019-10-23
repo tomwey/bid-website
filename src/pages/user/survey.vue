@@ -232,7 +232,7 @@ export default {
           p1: this.$store.state.supinfo.accountid || "",
           p2: this.$store.state.supinfo.supid || "",
           p3: this.$store.state.token,
-          p4: "0"
+          p4: "-1"
         },
         res => {
           this.loading = false;

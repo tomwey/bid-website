@@ -12,6 +12,18 @@ export function MobileCheck(rule, value, callback) {
     }
 }
 
+export function PasswordLengthCheck(rule, value, callback) {
+    if (!value) {
+        callback();
+    } else {
+        if (value.trim().length < 6) {
+            callback(new Error('密码太短，至少为6位'));
+        } else {
+            callback();
+        }
+    }
+}
+
 export function IDCardCheck(rule, value, callback) {
     // console.log(rule);
     if (!value) {

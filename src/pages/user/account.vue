@@ -208,6 +208,7 @@ export default {
     },
     openForm(item = null) {
       this.isAdd = !item;
+      this.formModel = {};
       this.dialogFormVisible = true;
     },
     cancel() {

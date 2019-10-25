@@ -19,8 +19,8 @@
             {{item.name}}
             <span
               class="custom-badge"
-              v-if="item.hasBadge && msgunreadCount > 0"
-            >{{msgunreadCount > 99 ? '99+' : msgunreadCount}}</span>
+              v-if="item.hasBadge && !!badgeForItem(item)"
+            >{{badgeForItem(item)}}</span>
           </dd>
         </dl>
 
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       currentMenuItem: null,
+      surveyCount: 0,
       currentMenu: null,
       menus: [
         {
@@ -153,6 +154,7 @@ export default {
             },
             {
               name: "问卷调查",
+              hasBadge: true,
               route: "user_survey"
             }
           ]
@@ -174,6 +176,8 @@ export default {
     if (route.name === "user_home") {
       this.currentMenu = this.menus[0];
     }
+
+    this.loadSurveys();
     // console.log(this.$router.currentRoute);
   },
   watch: {
@@ -202,6 +206,57 @@ export default {
     }
   },
   methods: {
+    loadSurveys() {
+      this.$post(
+        {
+          action: "P_WS_SE_ResearchList",
+          p1: this.$store.state.supinfo.accountid || "",
+          p2: this.$store.state.supinfo.supid || "",
+          p3: this.$store.state.token,
+          p4: "0"
+        },
+        res => {
+          this.loading = false;
+          console.log(res);
+          if (res.code == 0 && res.data) {
+            this.surveyCount = res.data.length;
+            if (this.surveyCount === 1) {
+              sessionStorage.setItem(
+                "need.survey",
+                JSON.stringify(res.data[0])
+              );
+              this.$router.push({ name: "user_survey", query: { f: 1 } });
+            } else {
+              sessionStorage.removeItem("need.survey");
+            }
+            // this.tableData = res.data;
+          }
+        }
+      );
+    },
+    badgeForItem(item) {
+      if (item.route == "user_messages") {
+        if (this.msgunreadCount <= 0) {
+          return null;
+        } else if (this.msgunreadCount > 99) {
+          return "99+";
+        } else if (isNaN(this.msgunreadCount)) {
+          return null;
+        }
+        return this.msgunreadCount.toString();
+      } else if (item.route == "user_survey") {
+        if (this.surveyCount <= 0) {
+          return null;
+        } else if (this.surveyCount > 99) {
+          return "99+";
+        } else if (isNaN(this.surveyCount)) {
+          return null;
+        }
+        return this.surveyCount.toString();
+      }
+
+      return null;
+    },
     selectTopMenu(menu) {
       if (!menu) return;
       if (menu.menu_items && menu.menu_items.length > 0) return;
@@ -267,6 +322,7 @@ $theme-color: #e46623;
           display: inline-block;
           padding: 0 6px;
           height: 18px;
+          min-width: 18px;
           line-height: 18px;
           font-size: 12px;
           // font-weight: 500;

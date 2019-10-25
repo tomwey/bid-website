@@ -62,12 +62,12 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="true"
+      width="70%"
+      height="200px"
       v-loading="loading"
       @close="$refs.surveyForm && $refs.surveyForm.resetFields()"
     >
       <div class="survey-memo" v-if="!!currItem">
-        <!-- <div class="memo">调查说明: {{currItem.researchmemo}}</div>
-        <div class="target">调查对象: {{currItem.researchroot}}</div>-->
         <table class="custom-table">
           <tr>
             <td class="label">调查对象</td>
@@ -165,9 +165,6 @@
         >提 交</el-button>
       </div>
     </el-dialog>
-    <!-- <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
-      <img :src="previewImage" style="max-width: 100%" />
-    </el-dialog>-->
   </div>
 </template>
 <script>
@@ -202,6 +199,13 @@ export default {
   },
   mounted() {
     this.loadData();
+    // console.log(this.$route);
+    if (this.$route.query && this.$route.query.f && this.$route.query.f == 1) {
+      const item = JSON.parse(sessionStorage.getItem("need.survey"));
+      if (item) {
+        this.viewSurvey(item);
+      }
+    }
   },
   methods: {
     formatMemo() {

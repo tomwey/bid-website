@@ -11,7 +11,7 @@
         <el-table-column prop="loginname" label="登录名"></el-table-column>
         <el-table-column prop="supname" label="账号名字"></el-table-column>
         <el-table-column prop="telephone" width="120" label="手机号"></el-table-column>
-        <el-table-column prop="accountname" label="账号类型"></el-table-column>
+        <!-- <el-table-column prop="accountname" label="账号类型"></el-table-column> -->
         <!-- <el-table-column prop="roles" label="功能权限"></el-table-column>
         <el-table-column prop="roles" label="资源权限"></el-table-column>-->
         <el-table-column prop="state" label="账号状态" width="120">
@@ -138,19 +138,18 @@ export default {
             { validator: MobileCheck, trigger: "change" }
           ]
         },
-        {
-          id: "account_type",
-          type: 3,
-          // subtype: "text",
-          // required: true,
-          field: "account_type",
-          label: "账号类型",
-          options: [
-          ],
-          rules: [
-            { required: true, message: "账号类型不能为空", trigger: "change" }
-          ]
-        },
+        // {
+        //   id: "account_type",
+        //   type: 3,
+        //   // subtype: "text",
+        //   // required: true,
+        //   field: "account_type",
+        //   label: "账号类型",
+        //   options: [],
+        //   rules: [
+        //     { required: true, message: "账号类型不能为空", trigger: "change" }
+        //   ]
+        // },
         {
           id: "password",
           type: 1,
@@ -197,11 +196,11 @@ export default {
     openForm(item = null) {
       this.isAdd = !item;
       this.formModel = {};
-      this.loadAccountTypes();
+      // this.loadAccountTypes();
       this.dialogFormVisible = true;
     },
     loadAccountTypes() {
-       this.$post(
+      this.$post(
         {
           action: "commapi",
           aid: this.$store.state.supinfo.accountid || "",
@@ -219,7 +218,7 @@ export default {
             if (res.data) {
               const temp = [];
               res.data.forEach(ele => {
-                temp.push({label: ele.accountname, value: ele.accounttype});
+                temp.push({ label: ele.accountname, value: ele.accounttype });
               });
               this.controls[3].options = temp;
             }
@@ -309,7 +308,7 @@ export default {
               payload: {
                 method: "P_MD_Account_Create",
                 p1: this.$store.state.supinfo.supid || "",
-                p2: this.formModel["account_type"],
+                p2: "2", //this.formModel["account_type"],
                 p3: this.formModel["loginname"],
                 p4: this.GetPassword(this.formModel["password"]),
                 p5: this.formModel["manname"],

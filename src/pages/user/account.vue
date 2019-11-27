@@ -146,18 +146,6 @@ export default {
           field: "account_type",
           label: "账号类型",
           options: [
-            {
-              label: "管理员账号",
-              value: "1"
-            },
-            {
-              label: "项目经理账号",
-              value: "2"
-            },
-            {
-              label: "工程师账号",
-              value: "3"
-            }
           ],
           rules: [
             { required: true, message: "账号类型不能为空", trigger: "change" }
@@ -209,7 +197,35 @@ export default {
     openForm(item = null) {
       this.isAdd = !item;
       this.formModel = {};
+      this.loadAccountTypes();
       this.dialogFormVisible = true;
+    },
+    loadAccountTypes() {
+       this.$post(
+        {
+          action: "commapi",
+          aid: this.$store.state.supinfo.accountid || "",
+          token: this.$store.state.token,
+          payload: {
+            method: "P_MD_Account_Type",
+            p1: this.$store.state.supinfo.accountid || ""
+          }
+        },
+        res => {
+          //this.loading = false;
+          console.log(res);
+          if (res.code == 0) {
+            //this.tableData = res.data;
+            if (res.data) {
+              const temp = [];
+              res.data.forEach(ele => {
+                temp.push({label: ele.accountname, value: ele.accounttype});
+              });
+              this.controls[3].options = temp;
+            }
+          }
+        }
+      );
     },
     cancel() {
       this.$refs.loginModal.hide();

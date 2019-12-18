@@ -78,12 +78,12 @@ export default {
           route: "home"
           // href: "#hero-area"
         },
-        {
-          id: 2,
-          name: "合能集团",
-          route: "about",
-          href: "/#about"
-        },
+        // {
+        //   id: 2,
+        //   name: "合能集团",
+        //   route: "about",
+        //   href: "/#about"
+        // },
         {
           id: 3,
           name: "招标计划",

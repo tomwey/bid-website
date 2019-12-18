@@ -63,7 +63,7 @@
       </div>
     </el-dialog>
     <el-dialog title="图片预览" :visible.sync="dialogPreviewVisible" append-to-body>
-      <img :src="previewImage" style="max-width: 100%">
+      <img :src="previewImage" style="max-width: 100%" />
     </el-dialog>
   </div>
 </template>
@@ -124,6 +124,7 @@ export default {
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_Sup_Bid_Return_Doc",
           fieldname: "annexids",
+          fileSize: 100,
           rules: [
             { required: true, message: "技术标附件不能为空", trigger: "change" }
           ]

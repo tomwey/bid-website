@@ -24,7 +24,7 @@
             <b-form-input v-model="password" type="password" placeholder="输入密码"></b-form-input>
             <div class="login-state-wrap clearfix">
               <span class="login-keep" @click="toggle">
-                <v-icon :name="keepLogin ? 'check-square' : 'square'"/>7天内免登录
+                <v-icon :name="keepLogin ? 'check-square' : 'square'" />7天内免登录
               </span>
               <span class="forget-password float-right" @click="forgetPass">忘记密码？</span>
             </div>
@@ -45,7 +45,7 @@
 
           <div class="logined-wrap" v-if="!!$store.state.token">
             <div class="user-info">
-              <v-icon name="user-circle" scale="4"/>
+              <v-icon name="user-circle" scale="4" />
               <p class="name">{{$store.state.supinfo.loginname}}，您好</p>
               <p class="slogan">欢迎使用合能招投标系统</p>
             </div>
@@ -61,14 +61,14 @@
       <h1>官方一站式招投标平台</h1>
       <h4>以公平、公正、公开的态度来对待每一位合作伙伴</h4>
       <div class="container">
-        <img src="../../assets/images/img-bid-flow.png" class="img-fluid">
+        <img src="../../assets/images/img-bid-flow.png" class="img-fluid" />
       </div>
     </div>
     <div class="sec-box company" id="about">
       <h1>合能集团</h1>
       <h4>ALL DREAMS COME TRUE — 所有梦想都开花</h4>
       <div class="container">
-        <img src="../../assets/images/img-comp-intro.png" class="img-fluid">
+        <img src="../../assets/images/img-comp-intro3.jpg" class="img-fluid" />
       </div>
     </div>
 
@@ -76,7 +76,7 @@
       <div class="container">
         <!-- <h1>优质合作伙伴</h1>
         <h4>合作共赢，有容乃大</h4>-->
-        <img src="../../assets/images/img-pattern.png" class="img-fluid">
+        <img src="../../assets/images/img-pattern.png" class="img-fluid" />
       </div>
     </div>
     <!-- </div> -->

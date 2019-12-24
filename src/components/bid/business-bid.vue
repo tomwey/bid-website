@@ -167,7 +167,7 @@
         @load="imgLoaded = true"
         class="preview-image"
         :class="{loaded:imgLoaded, loading: !imgLoaded}"
-      >
+      />
     </el-dialog>
   </div>
 </template>
@@ -244,6 +244,7 @@ export default {
           domanid: this.$store.state.supinfo.accountid || "0",
           tablename: "H_SUP_Bid_Return_doc",
           fieldname: "annexids",
+          fileSize: 100,
           rules: [
             { required: true, message: "商务标附件不能为空", trigger: "blur" }
           ]

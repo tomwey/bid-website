@@ -252,7 +252,6 @@ export default {
     },
     save(isSubmit = "0") {
       // const answers = [];
-      // console.log(this.surveyFormModel);
       const temp = [];
       this.questions.forEach(que => {
         if (que.checktype === "文本") {
@@ -277,7 +276,22 @@ export default {
         }
       });
 
-      // console.log(temp);
+      let sum = 0;
+      for (const key in this.rules) {
+        if (this.rules.hasOwnProperty(key)) {
+          if (!this.surveyFormModel[key]) {
+            sum++;
+          }
+        }
+      }
+
+      if (sum > 0) {
+        this.$message({
+          type: "error",
+          message: "有必填项未填"
+        });
+        return;
+      }
 
       this.$refs.surveyForm.validate(flag => {
         if (flag) {
@@ -375,6 +389,7 @@ export default {
             if (res.code == 0) {
               const questions = [];
               const questionAnswers = {};
+              const rules = {};
               (res.data || []).forEach(ele => {
                 if (ele.itemtype === "问题") {
                   questions.push(ele);
@@ -429,7 +444,7 @@ export default {
 
                   if (ele.checktype === "文本") {
                     if (ele.ismust === "1") {
-                      this.rules[ele.itemplanparid] = [
+                      rules[ele.itemplanparid] = [
                         {
                           required: true,
                           message: "此题答案不能为空",
@@ -439,7 +454,7 @@ export default {
                     }
                   } else if (ele.checktype === "单选") {
                     if (ele.ismust === "1") {
-                      this.rules[ele.itemplanparid] = [
+                      rules[ele.itemplanparid] = [
                         {
                           required: true,
                           message: "此题答案不能为空",
@@ -449,7 +464,7 @@ export default {
                     }
                   } else if (ele.checktype === "多选") {
                     if (ele.ismust === "1") {
-                      this.rules[ele.itemplanparid] = [
+                      rules[ele.itemplanparid] = [
                         {
                           required: true,
                           message: "此题答案不能为空",
@@ -466,10 +481,8 @@ export default {
                 }
               });
               this.questions = questions;
+              this.rules = rules;
               this.questionOptions = questionAnswers;
-
-              console.log(questions);
-              console.log(questionAnswers);
             }
 
             this.newFormVisible = true;
